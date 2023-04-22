@@ -8,6 +8,13 @@ import Button from '@mui/material/Button';
 import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import BasicPage from './BasicPage';
+import Navbar from './components/Navbar';
+import { BrowserRuther as Ruther, Routes, Route} from 'react-router-dom';
+import Home from './Pages'
+import BullBoard from './Pages/BullBoard'
+import FarmerCreateUser from './Pages/FarmerCreateUser'
+import MainPage from './pages/MainPage'
+
 
 function App() {
   const onTextFieldChange = (e) => {
@@ -37,8 +44,10 @@ function App() {
           </form>
         </header>
         <Routes>
-          <Route path="/" element={<Home onTextFieldChange={onTextFieldChange} textFieldInput={textFieldInput} onScanButtonClick={onScanButtonClick} />} />
-          <Route path="/basic" element={<BasicPage />} />
+          <Route path= '/' exact elemnt={<Home />} />
+          <Route path= 'MainPage' element={<BasicPage />} />
+          <Route path= 'FarmersCreateUser' element={<FarmerCreateUser />} />
+          <Route path= 'BullBoard' element={<BullBoard />} />
         </Routes>
         <Container>
           <Stack spacing={3} sx={{marginTop: '20%'}} >
@@ -57,6 +66,8 @@ function App() {
   );
 }
 
+
+/*
 function Home({onTextFieldChange, textFieldInput, onScanButtonClick}) {
   return (
     <Container>
@@ -75,6 +86,9 @@ function Home({onTextFieldChange, textFieldInput, onScanButtonClick}) {
     </Container>
   )
 }
+*/
+
+
 
 export default App;
 /*
