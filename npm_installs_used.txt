@@ -1,3 +1,4 @@
 npm install react-router-dom
 npm install --save styled-components
 npm install @mui/material
+npm install react-icons
