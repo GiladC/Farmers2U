@@ -1,54 +1,64 @@
+import React, {useState} from 'react'
+import { AppBar, Toolbar, Tabs, Tab, Button, useMediaQuery, 
+    useTheme, Box } from '@mui/material';
+import Farmers2ULogo from './farmers2u_logo.svg';
+import DrawerComp from './DrawerComp';
 
-import { FaBars } from "react-icons/fa";
-import { NavLink as Link } from "react-router-dom";
-import styled from "styled-components";
-  
-export const Nav = styled.nav`
-  background: #ffff66;
-  height: 85px;
-  display: flex;
-  justify-content: space-between;
-  padding: 0.2rem calc((100vw - 1000px) / 2);
-  z-index: 12;
-`;
-  
-export const NavLink = styled(Link)`
-  color: #808080;
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  padding: 0 1rem;
-  height: 100%;
-  cursor: pointer;
-  &.active {
-    color: #4d4dff;
-  }
-`;
-  
-export const Bars = styled(FaBars)`
-  display: none;
-  color: #808080;
-  @media screen and (max-width: 768px) {
-    display: block;
-    position: absolute;
-    top: 0;
-    right: 0;
-    transform: translate(-100%, 75%);
-    font-size: 1.8rem;
-    cursor: pointer;
-  }
-`;
-  
-export const NavMenu = styled.div`
-  display: flex;
-  align-items: center;
-  margin-right: -24px;
-  /* Second Nav */
-  /* margin-right: 24px; */
-  /* Third Nav */
-  /* width: 100vw;
-white-space: nowrap; */
-  @media screen and (max-width: 768px) {
-    display: none;
-  }
-`;
+const NavbarElements = () => {
+    const [value, setValue] = useState();
+    const theme = useTheme(0);
+    const isMatch = useMediaQuery(theme.breakpoints.down('md'));
+    const pages = ["דף הבית", "לוח המודעות"];
+    return(
+        <React.Fragment>
+            <AppBar position="static" sx={{background: '#F5FDFF'}}>
+                <Toolbar sx={{ display: 'flex', justifyContent: 'flex-end'}}>
+                    {
+                        isMatch ? (
+                            <>
+                    <img src={Farmers2ULogo} alt="Farmers2ULogo"
+                    style={{ width: '65px', height: '65px'}}/>
+                                <DrawerComp />
+                            </>
+                        ) : (
+                            <>
+                              <Button href='Login'
+                                sx={{ marginRight: "auto", marginLeft: 0 }}
+                                variant="contained"
+                              >
+                                כניסת משתמש{" "}
+                              </Button>
+                              <Button href='SignUp'
+                              sx={{ marginRight: "auto" }} variant="contained">
+                                יצירת משתמש{" "}
+                              </Button>
+                              <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "center" }}>
+                                <Tabs
+                                  sx={{ color: "#0062E2" }}
+                                  textColor="inherit"
+                                  value={value}
+                                  onChange={(e, value) => setValue(value)}
+                                  indicatorColor="secondary"
+                                >
+                                  {pages.map((page, index) => (
+                                    <Tab key={index} label={page} sx={{fontSize: '30px'}}/>
+                                  ))}
+                                </Tabs>
+                              </Box>
+                              <Box sx={{ display: "flex", alignItems: "center" }}>
+                                <img
+                                  src={Farmers2ULogo}
+                                  alt="Farmers2ULogo"
+                                  style={{ width: "65px", height: "65px", marginRight: "auto" }}
+                                />
+                              </Box>
+                            </>
+                          )
+                    }
+                </Toolbar>
+            </AppBar>
+        </React.Fragment>
+    )
+}
+
+export default NavbarElements
