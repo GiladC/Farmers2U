@@ -1,23 +1,74 @@
+import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import NavBarElements from "./components/Navbar/NavbarElements";
+import Footer from'./components/Footer/Footer';
 import React from 'react';
-import './App.css';
-import Navbar from './components/Navbar';
-import { BrowserRouter as Router, Routes, Route}
-    from 'react-router-dom';
-import MainPage from './pages/MainPage';
-import BullBoard from './pages/BullBoard';
-import FarmerCreateUser from './pages/FarmerCreateUser';
-  
+import Main from './Pages/MainPage/MainPage';
+import Auth from './Pages/FarmerLogin';
+import faq from './Pages/FAQ';
+import ourfarmers from './Pages/OurFarmers';
+import bullboard from './Pages/BullBoard';
+import Form from './Pages/FarmerCreateUser';
+import Logo from './assets/farmers2u_logo.png';
+import about from './Pages/About';
+
 function App() {
-return (
+  return (
     <Router>
-    <Navbar />
-    <Routes>
-        <Route path='/MainPage' element={<MainPage/>} />
-        <Route path='/BullBoard' element={<BullBoard/>} />
-        <Route path='/FarmerCreateUser' element={<FarmerCreateUser/>} />
-    </Routes>
+      <div style={{ display: 'flex', minHeight: '100vh', flexDirection: 'column' }}>
+        <Routes>
+          <Route path='/home' element={
+            <>
+              <NavBarElements/>
+              <Main/>
+            </>
+          } />
+          <Route exact path='/signup' element={
+            <>
+              <NavBarElements/>
+              <Form/>
+            </>
+          } />
+          <Route path='/login' element={
+            <>
+              <NavBarElements/>
+              <Auth/>
+            </>
+          } />
+          <Route path='/bullboard' element={
+            <>
+              <NavBarElements/>
+              <bullboard/>
+            </>
+          } />
+          <Route path='/ourfarmers' element={
+            <>
+              <NavBarElements/>
+              <ourfarmers/>
+            </>
+          } />
+          <Route path='/faq' element={
+            <>
+              <NavBarElements/>
+              <faq/>
+            </>
+          } />
+          <Route path='/about' element={
+            <>
+              <NavBarElements/>
+              <about/>
+            </>
+          } />
+          <Route path="/" element={
+            <>
+              <NavBarElements/>
+              <Main />
+            </>
+          } />
+        </Routes>
+        <Footer />
+      </div>
     </Router>
-);
+  );
 }
-  
+
 export default App;

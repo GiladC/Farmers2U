@@ -1,13 +1,14 @@
 import React from 'react'
 import videobg from '../../assets/farming.mp4'
+import './MainPage.css';
+
 
 const Main = () => {
   return (
-    <div className='main'>
+    <div className='main' dir="rtl">
       * <div className='overlay'></div>
         <video src={videobg} autoPlay loop muted id='bg-video' />
-        <div className='content'>
-          {/* <h1>ברוכים הבאים לאתר</h1> */}
+        <div className='content' >
           <h1>ברוכים הבאים לאתר Farmers2U</h1> 
           <div className='subtitle'>
             <h2>האתר מהווה פלטפורמה לתקשורת ישירה בין צרכנים לחקלאים.</h2>

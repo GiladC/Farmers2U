@@ -5,12 +5,12 @@ import MenuIcon from '@mui/icons-material/Menu';
 
 const DrawerComp = () => {
     const pages = [{label: "דף הבית", href: "home"}
-    , {label: "לוח המודעות", href: "ds"}
-    , {label: "התחברו לאתר", href: "SDda"}
-    , {label: "הרשמה לאתר", href: "Sas"}
-    , {label: "על האתר", href: "ASdfsg"}
-    , {label: "החקלאים שלנו", href: "ASDs"}
-    , {label: "שאלות נפוצות", href: "ddd"}];
+    , {label: "לוח המודעות", href: "bullboard"}
+    , {label: "התחברו לאתר", href: "login"}
+    , {label: "הרשמה לאתר", href: "signup"}
+    , {label: "על האתר", href: "about"}
+    , {label: "החקלאים שלנו", href: "ourfarmers"}
+    , {label: "שאלות נפוצות", href: "faq"}];
     const [openDrawer, setOpenDrawer] = useState(false)
     return(
         <React.Fragment>

@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
 import { AppBar, Toolbar, Tabs, Tab, Button, useMediaQuery, useTheme, Box } from '@mui/material';
-import Farmers2ULogo from './farmers2u_logo.svg';
+import Farmers2ULogo from '../../assets/farmers2u_logo.svg'
 import DrawerComp from './DrawerComp';
 import { useLocation } from 'react-router-dom';
 
 const NavbarElements = () => {
   const theme = useTheme();
-  const isMatch = useMediaQuery(theme.breakpoints.down('md'));
+  const isMatch = useMediaQuery(theme.breakpoints.down('lg'));
   const { pathname } = useLocation();
 
   const pages = [
     { label: 'שאלות נפוצות', href: 'faq' },
     { label: 'על האתר', href: 'about' },
     { label: 'החקלאים שלנו', href: 'ourfarmers' },
-    { label: 'לוח המודעות', href: 'Bullboard' },
-    { label: 'דף הבית', href: '' }
+    { label: 'לוח המודעות', href: 'bullboard' },
+    { label: 'דף הבית', href: 'home' }
   ];
   
   const [value, setValue] = useState(() => {
@@ -38,10 +38,10 @@ const NavbarElements = () => {
             </>
           ) : (
             <>
-              <Button href="Login" sx={{ marginRight: 'auto', marginLeft: 3 }} variant="contained">
+              <Button href="login" sx={{ marginRight: 'auto', marginLeft: 3 }} variant="contained">
                 כניסת משתמש{' '}
               </Button>
-              <Button href="SignUp" sx={{ marginRight: 'auto', marginLeft: '1rem' }} variant="contained">
+              <Button href="signup" sx={{ marginRight: 'auto', marginLeft: '1rem' }} variant="contained">
                 יצירת משתמש{' '}
               </Button>
               <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
