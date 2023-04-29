@@ -44,7 +44,7 @@ const Footer = () => {
       </ul>
       <ul style={{position: 'absolute', top:"5%", left:"53%"}}>
       <li style={{ paddingBlock: '15px'}}>
-          <Link to = "bullboard/" style={{fontFamily: 'Alef', variant: 'body2', textDecoration: "none", color: "#616161"}}>
+          <Link to = "bullboard" style={{fontFamily: 'Alef', variant: 'body2', textDecoration: "none", color: "#616161"}}>
             חיפוש מוצרים
           </Link>
         </li>
@@ -73,7 +73,7 @@ const Footer = () => {
       {" | "} 
       {new Date().getFullYear()} 
       {" | "}
-      <Link to ="./pages/Terms" color="inherit" style={{textDecoration: "none", color: "#616161"}}>
+      <Link to ="./pages/terms" color="inherit" style={{textDecoration: "none", color: "#616161"}}>
         תנאי השימוש
       </Link>
     </Typography>

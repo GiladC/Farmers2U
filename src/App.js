@@ -14,53 +14,46 @@ import about from './Pages/About';
 function App() {
   return (
     <Router>
+      <NavBarElements/>
       <div style={{ display: 'flex', minHeight: '100vh', flexDirection: 'column' }}>
         <Routes>
           <Route path='/home' element={
             <>
-              <NavBarElements/>
               <Main/>
             </>
           } />
           <Route exact path='/signup' element={
             <>
-              <NavBarElements/>
               <Form/>
             </>
           } />
           <Route path='/login' element={
             <>
-              <NavBarElements/>
               <Auth/>
             </>
           } />
           <Route path='/bullboard' element={
             <>
-              <NavBarElements/>
               <bullboard/>
             </>
           } />
           <Route path='/ourfarmers' element={
             <>
-              <NavBarElements/>
               <ourfarmers/>
             </>
           } />
           <Route path='/faq' element={
             <>
-              <NavBarElements/>
               <faq/>
             </>
           } />
           <Route path='/about' element={
             <>
-              <NavBarElements/>
               <about/>
             </>
           } />
           <Route path="/" element={
             <>
-              <NavBarElements/>
               <Main />
             </>
           } />
