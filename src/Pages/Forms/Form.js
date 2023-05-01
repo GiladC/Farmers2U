@@ -35,20 +35,20 @@ function Form() {
     <div className='form' style={{paddingBottom: '25px', paddingTop: '25px'}}>
         <div className='progressbar'>
             <div style= {{marginTop: "-000px",
-             width: page === 0 ? "20%" : page == 1 ? "40%" : page == 2 ? "60%": page == 3 ? "80%" : "100%"}}  > </div> 
+             width: page === 0 ? "0%" : page == 1 ? "40%" : page == 2 ? "60%": page == 3 ? "80%" : "100%"}}  > </div> 
         </div>
         <div className='form-container'>
             <div className='header' style={{ textAlign: 'center' }}> 
-                <h1>
+{/*                 <h1>
                     {FormTitles[page]}
-                </h1>
+                </h1> */}
             </div>
             <div className='body' style={{ display: "flex", justifyContent: "center" }}> 
                 {PageDisplay()}   
             </div>
             <div className='footer' style={{ display: "flex", justifyContent: "center" }}> {/* added */}
-                <Button style= {{backgroundColor: "#2F4F4F", 
-                marginRight: "20px", fontSize: 16, color: "#F0F8FF"}} 
+                <Button style= {{minWidth:"80px", backgroundColor: "#ffb74d", 
+                marginRight: "20px",fontFamily:"aleph", fontSize: 16, color: "#212121"}} variant="outlined" sx={{borderColor: 'black'}}
                 onClick={() => { 
                     if (page == FormTitles.length - 1) 
                     {alert("הטופס נשלח")} 
@@ -58,9 +58,9 @@ function Form() {
                         } > {
                         page == FormTitles.length - 1 ? "שלח": "הבא"} 
                 </Button> 
-                <Button style= {{backgroundColor: "#2F4F4F", 
-                marginLeft: "20px", fontSize: 16, 
-                color: "#F0F8FF"}} variant="contained" 
+                <Button style= {{borderWidth:'1px', minWidth:"30px", backgroundColor: "#ffb74d", 
+                marginLeft: "20px", fontFamily:"aleph", fontSize: 16, 
+                color: "#212121"}} variant="outlined" sx={{borderColor: 'black'}} 
                 disabled={page == 0} onClick={
                     () => {setPage((currPage) => currPage - 1);
                     }}> הקודם </Button>

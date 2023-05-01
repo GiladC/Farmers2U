@@ -20,13 +20,12 @@ function FormSignUpInfo() {
   return (
     <div>
       <form autoComplete="off" dir="rtl" /*className={classes.root}*/>
-        <Box bgcolor="beige" sx={{":hover": {bgcolor: '#ffeecc', color: "black", boxShadow: "5px 5px 10px #ccc"}
-  }} boxShadow={2}  border={1} display="flex" flexDirection={"column"} width={580} height={500} alignItems={"center"} justifyContent={"center"} margin={3} mt={4} padding={20}  >
-              <Typography fontSize={50} margin={"auto"} variant='h3' textAlign={"center"}> הרשמה של חקלאי לאתר</Typography>
-              <Typography mt={2} fontSize={25}  margin={"auto"} variant='h2'  textAlign={"center"}> שלב 1 - פרטים אישיים</Typography>
-            <Grid container>
-              <Grid item xs={6}>
-                <Box margin={2} border="none" Width={1000}>
+        <Box marginTop={5} bgcolor="#e1f5fe" boxShadow={2} borderRadius={2} border={2} display="flex" flexDirection={"column"} width={580} height={200} alignItems={"center"} justifyContent={"center"} margin={3} mt={4} padding={20} sx={{border: '1.5px solid #bf360c'}}  >
+              <Typography color="#37474f" fontFamily="aleph" fontWeight={'bold'} fontSize={50} margin={"auto"} variant='h3' textAlign={"center"}> הרשמת חקלאי </Typography>
+              <Typography color="#37474f" fontFamily="aleph" fontWeight={'bold'} mt={2} fontSize={22}  margin={5} variant='h2'  textAlign={"center"}> שלב 1 - פרטים אישיים</Typography>
+            <Grid container style={{paddingRight: '30px'}}>
+              <Grid item xs={5.8}>
+                <Box margin={2} border="none" >
                   <Paper>
                     <TextField dir="rtl"
                       /*label="שם פרטי"*/
@@ -34,15 +33,18 @@ function FormSignUpInfo() {
                       /*value={values.firstName}*/
                       variant='outlined'
                       type="text"
+                      position=''
                       placeholder='*שם מלא'
                       required="required"
+                      textAlign= "right"
                       InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="end">
-                              <DriveFileRenameOutlineIcon>
+                        endAdornment: (
+                          <InputAdornment position={'end'}>
+                              <DriveFileRenameOutlineIcon sx={{ ml: 0.7, my: 0.5 }}>
                               </DriveFileRenameOutlineIcon>
                           </InputAdornment>
                         )
+                        
                       }}
                       /* onChange = {handleInputChange} */
                     />
@@ -59,8 +61,8 @@ function FormSignUpInfo() {
                           placeholder='*כתובת מייל'
                           required="required"
                           /* onChange = {handleInputChange} */
-                          InputProps={{startAdornment: (
-                          <EmailIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />)}}
+                          InputProps={{endAdornment: (
+                          <EmailIcon sx={{ color: 'action.active', ml: 1.6, my: 0.5 }} />)}}
                         />
                       </Paper>
                 </Box>
@@ -128,8 +130,8 @@ function FormSignUpInfo() {
               </Grid>
               
             </Grid>
-            <a href='/auth'>
-              <Button /*onClick={() => { <FormLogin></FormLogin> }}*/  variant='text' size='medium' sx={{ mt: 4, borderRadius: 4, fontSize: 16}} color='inherit'> מעבר לטופס התחברות </Button>  
+            <a href='/login'>
+              <Button /*onClick={() => { <FormLogin></FormLogin> }}*/ variant='text' size='medium' sx={{fontFamily:"aleph",  mt: 4, borderRadius: 4, fontSize: 16}} color='inherit'> משתמש קיים? לחץ כאן</Button>  
             </a>
           </Box>    
       </form>
