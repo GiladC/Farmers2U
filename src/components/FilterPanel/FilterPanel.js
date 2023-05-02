@@ -11,7 +11,7 @@ const FilterPanel = () => {
     return (
         <div>
         <Box dir= 'rtl' display='flex' sx={{
-            backgroundColor: '#white',
+            backgroundColor: '#ffffff',
             color: 'white',
             height: '500px',
             width: '250px',

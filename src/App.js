@@ -2,24 +2,26 @@ import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import NavBarElements from "./components/Navbar/NavbarElements";
 import Footer from'./components/Footer/Footer';
 import React from 'react';
-import Main from './Pages/MainPage/MainPage';
-import Auth from './Pages/FarmerLogin';
+import LandPage from './Pages/MainPage/LandPage';
+import FormLogin from './Pages/Forms/FormLogin';
 import faq from './Pages/FAQ';
 import ourfarmers from './Pages/OurFarmers';
-import bullboard from './Pages/BullBoard';
-import Form from './Pages/FarmerCreateUser';
-import Logo from './assets/farmers2u_logo.png';
+import AdsPage from './Pages/Bullboard/adsPage';
+import Form from './Pages/Forms/Form';
 import about from './Pages/About';
+import FilterPanel from './components/FilterPanel/FilterPanel';
+import Intro from './Pages/ShowFarmerProfile/intro';
+import './App.css'
 
 function App() {
   return (
     <Router>
       <NavBarElements/>
-      <div style={{ display: 'flex', minHeight: '100vh', flexDirection: 'column' }}>
+      <div>
         <Routes>
           <Route path='/home' element={
             <>
-              <Main/>
+              <LandPage/>
             </>
           } />
           <Route exact path='/signup' element={
@@ -29,12 +31,13 @@ function App() {
           } />
           <Route path='/login' element={
             <>
-              <Auth/>
+              <FormLogin/>
             </>
           } />
           <Route path='/bullboard' element={
             <>
-              <bullboard/>
+              <AdsPage/>
+              <FilterPanel/>
             </>
           } />
           <Route path='/ourfarmers' element={
@@ -52,9 +55,14 @@ function App() {
               <about/>
             </>
           } />
+          <Route path="/farmerProfile" element={
+            <>
+              <Intro/>
+            </>
+          } />
           <Route path="/" element={
             <>
-              <Main />
+              <LandPage/>
             </>
           } />
         </Routes>
