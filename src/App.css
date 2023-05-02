@@ -6,10 +6,7 @@
 }
 
 body{
-  background: #0f0c29;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #dc8b44, #6863a4, #0f0c29);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #1f5b4e, #302b63, #0c2926); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  
+  background: #fff3e0;
 }
 
 .App {
