@@ -41,7 +41,7 @@ const AddPost = () => {
                         src='/Board_images/farmer1.jpg'
                         sx={{width: 30, height: 30}}
                     />
-                    <Typography fontWeight={500} variant='span'>David Cohen</Typography>
+                    <Typography fontWeight={500} variant='span'>דוד כהן</Typography>
                 </UserBox>
                 <TextField
                     sx={{width:'100%'}}

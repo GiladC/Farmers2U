@@ -18,6 +18,9 @@
     justify-content: space-between;
 }
 
+.topLeftWrapper{
+    align-items: flex-start;
+}
 .postTopLeft{
     display: flex;
     align-items: center;
@@ -52,6 +55,8 @@ a:hover, a:active {
 
 .postCenter{
     margin: 20px 0;
+    direction: rtl;
+    align-items: right;
 }
 
 /* .imgWrapper{
@@ -59,6 +64,11 @@ a:hover, a:active {
     object-fit: cover;
 } */
 
+.postText{
+    align-content: right;
+    text-align: right;
+    direction: rtl;
+}
 .postImg{
     margin-top: 20px;
     width: 100%;
@@ -89,7 +99,7 @@ a:hover, a:active {
 .details{
     margin-top: 15px;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     align-content: center;
     justify-content: space-between;
     direction: rtl;
@@ -120,5 +130,9 @@ a:hover, a:active {
 }
 
 .RatingWrapper{
+    display: flex;
     direction: ltr;
+    align-items: right;
+    align-content: flex-end;
+    position: inherit;
 }
