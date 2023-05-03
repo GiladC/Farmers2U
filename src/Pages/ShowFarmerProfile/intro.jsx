@@ -34,6 +34,7 @@ const Intro = () => {
                     </div>
                     <img src={picture} alt="" className="i-img" />
                 </div>
+                <Box sx={{top: '30px'}}>
                 <div className="i-products">
                     <div className="i-products-wrapper">
                         <div className="i-product-item">מלפפונים</div>
@@ -43,6 +44,7 @@ const Intro = () => {
                         <div className="i-product-item">חצילים</div>
                     </div>
                 </div>
+                </Box>
                 <Box sx={{
                     fontSize: '20px',
                     position: 'relative',

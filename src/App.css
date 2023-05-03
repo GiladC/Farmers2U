@@ -6,7 +6,8 @@
 }
 
 body{
-  background: #fff3e0;
+  background: #fff3e0;  /* fallback for old browsers */
+ 
 }
 
 .App {

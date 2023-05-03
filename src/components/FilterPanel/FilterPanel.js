@@ -157,7 +157,7 @@ const FilterPanel = () => {
                 sx={{
                 position: "absolute",
                 top: "110%",
-                left: 20,
+                left: 32,
                 right: -4,
                 border: "1px solid #eceff1",
                 transform: "translateY(-50%)",
@@ -188,7 +188,7 @@ const FilterPanel = () => {
                 sx={{
                 position: "absolute",
                 top: 90,
-                left: -203.5,
+                left: -191.5,
                 right: -5,
                 border: "1px solid #eceff1",
                 transform: "translateY(-50%)",
@@ -198,8 +198,12 @@ const FilterPanel = () => {
                 }}
             />
                 <Slider
-                 color= "primary" value={val} onChange={updatePriceRange} valueLabelDisplay="auto" min={0} max={500}
-                 style={{position: 'absolute', top: '350%', right: '0', transform: 'translateY(-50%)', width: '230px'}}>
+                 color= "primary" value={val} onChange={updatePriceRange} valueLabelDisplay="auto" min={0} max={500} step={500 / (500 - 0)}
+                 marks={[
+                   { value: 0, label: '0' },
+                   { value: 500, label: '500' },
+                 ]}
+                 style={{position: 'absolute', top: '310%', right: '0', transform: 'translateY(-50%)', width: '230px'}}>
                 </Slider>
             </Box>
             <Button variant="text" sx={{

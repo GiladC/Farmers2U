@@ -17,7 +17,7 @@ export const Users = [
     {
         id: 4,
         profilePicture: '/Board_images/cheeseFarm.png',
-        userName: 'משק גבינת מולדת',
+        userName: 'משק מולדת',
     },
     {
         id: 5,
@@ -80,7 +80,7 @@ export const Posts = [
         posted: 'לפני 3 שעות', 
         date: " 30.4-14.5",
         price: ' 240 ש"ח',
-        location: "משק גבינת מולדת, חדרה",
+        location: "משק מולדת, חדרה",
         time: '11:00-15:00',
         userId: 4,
         comment: 15,
