@@ -3,3 +3,6 @@ npm install --save styled-components
 npm install @mui/material
 npm install react-icons
 npm install @mui/icons-material
+npm install mui-tel-input
+npm install react-hook-form
+
