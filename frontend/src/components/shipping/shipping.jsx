@@ -11,7 +11,7 @@ export default function Shipping() {
       <Accordion sx={{
         position: 'relative',
         top: 20,
-        width: '30%',
+        width: '50%',
         mb: '5'
       }}>
         <AccordionSummary

@@ -5,7 +5,7 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-export default function Price({prices}) {
+export default function Work({days}) {
   return (
     <div>
       <Accordion sx={{
@@ -20,23 +20,27 @@ export default function Price({prices}) {
           id="panel1a-header"
           dir='rtl'
         >
-          <Typography>מחירון</Typography>
+          <Typography>ימי ושעות עבודה</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            מלפפון: 5.9 ש"ח לק"ג
+            ראשון: {days.sunday}
           </Typography>
           <Typography>
-            עגבניה: 5 ש"ח לק"ג
+          שני: {days.monday}
           </Typography>
           <Typography>
-            בצל: 6.4 ש"ח לק"ג
+          שלישי: {days.tuesday}
           </Typography>
           <Typography>
-            גזר: 6 ש"ח לק"ג
+          רביעי: {days.wednesday}
           </Typography>
           <Typography>
-            חציל: 7 ש"ח לק"ג
+          חמישי: {days.thursday}
+          </Typography>
+          <Typography>שישי: {days.friday}</Typography>
+          <Typography>
+          שבת: {days.saturday}
           </Typography>
         </AccordionDetails>
       </Accordion>

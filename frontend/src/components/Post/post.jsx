@@ -1,8 +1,23 @@
 import React from 'react'
 import './post.css'
-import {MoreVert} from '@mui/icons-material'
+import {AccessTime, EventNote, LocalOffer, LocationOn, MoreVert} from '@mui/icons-material'
 import {Users} from '../../DummyData/dummyData'
 import { Box, Typography } from '@mui/material'
+import BusinessCard from './businessCard'
+
+// this is how 'business' should look like in line 28
+const dummyBusiness = { 
+    name: 'משק הגולן',
+    location: 'רמת הגולן' ,
+    phone: '0725437433',
+    mail: 'golanFarm@gmail.com',
+    about: 'המשק קיים מזה 20 שנה והוא משק משפחתי שעובר מדור לדור. המטרה שלנו היא להביא את הירקות האיכותיים ביותר, במחירים הגונים. \
+    אנו מגדלים את הירקות שלנו בתנאים הטובים ביותר, על מנת להבטיח לכם את הטוב ביותר. \
+    הירקות שלנו גדלים תחת אוויר הרי גולן הפסטורליים, וצוות החקלאים שלנו משתמש בטכנולוגיה החדשנית ביותר בתחום.',
+    whatsApp: '0547984551',
+    instagram: 'golan_farm20',
+    facebook: 'משק הגולן'
+};
 
 export default function Post({post}) {
   return (
@@ -10,12 +25,7 @@ export default function Post({post}) {
         <div className="postWrapper">
             <div className="postTop">
                 <div className="postTopLeft">
-                    <a href='farmerProfile'>
-                        <img className= 'postProfileImg' src={Users.filter((u)=>u.id === post.userId)[0].profilePicture} alt="" />
-                    </a>
-                    <a href='farmerProfile'>
-                        <span className="postUserName">{Users.filter((u)=>u.id === post.userId)[0].userName}</span>
-                    </a>
+                        <BusinessCard image= {Users.filter((u)=>u.id === post.userId)[0].profilePicture} business={dummyBusiness}/>
                     <span className="postDate">{post.posted}</span> 
                 </div>
                 <div className="postTopRight">
@@ -23,46 +33,37 @@ export default function Post({post}) {
                 </div>
             </div>
             <div className="postCenter">
-                <Box sx={{
-                    display: 'flex',
-                    justifyContent: 'flex-start',
-                }}>
-                    <Typography sx={{
-                        align: 'right'
-                    }}>{post.desc}</Typography>
-                </Box>
-                {/* <span className="postText">{post.desc}</span> */}
-                <div className="details">
+            <div className="details">
                     <Box sx={{
-                        flex: 4,
+                        flex: 5,
                         background: '#f2fa07',
                         width: 50,
-                        height: 50,
+                        height: 80,
                         textAlign: 'center',
                     }}>
-                        <Typography>מיקום:</Typography> 
+                        <Typography><LocationOn /></Typography> 
                         <Typography>{post.location}</Typography>
                     </Box>
                     <Box sx={{
-                        flex: 4,
+                        flex: 2,
                         background: '#f2fa07',
                         mr: '15px',
                         width: 50,
-                        height: 50,
+                        height: 80,
                         textAlign: 'center'
                     }}>
-                       <Typography>תאריכים:</Typography> 
+                       <Typography><EventNote /></Typography> 
                        <Typography>{post.date}</Typography>
                     </Box>
                     <Box sx={{
-                        flex: 4,
+                        flex: 3,
                         background: '#f2fa07',
                         mr: '15px',
                         width: 50,
-                        height: 50,
+                        height: 80,
                         textAlign: 'center'
                     }}>
-                        <Typography>שעות:</Typography>
+                        <Typography><AccessTime /></Typography>
                         <Typography>{post.time}</Typography>
                     </Box>
                     <Box sx={{
@@ -70,30 +71,35 @@ export default function Post({post}) {
                         background: '#f2fa07',
                         mr: '15px',
                         width: 50,
-                        height: 50,
+                        height: 80,
                         textAlign: 'center'
                     }}>
-                        <Typography>טווח מחירים:</Typography>
+                        <Typography><LocalOffer /></Typography>
                         <Typography>{post.price}</Typography> 
                     </Box>
-                    {/* <div className="location">{post.location}</div> */}
-                    {/* <div className="date">{post.date}</div>
-                    <div className="time">שעות: {post.time}</div>
-                    <div className="price">{post.price}</div> */}
                 </div>
+                <Box sx={{
+                    mt: '20px',
+                    display: 'flex',
+                    justifyContent: 'flex-start',
+                }}>
+                    <Typography sx={{
+                        align: 'right'
+                    }}>{post.desc}</Typography>
+                </Box>
                 <div className="imgWrapper">
                     <img className='postImg' src={post?.photo} alt="" />
-                    {/* <img className= 'postImg' src="assets/cucumbers.webp" alt="" /> */}
+                    
                 </div>
             </div>
             <div className="postBottom">
-                <div className="postCommentText"> {post.comment} תגובות</div>
+                
                 <div className="postBottomRight">
-                    {/* <div className="RatingWrapper"><Rating /></div>
-                    <span className="score"> ציון ממוצע: {post.avgScore} </span> */}
+                    
                 </div>
             </div>
         </div>
     </div>
   )
 }
+
