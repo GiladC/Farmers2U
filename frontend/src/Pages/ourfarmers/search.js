@@ -1,15 +1,43 @@
-import React from 'react';
-import SearchIcon from '@mui/icons-material/Search';import './styles.css'
+import React, { useState } from 'react';
+import SearchIcon from '@mui/icons-material/Search';
+import './searchbarstyles.css';
 
-const Searchbar = ({ value, changeInput}) => {
-    return(
-        <div className="searchbar_wrap">
-            <SearchIcon className="searchbar_icon" />
-            <input tyle="text" 
-            placeholder="!חפשו משק ספציפי"
-            value={value} onChange={changeInput} />
-        </div>
-    )
-}
+const Searchbar = ({ onSearch }) => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [isFocused, setIsFocused] = useState(false);
+
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+    onSearch(event.target.value);
+  };
+
+  const handleFocus = () => {
+    setIsFocused(true);
+  };
+
+  const handleBlur = () => {
+    setIsFocused(false);
+  };
+
+  return (
+    <div className="searchbar_wrap">
+      <div
+        className={`searchbar_input_wrapper ${
+          isFocused ? 'glow' : 'permanent'
+        }`}
+      >
+        <SearchIcon className="searchbar_icon" />
+        <input
+          type="text"
+          placeholder="!חפשו משק ספציפי"
+          value={searchTerm}
+          onChange={handleSearch}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+        />
+      </div>
+    </div>
+  );
+};
 
 export default Searchbar;

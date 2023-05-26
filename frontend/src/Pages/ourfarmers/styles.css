@@ -1,29 +1,4 @@
 
-.searchbar_wrap{
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    border-bottom: 1px sold rgba(0, 0, 0, .26);
-    padding: 1.5rem 1rem;
-}
-
-.searchbar_icon{
-    color:rgba(0, 0, 0, .26);
-    margin-left: 2rem;
-}
-
-.searchbar_wrap input{
-    font-size: 1.5rem;
-    outline: none;
-    border: none;
-    width: 40%;
-    text-align: right;
-}
-
-.searchbar_wrap input::placeholder{
-    color:rgba(0, 0, 0, .26);
-
-}
 
 .catalogue-container {
     display: flex;
