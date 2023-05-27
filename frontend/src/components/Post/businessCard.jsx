@@ -19,12 +19,11 @@ import Work from '../days/work'
 const StyledModal = styled(Modal)({
     direction: 'rtl',
     display: 'block',
-    overflow: 'scroll',
     alignItems: 'center',
     alignContent: 'center',
     justifyContent: 'center',
-    marginRight: '150px',
-    marginTop: '100px'
+    marginRight: '13%',
+    marginTop: '7%'
 })
 
 const slides = [
@@ -45,23 +44,16 @@ const days = {
     saturday: 'סגור',
 };
 
-export default function BusinessCard({image,business}){
-    const [open, setOpen] = useState(false)
+export default function BusinessCard({image, business, open, close}){
+    // const [open, setOpen] = useState(false)
 
   return (
     <div>
-        <Button onClick={e=>setOpen(true)}>
-            <img className= 'Img' src={image} object-fit = 'cover' alt="" />
-        </Button>
-        <Button onClick={e=>setOpen(true)}>
-            <Typography variant='h5'color={'black'}>{business.name}</Typography>
-        </Button>
         <StyledModal
         open={open}
-        onClose={e=>setOpen(false)}
+        onClose={close}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
-        overflow= 'scroll'
         display= 'flex'
         >
             <Box width={900} height={400} bgcolor="white" p={3} sx={{
@@ -187,13 +179,10 @@ export default function BusinessCard({image,business}){
                         direction: 'rtl',
                         mb: '40px',
                     }}>
-                        <Typography>מעוניינים לקבל עדכונים מהמשק לפני כולם? הירשמו לניוזלטר:</Typography>
-                        <Box width={500} sx={{
-                            display: 'flex',
-                            alignContent: 'space-between'
-                        }}>
+                        <Typography display= 'flex' justifyContent= 'center'>מעוניינים לקבל עדכונים מהמשק לפני כולם? הירשמו לניוזלטר:</Typography>
+                        <Box display= 'flex' justifyContent= 'center' width= '100%'>
                         <TextField id="standard-basic" placeholder='דוא"ל' variant="standard" direction= 'rtl' sx={{
-                            direction:'rtl', width: '400px', ml: '20px'
+                            direction:'rtl', width: '300px', ml: '20px'
                         }} />
                         <Button variant='contained'>הרשמה</Button>
                         </Box>

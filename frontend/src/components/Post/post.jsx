@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './post.css'
 import {AccessTime, EventNote, LocalOffer, LocationOn, MoreVert} from '@mui/icons-material'
 import {Users} from '../../DummyData/dummyData'
-import { Box, Typography } from '@mui/material'
+import { Box, Button, Typography } from '@mui/material'
 import BusinessCard from './businessCard'
 
 // this is how 'business' should look like in line 28
@@ -20,12 +20,21 @@ const dummyBusiness = {
 };
 
 export default function Post({post}) {
+    const [open, setOpen] = useState(false)
+
   return (
     <div className='post'>
         <div className="postWrapper">
             <div className="postTop">
                 <div className="postTopLeft">
-                        <BusinessCard image= {Users.filter((u)=>u.id === post.userId)[0].profilePicture} business={dummyBusiness}/>
+                        <Button onClick={e=>setOpen(true)}>
+                            <img className= 'Img' src={Users.filter((u)=>u.id === post.userId)[0].profilePicture} object-fit = 'cover' alt="" />
+                        </Button>
+                        <Button onClick={e=>setOpen(true)}>
+                            <Typography variant='h5'color={'black'}>{Users.filter((u)=>u.id === post.userId)[0].userName}</Typography>
+                        </Button>
+                        <BusinessCard image={Users.filter((u)=>u.id === post.userId)[0].profilePicture}
+                        business={dummyBusiness} open={open} close={()=>setOpen(false)} />
                     <span className="postDate">{post.posted}</span> 
                 </div>
                 <div className="postTopRight">
@@ -38,7 +47,7 @@ export default function Post({post}) {
                         flex: 5,
                         background: '#f2fa07',
                         width: 50,
-                        height: 80,
+                        height: 55,
                         textAlign: 'center',
                     }}>
                         <Typography><LocationOn /></Typography> 
@@ -49,7 +58,7 @@ export default function Post({post}) {
                         background: '#f2fa07',
                         mr: '15px',
                         width: 50,
-                        height: 80,
+                        height: 55,
                         textAlign: 'center'
                     }}>
                        <Typography><EventNote /></Typography> 
@@ -60,7 +69,7 @@ export default function Post({post}) {
                         background: '#f2fa07',
                         mr: '15px',
                         width: 50,
-                        height: 80,
+                        height: 55,
                         textAlign: 'center'
                     }}>
                         <Typography><AccessTime /></Typography>
@@ -71,7 +80,7 @@ export default function Post({post}) {
                         background: '#f2fa07',
                         mr: '15px',
                         width: 50,
-                        height: 80,
+                        height: 55,
                         textAlign: 'center'
                     }}>
                         <Typography><LocalOffer /></Typography>
