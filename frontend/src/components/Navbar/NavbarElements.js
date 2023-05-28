@@ -14,8 +14,14 @@ const themeForButton = createTheme({
   },
 });
 
-const NavbarElements = ({ token, removeToken }) => {
+  const NavbarElements = ({ token, removeToken }) => {
   const navigate = useNavigate();
+  const handleSettingsClick = () => {
+    navigate('/settings');
+  };
+  const handleProfileClick = () => {
+    navigate('/profile');
+  };
   const theme = useTheme();
   const isMatch = useMediaQuery(theme.breakpoints.down('lg'));
   const { pathname } = useLocation();
@@ -80,6 +86,8 @@ const NavbarElements = ({ token, removeToken }) => {
                 {token && (
                   <>
                     <button className="btn btn-outline-danger" type="submit" onClick={logMeOut}>התנתקות</button>
+                    <button className="btn btn-outline-danger" type="submit" onClick={handleSettingsClick}>הגדרות</button>
+                    <button className="btn btn-outline-danger" type="submit" onClick={handleProfileClick}>פרופיל</button>
                   </>
                 )}
                 <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
