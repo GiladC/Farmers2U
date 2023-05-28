@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import IconButton from '@mui/material/IconButton';
 import { TextField, Button, Box, Typography, Grid, Paper, FormControl} from '@mui/material'
 import Visibility from '@mui/icons-material/Visibility';
@@ -8,15 +8,45 @@ import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutli
 import EmailIcon from '@mui/icons-material/Email';
 import FormLogin from './FormLogin';
 import { BrowserRouter, Link, useNavigate } from 'react-router-dom';
+import * as Yup from 'yup';
+import axios from "axios";
 
 
 function FormSignUpInfo() {
   const navigate = useNavigate();
-  const [showPassword, setShowPassword] = React.useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+
+  const handleSubmit = (data) => {
+    axios
+      .post('http://127.0.0.1:5000/signup', {
+        fullname: data.fullname,
+        email: data.email,
+        password: data.password
+      })
+      .then(function (response) {
+        //handle success
+        console.log(response);
+        alert('המשתמש נוסף בהצלחה');
+        window.location.href = '/';
+      })
+      .catch(function (error) {
+        //handle error
+        console.log(error);
+        if (error.response && error.response.status === 400) {
+          alert('הפרטים שהוזנו שגויים');
+        }
+      });
+  };
+
+
+
   return (
     <div>
       <form autoComplete="off" dir="rtl" /*className={classes.root}*/>
@@ -34,7 +64,7 @@ function FormSignUpInfo() {
                       variant='outlined'
                       type="text"
                       position=''
-                      placeholder='*שם מלא'
+                      placeholder='*שם העסק'
                       required="required"
                       textAlign= "right"
                       InputProps={{
@@ -57,7 +87,9 @@ function FormSignUpInfo() {
                           name ="name"
                           /*value={values.firstName}*/
                           variant='outlined'
-                          type="text"
+                          type="mail"
+                          value={email} 
+                          onChange={(e) => setEmail(e.target.value)}
                           placeholder='*כתובת מייל'
                           required="required"
                           /* onChange = {handleInputChange} */
@@ -76,6 +108,8 @@ function FormSignUpInfo() {
                         name ="name"
                         /*value={values.lastName}*/
                         variant='outlined'
+                        value={password} 
+                        onChange={(e) => setPassword(e.target.value)}
                         type={showPassword ? 'text' : 'password'}
                         placeholder='*סיסמה'
                         dir="rtl"

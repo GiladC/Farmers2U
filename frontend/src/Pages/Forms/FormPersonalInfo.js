@@ -1,4 +1,4 @@
-import React from 'react'
+import {useState,React} from 'react'
 import IconButton from '@mui/material/IconButton';
 import { TextField, Button, Box, Typography, ThemeProvider, createTheme, Grid, Paper, FormControl} from '@mui/material'
 import Visibility from '@mui/icons-material/Visibility';
@@ -10,6 +10,9 @@ import FormLogin from './FormLogin';
 import { BrowserRouter, Link, useNavigate } from 'react-router-dom';
 import PhoneIcon from '@mui/icons-material/Phone';
 import LocationCityIcon from '@mui/icons-material/LocationCity';
+import { MuiTelInput, isValidPhoneNumber } from "mui-tel-input";
+import { Controller, useForm } from "react-hook-form";
+
 
 const {palette} = createTheme();
 const { augmentColor } = palette;
@@ -22,22 +25,84 @@ const themeForButton = createTheme({
 
 
 function FormSignUpInfo() {
-  const navigate = useNavigate();
-  const [showPassword, setShowPassword] = React.useState(false);
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
+  const [phone, setPhone] = useState('');
+  const [value, setValue] = useState('')
+  const [value2, setValue2] = useState('')
+  const handleChange = (newValue) => {
+    setValue(newValue)
+  }
+  const handleChange2 = (newValue) => {
+    setValue2(newValue)
+  }
+  const flagStyle = {
+    flexDirection: 'row-reverse',
   };
+  const handlePhoneChange = (e) => {
+    setPhone(e.target.value);
+  };
+  const { control, handleSubmit } = useForm({
+    defaultValues: {
+      phone: ""
+    }
+  });
   return (
     <ThemeProvider theme={themeForButton}>
     <div>
-      <form autoComplete="off" dir="rtl" /*className={classes.root}*/>
+      <form autoComplete="off" /*className={classes.root}*/>
         <Box marginTop={5} bgcolor="#e1f5fe" boxShadow={2} borderRadius={2} border={2} display="flex" flexDirection={"column"} width={580} height={200} alignItems={"center"} justifyContent={"center"} margin={3} mt={4} padding={20} sx={{border: '1.5px solid #bf360c'}}  >
               <Typography color="#37474f" fontFamily="aleph" fontWeight={'bold'} fontSize={50} margin={"auto"} variant='h3' textAlign={"center"}> הרשמת חקלאי </Typography>
               <Typography color="#37474f" fontFamily="aleph" fontWeight={'bold'} mt={2} fontSize={22}  margin={5} variant='h2'  textAlign={"center"}> שלב 2 - פרטי המשק החקלאי</Typography>
             <Grid container style={{paddingRight: '30px'}}>
               <Grid item xs={5.8}>
                 <Box margin={2} border="none" >
+                <Paper>
+                        <TextField dir="rtl"
+                          /*label="שם פרטי"*/
+                          name ="name"
+                          /*value={values.firstName}*/
+                          variant='outlined'
+                          type="text"
+                          placeholder='*עיר / קיבוץ / יישוב'
+                          required="required"
+                          /* onChange = {handleInputChange} */
+                          InputProps={{
+                            endAdornment: (
+                              <InputAdornment position={'end'}>
+                                  <LocationCityIcon sx={{ ml: 0.7, my: 0.5 }}>
+                                  </LocationCityIcon>
+                              </InputAdornment>
+                            )
+                            
+                          }}
+                          /* onChange = {handleInputChange} */
+                        />
+                      </Paper>
+                </Box>
+                <Box margin={2}>
+                <Paper >
+                      <MuiTelInput
+                        /*label="Phone number"*/
+                        forceCallingCode
+                        value={value2}
+                        disableAreaCodes
+                        preferredCountries={["IL"]}
+                        placeholder ="050 234 5678"
+                        onChange={handleChange2}
+                        defaultCountry="IL"
+                        helperText="*וואטסאפ / טלגרם"
+                        inputProps={{
+                          maxLength: 12
+                        }}
+                        FormHelperTextProps={{
+                          dir: "rtl"
+                        }}
+                      />
+                    </Paper> 
+                </Box>
+              </Grid>
+              <Grid item xs={6}>
+                <FormControl>
+                  <Box margin={2} border="none" >
                   <Paper>
                     <TextField dir="rtl"
                       /*label="שם פרטי"*/
@@ -62,74 +127,25 @@ function FormSignUpInfo() {
                     />
                   </Paper>
                 </Box>
-                <Box margin={2}>
-                  <Paper>
-                        <TextField dir="rtl"
-                          /*label="שם פרטי"*/
-                          name ="name"
-                          /*value={values.firstName}*/
-                          variant='outlined'
-                          type="text"
-                          placeholder='*עיר / קיבוץ / יישוב'
-                          required="required"
-                          /* onChange = {handleInputChange} */
-                          InputProps={{
-                            endAdornment: (
-                              <InputAdornment position={'end'}>
-                                  <LocationCityIcon sx={{ ml: 0.7, my: 0.5 }}>
-                                  </LocationCityIcon>
-                              </InputAdornment>
-                            )
-                            
-                          }}
-                          /* onChange = {handleInputChange} */
-                        />
-                      </Paper>
-                </Box>
-              </Grid>
-              <Grid item xs={6}>
-                <FormControl>
-                  <Box margin={2} border="none" >
-                    <Paper>
-                      <TextField
-                        /*label="שם משפחה"*/
-                        name ="name"
-                        /*value={values.lastName}*/
-                        variant='outlined'
-                        placeholder='*מספר טלפון של העסק'
-                        dir="rtl"
-                        required="required"
-                        /* helperText="*סיסמה זאת תהיה הכרחית להתחברות" */
-                        InputProps={{
-                          endAdornment: (
-                            <InputAdornment position="end">
-                            <PhoneIcon sx={{ ml: 0.8, my: 0.5 }}> 
-                            </PhoneIcon>
-                        </InputAdornment>
-                          )
-                        }}
-                      />
-                    </Paper> 
-                </Box>
                 <Box margin={2} border="none" mt={0}>
-                    <Paper>
-                      <TextField
-                        /*label="שם משפחה"*/
-                        name ="name"
-                        /*value={values.lastName}*/
-                        variant='outlined'
-                        placeholder=' וואטסאפ / טלגרם'
-                        dir="rtl"
-                        required="required"
-                        InputProps={{
-                          endAdornment: (
-                            <InputAdornment position="end">
-                            <PhoneIcon sx={{ ml: 0.8, my: 0.5 }}> 
-                            </PhoneIcon>
-                        </InputAdornment>
-                          )
-                        }}
-                      />
+                <Paper>
+                  <MuiTelInput
+                          /*label="Phone number"*/
+                          forceCallingCode
+                          value={value}
+                          disableAreaCodes
+                          preferredCountries={["IL"]}
+                          placeholder ="03 900 1234"
+                          onChange={handleChange}
+                          defaultCountry="IL"
+                          helperText="*מספר טלפון של העסק"
+                          inputProps={{
+                            maxLength: 12
+                          }}
+                          FormHelperTextProps={{
+                            dir: "rtl"
+                          }}
+                        />
                     </Paper> 
                 </Box>
                 </FormControl>
