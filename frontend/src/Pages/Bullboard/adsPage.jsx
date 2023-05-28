@@ -4,7 +4,7 @@ import Post from '../../components/Post/post'
 import {Posts} from '../../DummyData/dummyData'
 import AddPost from '../../components/Post/AddPost'
 
-function adsPage() {
+function adsPage({ token }) {
   return (
     <div className="adsPageContainer">
       <div className='adsLayer'>
@@ -19,7 +19,11 @@ function adsPage() {
           <div className="rightbar"> </div>
       </div>
       <div className="addPostWrapper" dir='rtl'>
+      {token && (
+                  <>
         <AddPost />
+        </>
+      )}
       </div>
     </div>
   )
