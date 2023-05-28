@@ -5,7 +5,7 @@
 farmName = the name of the farm
 Image = the logo of the farm
 location = the address
-fullProfile = the way to reference the actual profile 
+fullProfile = the data relevant for the profile page.
 however that may be (a profile page url, a full profile card...) Image={imageurl}
 Use like this:
 1) Create something of the sort:
@@ -13,7 +13,7 @@ Use like this:
     farmName: 'The Farm Name',
     Image: 'https://example.com/farm-image.jpg',
     location: 'Somewhere',
-    fullProfile: 'This is the full profile of Farm, a page or something that we are yet to decide',
+    fullProfile: {a lot of stuff},
     style: {{marginRight: ?, marginTop: ?, marginLeft: ?, whatever else}},
   };
 
@@ -28,13 +28,28 @@ Use like this:
 */
 
 
-import React from 'react';
+import React, { useState } from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import Button from '@mui/material/Button';
+import BusinessCard from '../../components/Post/businessCard';
+
+
+const dummyBusiness = { 
+  name: 'משק הגולן',
+  location: 'רמת הגולן' ,
+  phone: '0725437433',
+  mail: 'golanFarm@gmail.com',
+  about: 'המשק קיים מזה 20 שנה והוא משק משפחתי שעובר מדור לדור. המטרה שלנו היא להביא את הירקות האיכותיים ביותר, במחירים הגונים. \
+  אנו מגדלים את הירקות שלנו בתנאים הטובים ביותר, על מנת להבטיח לכם את הטוב ביותר. \
+  הירקות שלנו גדלים תחת אוויר הרי גולן הפסטורליים, וצוות החקלאים שלנו משתמש בטכנולוגיה החדשנית ביותר בתחום.',
+  whatsApp: '0547984551',
+  instagram: 'golan_farm20',
+  facebook: 'משק הגולן'
+};
+
 
 const FarmCard = ({ farmName, Image, location, fullProfile, style }) => {
   const [isHovered, setIsHovered] = React.useState(false);
@@ -42,14 +57,24 @@ const FarmCard = ({ farmName, Image, location, fullProfile, style }) => {
   const handleMouseEnter = () => {
     setIsHovered(true);
   };
+  
 
   const handleMouseLeave = () => {
     setIsHovered(false);
   };
 
+  const [isBusinessCardOpen, setIsBusinessCardOpen] = useState(false);
+
+  const handleOpenBusinessCard = () => {
+    setIsBusinessCardOpen(true);
+  };
+
   const cardStyle = {
     maxWidth: 280,
-    borderRadius: '30px',
+    borderTopLeftRadius: '37px', 
+    borderTopRightRadius: '37px', 
+    borderBottomLeftRadius: '10px', 
+    borderBottomRightRadius: '10px', 
     outline: isHovered ? '3px solid orange' : 'none',
     transition: 'outline 0.3s',
   };
@@ -103,14 +128,20 @@ const FarmCard = ({ farmName, Image, location, fullProfile, style }) => {
             style={{ marginTop: '0px' }}
             variant="outlined"
             size="large"
-            href={fullProfile}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={handleOpenBusinessCard}
           >
             לפרטים נוספים
           </Button>
         </CardContent>
       </Card>
+      {isBusinessCardOpen && (
+        <BusinessCard
+          business={dummyBusiness}
+          image={Image}
+        />
+      )}
     </div>
   );
 };
