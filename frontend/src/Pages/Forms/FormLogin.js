@@ -30,10 +30,10 @@ const FormLogin = (props) => {
       //setEmail(''); option to reset values after sumbitting
       //setPassword('');
       if(email.length === 0){
-        setErrorMessage("נא להזין כתובת מייל!");
+        setErrorMessage("נא להזין כתובת מייל");
       }
       else if(password.length === 0){
-        setErrorMessage("נא להזין סיסמה!");
+        setErrorMessage("נא להזין סיסמה");
       }
       else{
         axios({
@@ -49,7 +49,7 @@ const FormLogin = (props) => {
             props.setToken(response.data.access_token)
             alert("Successful Login!");
             localStorage.setItem('email', email)
-            navigate("/farmerProfile");
+            navigate("/bullboard");
             //console.log(response.data);
             //navigate("/");
         })
@@ -58,7 +58,7 @@ const FormLogin = (props) => {
           console.log(error.response.status);
           console.log(error.response.headers);
           if (error.response && error.response.status === 401) {
-            setErrorMessage('הפרטים שהוזנו שגויים!');
+            setErrorMessage('הפרטים שהוזנו שגויים');
           }
         })
     }
