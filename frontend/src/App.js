@@ -39,11 +39,11 @@ function App() {
             <Route path="/login" element={<FormLogin setToken={setToken} />} />
             {token && token !== "" && token !== undefined && (
               <>
-                <Route exact path="/farmerProfile" element={<Intro token={token} setToken={setToken} />} />
+                <Route exact path="/profile" element={<Intro token={token} setToken={setToken} />} />
                 <Route path="/settings" element={<ProfileSettings />} />
               </>
             )}
-            <Route path="/bullboard" element={<AdsPage />} />
+            <Route path="/bullboard" element={<AdsPage token={token} />} />
             <Route path="/faq" element={<Faq />} />
             <Route path="/about" element={<About />} />
             <Route path="/" element={<LandPage />} />
