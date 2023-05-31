@@ -22,7 +22,7 @@ const HeaderTop = () => {
 
   const Title = styled(Typography)(({ theme }) => ({
     fontSize: "64px",
-    color: "#000336",
+    color: "#f7f1e5",
     fontWeight: "bold",
     margin: theme.spacing(4, 0, 4, 0),
     [theme.breakpoints.down("sm")]: {
@@ -39,13 +39,53 @@ const HeaderTop = () => {
       />  */
   return (
     <Box dir="rtl" sx={{ backgroundColor: "", minHeight: "80vh" }}>
-    <div className='overlay'> <div className='farmers2u' style={{ fontFamily: "Secular One", color: "#52d7de", fontSize: '58px'  }}> היכנסו לחוויית חקלאות ישירה </div>
-    <div className='headline' style={{ fontFamily: "Secular One", color: "#52d7de", fontSize: '58px'  }}> Farmers2U </div> </div>
-        <video src={profilevid} autoPlay loop muted id='bg-video' />
+      {/* <CustomBox> */}
+        <div className='overlay'>
+          {/* <div className='farmers2u' style={{ fontFamily: "Secular One", color: "#52d7de", fontSize: '58px'  }}> היכנסו לחוויית חקלאות ישירה </div> */}
+        {/* <div className='headline' style={{ fontFamily: "Secular One", color: "#52d7de", fontSize: '58px'  }}> Farmers2U </div> */}
+        <Typography
+              variant="body2"
+              sx={{
+                fontSize: "22px",
+                color: "#687690",
+                fontWeight: "500",
+                mt: 10,
+                mb: 4,
+                mr: 11,
+              }}
+            >
+            <h1 style={{ fontFamily: "Secular One", color: '#1b9c85', WebkitTextStroke: '0.1px #1d3c45', textStroke: '0.1px #000' }}> ברוכים הבאים ל-Farmers2U</h1> 
+
+            </Typography>
+            <Title variant="h1" sx={{mr: 11, whiteSpace: 'pre-wrap'}}>
+                הכירו את פלטפורמת החקלאות הישירה. {'\n'}התחילו לקבל יותר.
+                {/* הכירו את הפלטפורמה לתקשורת ישירה בין צרכנים לחקלאים. */}
+            </Title>
+            <Typography
+              variant="body2"
+              fontWeight="bold"
+              sx={{  fontSize: "26px",
+               color: "#f7f1e5", my: 4 ,mr:22}}
+            >
+כאן תוכלו למצוא חקלאים מכל רחבי הארץ, לצפות באירועים קרובים ולרכוש את הסחורה הטובה ביותר!
+            </Typography>
+              <Box href="bullboard" marginRight={82}>
+                <CustomButton
+                backgroundColor="#e8aa42"
+                color="#212121"
+                buttonText="לוח המודעות"
+                heroBtn={true}
+                href="bullboard"
+                />
+              </Box>
+
+        </div>
+        <video src={profilevid} autoPlay loop muted id='bg-video' playbackRate={2}/>
+      {/* </CustomBox> */}
       <Container>
         <CustomBox>
-          <Box sx={{ flex: "1" }}>
-            <Typography
+          <Box height= '5vh' sx={{ flex: "1" }}>
+            {/* <Typography
               variant="body2"
               sx={{
                 fontSize: "18px",
@@ -73,7 +113,28 @@ const HeaderTop = () => {
               color="#fff"
               buttonText="לוח המודעות"
               heroBtn={true}
-            /> </a>
+            /> </a> */}
+              <Typography variant="h4"   sx={{ fontSize: "35px", fontWeight: "bold", color: "#000339"}}>
+                מהי מודעה?
+              </Typography>
+              <Typography variant="body2"
+              sx={{
+              fontSize: "20px",
+              fontWeight: "500",
+              color: "#5A6473",
+              // textAlign: "center",
+            }}>
+                במודעה, בעל העסק מפרסם על מכירה המתקיימת בתאריך מסוים וקורא לקהל הרחב להגיע. 
+              </Typography>
+              <Typography variant="body2"
+              sx={{
+              fontSize: "20px",
+              fontWeight: "500",
+              color: "#5A6473",
+              // textAlign: "center",
+            }}>
+             המודעה מכילה פרטים על מיקום המכירה, שעות המכירה וטווח המחירים.
+            </Typography>
           </Box>
             <img
             src={farmer2u_logo}
@@ -83,7 +144,6 @@ const HeaderTop = () => {
               marginRight={100}
               style={{ maxWidth: "100%"}}
             />
-          
         </CustomBox>
       </Container>
     </Box>

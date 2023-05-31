@@ -12,50 +12,32 @@ import * as Yup from 'yup';
 import axios from "axios";
 
 
-function FormSignUpInfo() {
+function FormSignUpInfo({values, handleChange}) {
+  console.log(values, handleChange);
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
+  //const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [password2, setPassword2] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [showPassword2, setShowPassword2] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleClickShowPassword2 = () => setShowPassword2((show) => !show);
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
-
-  const handleSubmit = (data) => {
-    axios
-      .post('http://127.0.0.1:5000/signup', {
-        fullname: data.fullname,
-        email: data.email,
-        password: data.password
-      })
-      .then(function (response) {
-        //handle success
-        console.log(response);
-        alert('המשתמש נוסף בהצלחה');
-        window.location.href = '/';
-      })
-      .catch(function (error) {
-        //handle error
-        console.log(error);
-        if (error.response && error.response.status === 400) {
-          alert('הפרטים שהוזנו שגויים');
-        }
-      });
-  };
-
 
 
   return (
     <div>
       <form autoComplete="off" dir="rtl" /*className={classes.root}*/>
-        <Box marginTop={5} bgcolor="#e1f5fe" boxShadow={2} borderRadius={2} border={2} display="flex" flexDirection={"column"} width={580} height={200} alignItems={"center"} justifyContent={"center"} margin={3} mt={4} padding={20} sx={{border: '1.5px solid #bf360c'}}  >
-              <Typography color="#37474f" fontFamily="aleph" fontWeight={'bold'} fontSize={50} margin={"auto"} variant='h3' textAlign={"center"}> הרשמת חקלאי </Typography>
-              <Typography color="#37474f" fontFamily="aleph" fontWeight={'bold'} mt={2} fontSize={22}  margin={5} variant='h2'  textAlign={"center"}> שלב 1 - פרטים אישיים</Typography>
-            <Grid container style={{paddingRight: '30px'}}>
+        <Box marginTop={5} bgcolor="#f7f1e5" boxShadow={0} borderRadius={2} border={2} display="flex" flexDirection={"column"} width={580} height={164.7} alignItems={"center"} justifyContent={"center"} mt={3.2} mr={2.3} padding={20} sx={{border: '1.5px solid #f7f1e5'}}  >
+              <Typography color="#37474f" fontFamily="aleph" fontWeight={'bold'} fontSize={50} marginTop="-5.5rem" variant='h3' textAlign={"center"}> הרשמת חקלאי </Typography>
+              <Typography color="#37474f" fontFamily="aleph" fontWeight={'bold'} mt={2} fontSize={22}  mr={2} marginBottom={8} marginTop={3} variant='h2'  textAlign={"center"}> שלב 1 - פרטים אישיים</Typography>
+            <Grid container style={{paddingRight: '30px', paddingLeft: '10px'}}>
               <Grid item xs={5.8}>
-                <Box margin={2} border="none" >
+                <Box margin={2} border="none">
                   <Paper>
                     <TextField dir="rtl"
                       /*label="שם פרטי"*/
@@ -63,8 +45,10 @@ function FormSignUpInfo() {
                       /*value={values.firstName}*/
                       variant='outlined'
                       type="text"
-                      position=''
+                      //position=''
                       placeholder='*שם העסק'
+                      defaultValue={values.farmName}
+                      onChange={handleChange("farmName")}
                       required="required"
                       textAlign= "right"
                       InputProps={{
@@ -80,16 +64,17 @@ function FormSignUpInfo() {
                     />
                   </Paper>
                 </Box>
-                <Box margin={2}>
+                <Box margin={2} mt={4}>
                   <Paper>
                         <TextField dir="rtl"
                           /*label="שם פרטי"*/
-                          name ="name"
-                          /*value={values.firstName}*/
+                          name ="email"
+                          //value={email}
                           variant='outlined'
-                          type="mail"
-                          value={email} 
-                          onChange={(e) => setEmail(e.target.value)}
+                          type="email"
+                          defaultValue={values.email}
+                          onChange={handleChange("email")}
+                          //onChange={(e) => setEmail(e.target.value)}
                           placeholder='*כתובת מייל'
                           required="required"
                           /* onChange = {handleInputChange} */
@@ -108,8 +93,9 @@ function FormSignUpInfo() {
                         name ="name"
                         /*value={values.lastName}*/
                         variant='outlined'
-                        value={password} 
-                        onChange={(e) => setPassword(e.target.value)}
+                        //value={password} 
+                        defaultValue={values.password}
+                        onChange={handleChange("password")}
                         type={showPassword ? 'text' : 'password'}
                         placeholder='*סיסמה'
                         dir="rtl"
@@ -132,14 +118,16 @@ function FormSignUpInfo() {
                       />
                     </Paper> 
                 </Box>
-                <Box margin={2} border="none" mt={0}>
+                <Box margin={2} border="none" mt={2}>
                     <Paper>
                       <TextField
                         /*label="שם משפחה"*/
                         name ="name"
                         /*value={values.lastName}*/
+                        value={password2} 
                         variant='outlined'
-                        type={showPassword ? 'text' : 'password'}
+                        type={showPassword2 ? 'text' : 'password'}
+                        onChange={(e) => setPassword2(e.target.value)}
                         placeholder='*אימות סיסמה'
                         dir="rtl"
                         required="required"
@@ -148,11 +136,11 @@ function FormSignUpInfo() {
                             <InputAdornment position="end">
                               <IconButton
                                 aria-label="toggle password visibility"
-                                onClick={handleClickShowPassword}
+                                onClick={handleClickShowPassword2}
                                 onMouseDown={handleMouseDownPassword}
                                 edge="end"
                               >
-                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                                {showPassword2 ? <VisibilityOff /> : <Visibility />}
                               </IconButton>
                           </InputAdornment>
                           )
@@ -171,6 +159,11 @@ function FormSignUpInfo() {
       </form>
     </div>
   )
+}
+
+export function handleSubmit() {
+    alert("נא להזין כתובת מייל");
+  
 }
 
 export default FormSignUpInfo;

@@ -7,7 +7,7 @@ const Guide = () => {
   const CustomBox = styled(Box)(({ theme }) => ({
     width: "30%",
     [theme.breakpoints.down("md")]: {
-      width: "85%",
+      width: "80%",
     },
   }));
 
@@ -43,8 +43,10 @@ const Guide = () => {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
+        mt: '15vh'
       }}
     >
+
       <div
         style={{
           width: "5%",
@@ -53,27 +55,134 @@ const Guide = () => {
           margin: "0 auto",
         }}
       ></div>
-
       <Typography
         variant="h3"
-        sx={{ fontSize: "35px", fontWeight: "bold", color: "#000339", my: 3 }}
+        sx={{ fontSize: "35px", fontWeight: "bold", color: "#000339", my: 3, mr: 2 }}
       >
-        איך זה עובד?
+        צרכנים?
       </Typography>
 
-      <CustomBox>
+      <CustomBox  display= 'flex' flexDirection= 'column' justifyContent= 'space-between' textAlign= 'flex-start' gap={2} mr={3}>
         <Typography
           variant="body2"
           sx={{
             fontSize: "24px",
             fontWeight: "500",
             color: "#5A6473",
-            textAlign: "center",
+            // textAlign: "center",
           }}
         >
-הפעולה פשוטה ומהירה - פשוט צרו קשר עם החקלאים המתאימים לכם ובצעו את העסקאות ישירות ביניכם.
+          1. היכנסו ללוח המודעות וחפשו מודעות רלוונטיות באמצעות סרגל הסינון
+        </Typography>
+        <Typography
+          variant="body2"
+          sx={{
+            fontSize: "24px",
+            fontWeight: "500",
+            color: "#5A6473",
+            // textAlign: "center",
+          }}
+        >
+          2. מצאתם עסק שאהבתם? כנסו לדף העסק ע"י לחיצה על תמונת הפרופיל או על שם העסק
+        </Typography>
+        <Typography
+          variant="body2"
+          sx={{
+            fontSize: "24px",
+            fontWeight: "500",
+            color: "#5A6473",
+            // textAlign: "center",
+          }}
+        >
+          3. מעוניינים לקרוא על עוד עסקים המשתמשים באתר? היכנסו לעמוד 'החקלאים שלנו'
         </Typography>
       </CustomBox>
+
+      <div
+        style={{
+          width: "5%",
+          height: "5px",
+          backgroundColor: "#000339",
+          marginTop: '10vh'
+        }}
+      ></div>
+      <Typography
+        variant="h3"
+        sx={{ fontSize: "35px", fontWeight: "bold", color: "#000339", my: 3 ,mr: 2 }}
+      >
+        חקלאים?
+      </Typography>
+
+      <CustomBox  display= 'flex' flexDirection= 'column' justifyContent= 'space-between' textAlign= 'flex-start' gap={2} mr={3}>
+        <Typography
+          variant="body2"
+          sx={{
+            fontSize: "24px",
+            fontWeight: "500",
+            color: "#5A6473",
+            // textAlign: "center",
+          }}
+        >
+          1. הירשמו לאתר ע"י מילוי פרטים בנוגע לעסק בטופס ההרשמה או התחברו במידה והמשתמש כבר קיים
+        </Typography>
+        <Typography
+          variant="body2"
+          sx={{
+            fontSize: "24px",
+            fontWeight: "500",
+            color: "#5A6473",
+            // textAlign: "center",
+          }}
+        >
+          2. היכנסו לאזור האישי או ללוח המודעות ולחצו על האייקון '+'
+        </Typography>
+        <Typography
+          variant="body2"
+          sx={{
+            fontSize: "24px",
+            fontWeight: "500",
+            color: "#5A6473",
+            // textAlign: "center",
+          }}
+        >
+          3. הוסיפו מלל חופשי בנוגע למודעה אותה תרצו לפרסם
+        </Typography>
+        <Typography
+          variant="body2"
+          sx={{
+            fontSize: "24px",
+            fontWeight: "500",
+            color: "#5A6473",
+            // textAlign: "center",
+          }}
+        >
+          4. מלאו את הפרטים: מיקום, תאריך, טווח שעות, טווח מחירים והוסיפו תמונות במידת הצורך
+        </Typography>
+        <Typography
+          variant="body2"
+          sx={{
+            fontSize: "24px",
+            fontWeight: "500",
+            color: "#5A6473",
+            // textAlign: "center",
+          }}
+        >
+          5. לחצו על 'פרסום מודעה'
+        </Typography>
+        <Typography
+          variant="body2"
+          sx={{
+            fontSize: "24px",
+            fontWeight: "500",
+            color: "#5A6473",
+            // textAlign: "center",
+          }}
+        >
+          6. מעוניינים לעדכן את הפרטים המופיעים בדף העסק? עשו זאת דרך האזור האישי
+        </Typography>
+      </CustomBox>
+
+      
 
       <GuidesBox>
         <GuideBox>

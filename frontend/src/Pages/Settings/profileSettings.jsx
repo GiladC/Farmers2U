@@ -11,10 +11,10 @@ function profileSettings() {
     <Box sx={{
         direction: 'rtl'
     }}>
-        <Typography variant='h2' sx={{
+        <Typography mt={4} fontFamily="aleph" fontWeight="bold" variant='h2' sx={{
         display: 'flex',
         justifyContent: 'center',
-        }}>הגדרות משתמש</Typography>
+        }}>אזור אישי</Typography>
         <Box sx={{
             display: 'grid',
             gridTemplateColumns: '3fr 4fr'
@@ -28,9 +28,9 @@ function profileSettings() {
                         mt: '2rem',
                     }}>
                         <label htmlFor='שם' className='inputLabel'>שם משתמש:</label>
-                        <Box width= '100%' border='2px solid brown' borderRadius='1rem'
+                        <Box width= '100%' border='2px solid #1d3c45' borderRadius='1rem'
                         alignItems='center' display= 'flex' gap='1rem' overflow='hidden'>
-                            <Box fontSize='2rem' bgcolor= 'brown' padding= '0.5rem 1rem'
+                            <Box fontSize='2rem' bgcolor= '#1d3c45' padding= '0.5rem 1rem'
                             color='white' display= 'grid' cursor='pointer'>
                                 <Person2/>
                             </Box>
@@ -48,9 +48,9 @@ function profileSettings() {
                         mt: '2rem',
                     }}>
                         <label htmlFor='כתובת/מיקום' className='inputLabel'>כתובת/מיקום:</label>
-                        <Box width= '100%' border='2px solid brown' borderRadius='1rem'
+                        <Box width= '100%' border='2px solid #1d3c45' borderRadius='1rem'
                         alignItems='center' display= 'flex' gap='1rem' overflow='hidden'>
-                            <Box fontSize='2rem' bgcolor= 'brown' padding= '0.5rem 1rem'
+                            <Box fontSize='2rem' bgcolor= '#1d3c45' padding= '0.5rem 1rem'
                             color='white' display= 'grid' cursor='pointer'>
                                 <Home/>
                             </Box>
@@ -68,7 +68,7 @@ function profileSettings() {
                         mt: '2rem',
                     }}>
                         <label htmlFor='ימי ושעות עבודה' className='inputLabel'>ימי ושעות עבודה:</label>
-                        <Box width= '100%' border='2px solid brown' borderRadius='1rem'
+                        <Box width= '100%' border='2px solid #1d3c45' borderRadius='1rem'
                         alignItems='center' display= 'flex' flexDirection= 'column' gap='1rem' overflow='hidden'>
                             <WorkingHours day = 'ראשון' />
                             <WorkingHours day = 'שני' />
@@ -86,9 +86,9 @@ function profileSettings() {
                         mt: '2rem', flex: 4
                     }}>
                         <label htmlFor='טלפון' className='inputLabel'>טלפון:</label>
-                        <Box width= '100%' border='2px solid brown' borderRadius='1rem'
+                        <Box width= '100%' border='2px solid #1d3c45' borderRadius='1rem'
                         alignItems='center' display= 'flex' gap='1rem' overflow='hidden'>
-                            <Box fontSize='2rem' bgcolor= 'brown' padding= '0.5rem 1rem'
+                            <Box fontSize='2rem' bgcolor= '#1d3c45' padding= '0.5rem 1rem'
                             color='white' display= 'grid' cursor='pointer'>
                                 <Phone />
                             </Box>
@@ -106,9 +106,9 @@ function profileSettings() {
                             mt: '2rem', flex: 4
                         }}>
                             <label htmlFor='וואטסאפ' className='inputLabel'>וואטסאפ:</label>
-                            <Box width= '100%' border='2px solid brown' borderRadius='1rem'
+                            <Box width= '100%' border='2px solid #1d3c45' borderRadius='1rem'
                             alignItems='center' display= 'flex' gap='1rem' overflow='hidden'>
-                                <Box fontSize='2rem' bgcolor= 'brown' padding= '0.5rem 1rem'
+                                <Box fontSize='2rem' bgcolor= '#1d3c45' padding= '0.5rem 1rem'
                                 color='white' display= 'grid' cursor='pointer'>
                                     <WhatsApp />
                                 </Box>
@@ -127,9 +127,9 @@ function profileSettings() {
                         mt: '2rem',
                     }}>
                         <label htmlFor='מייל' className='inputLabel'>מייל:</label>
-                        <Box width= '100%' border='2px solid brown' borderRadius='1rem'
+                        <Box width= '100%' border='2px solid #1d3c45' borderRadius='1rem'
                         alignItems='center' display= 'flex' gap='1rem' overflow='hidden'>
-                            <Box fontSize='2rem' bgcolor= 'brown' padding= '0.5rem 1rem'
+                            <Box fontSize='2rem' bgcolor= '#1d3c45' padding= '0.5rem 1rem'
                             color='white' display= 'grid' cursor='pointer'>
                                 <Email />
                             </Box>
@@ -147,9 +147,9 @@ function profileSettings() {
                         mt: '2rem',
                     }}>
                         <label htmlFor='אתר' className='inputLabel'>אתר:</label>
-                        <Box width= '100%' border='2px solid brown' borderRadius='1rem'
+                        <Box width= '100%' border='2px solid #1d3c45' borderRadius='1rem'
                         alignItems='center' display= 'flex' gap='1rem' overflow='hidden'>
-                            <Box fontSize='2rem' bgcolor= 'brown' padding= '0.5rem 1rem'
+                            <Box fontSize='2rem' bgcolor= '#1d3c45' padding= '0.5rem 1rem'
                             color='white' display= 'grid' cursor='pointer'>
                                 <Language />
                             </Box>
@@ -163,11 +163,11 @@ function profileSettings() {
                             />
                         </Box>
                     </Box>
-                    <Box gap= {1}  sx={{
+                    <Box  gap= {1}  sx={{
                         mt: '2rem',
                     }}>
                         <label htmlFor='תיאור' className='inputLabel'>תיאור:</label>
-                        <TextField
+                        <TextField 
                         id="outlined-multiline-static"
                         multiline
                         rows={8}
@@ -220,9 +220,9 @@ function profileSettings() {
                             mt: '2rem', flex: 4
                         }}>
                             <label htmlFor='אינסטגרם' className='inputLabel'>אינסטגרם:</label>
-                            <Box width= '100%' border='2px solid brown' borderRadius='1rem'
+                            <Box width= '100%' border='2px solid #1d3c45' borderRadius='1rem'
                             alignItems='center' display= 'flex' gap='1rem' overflow='hidden'>
-                                <Box fontSize='2rem' bgcolor= 'brown' padding= '0.5rem 1rem'
+                                <Box fontSize='2rem' bgcolor= '#1d3c45' padding= '0.5rem 1rem'
                                 color='white' display= 'grid' cursor='pointer'>
                                     <Instagram />
                                 </Box>
@@ -240,9 +240,9 @@ function profileSettings() {
                             mt: '2rem', flex: 4
                         }}>
                             <label htmlFor='פייסבוק' className='inputLabel'>פייסבוק:</label>
-                            <Box width= '100%' border='2px solid brown' borderRadius='1rem'
+                            <Box width= '100%' border='2px solid #1d3c45' borderRadius='1rem'
                             alignItems='center' display= 'flex' gap='1rem' overflow='hidden'>
-                                <Box fontSize='2rem' bgcolor= 'brown' padding= '0.5rem 1rem'
+                                <Box fontSize='2rem' bgcolor= '#1d3c45' padding= '0.5rem 1rem'
                                 color='white' display= 'grid' cursor='pointer'>
                                     <Facebook/>
                                 </Box>
@@ -257,7 +257,7 @@ function profileSettings() {
                             </Box>
                         </Box>
                     </Box>
-                    <Box display= 'flex' mt={5} mb={5} justifyContent='center' sx={{color: 'brown'}}>
+                    <Box display= 'flex' mt={5} mb={5} justifyContent='center' sx={{color: '#1d3c45'}}>
                     <Button variant='contained' color= 'success' sx={{justifyContent: 'center'}}>שמירת פרטים</Button>
                     </Box>
                 </form>
@@ -310,7 +310,7 @@ function profileSettings() {
                     </Box>
                 </Box>
                 <Container sx={{paddingTop: '30px', display: 'flex', justifyContent: 'center'}}>
-                            <Typography>מקום לתמונות</Typography>
+                           {/* <Typography>מקום לתמונות</Typography>*/}
                 </Container>
             </Container>
             <AddPost />

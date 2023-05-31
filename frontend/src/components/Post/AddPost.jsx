@@ -4,7 +4,7 @@ import { Avatar, Box, Button,
     Fab, FormControlLabel, 
     FormLabel, IconButton, 
     Modal, Radio, RadioGroup, 
-    TextField, Tooltip, Typography
+    TextField, Tooltip, Typography, ThemeProvider, createTheme, useTheme 
 } from '@mui/material'
 import { DatePicker, LocalizationProvider, 
     TimeField } from '@mui/x-date-pickers'
@@ -28,6 +28,15 @@ const UserBox = styled(Box)({
   gap: '10px',
   marginBottom: '10px'
 })
+
+const {palette} = createTheme();
+const { augmentColor } = palette;
+const createColor = (mainColor) => augmentColor({ color: { main: mainColor } });
+const themeForButton = createTheme({
+  palette: {
+    button: createColor('#E8AA42'),
+  },
+});
 
 
 const AddPost = () => {
@@ -100,9 +109,10 @@ const AddPost = () => {
 
   return (
     <div>
+      <ThemeProvider theme={themeForButton}>
       <Tooltip onClick={() => setOpen(true)} title="פרסום מודעה" 
       sx={{ position: 'fixed', bottom: 20, left: 40 }}>
-        <Fab color="primary" aria-label="add">
+        <Fab color="button" aria-label="add">
           <Add />
         </Fab>
       </Tooltip>
@@ -200,6 +210,7 @@ const AddPost = () => {
           </Box>
         </Box>
       </StyledModal>
+      </ThemeProvider>
     </div>
   )
 }

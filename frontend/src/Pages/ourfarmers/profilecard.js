@@ -63,11 +63,7 @@ const FarmCard = ({ farmName, Image, location, fullProfile, style }) => {
     setIsHovered(false);
   };
 
-  const [isBusinessCardOpen, setIsBusinessCardOpen] = useState(false);
-
-  const handleOpenBusinessCard = () => {
-    setIsBusinessCardOpen(true);
-  };
+  const [isBusinessCardOpen, setBusinessCardOpen] = useState(false);
 
   const cardStyle = {
     maxWidth: 280,
@@ -75,7 +71,7 @@ const FarmCard = ({ farmName, Image, location, fullProfile, style }) => {
     borderTopRightRadius: '37px', 
     borderBottomLeftRadius: '10px', 
     borderBottomRightRadius: '10px', 
-    outline: isHovered ? '3px solid orange' : 'none',
+    outline: isHovered ? '3px solid #E8AA42' : 'none',
     transition: 'outline 0.3s',
   };
 
@@ -110,11 +106,11 @@ const FarmCard = ({ farmName, Image, location, fullProfile, style }) => {
           />
         </div>
         <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <Typography gutterBottom variant="h5" component="div" sx={{ fontSize: '1.35rem' }} style={{ marginTop: '-30px' }}>
+          <Typography gutterBottom variant="h5" component="div" sx={{fontFamily: "aleph", fontSize: '1.35rem' }} style={{ marginTop: '-30px' }}>
             {farmName}
           </Typography>
           <div style={{ display: 'flex', alignItems: 'center', marginTop: '-14px' }}>
-            <Typography variant="body2" color="text.secondary" sx={{ fontSize: '1rem' }} style={{ marginTop: '10px' }}>
+            <Typography variant="body2" color="text.secondary" sx={{fontFamily: "aleph", fontSize: '1rem' }} style={{ marginTop: '10px' }}>
               <LocationOnIcon sx={{ fontSize: 18, marginLeft: '8px' }} />
               {location}
             </Typography>
@@ -122,26 +118,29 @@ const FarmCard = ({ farmName, Image, location, fullProfile, style }) => {
           <Button
             sx={{
               width: '95%',
-              bgcolor: '#00DEF3',
+              bgcolor: '#E8AA42',
+              fontFamily: "aleph",
               borderRadius: '30px',
+              color: "#000000",
+              '&:hover': { borderColor: '#E8AA42', fontWeight:'bold' }
             }}
             style={{ marginTop: '0px' }}
             variant="outlined"
             size="large"
             target="_blank"
             rel="noopener noreferrer"
-            onClick={handleOpenBusinessCard}
+            onClick={e=>setBusinessCardOpen(true)}
           >
             לפרטים נוספים
           </Button>
-        </CardContent>
-      </Card>
-      {isBusinessCardOpen && (
         <BusinessCard
           business={dummyBusiness}
           image={Image}
-        />
-      )}
+          open={isBusinessCardOpen}
+          close={()=>setBusinessCardOpen(false)} />
+
+        </CardContent>
+      </Card>
     </div>
   );
 };

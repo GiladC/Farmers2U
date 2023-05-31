@@ -3,6 +3,12 @@ import { TextField, Box, Typography, Grid, Paper } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useState } from 'react';
 
+{/*const useStyles = makeStyles({
+  transparentBackground: {
+    background: '#f7f1e5',
+  },
+});*/}
+
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
   ...theme.typography.body2,
@@ -12,7 +18,9 @@ const Item = styled(Paper)(({ theme }) => ({
   margin: theme.spacing(1), // Add margin to create space around the text
 }));
 
-function FormOpeningHours() {
+function FormOpeningHours(values, handleChange) {
+  {/*const classes = useStyles();*/}
+  console.log(values, handleChange);
   const [openingTimes, setOpeningTimes] = useState(['', '', '', '', '', '', '']); // Opening times for each day
   const [closingTimes, setClosingTimes] = useState(['', '', '', '', '', '', '']); // Closing times for each day
 
@@ -44,39 +52,39 @@ function FormOpeningHours() {
 
   return (
     <form autoComplete="off" dir="rtl">
-      <Box style={{ marginBottom: '20px' }} marginTop={5} bgcolor="#e1f5fe" boxShadow={2} borderRadius={2} border={2} display="flex" flexDirection="column" height={500} width={1300} alignItems="center" justifyContent="center" mt={4} mr={3} padding={20} sx={{ border: '1.5px solid #bf360c' }}>
-        <Typography color="#37474f" fontFamily="aleph" fontWeight="bold" fontSize={50} marginBottom="0px" variant="h3" textAlign="center">הרשמת חקלאי</Typography>
-        <Typography color="#37474f" fontFamily="aleph" minHeight={45} fontWeight="bold" fontSize={22} margin={5} variant="h2" textAlign="center">שלב 5 - שעות פתיחה וימי פעילות</Typography>
-        <Grid container spacing={2}mr={3}>
+      <Box style={{ marginBottom: '20px'}} marginTop={5}  bgcolor="#f7f1e5" boxShadow={0} borderRadius={2} border={2} display="flex" flexDirection="column" height={140} width={1300} alignItems="center" justifyContent="center" mt={3.8} mr={2.3} padding={20} sx={{ border: '1.5px solid #f7f1e5' }}>
+        <Typography color="#37474f" fontFamily="aleph" fontWeight="bold" fontSize={50} marginTop="-9rem" variant="h3" textAlign="center">הרשמת חקלאי</Typography>
+        <Typography color="#37474f" fontFamily="aleph" minHeight={45} fontWeight="bold" fontSize={22} marginBottom={2} marginTop={3} variant="h2" textAlign="center">שלב 5 - שעות פתיחה וימי פעילות</Typography>
+        <Grid container spacing={17.87} mr={6.9} mt={3} mb={-2}>
           <Grid item xs={1} ></Grid>
-          <Grid item xs={1}>
-            <Item>ראשון</Item>
-          </Grid>
-          <Grid item xs={1} mr={1}>
-            <Item>שני</Item>
-          </Grid>
-          <Grid item xs={1} mr={1}>
-            <Item>שלישי</Item>
-          </Grid>
-          <Grid item xs={1} mr={1}>
-            <Item>רביעי</Item>
-          </Grid>
-          <Grid item xs={1} mr={1}>
-            <Item>חמישי</Item>
-          </Grid>
-          <Grid item xs={1} mr={1}>
-            <Item>שישי</Item>
-          </Grid>
-          <Grid item xs={1} mr={1}>
-            <Item>שבת</Item>
-          </Grid>
+          <Box ml={13.7} mr={.5}>
+            <Typography color="#37474f" fontFamily="aleph" fontWeight="bold" fontSize={20}>ראשון</Typography>
+          </Box>
+          <Box ml={13.4}>
+            <Typography color="#37474f" fontFamily="aleph" fontWeight="bold" fontSize={20}>שני</Typography>
+          </Box>
+          <Box ml={12.2}>
+            <Typography color="#37474f" fontFamily="aleph" fontWeight="bold" fontSize={20}>שלישי</Typography>
+          </Box>
+          <Box ml={12.2}>
+            <Typography color="#37474f" fontFamily="aleph" fontWeight="bold" fontSize={20}>רביעי</Typography>
+          </Box>
+          <Box ml={12.5}>
+            <Typography color="#37474f" fontFamily="aleph" fontWeight="bold" fontSize={20}>חמישי</Typography>
+          </Box>
+          <Box ml={13.5}>
+            <Typography color="#37474f" fontFamily="aleph" fontWeight="bold" fontSize={20}>שישי</Typography>
+          </Box>
+          <Box ml={12.5}>
+            <Typography color="#37474f" fontFamily="aleph" fontWeight="bold" fontSize={20}>שבת</Typography>
+          </Box>
         </Grid>
-        <Grid container spacing={0} alignItems="center">
-          <Grid item xs={1}>
-            <Item>שעת פתיחה</Item>
-          </Grid>
+        <Grid container spacing={0} alignItems="center" mt={-10}>
+          <Box item xs={1}>
+            <Typography color="#37474f" fontFamily="aleph" fontWeight="bold" fontSize={20}>שעת פתיחה</Typography>
+          </Box>
           {openingTimes.map((openingTime, index) => (
-            <Grid item xs={1.1} key={index}>
+            <Grid item xs={1.1} key={index} mr={4}>
               <TextField
                 sx={{ backgroundColor: '#fff', width: '100%' }}
                 value={openingTime}
@@ -92,11 +100,11 @@ function FormOpeningHours() {
           ))}
         </Grid>
         <Grid container spacing={0} alignItems="center">
-          <Grid item xs={1}>
-            <Item>שעת סגירה</Item>
-          </Grid>
+          <Box item xs={1} >
+            <Typography color="#37474f" fontFamily="aleph" fontWeight="bold" fontSize={20} mt={3} mr={.4} ml={.4}>שעת סגירה</Typography>
+          </Box>
           {closingTimes.map((closingTime, index) => (
-            <Grid item xs={1.1} key={index}>
+            <Grid item xs={1.1} key={index} mr={4} mt={3}>
               <TextField
                 sx={{ backgroundColor: '#fff', width: '100%' }}
                 value={closingTime}

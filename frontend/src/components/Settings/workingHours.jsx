@@ -7,8 +7,11 @@ import { TimeField } from '@mui/x-date-pickers/TimeField';
 import { Box, Typography } from '@mui/material';
 
 export default function WorkingHours({day}) {
-  const [value, setValue] = React.useState(dayjs('2022-04-17T15:30'));
-  const [value2, setValue2] = React.useState(dayjs('2022-04-17T15:30'));
+  const [value, setValue] = React.useState(dayjs('2022-04-17T09:00'));
+  const [value2, setValue2] = React.useState(dayjs('2022-04-17T17:300'));
+  const start = new Date()
+  const end = new Date()
+
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} >
@@ -19,7 +22,6 @@ export default function WorkingHours({day}) {
           value={value}
           onChange={(newValue) => setValue(newValue)}
           format='HH:mm'
-          defaultValue = 'סגור'
           sx={{flex: '5'}}
         />
         <TimeField
@@ -27,7 +29,6 @@ export default function WorkingHours({day}) {
           value={value2}
           onChange={(newValue) => setValue2(newValue)}
           format='HH:mm'
-          defaultValue= 'סגור'
           sx={{flex: '5'}}
         />
       </Box>

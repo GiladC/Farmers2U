@@ -8,10 +8,13 @@ const CustomButton = ({
   heroBtn,
   guideBtn,
   getStartedBtn,
+  href,
 }) => {
   const CustomButton = styled(Button)(({ theme }) => ({
     backgroundColor: backgroundColor,
     color: color,
+    href: href,
+    fontFamily: "aleph",
     fontWeight: "700",
     fontSize: "14px",
     cursor: "pointer",
@@ -19,9 +22,10 @@ const CustomButton = ({
     borderRadius: "7px",
     textTransform: "none",
     display: "block",
+    zIndex: '3',
     border: "2px solid transparent",
     "&:hover": {
-      backgroundColor: color,
+      backgroundColor: "button",
       color: backgroundColor,
       borderColor: backgroundColor,
     },

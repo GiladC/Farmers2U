@@ -8,6 +8,7 @@ import Faq from './Pages/FAQ';
 import AdsPage from './Pages/Bullboard/adsPage';
 import Form from './Pages/Forms/Form';
 import About from './Pages/About';
+import OurFarmers from './Pages/ourfarmers/OurFarmers';
 import FilterPanel from './components/FilterPanel/FilterPanel';
 import Intro from './Pages/ShowFarmerProfile/intro';
 import ProfileSettings from './Pages/Settings/profileSettings';
@@ -25,7 +26,7 @@ function App() {
 
   const contentContainerStyles = {
     flexGrow: 1,
-    paddingTop: '0px', // How much padding we want to have for the navbar
+    paddingTop: '0rem', // How much padding we want to have for the navbar
   };
 
   return (
@@ -35,6 +36,7 @@ function App() {
         <div style={contentContainerStyles}>
           <Routes>
             <Route path="/home" element={<LandPage />} />
+            <Route path="/ourfarmers" element={<OurFarmers />} />
             <Route path="/signup" element={<Form />} />
             <Route path="/login" element={<FormLogin setToken={setToken} />} />
             {token && token !== "" && token !== undefined && (

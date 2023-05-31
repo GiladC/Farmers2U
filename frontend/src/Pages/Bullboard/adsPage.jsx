@@ -1,14 +1,26 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './adsPage.css'
 import Post from '../../components/Post/post'
 import {Posts} from '../../DummyData/dummyData'
 import AddPost from '../../components/Post/AddPost'
+import FilterPanel from '../../components/FilterPanel/FilterPanel'
+import Filter from '../../components/newFilterPanel/filter'
 
-function adsPage({ token }) {
+
+
+  // const handleChangeChecked=(id)=>{
+  //   const areasStateList=areas;
+  //   const changeCheckedAreas=areasStateList.map((item) =>
+  //   item.id===id?{...item,checked: !item.checked}:item
+  //   );
+  //   setAreas(changeCheckedAreas);
+  // };
+  function adsPage({ token }) {
   return (
-    <div className="adsPageContainer">
       <div className='adsLayer'>
-          <div className='leftBar'> </div>
+          <div className='leftBar'>
+
+          </div>
           <div className="board">
               <div className="boardWrapper">
                   {Posts.map(p=> (
@@ -16,8 +28,9 @@ function adsPage({ token }) {
                   ))}
               </div>
           </div>
-          <div className="rightbar"> </div>
-      </div>
+          <div className="rightbar">
+            <Filter />
+          </div>
       <div className="addPostWrapper" dir='rtl'>
       {token && (
                   <>
@@ -25,8 +38,7 @@ function adsPage({ token }) {
         </>
       )}
       </div>
-    </div>
+      </div>
   )
 }
-
 export default adsPage

@@ -5,6 +5,7 @@ import EmailIcon from '@mui/icons-material/Email';
 import PasswordIcon from '@mui/icons-material/Password';
 import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
 import axios from 'axios';
+import { Email } from '@mui/icons-material';
 
 const {palette} = createTheme();
 const { augmentColor } = palette;
@@ -12,7 +13,7 @@ const createColor = (mainColor) => augmentColor({ color: { main: mainColor } });
 const themeForButton = createTheme({
   palette: {
     nice: createColor('#37474f'),
-    button: createColor('#64b5f6'),
+    button: createColor('#E8AA42'),
   },
 });
 
@@ -47,10 +48,14 @@ const FormLogin = (props) => {
         .then(function (response) {
             console.log(response);
             props.setToken(response.data.access_token)
-            alert("Successful Login!");
+            //alert(email)
+            alert("התחברת בהצלחה");
+            
+            
             localStorage.setItem('email', email)
+            console.log(response.data);
             navigate("/bullboard");
-            //console.log(response.data);
+            
             //navigate("/");
         })
         .catch(function (error) {
@@ -76,8 +81,8 @@ const FormLogin = (props) => {
         margin="auto"
         marginBottom={11}
         marginTop={5}
-        bgcolor="#e1f5fe"
-        boxShadow={2}
+        bgcolor="#f7f1e5"
+        boxShadow={0}
         borderRadius={2}
         border={2}
         display="flex"
@@ -88,7 +93,7 @@ const FormLogin = (props) => {
         justifyContent="center"
         mt={4}
         padding={20}
-        sx={{ border: '1.5px solid #bf360c' }}
+        sx={{ border: '1.5px solid #f7f1e5' }}
       >
         <Typography
           color="#37474f"

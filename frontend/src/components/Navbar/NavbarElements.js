@@ -4,13 +4,15 @@ import Farmers2ULogo from '../../assets/farmers2u_logo.svg'
 import DrawerComp from './DrawerComp';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from "axios";
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const { palette } = createTheme();
 const { augmentColor } = palette;
 const createColor = (mainColor) => augmentColor({ color: { main: mainColor } });
 const themeForButton = createTheme({
   palette: {
-    button: createColor('#64b5f6'),
+    button: createColor('#E8AA42'),
+    logout: createColor('#BA000D'),
   },
 });
 
@@ -64,7 +66,7 @@ const themeForButton = createTheme({
   return (
     <ThemeProvider theme={themeForButton}>
       <React.Fragment>
-        <AppBar position="static" sx={{ background: '#F5FDFF' }}>
+        <AppBar position="static" sx={{ background: '#1d3c45' }}> {/*old version 1B9C85*/}
           <Toolbar sx={{ display: 'flex', justifyContent: 'flex-end' }}>
             {isMatch ? (
               <>
@@ -75,19 +77,25 @@ const themeForButton = createTheme({
               <>
                 {!token && (
                   <>
-                    <Button href="login" color='button' sx={{ fontFamily: "aleph", marginRight: 'auto', marginLeft: 3, '&:hover': { color: 'white' } }} variant="contained">
+                    <Button href="login" color='button' sx={{width: '140px', height:'36px', fontFamily: "aleph", marginRight: 'auto', marginLeft: 3, '&:hover': { color: 'white', fontWeight:'bold' } }} variant="contained">
                       כניסת משתמש{' '}
                     </Button>
-                    <Button href="signup" color="button" sx={{ fontFamily: "aleph", marginRight: 'auto', marginLeft: '4rem', '&:hover': { color: 'white' } }} variant="contained">
+                    <Button href="signup" color="button" sx={{width: '140px', height:'36px', fontFamily: "aleph", marginRight: 'auto', marginLeft: '4rem', '&:hover': { color: 'white' , fontWeight:'bold'} }} variant="contained">
                       יצירת משתמש{' '}
                     </Button>
                   </>
                 )}
                 {token && (
                   <>
-                    <button className="btn btn-outline-danger" type="submit" onClick={logMeOut}>התנתקות</button>
-                    <button className="btn btn-outline-danger" type="submit" onClick={handleSettingsClick}>הגדרות</button>
-                    <button className="btn btn-outline-danger" type="submit" onClick={handleProfileClick}>פרופיל</button>
+                    <LogoutIcon  type="submit" onClick={logMeOut}
+                    sx={{width: '30px', height:'40px', fontSize: 'large', cursor: 'pointer'}}/>
+                    {/* optional-red color while hovering. doesn't look good: , '&:hover': { color: 'red' , fontWeight:'bold'}*/}
+                    {/*<button className="btn btn-outline-danger" type="submit" onClick={logMeOut} 
+                    style={{width: '140px', height:'36px', fontFamily: "aleph", marginRight: 'auto', marginLeft: '4rem', '&:hover': { color: 'white' , fontWeight:'bold'} }} variant="contained">התנתקות</button>*/}
+                    <Button color= "button" type="submit" onClick={handleSettingsClick} 
+                    sx={{ width: '140px', height:'36px', fontSize: "medium", fontFamily: "aleph", marginRight: 'auto', marginLeft: '1.8rem', cursor: 'pointer', '&:hover': { color: 'white' , fontWeight:'bold'} }}  variant="contained">אזור אישי</Button>
+                    <Button color= "button" type="submit" onClick={handleProfileClick} 
+                    sx={{width: '140px', height:'36px', fontSize: "medium", fontFamily: "aleph", marginRight: 'auto', marginLeft: '2rem', cursor: 'pointer', '&:hover': { color: 'white' , fontWeight:'bold'} }} variant="contained">פרופיל</Button>
                   </>
                 )}
                 <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
@@ -104,6 +112,7 @@ const themeForButton = createTheme({
                         href={page.href}
                         sx={{ marginRight: 'auto', marginLeft: "45px", fontFamily: "aleph", fontSize: '18.5px', '&:hover': { textDecoration: 'none' } }}
                         value={index}
+                        style={{color: '#FFFFFF', fontWeight:'bold'}}
                       />
                     ))}
                   </Tabs>

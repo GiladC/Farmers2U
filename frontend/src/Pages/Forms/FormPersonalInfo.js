@@ -1,4 +1,4 @@
-import {useState,React} from 'react'
+import React, { useState } from 'react';
 import IconButton from '@mui/material/IconButton';
 import { TextField, Button, Box, Typography, ThemeProvider, createTheme, Grid, Paper, FormControl} from '@mui/material'
 import Visibility from '@mui/icons-material/Visibility';
@@ -12,6 +12,7 @@ import PhoneIcon from '@mui/icons-material/Phone';
 import LocationCityIcon from '@mui/icons-material/LocationCity';
 import { MuiTelInput, isValidPhoneNumber } from "mui-tel-input";
 import { Controller, useForm } from "react-hook-form";
+import axios from "axios";
 
 
 const {palette} = createTheme();
@@ -23,12 +24,63 @@ const themeForButton = createTheme({
   },
 });
 
+function FormPersonalInfo({values, handleChange}) {
+  const {farmName, email, password, phoneNumber1,
+     phoneNumber2, city, address, farmerName, prices, products, facebook, instagram} = values
+  const handleSubmit = (data) => {
+    data.preventDefault();
 
-function FormSignUpInfo() {
+    axios({
+        method: "POST",
+        url: "http://127.0.0.1:5000/signup",
+        data:{
+        farmName: values.farmName,
+        email: values.email,
+        password: values.password,
+        about: "",
+        phoneNumber1: valuePhone,
+        phoneNumber2: valuePhone2,
+        city: values.city,
+        address: values.address,
+        farmerName: "",
+        prices: "",
+        products: "",
+        facebook: "",
+        instagram: "",
+        }
+    })
+    .then(function (response) {
+        //handle success
+        console.log(response)
+
+        alert('המשתמש נוסף בהצלחה.');  
+        window.location.href = '/';
+    })
+    .catch(function (response) {
+        //handle error
+        console.log(response)
+        if (response.status === 400) {
+            alert("שגיאה");
+        }
+    });
+}
+  console.log(values, handleChange);
+  const [valuePhone, setValuePhone] = React.useState('')
+
+  const handleChangePhone = (newValue) => {
+    setValuePhone(newValue)
+    handleChange('phoneNumber1')
+  }
+  const [valuePhone2, setValuePhone2] = React.useState('')
+
+  const handleChangePhone2 = (newValue) => {
+    setValuePhone2(newValue)
+    handleChange('phoneNumber2')
+  }
   const [phone, setPhone] = useState('');
   const [value, setValue] = useState('')
   const [value2, setValue2] = useState('')
-  const handleChange = (newValue) => {
+  const handleChange3 = (newValue) => {
     setValue(newValue)
   }
   const handleChange2 = (newValue) => {
@@ -40,20 +92,20 @@ function FormSignUpInfo() {
   const handlePhoneChange = (e) => {
     setPhone(e.target.value);
   };
-  const { control, handleSubmit } = useForm({
-    defaultValues: {
-      phone: ""
-    }
-  });
+  //const { control, handleSubmit } = useForm({
+  //  defaultValues: {
+  //    phone: ""
+  //  }
+  //});
   return (
     <ThemeProvider theme={themeForButton}>
     <div>
       <form autoComplete="off" /*className={classes.root}*/>
-        <Box marginTop={5} bgcolor="#e1f5fe" boxShadow={2} borderRadius={2} border={2} display="flex" flexDirection={"column"} width={580} height={200} alignItems={"center"} justifyContent={"center"} margin={3} mt={4} padding={20} sx={{border: '1.5px solid #bf360c'}}  >
-              <Typography color="#37474f" fontFamily="aleph" fontWeight={'bold'} fontSize={50} margin={"auto"} variant='h3' textAlign={"center"}> הרשמת חקלאי </Typography>
-              <Typography color="#37474f" fontFamily="aleph" fontWeight={'bold'} mt={2} fontSize={22}  margin={5} variant='h2'  textAlign={"center"}> שלב 2 - פרטי המשק החקלאי</Typography>
-            <Grid container style={{paddingRight: '30px'}}>
-              <Grid item xs={5.8}>
+        <Box marginTop={5} bgcolor="#f7f1e5" boxShadow={0} borderRadius={2} border={2} display="flex" flexDirection={"column"} width={580} height={164.7} alignItems={"center"} justifyContent={"center"} mt={3.2} mr={2.3} padding={20} sx={{border: '1.5px solid #f7f1e5'}}  >
+              <Typography color="#37474f" fontFamily="aleph" fontWeight={'bold'} fontSize={50} marginTop="-4.1rem" variant='h3' textAlign={"center"}> הרשמת חקלאי </Typography>
+              <Typography color="#37474f" fontFamily="aleph" fontWeight={'bold'} mt={2} fontSize={22}   mr={2} marginBottom={8} marginTop={3} variant='h2'  textAlign={"center"}> שלב 2 - פרטי המשק החקלאי</Typography>
+            <Grid container style={{paddingRight: '0px', paddingLeft: '34px'}}>
+              <Grid item xs={5.8} >
                 <Box margin={2} border="none" >
                 <Paper>
                         <TextField dir="rtl"
@@ -62,6 +114,8 @@ function FormSignUpInfo() {
                           /*value={values.firstName}*/
                           variant='outlined'
                           type="text"
+                          defaultValue={values.city} 
+                          onChange={handleChange('city')}
                           placeholder='*עיר / קיבוץ / יישוב'
                           required="required"
                           /* onChange = {handleInputChange} */
@@ -78,16 +132,17 @@ function FormSignUpInfo() {
                         />
                       </Paper>
                 </Box>
-                <Box margin={2}>
+                <Box margin={2} mt={4}>
                 <Paper >
                       <MuiTelInput
                         /*label="Phone number"*/
                         forceCallingCode
-                        value={value2}
+                        value={valuePhone}
                         disableAreaCodes
                         preferredCountries={["IL"]}
                         placeholder ="050 234 5678"
-                        onChange={handleChange2}
+                        defaultValue={values.phoneNumber1} 
+                        onChange={handleChangePhone}
                         defaultCountry="IL"
                         helperText="*וואטסאפ / טלגרם"
                         inputProps={{
@@ -109,6 +164,8 @@ function FormSignUpInfo() {
                       name ="name"
                       /*value={values.firstName}*/
                       variant='outlined'
+                      defaultValue={values.address} 
+                      onChange={handleChange('address')}
                       type="text"
                       position=''
                       placeholder='*כתובת המשק החקלאי '
@@ -127,16 +184,18 @@ function FormSignUpInfo() {
                     />
                   </Paper>
                 </Box>
-                <Box margin={2} border="none" mt={0}>
+                <Box margin={2} border="none" mt={2}>
                 <Paper>
                   <MuiTelInput
                           /*label="Phone number"*/
                           forceCallingCode
-                          value={value}
+                          value={valuePhone2}
                           disableAreaCodes
                           preferredCountries={["IL"]}
+                          type="tel"
                           placeholder ="03 900 1234"
-                          onChange={handleChange}
+                          defaultValue={values.phoneNumber2} 
+                          onChange={handleChangePhone2}
                           defaultCountry="IL"
                           helperText="*מספר טלפון של העסק"
                           inputProps={{
@@ -153,6 +212,7 @@ function FormSignUpInfo() {
               
             </Grid>
               <Button /*onClick={() => { <FormLogin></FormLogin> }}*/  variant='text' size='medium' color='nice' sx={{fontFamily:"aleph",  mt: 4, borderRadius: 4, fontSize: 16}} > .</Button>  
+              {/* <Button type="submit" onClick={handleSubmit}>  בדיקה</Button>*/}
 
           </Box>    
       </form>
@@ -161,4 +221,4 @@ function FormSignUpInfo() {
   )
 }
 
-export default FormSignUpInfo;
+export default FormPersonalInfo;

@@ -45,7 +45,7 @@ export default function Post({post}) {
             <div className="details">
                     <Box sx={{
                         flex: 5,
-                        background: '#f2fa07',
+                        background: '#E8AA42',
                         width: 50,
                         height: 55,
                         textAlign: 'center',
@@ -55,7 +55,7 @@ export default function Post({post}) {
                     </Box>
                     <Box sx={{
                         flex: 2,
-                        background: '#f2fa07',
+                        background: '#E8AA42',
                         mr: '15px',
                         width: 50,
                         height: 55,
@@ -66,7 +66,7 @@ export default function Post({post}) {
                     </Box>
                     <Box sx={{
                         flex: 3,
-                        background: '#f2fa07',
+                        background: '#E8AA42',
                         mr: '15px',
                         width: 50,
                         height: 55,
@@ -77,7 +77,7 @@ export default function Post({post}) {
                     </Box>
                     <Box sx={{
                         flex: 4,
-                        background: '#f2fa07',
+                        background: '#E8AA42',
                         mr: '15px',
                         width: 50,
                         height: 55,
