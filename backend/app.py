@@ -19,9 +19,15 @@ SQLALCHEMY_ECHO = True
 bcrypt = Bcrypt(app) 
 CORS(app, supports_credentials=True)
 db.init_app(app)
+
   
 with app.app_context():
     db.create_all()
+
+    
+from posts.routes import posts_blueprint
+app.register_blueprint(posts_blueprint)
+
  
 @app.route("/")
 def hello_world():
@@ -54,8 +60,20 @@ def create_token():
  
 @app.route("/signup", methods=["POST"])
 def signup():
+    farmName = request.json["farmName"]
     email = request.json["email"]
     password = request.json["password"]
+    about = request.json["about"]
+    phoneNumber1 = request.json["phoneNumber1"]
+    phoneNumber2 = request.json["phoneNumber2"]
+    city = request.json["city"]
+    address = request.json["address"]
+    farmerName = request.json["farmerName"]
+    prices = request.json["prices"]
+    products = request.json["products"]
+    facebook = request.json["facebook"]
+    instagram = request.json["instagram"]
+
  
     user_exists = User.query.filter_by(email=email).first() is not None
  
@@ -63,8 +81,12 @@ def signup():
         return jsonify({"error": "Email already exists"}), 409
      
     hashed_password = bcrypt.generate_password_hash(password)
-    new_user = User(name="tamir20",email=email, password=hashed_password, about="sample check")
-    #new_user = User(email=email, password=hashed_password)
+    #new_user = User(name="tamir20",email=email, password=hashed_password, about="sample check")
+    #new_user = User(name= "gilad", email=email, password=hashed_password, about="I am Gilad, a farmer.")
+    new_user = User(farmName=farmName, email=email, password=hashed_password, about = about, 
+                    phoneNumber1 = phoneNumber1, phoneNumber2 = phoneNumber2,
+                      city = city, address = address, farmerName = farmerName,
+                      prices= prices,products= products,facebook = facebook, instagram = instagram)
     db.session.add(new_user)
     db.session.commit()
  
@@ -126,13 +148,20 @@ def my_profile(getemail):
     print(getemail)
     if not getemail:
         return jsonify({"error": "Unauthorized Access"}), 401
-
     user = User.query.filter_by(email=getemail).first()
     response_body = {
         "id": user.id,
-        "name": user.name,
-        "email": user.email,
-        "about" : user.about
+        "farmName": user.farmName,
+        "phoneNumber1": user.phoneNumber1,
+        "phoneNumber2": user.phoneNumber2,
+        "about" : user.about,
+        "address" : user.address,
+        "city" : user.city,
+        "farmerName" : user.farmerName,
+        "prices" : user.prices,
+        "products" : user.products,
+        "facebook" : user.facebook,
+        "instagram" : user.instagram,
     }
   
     return response_body

@@ -78,29 +78,38 @@ const AddPost = () => {
 
 
   const handlePost = () => { /* The actual object to extract to the backend */
-    const formData = new FormData();
-  
-    formData.append('text', postData.text);
-    formData.append('location', postData.location);
-    formData.append('date', value.format('YYYY-MM-DD'));
-    formData.append('startTime', value2.format('HH:mm'));
-    formData.append('endTime', value3.format('HH:mm'));
-    formData.append('lowPrice', postData.lowPrice);
-    formData.append('highPrice', postData.highPrice);
-    formData.append('priceType', postData.priceType);
+
+    const imageData = {};
 
     if (image) {
-      formData.append('image', image);
+      imageData = {image: image}
     }
     const handleRequest = () => {
-        axios
-        .post('/api/posts', formData)
+        axios({
+          method: "POST",
+          url: "http://127.0.0.1:5000/api/posts",
+          data:{
+          text: postData.text,
+          location: postData.location,
+          date: value.format('YYYY-MM-DD'),
+          startTime: value2.format('HH:mm'),
+          endTime: value3.format('HH:mm'),
+          lowPrice: postData.lowPrice,
+          highPrice: postData.highPrice,
+          ...imageData,
+          }
+        })
         .then((response) => {
             console.log(response.data)
             window.location.reload()
         })
         .catch((error) => {
-            console.error(error)
+          if (error.response && error.response.data && error.response.data.error) {
+            const errorMessage = error.response.data.error;
+            window.alert(errorMessage);
+          } else {
+            console.error(error);
+          }
         })
     }
     handleRequest()
@@ -218,117 +227,3 @@ const AddPost = () => {
 export default AddPost
 
 
-/*
-
-import styled from '@emotion/styled'
-import { Add, AddPhotoAlternate } from '@mui/icons-material'
-import { Avatar, Box, Button,
-     Fab, FormControlLabel, 
-     FormLabel, IconButton, 
-    Modal, Radio, RadioGroup, 
-    TextField, Tooltip, Typography 
-} from '@mui/material'
-import { DatePicker, LocalizationProvider, 
-    TimeField } from '@mui/x-date-pickers'
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import dayjs from 'dayjs'
-import React, { useState } from 'react'
-
-const StyledModal = styled(Modal)({
-    direction: 'rtl',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
-})
-
-const UserBox = styled(Box)({
-    direction: 'rtl',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: '10px',
-    marginBottom: '10px'
-})
-
-const AddPost = () => {
-  const [open, setOpen] = useState(false)
-  const [value, setValue] = React.useState(dayjs('2022-04-17T15:30'));
-  const [value2, setValue2] = React.useState(dayjs('2022-04-17T15:30'));
-  const inputProps = {
-    step: 1,
-    min: 0
-  };
-  return (
-    <div>
-        <Tooltip onClick={e=>setOpen(true)} title="פרסום מודעה" sx={{position: "fixed", bottom: 20, left: 40}}>
-            <Fab color="primary" aria-label="add">
-                <Add />
-            </Fab>
-        </Tooltip>
-        <StyledModal
-        open={open}
-        onClose={e=>setOpen(false)}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-        >
-            <Box width={400} height={480} bgcolor="white" p={3} borderRadius={1} sx={{direction: 'ltr', overflowY: 'scroll'}}>
-                <Typography variant='h6' color='gray' textAlign='center'>ערוך מודעה</Typography>
-                <UserBox>
-                    <Avatar
-                        src='/Board_images/farmer1.jpg'
-                        sx={{width: 30, height: 30}}
-                    />
-                    <Typography fontWeight={500} variant='span'>דוד כהן</Typography>
-                </UserBox>
-                <TextField
-                    sx={{width:'100%', direction: 'rtl'}}
-                    id="standard-multiline-static"
-                    multiline
-                    rows={4}
-                    placeholder="מה תרצה לפרסם?"
-                    variant="standard"
-                />
-                <TextField placeholder='כתובת/מיקום' sx={{width: '100%', paddingTop: '15px', direction: 'rtl'}}/>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <Box display= 'flex' paddingTop={2} justifyContent= 'center'>
-                        <DatePicker label={'תאריך '} views={['day']} sx={{direction: 'ltr'}} />
-                    </Box>
-                    <Box display= 'flex' gap={2} paddingTop={2}>
-                        <TimeField label= 'שעת התחלה' format='HH:mm' 
-                        value={value} onChange={(newValue) => setValue(newValue)}/>
-                        <TimeField label= 'שעת סיום' format='HH:mm' 
-                        value={value} onChange={(newValue) => setValue(newValue)}/>
-                    </Box>
-                </LocalizationProvider>
-                <Box display= 'flex' gap={3} paddingTop={2} sx={{direction: 'rtl'}}>
-                    <TextField type='number' inputProps={inputProps} placeholder='מחיר' helperText= 'המחיר הנמוך ביותר בטווח' />
-                    <TextField type='number' inputProps={inputProps} placeholder='מחיר' helperText= 'המחיר הגבוה ביותר בטווח' /> 
-                </Box>
-                <FormLabel id="radio-buttons-group-label" sx={{display: 'flex', justifyContent: 'center'}}>:המחירים הינם</FormLabel>
-                <Box display= 'flex' sx={{direction: 'rtl', justifyContent: 'center', right: '500px'}}>
-                    <RadioGroup
-                            row
-                            aria-labelledby="radio-buttons-group-label"
-                            defaultValue='בש"ח לק"ג'
-                            name="row-radio-buttons-group"
-                            sx={{display: 'grid', gridTemplateColumns: '1fr 1fr'}}
-                        >
-                            <FormControlLabel value='בש"ח' control={<Radio />} label='בש"ח' />
-                            <FormControlLabel value='בש"ח לק"ג' control={<Radio />} label='בש"ח לק"ג' />
-                    </RadioGroup>
-                </Box>
-                
-                <Box display= 'flex' paddingTop= {2} gap={15} sx={{direction: 'rtl'}}>
-                    <IconButton aria-label="העלה תמונה" color='primary'>
-                        <AddPhotoAlternate />
-                    </IconButton>
-                    <Button variant='contained' sx={{direction: 'rtl'}}>פרסם</Button>
-                </Box>
-            </Box>
-        </StyledModal>
-    </div>
-  )
-} 
-
-export default AddPost
-*/
