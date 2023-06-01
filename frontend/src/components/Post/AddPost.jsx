@@ -40,13 +40,15 @@ const themeForButton = createTheme({
 
 
 const AddPost = () => {
-  const [open, setOpen] = useState(false)
-  const [value, setValue] = useState(dayjs().startOf('day'))
-  const [value2, setValue2] = useState(dayjs('2022-04-17T15:30'))
-  const [value3, setValue3] = useState(dayjs('2022-04-17T15:30'))
-  const [postData, setPostData] = useState({})
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(dayjs().startOf('day'));
+  const [value2, setValue2] = useState(dayjs('2022-04-17T15:30'));
+  const [value3, setValue3] = useState(dayjs('2022-04-17T15:30'));
+  const [postData, setPostData] = useState({});
   const [image, setImage] = useState(null);
-  const inputRef = useRef(null)
+  const inputRef = useRef(null);
+  const storedEmail = localStorage.getItem('email');
+
 
 
   const handleImageChange = (event) => {
@@ -97,6 +99,7 @@ const AddPost = () => {
           lowPrice: postData.lowPrice,
           highPrice: postData.highPrice,
           ...imageData,
+          email: storedEmail,
           }
         })
         .then((response) => {

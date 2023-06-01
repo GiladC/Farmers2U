@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import './post.css'
 import {AccessTime, EventNote, LocalOffer, LocationOn, MoreVert} from '@mui/icons-material'
-import {Users} from '../../DummyData/dummyData'
 import { Box, Button, Typography } from '@mui/material'
 import BusinessCard from './businessCard'
 
@@ -19,6 +18,23 @@ const dummyBusiness = {
     facebook: 'משק הגולן'
 };
 
+
+/* 
+
+Post objects:
+{
+    farmName: ?,        the name of the farm
+    profilePicture: ?,  the profile image
+    photo: ?,           the photo to be used in the post, might exist and might not
+    desc: ?,            the free text of the post
+    posted: ?,          how long ago it was posted
+    date: ?,            the date when the event happens
+    price: ?,           the price range. Will be deleted
+    location: ?,        the location of the specified event
+    time: ?,            the time range (in hours) of the event
+}
+*/
+
 export default function Post({post}) {
     const [open, setOpen] = useState(false)
 
@@ -28,12 +44,12 @@ export default function Post({post}) {
             <div className="postTop">
                 <div className="postTopLeft">
                         <Button onClick={e=>setOpen(true)}>
-                            <img className= 'Img' src={Users.filter((u)=>u.id === post.userId)[0].profilePicture} object-fit = 'cover' alt="" />
+                            <img className= 'Img' src={post.profilePicture} object-fit = 'cover' alt="" />
                         </Button>
                         <Button onClick={e=>setOpen(true)}>
-                            <Typography variant='h5'color={'black'}>{Users.filter((u)=>u.id === post.userId)[0].userName}</Typography>
+                            <Typography variant='h5'color={'black'}>{post.farmName}</Typography>
                         </Button>
-                        <BusinessCard image={Users.filter((u)=>u.id === post.userId)[0].profilePicture}
+                        <BusinessCard image={post.profilePicture}
                         business={dummyBusiness} open={open} close={()=>setOpen(false)} />
                     <span className="postDate">{post.posted}</span> 
                 </div>

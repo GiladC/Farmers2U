@@ -1,5 +1,10 @@
 from flask import Blueprint, request, jsonify
 import datetime
+from models import User, Post
+import os
+from app import app
+import pytz
+
 
 '''
 Assumption:
@@ -16,6 +21,13 @@ the new post made and the data is:
     image: ?,
 }
 '''
+def generate_unique_filename(filename):
+    from uuid import uuid4
+    # Generate a unique filename by combining a random UUID and the original filename
+    unique_filename = str(uuid4()) + '_' + filename
+    return unique_filename
+
+
 posts_blueprint = Blueprint('posts', __name__)
 
 @posts_blueprint.route('/api/posts', methods=['POST'])
@@ -44,6 +56,9 @@ def create_post():
 
     if 'highPrice' not in data or not data['highPrice']:
         return jsonify({'error': 'נא למלא את שדה המחיר הגבוה ביותר בטווח'}), 400
+    
+    if 'email' not in data or not data['email']:
+        return jsonify({'error': 'חלה תקלה. נא להתחבר לאתר מחדש.'}), 400
 
 
     # Validate highPrice >= lowPrice
@@ -55,20 +70,39 @@ def create_post():
     end_time = datetime.datetime.strptime(data['endTime'], '%H:%M').time()
     if end_time <= start_time:
         return jsonify({'error': 'נא למלא טווח שעות תקין'}), 400
+    
+    # Validates the email is actually a correct email of a registered account. If it is not, then something wrong happened.
+    user = User.query.filter_by(email=data['email']).first()
+    if user is None:
+        return jsonify({'error': 'חלה תקלה, נא להתחבר מחדש למערכת.'}), 400
+    
+    post_image = request.files.get('image')
+    post_image_filename = None
+    if post_image:
+        post_image_filename = generate_unique_filename(post_image.filename)
+        post_image.save(os.path.join(app.config['UPLOAD_FOLDER'], post_image_filename))
+
+
+    israel_timezone = pytz.timezone('Asia/Jerusalem')  # Set the time zone to IST (Israel Standard Time)
+    current_time = datetime.now(israel_timezone)
+
+    post = Post(
+        farmName = user.farmName,
+        profilePicture = user.profilePicture,
+        photo = post_image_filename,
+        desc = data.get('desc'),
+        posted = datetime.datetime.utcnow(),
+        date = current_time.date(),
+        time = current_time.strftime('%H:%M:%S')
+    ) 
+    
+    
 
     # Creating a new post object with the validated data
-    post = {
-        'text': data['text'],
-        'location': data['location'],
-        'date': data['date'],
-        'startTime': data['startTime'],
-        'endTime': data['endTime'],
-        'lowPrice': data['lowPrice'],
-        'highPrice': data['highPrice'],
-        'image': data.get('image', ''),  # Optional field, empty string if not provided
-    }
+    
 
-    # Use SQLAlchemy to create and save the post to the database.
+    
+    # Use SQLAlchemy to save the post to the database.
     # Example: post_model = Post(**post); db.session.add(post_model); db.session.commit()
 
     # Return a response indicating the success or failure of the post creation
