@@ -1,9 +1,10 @@
 from flask import Blueprint, request, jsonify
 import datetime
-from models import User, Post
+from models import User, Post, db
 import os
 from app import app
 import pytz
+from werkzeug.utils import secure_filename
 
 
 '''
@@ -32,7 +33,7 @@ posts_blueprint = Blueprint('posts', __name__)
 
 @posts_blueprint.route('/api/posts', methods=['POST'])
 def create_post():
-    data = request.json
+    data = request.form.to_dict()
     print(data)
 
     # Validate data
@@ -62,7 +63,7 @@ def create_post():
 
 
     # Validate highPrice >= lowPrice
-    if data['highPrice'] < data['lowPrice']:
+    if int(data['highPrice']) < int(data['lowPrice']):
         return jsonify({'error': 'המחיר הגבוה צריך להיות גדול או שווה למחיר הנמוך בטווח'}), 400
 
     # Validate endTime > startTime
@@ -76,25 +77,42 @@ def create_post():
     if user is None:
         return jsonify({'error': 'חלה תקלה, נא להתחבר מחדש למערכת.'}), 400
     
-    post_image = request.files.get('image')
+
     post_image_filename = None
+
+    post_image = request.files.get('image')
     if post_image:
-        post_image_filename = generate_unique_filename(post_image.filename)
-        post_image.save(os.path.join(app.config['UPLOAD_FOLDER'], post_image_filename))
+        # Check if the uploaded file is an image of JPEG or PNG format
+        allowed_extensions = {'jpg', 'jpeg', 'png'}
+        if post_image.filename.split('.')[-1].lower() not in allowed_extensions:
+            return jsonify({'error': 'מותר לצרף תמונות בפורמט PNG, JPEG או JPG בלבד.'}), 400
+        
+        post_image_filename = generate_unique_filename(secure_filename(post_image.filename))
+        post_image_path = os.path.join('posts', 'post_images', post_image_filename)
+        post_image.save(post_image_path)
+
+
+    #Here we will also get the profile picture once it is implemented for the User.
 
 
     israel_timezone = pytz.timezone('Asia/Jerusalem')  # Set the time zone to IST (Israel Standard Time)
-    current_time = datetime.now(israel_timezone)
+    current_time = datetime.datetime.now(israel_timezone)
+    price = f"{data['highPrice']} - {data['lowPrice']} שקלים"
 
-    post = Post(
+    new_post = Post(
         farmName = user.farmName,
-        profilePicture = user.profilePicture,
+        profilePicture = None, #profilePicture = user.profilePicture,
         photo = post_image_filename,
-        desc = data.get('desc'),
-        posted = datetime.datetime.utcnow(),
+        desc = data.get('text'),
         date = current_time.date(),
-        time = current_time.strftime('%H:%M:%S')
+        time = current_time.strftime('%H:%M:%S'),
+        location = data.get('location'),
+        price = price,
+        event_date = data.get('date'),
     ) 
+    db.session.add(new_post)
+    db.session.commit()
+
     
     
 

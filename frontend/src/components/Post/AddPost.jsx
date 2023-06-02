@@ -80,14 +80,26 @@ const AddPost = () => {
 
 
   const handlePost = () => { /* The actual object to extract to the backend */
+    const formData = new FormData();
+    formData.append('text', postData.text);
+    formData.append('location', postData.location);
+    formData.append('date', value.format('YYYY-MM-DD'));
+    formData.append('startTime', value2.format('HH:mm'));
+    formData.append('endTime', value3.format('HH:mm'));
+    formData.append('lowPrice', postData.lowPrice);
+    formData.append('highPrice', postData.highPrice);
+    formData.append('image', image);
+    formData.append('email', storedEmail);
 
-    const imageData = {};
+  /*  let imageData = {};
 
     if (image) {
       imageData = {image: image}
-    }
+    } */
     const handleRequest = () => {
-        axios({
+      axios
+        .post("http://127.0.0.1:5000/api/posts", formData)
+       /* axios({
           method: "POST",
           url: "http://127.0.0.1:5000/api/posts",
           data:{
@@ -98,10 +110,10 @@ const AddPost = () => {
           endTime: value3.format('HH:mm'),
           lowPrice: postData.lowPrice,
           highPrice: postData.highPrice,
-          ...imageData,
+          image: image,
           email: storedEmail,
           }
-        })
+        }) */
         .then((response) => {
             console.log(response.data)
             window.location.reload()

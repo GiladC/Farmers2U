@@ -28,32 +28,42 @@ class User(db.Model):
 
 class Post(db.Model):
     __tablename__ = "posts"
-    id = db.Column(db.Integer, primary_key=True, unique=True)
-    farmName = db.Column(db.String(150), nullable=False)
-    profilePicture = db.Column(db.String(255))
-    photo = db.Column(db.String(255))
-    desc = db.Column(db.Text)
-    posted = db.Column(db.DateTime, default=datetime.utcnow)
-    date = db.Column(db.Date)
-    price = db.Column(db.strin)
-    location = db.Column(db.String(150))
-    time = db.Column(db.String(100))
+    id = db.Column(db.Integer, primary_key=True, unique=True)  # unique identifier of the post
+    farmName = db.Column(db.String(150), nullable=False)       # Name of the farm
+    profilePicture = db.Column(db.String(255))                 # The logo of the farm
+    photo = db.Column(db.String(255))                          # The picture on the post
+    desc = db.Column(db.String(1000))                          # The text of the post
+    ''' 
+    posted explanation: How long was it since the post was posted:
+    1) Less then 1 minute, then its written in seconds
+    2) Less then 1 hour, then its written in minutes
+    3) Less then 1 day, then its written in hours
+    4) Less then a week, then its written in days
+    5) More then a week, then its the date it was posted
+    '''
+    # posted = db.Column(db.DateTime, default=datetime.now(pytz.timezone('Asia/Jerusalem')))
+    date = db.Column(db.Date)                                  # The date it was posted month/day/year              
+    price = db.Column(db.String)                               # The price range
+    location = db.Column(db.String(150))                       # The location mentioned in the post
+    time = db.Column(db.String(100))                           # The time it was posted in hour/minute/second
+    event_date = db.Column(db.Date)                            # The date when the event takes place
+    
     @property
-    def posted(self):
+    def posted(self):                                          #The initializer of the posted property
         utc_now = datetime.utcnow()
-        ist = pytz.timezone('Asia/Jerusalem')
-        ist_now = utc_now.astimezone(ist)
+        ist = pytz.timezone('Asia/Jerusalem')   #ist = israel timezone
+        ist_now = utc_now.astimezone(ist)      
         ist_posted = datetime.strptime(self.date + ' ' + self.time, '%Y-%m-%d %H:%M:%S').replace(tzinfo=pytz.utc).astimezone(ist)
 
         time_difference = ist_now - ist_posted
 
         if time_difference < timedelta(minutes=1):
-            return f"{time_difference.seconds} seconds ago"
+            return f"{time_difference.seconds} שניות"
         elif time_difference < timedelta(hours=1):
-            return f"{time_difference.seconds // 60} minutes ago"
+            return f"{time_difference.seconds // 60} דק'"
         elif time_difference < timedelta(days=1):
-            return f"{time_difference.seconds // 3600} hours ago"
+            return f"{time_difference.seconds // 3600} שעות"
         elif time_difference < timedelta(weeks=1):
-            return f"{time_difference.days} days ago"
+            return f"{time_difference.days} ימים"
         else:
-            return ist_posted.date()
+            return ist_posted.strftime('%m/%d/%Y')
