@@ -8,7 +8,6 @@ getposts_blueprint = Blueprint('getposts', __name__)
 def get_posts():
     posts = Post.query.all()
     post_list = []
-    index = 0
 
     for post in posts:
         post_dict = {
@@ -22,10 +21,9 @@ def get_posts():
             'location': post.location,
             'when_posted_date': post.date,
             'when_posted_time': post.time,
-            'id': index,
+            'id': post.id,
         }
         post_list.append(post_dict)
-        index += 1
 
     # The next line ensures the posts are sorted such that the latest posts are presented first.
     post_list.sort(key=lambda post: (post['when_posted_date'], post['when_posted_time']), reverse=True)

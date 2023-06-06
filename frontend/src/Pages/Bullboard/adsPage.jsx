@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './adsPage.css'
 import Post from '../../components/Post/post'
 import {Posts} from '../../DummyData/dummyData'
 import AddPost from '../../components/Post/AddPost'
-import FilterPanel from '../../components/FilterPanel/FilterPanel'
 import Filter from '../../components/newFilterPanel/filter'
+import axios from 'axios'
 
 
 
@@ -15,7 +15,21 @@ import Filter from '../../components/newFilterPanel/filter'
   //   );
   //   setAreas(changeCheckedAreas);
   // };
-  function adsPage({ token }) {
+  function AdsPage({ token }) {
+    const [posts, setPosts] = useState([]);
+
+    useEffect(() => {
+      axios
+        .get('http://127.0.0.1:5000/api/getposts')
+        .then((response) => {
+          setPosts(response.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }, []);
+
+    
   return (
       <div className='adsLayer'>
           <div className='leftBar'>
@@ -23,9 +37,12 @@ import Filter from '../../components/newFilterPanel/filter'
           </div>
           <div className="board">
               <div className="boardWrapper">
-                  {Posts.map(p=> (
+                 {posts.map(p=> (
                     <Post key={p.id} post={p} />
-                  ))}
+                ))}  
+                {/*  {posts.map(p=> (
+                    <Post post={p} />
+                ))}   */}
               </div>
           </div>
           <div className="rightbar">
@@ -41,4 +58,4 @@ import Filter from '../../components/newFilterPanel/filter'
       </div>
   )
 }
-export default adsPage
+export default AdsPage
