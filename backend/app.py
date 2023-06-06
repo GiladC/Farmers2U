@@ -4,6 +4,7 @@ from datetime import datetime, timedelta, timezone
 from flask_cors import CORS, cross_origin #ModuleNotFoundError: No module named 'flask_cors' = pip install Flask-Cors
 from flask_jwt_extended import create_access_token, get_jwt, get_jwt_identity, unset_jwt_cookies, jwt_required, JWTManager #pip install Flask-JWT-Extended
 from models import db, User
+from flask_migrate import Migrate
  
 app = Flask(__name__)
 
@@ -21,12 +22,17 @@ CORS(app, supports_credentials=True)
 db.init_app(app)
 
   
-with app.app_context():
-    db.create_all()
+#with app.app_context():
+#    db.create_all()
+
+migrate = Migrate(app, db)
 
     
 from posts.routes import posts_blueprint
 app.register_blueprint(posts_blueprint)
+
+from posts.posts_sender import getposts_blueprint
+app.register_blueprint(getposts_blueprint)
 
  
 @app.route("/")

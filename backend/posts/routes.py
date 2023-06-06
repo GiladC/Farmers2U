@@ -2,7 +2,6 @@ from flask import Blueprint, request, jsonify
 import datetime
 from models import User, Post, db
 import os
-from app import app
 import pytz
 from werkzeug.utils import secure_filename
 
@@ -34,7 +33,6 @@ posts_blueprint = Blueprint('posts', __name__)
 @posts_blueprint.route('/api/posts', methods=['POST'])
 def create_post():
     data = request.form.to_dict()
-    print(data)
 
     # Validate data
     if 'text' not in data or not data['text']:
@@ -98,6 +96,7 @@ def create_post():
     israel_timezone = pytz.timezone('Asia/Jerusalem')  # Set the time zone to IST (Israel Standard Time)
     current_time = datetime.datetime.now(israel_timezone)
     price = f"{data['highPrice']} - {data['lowPrice']} שקלים"
+    time_range = f"{data['endTime']}-{data['startTime']}"
 
     new_post = Post(
         farmName = user.farmName,
@@ -108,7 +107,8 @@ def create_post():
         time = current_time.strftime('%H:%M:%S'),
         location = data.get('location'),
         price = price,
-        event_date = data.get('date'),
+        event_date = datetime.datetime.strptime(data["date"], "%Y-%m-%d").date(),  # Convert to date object
+        time_range = time_range,
     ) 
     db.session.add(new_post)
     db.session.commit()
