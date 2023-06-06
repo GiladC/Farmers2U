@@ -23,21 +23,7 @@ export default function Price({prices}) {
           <Typography>מחירון</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
-            מלפפון: 5.9 ש"ח לק"ג
-          </Typography>
-          <Typography>
-            עגבניה: 5 ש"ח לק"ג
-          </Typography>
-          <Typography>
-            בצל: 6.4 ש"ח לק"ג
-          </Typography>
-          <Typography>
-            גזר: 6 ש"ח לק"ג
-          </Typography>
-          <Typography>
-            חציל: 7 ש"ח לק"ג
-          </Typography>
+          <Typography>{prices}</Typography>
         </AccordionDetails>
       </Accordion>
     </div>

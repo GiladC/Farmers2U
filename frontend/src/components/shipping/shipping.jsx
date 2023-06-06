@@ -5,7 +5,7 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-export default function Shipping() {
+export default function Shipping({policy}) {
   return (
     <div>
       <Accordion sx={{
@@ -23,12 +23,7 @@ export default function Shipping() {
           <Typography>מדיניות משלוחים:</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
-            משלוחים רק בצפון, החל ממחיר הזמנה של 120 ש"ח.
-          </Typography>
-          <Typography>
-            ניתן לעשות הזמנות מראש ולקחת באיסוף עצמי.
-          </Typography>
+          <Typography>{policy}</Typography>
         </AccordionDetails>
       </Accordion>
     </div>
