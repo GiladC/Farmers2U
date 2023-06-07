@@ -113,7 +113,8 @@ export default function Post({post}) {
                     }}>{post.desc}</Typography>
                 </Box>
                 <div className="imgWrapper">
-                    <img className='postImg' src={post?.photo} alt="" />
+                <img className='postImg' 
+                src={`Board_images/${post?.photo}`} alt="" />
                     
                 </div>
             </div>
