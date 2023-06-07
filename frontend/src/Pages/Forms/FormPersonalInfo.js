@@ -13,6 +13,10 @@ import LocationCityIcon from '@mui/icons-material/LocationCity';
 import { MuiTelInput, isValidPhoneNumber } from "mui-tel-input";
 import { Controller, useForm } from "react-hook-form";
 import axios from "axios";
+import PlacesAutocomplete, {
+  geocodeByAddress,
+  getLatLng,
+} from 'react-places-autocomplete';
 
 
 const {palette} = createTheme();
@@ -24,11 +28,25 @@ const themeForButton = createTheme({
   },
 });
 
-function FormPersonalInfo({values, handleChange}) {
+function FormPersonalInfo({values, handleChange, setFormValue}) {
+  const [address, setAddress] = useState("")
+  const [coordintes,setCoordinates] = useState({
+    lat: null,
+    lng: null
+  })
+  const handleSelect = async value => {
+    const results = await geocodeByAddress(value);
+    const latLng = await getLatLng(results[0]);
+    setAddress(value)
+    setFormValue("address",value)
+    setCoordinates(latLng);
+  };
+
   const {farmName, email, password, phoneNumber1,
-     phoneNumber2, city, address, farmerName, prices, products, facebook, instagram} = values
+     phoneNumber2, city, /*{address},*/ farmerName, prices, products, facebook, instagram} = values
   const handleSubmit = (data) => {
     data.preventDefault();
+    alert(values.address)
 
     axios({
         method: "POST",
@@ -65,27 +83,21 @@ function FormPersonalInfo({values, handleChange}) {
     });
 }
   console.log(values, handleChange);
-  const [valuePhone, setValuePhone] = React.useState('')
+  const [valuePhone, setValuePhone] = useState('')
 
   const handleChangePhone = (newValue) => {
     setValuePhone(newValue)
-    handleChange('phoneNumber1')
+    setFormValue("phoneNumber1",newValue)
   }
-  const [valuePhone2, setValuePhone2] = React.useState('')
+  const [valuePhone2, setValuePhone2] = useState('')
 
   const handleChangePhone2 = (newValue) => {
     setValuePhone2(newValue)
-    handleChange('phoneNumber2')
+    setFormValue("phoneNumber2",newValue)
   }
   const [phone, setPhone] = useState('');
   const [value, setValue] = useState('')
   const [value2, setValue2] = useState('')
-  const handleChange3 = (newValue) => {
-    setValue(newValue)
-  }
-  const handleChange2 = (newValue) => {
-    setValue2(newValue)
-  }
   const flagStyle = {
     flexDirection: 'row-reverse',
   };
@@ -106,31 +118,54 @@ function FormPersonalInfo({values, handleChange}) {
               <Typography color="#37474f" fontFamily="aleph" fontWeight={'bold'} mt={2} fontSize={22}   mr={2} marginBottom={8} marginTop={3} variant='h2'  textAlign={"center"}> שלב 2 - פרטי המשק החקלאי</Typography>
             <Grid container style={{paddingRight: '0px', paddingLeft: '34px'}}>
               <Grid item xs={5.8} >
-                <Box margin={2} border="none" >
-                <Paper>
-                        <TextField dir="rtl"
-                          /*label="שם פרטי"*/
-                          name ="name"
-                          /*value={values.firstName}*/
-                          variant='outlined'
-                          type="text"
-                          defaultValue={values.city} 
-                          onChange={handleChange('city')}
-                          placeholder='*עיר / קיבוץ / יישוב'
-                          required="required"
-                          /* onChange = {handleInputChange} */
-                          InputProps={{
-                            endAdornment: (
-                              <InputAdornment position={'end'}>
-                                  <LocationCityIcon sx={{ ml: 0.7, my: 0.5 }}>
-                                  </LocationCityIcon>
-                              </InputAdornment>
-                            )
-                            
-                          }}
-                          /* onChange = {handleInputChange} */
-                        />
-                      </Paper>
+                <Box margin={2} border="none" dir="rtl" >
+                  <PlacesAutocomplete
+            value={address}
+            onChange={setAddress}
+            onSelect={handleSelect}
+            searchOptions={{
+              types: ['address'],
+              region: 'il',
+              language: 'iw',
+            }}
+
+          >
+            {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+              <div>
+                <input
+                  {...getInputProps({
+                    placeholder: '*כתובת המשק החקלאי ',
+                    className: 'location-search-input',
+                  })}
+                  style={{
+                    width: '100%',
+                    padding: '10px',
+                    fontSize: '16px',
+                  }}
+                />
+                <div style={{ position: 'relative', width: '100%' }}>
+                  {loading && <div>Loading...</div>}
+                  {suggestions.map((suggestion, index) => {
+                    const style = {
+                      //position: 'absolute',
+                      //zIndex: '1000',
+                      backgroundColor: suggestion.active ? "#41b6e6" : "#fff",
+                      cursor: 'pointer',
+                      padding: '10px',                      
+                    };
+                    return (
+                      <div
+                        {...getSuggestionItemProps(suggestion, { style })}
+                        key={index}
+                      >
+                        <span>{suggestion.description}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </PlacesAutocomplete>
                 </Box>
                 <Box margin={2} mt={4}>
                 <Paper >
@@ -168,7 +203,7 @@ function FormPersonalInfo({values, handleChange}) {
                       onChange={handleChange('address')}
                       type="text"
                       position=''
-                      placeholder='*כתובת המשק החקלאי '
+                      placeholder='לא בשימוש (אפשר שם איש קשר) '
                       required="required"
                       textAlign= "right"
                       InputProps={{
@@ -212,7 +247,7 @@ function FormPersonalInfo({values, handleChange}) {
               
             </Grid>
               <Button /*onClick={() => { <FormLogin></FormLogin> }}*/  variant='text' size='medium' color='nice' sx={{fontFamily:"aleph",  mt: 4, borderRadius: 4, fontSize: 16}} > .</Button>  
-              {/* <Button type="submit" onClick={handleSubmit}>  בדיקה</Button>*/}
+              {/* <Button type="submit" onClick={handleSubmit}>  בדיקה</Button> */}
 
           </Box>    
       </form>
