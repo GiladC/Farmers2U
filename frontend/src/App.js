@@ -34,21 +34,61 @@ function App() {
       <div style={appContainerStyles}>
         <NavbarElements token={token} removeToken={() => { removeToken(); }} />
         <div style={contentContainerStyles}>
-          <Routes>
-            <Route path="/home" element={<LandPage />} />
-            <Route path="/ourfarmers" element={<OurFarmers />} />
-            <Route path="/signup" element={<Form />} />
-            <Route path="/login" element={<FormLogin setToken={setToken} />} />
+        <Routes>
+            <Route path='/home' element={
+             <>
+                <LandPage/>
+              </>
+            } />
+            <Route exact path='/signup' element={
+              <>
+                <Form/>
+              </>
+            } />
+            <Route path='/login' element={
+              <>
+                <FormLogin setToken={setToken} />
+              </>
+            } />
+            <Route path='/bullboard' element={
+              <>
+                <AdsPage token={token} />
+              </>
+            } />
+            <Route path='/ourfarmers' element={
+              <>
+                <OurFarmers/>
+              </>
+            } />
+            <Route path='/faq' element={
+              <>
+                <Faq/>
+              </>
+            } />
+            <Route path='/about' element={
+              <>
+                <About/>
+              </>
+            } />
+            <Route path="/" element={
+              <>
+                <LandPage/>
+              </>
+            } />
             {token && token !== "" && token !== undefined && (
               <>
-                <Route exact path="/profile" element={<Intro token={token} setToken={setToken} />} />
-                <Route path="/settings" element={<ProfileSettings />} />
+                <Route exact path="/profile" element={
+                  <>
+                    <Intro token={token} setToken={setToken} />
+                  </>
+                } />
+                <Route path="/settings" element={
+                  <>
+                    <ProfileSettings />
+                  </>
+                } />
               </>
             )}
-            <Route path="/bullboard" element={<AdsPage token={token} />} />
-            <Route path="/faq" element={<Faq />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/" element={<LandPage />} />
           </Routes>
         </div>
         <Footer />

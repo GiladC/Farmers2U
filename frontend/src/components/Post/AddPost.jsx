@@ -1,17 +1,66 @@
 import styled from '@emotion/styled'
 import { Add, AddPhotoAlternate } from '@mui/icons-material'
 import { Avatar, Box, Button, 
-    Fab, FormControlLabel, 
-    FormLabel, IconButton, 
-    Modal, Radio, RadioGroup, 
-    TextField, Tooltip, Typography, ThemeProvider, createTheme, useTheme 
+    Fab, FormControlLabel, Radio,
+    Checkbox, IconButton, 
+    Modal, Autocomplete, 
+    TextField, Tooltip, Typography, ThemeProvider, createTheme 
 } from '@mui/material'
 import { DatePicker, LocalizationProvider, 
     TimeField } from '@mui/x-date-pickers'
+    import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import axios from 'axios'
 import dayjs from 'dayjs'
 import React, { useState, useRef } from 'react'
+
+
+const productsType = [
+  { title: 'pab' },
+  { title: 'adad' },
+  { title: 'cdd' },
+  { title: 'aaaaa' }
+];
+
+const Areas = [
+  { title: 'אשדוד והסביבה', year: 1994 },
+  { title: 'גבעת זאב, בית חורון והסביבה', year: 1972 },
+  { title: 'הרצליה פיתוח ונוף הים', year: 1974 },
+  { title: 'הרצליה רחבי העיר', year: 2008 },
+  { title: 'חולון, בת ים', year: 1957 },
+  { title: "חיפה וחוף הכרמל", year: 1993 },
+  { title: 'חשמונאים מודיעין עילית והסביבה', year: 1994 },
+  {
+    title: 'יקנעם, טבעון והסביבה',
+    year: 2003,
+  },
+  { title: 'ירושלים והסביבה', year: 1966 },
+  {
+    title: 'כוכב יאיר,סלעית, גוש חורשים והסביבה',
+    year: 2001,
+  },
+  {
+    title: 'עמק חפר, חדרה, פרדס חנה ועד זיכרון יעקב',
+    year: 1980,
+  },
+  { title: 'עפולה, כפר תבור והסביבה', year: 1994 },
+  {
+    title: 'צפון תל אביב ורמת השרון',
+    year: 2002,
+  },
+  { title: "קריות וצפונה", year: 1975 },
+  { title: 'קריית אונו, יהוד, שוהם והסביבה', year: 1990 },
+  { title: 'רמת גן, גבעתיים והסביבה', year: 1999 },
+  { title: 'ראשון לציון, רחובות והסביבה', year: 1954 },
+  {
+    title: 'תל אביב מרכז + יפו',
+    year: 1977,
+  },
+  { title: 'תל אביב - צפון ישן', year: 2002 },
+  { title: 'אין משלוחים', year: 2002 }
+];
+
 
 const StyledModal = styled(Modal)({
   direction: 'rtl',
@@ -29,6 +78,9 @@ const UserBox = styled(Box)({
   marginBottom: '10px'
 })
 
+const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+const checkedIcon = <CheckBoxIcon fontSize="small" />;
+
 const {palette} = createTheme();
 const { augmentColor } = palette;
 const createColor = (mainColor) => augmentColor({ color: { main: mainColor } });
@@ -44,11 +96,25 @@ const AddPost = () => {
   const [value, setValue] = useState(dayjs().startOf('day'));
   const [value2, setValue2] = useState(dayjs('2022-04-17T15:30'));
   const [value3, setValue3] = useState(dayjs('2022-04-17T15:30'));
-  const [postData, setPostData] = useState({});
+  const [selectedProducts, setSelectedProducts] = useState([]);
+  const [selectedAreas, setSelectedAreas] = useState([]);
+  const [postData, setPostData] = useState({
+    isOrganic: false,
+    isVegan: false,
+  });  
   const [image, setImage] = useState(null);
   const inputRef = useRef(null);
   const storedEmail = localStorage.getItem('email');
 
+
+    const handleProductChange = (event, value) => {
+    setSelectedProducts(value);
+  };
+
+
+  const handleAreaChange = (event, value) => {
+    setSelectedAreas(value);
+  };
 
 
   const handleImageChange = (event) => {
@@ -59,18 +125,15 @@ const AddPost = () => {
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    let updatedValue = value;
-    if (name === 'row-radio-buttons-group') {
-      if (value === "בש&quot;ח לק&quot;ג") {
-        updatedValue = true;
-      } else {
-        updatedValue = false;
-      }
+    if (name === 'isOrganic' || name === 'isVegan') {
+      const { checked } = event.target;
+      const updatedValue = checked;
       setPostData({
         ...postData,
-        priceType: updatedValue,
-      });
-    } else {
+        [name]: updatedValue,
+      })
+    }
+    else {
       setPostData({
         ...postData,
         [name]: value,
@@ -90,30 +153,24 @@ const AddPost = () => {
     formData.append('highPrice', postData.highPrice);
     formData.append('image', image);
     formData.append('email', storedEmail);
+    formData.append('isVegan', postData.isVegan);
+    formData.append('isOrganic', postData.isOrganic);
 
-  /*  let imageData = {};
+    if (selectedProducts && selectedProducts.length > 0) {
+      const products = selectedProducts.map((p) => p.title);
+      formData.append('products', products);
+    }    
 
-    if (image) {
-      imageData = {image: image}
-    } */
+  
+    if (selectedAreas) {
+      const area = selectedAreas.title
+      formData.append('area', area);
+    }
+
+
     const handleRequest = () => {
       axios
         .post("http://127.0.0.1:5000/api/posts", formData)
-       /* axios({
-          method: "POST",
-          url: "http://127.0.0.1:5000/api/posts",
-          data:{
-          text: postData.text,
-          location: postData.location,
-          date: value.format('YYYY-MM-DD'),
-          startTime: value2.format('HH:mm'),
-          endTime: value3.format('HH:mm'),
-          lowPrice: postData.lowPrice,
-          highPrice: postData.highPrice,
-          image: image,
-          email: storedEmail,
-          }
-        }) */
         .then((response) => {
             console.log(response.data)
             window.location.reload()
@@ -188,35 +245,88 @@ const AddPost = () => {
             </Box>
           </LocalizationProvider>
           <Box display="flex" gap={3} paddingTop={2} sx={{ direction: 'rtl' }}>
-            <TextField type="number" inputProps={{ step: 1, min: 0 }} 
-            placeholder="מחיר" helperText="המחיר הנמוך ביותר בטווח"
-            name="lowPrice"
-            value={postData.lowPrice || ''}
-            onChange={handleChange}
-           />
-            <TextField type="number" inputProps={{ step: 1, min: 0 }} 
-            placeholder="מחיר" helperText="המחיר הגבוה ביותר בטווח" 
-            name="highPrice"
-            value={postData.highPrice || ''}
-            onChange={handleChange}
-           />
+          <Autocomplete
+            multiple
+            id="areas-autocomplete"
+            options={productsType}
+            disableCloseOnSelect
+            getOptionLabel={(option) => option.title}
+            renderOption={(props, option, { selected }) => (
+              <li {...props}>
+                <Checkbox
+                  icon={icon}
+                  checkedIcon={checkedIcon}
+                  dir="rtl"
+                  style={{ marginRight: 8 }}
+                  checked={selected}
+                  />
+                {option.title}
+                </li>
+            )}
+            style={{ width: 239 }}
+            value={selectedProducts}
+            onChange={handleProductChange}
+            renderInput={(params) => (
+              <TextField
+              {...params}
+              placeholder="סוגי מוצרים"
+              helperText="המוצרים הרלוונטיים למודעה"
+              dir="rtl"
+              />
+              )}
+              />
+              <Autocomplete
+                id="products-autocomplete"
+                options={Areas}
+                getOptionLabel={(option) => option.title}
+                renderOption={(props, option, { selected }) => (
+                  <li {...props}>
+                    <Radio
+                      {...props}
+                      style={{ marginRight: 8 }}
+                      checked={selected}
+                    />
+                    {option.title}
+                  </li>
+                )}
+                style={{ width: 239 }}
+                value={selectedAreas}
+                onChange={handleAreaChange}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    placeholder="אזורים"
+                    helperText="האזור הרלוונטי למודעה"
+                    dir="rtl"
+                  />
+                )}
+              />
           </Box>
-          <FormLabel id="radio-buttons-group-label" sx={{ display: 'flex', justifyContent: 'center' }}>
-            :המחירים הינם
-          </FormLabel>
           <Box display="flex" sx={{ direction: 'rtl', justifyContent: 'center', right: '500px' }}>
-            <RadioGroup
-              row
-              aria-labelledby="radio-buttons-group-label"
-              defaultValue="בש&quot;ח לק&quot;ג"
-              name="row-radio-buttons-group"
-              sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}
-              onChange={handleChange}
-            >
-              <FormControlLabel value="בש&quot;ח" control={<Radio />} label="בש&quot;ח" />
-              <FormControlLabel value="בש&quot;ח לק&quot;ג" 
-              control={<Radio />} label="בש&quot;ח לק&quot;ג" />
-            </RadioGroup>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={postData.isVegan}
+                  onChange={handleChange}
+                  name="isVegan"
+                  sx={{ transform: 'scale(1.3)' }}
+                />
+              }
+              label={<Typography sx={{ fontSize: '1.1rem' }}>טבעוני?</Typography>}
+              sx={{ marginLeft: '1.4rem' }}
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={postData.isOrganic}
+                  onChange={handleChange}
+                  name="isOrganic"
+                  sx={{ transform: 'scale(1.3)' }}
+                />
+              }
+              label={<Typography sx={{ fontSize: '1.1rem' }}>אורגני?</Typography>}
+              sx={{ marginRight: '1.4rem' }}
+            />
           </Box>
           <Box display="flex" paddingTop={2} gap={15} sx={{ direction: 'rtl' }}>
             <input type="file" 

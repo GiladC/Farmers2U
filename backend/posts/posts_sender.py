@@ -1,4 +1,4 @@
-from flask import jsonify, Blueprint
+from flask import jsonify, Blueprint, url_for
 from app import app
 from models import Post  # Assuming you have defined the Post model in a separate file
 
@@ -17,11 +17,12 @@ def get_posts():
             'desc': post.desc,
             'posted': post.posted,
             'date': post.event_date.strftime('%m/%d/%Y') if post.event_date else None,
-            'price': post.price,
+            'price': "Irrelevant",
             'location': post.location,
             'when_posted_date': post.date,
             'when_posted_time': post.time,
             'id': post.id,
+            'time': post.time_range,
         }
         post_list.append(post_dict)
 

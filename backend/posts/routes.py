@@ -33,15 +33,17 @@ posts_blueprint = Blueprint('posts', __name__)
 @posts_blueprint.route('/api/posts', methods=['POST'])
 def create_post():
     data = request.form.to_dict()
+    print(data)
+
 
     # Validate data
-    if 'text' not in data or not data['text']:
+    if 'text' not in data or not data['text'] or data['text'] == 'undefined':
         return jsonify({'error': 'נא למלא את שדה הטקסט'}), 400
 
-    if 'location' not in data or not data['location']:
+    if 'location' not in data or not data['location'] or data['location'] == 'undefined':
         return jsonify({'error': 'נא למלא את שדה המיקום'}), 400
 
-    if 'date' not in data or not data['date']:
+    if 'date' not in data or not data['date'] :
         return jsonify({'error': 'נא למלא את שדה התאריך'}), 400
 
     if 'startTime' not in data or not data['startTime']:
@@ -49,21 +51,12 @@ def create_post():
 
     if 'endTime' not in data or not data['endTime']:
         return jsonify({'error': 'נא למלא את שדה שעת סיום'}), 400
-
-    if 'lowPrice' not in data or not data['lowPrice']:
-        return jsonify({'error': 'נא למלא את שדה המחיר הנמוך ביותר בטווח'}), 400
-
-    if 'highPrice' not in data or not data['highPrice']:
-        return jsonify({'error': 'נא למלא את שדה המחיר הגבוה ביותר בטווח'}), 400
     
     if 'email' not in data or not data['email']:
         return jsonify({'error': 'חלה תקלה. נא להתחבר לאתר מחדש.'}), 400
+    
 
-
-    # Validate highPrice >= lowPrice
-    if int(data['highPrice']) < int(data['lowPrice']):
-        return jsonify({'error': 'המחיר הגבוה צריך להיות גדול או שווה למחיר הנמוך בטווח'}), 400
-
+    
     # Validate endTime > startTime
     start_time = datetime.datetime.strptime(data['startTime'], '%H:%M').time()
     end_time = datetime.datetime.strptime(data['endTime'], '%H:%M').time()
@@ -96,9 +89,13 @@ def create_post():
 
     israel_timezone = pytz.timezone('Asia/Jerusalem')  # Set the time zone to IST (Israel Standard Time)
     current_time = datetime.datetime.now(israel_timezone)
-    price = f"{data['highPrice']} - {data['lowPrice']} שקלים"
     time_range = f"{data['endTime']}-{data['startTime']}"
 
+    product_types = data.get('products')
+    if product_types:
+        product_types = product_types.split(',')
+
+    print(data.get('area'))
     new_post = Post(
         farmName = user.farmName,
         profilePicture = None, #profilePicture = user.profilePicture,
@@ -107,10 +104,12 @@ def create_post():
         date = current_time.date(),
         time = current_time.strftime('%H:%M:%S'),
         location = data.get('location'),
-        price = price,
         event_date = datetime.datetime.strptime(data["date"], "%Y-%m-%d").date(),  # Convert to date object
         time_range = time_range,
+        products = product_types,
+        area = data.get('area'),
     ) 
+
     db.session.add(new_post)
     db.session.commit()
 

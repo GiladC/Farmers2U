@@ -1,6 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from uuid import uuid4
-from datetime import datetime, timedelta
+from datetime import datetime
 import pytz
 
 db = SQLAlchemy()
@@ -34,11 +34,12 @@ class Post(db.Model):
     photo = db.Column(db.String(255))                                               # The picture on the post
     desc = db.Column(db.String(1000))                                               # The text of the post
     date = db.Column(db.Date)                                                       # The date it was posted month/day/year              
-    price = db.Column(db.String(50))                                                # The price range
     location = db.Column(db.String(150))                                            # The location mentioned in the post
+    area = db.Column(db.String(150))                                                # The specific area it will be in, for the filter
     time = db.Column(db.String(100))                                                # The time it was posted in hour/minute/second
     event_date = db.Column(db.Date)                                                 # The date when the event takes place
-    time_range = db.Column(db.String(50))    
+    time_range = db.Column(db.String(50))  
+    products = db.Column(db.JSON, nullable=True)
 
     ''' 
     posted explanation: How long was it since the post was posted:
@@ -48,23 +49,24 @@ class Post(db.Model):
     4) Less then a week, then its written in days
     5) More then a week, then its the date it was posted
     '''
-    # posted = db.Column(db.DateTime, default=datetime.now(pytz.timezone('Asia/Jerusalem')))
+
     @property
-    def posted(self):                                          #The initializer of the posted property
-        utc_now = datetime.now(pytz.utc)
-        ist = pytz.timezone('Asia/Jerusalem')   #ist = israel timezone
-        ist_now = utc_now.astimezone(ist)      
-        ist_posted = datetime.strptime(self.date.strftime('%Y-%m-%d') + ' ' + self.time, '%Y-%m-%d %H:%M:%S').replace(tzinfo=pytz.utc).astimezone(ist)
+    def posted(self):          #The initializer of the posted property
+        ist = pytz.timezone('Asia/Jerusalem')   # ist = Israel timezone
 
-        time_difference = ist_now - ist_posted
+        posted_datetime = datetime.strptime(self.date.strftime('%Y-%m-%d') + ' ' + self.time, '%Y-%m-%d %H:%M:%S').replace(tzinfo=ist).replace(tzinfo=None)
+        current_datetime = datetime.now(ist).replace(tzinfo=None)
 
-        if time_difference < timedelta(minutes=1):
-            return f"{time_difference.seconds} שניות"
-        elif time_difference < timedelta(hours=1):
-            return f"{time_difference.seconds // 60} דק'"
-        elif time_difference < timedelta(days=1):
-            return f"{time_difference.seconds // 3600} שעות"
-        elif time_difference < timedelta(weeks=1):
-            return f"{time_difference.days} ימים"
+        time_difference = current_datetime - posted_datetime
+        time_difference_seconds = int(time_difference.total_seconds())
+
+        if time_difference_seconds < 60:
+            return f"{time_difference_seconds} שניות"
+        elif time_difference_seconds < 3600:
+            return f"{time_difference_seconds // 60} דק'"
+        elif time_difference_seconds < 86400:
+            return f"{time_difference_seconds // 3600} שעות"
+        elif time_difference_seconds < 604800:
+            return f"{time_difference_seconds // 86400} ימים"
         else:
-            return ist_posted.strftime('%m/%d/%Y')
+            return posted_datetime.strftime('%m/%d/%Y')

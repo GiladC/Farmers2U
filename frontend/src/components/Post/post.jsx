@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import './post.css'
-import {AccessTime, EventNote, LocalOffer, LocationOn, MoreVert} from '@mui/icons-material'
+import {AccessTime, EventNote, LocationOn, MoreVert} from '@mui/icons-material'
 import { Box, Button, Typography } from '@mui/material'
 import BusinessCard from './businessCard'
 
@@ -60,7 +60,7 @@ export default function Post({post}) {
             <div className="postCenter">
             <div className="details">
                     <Box sx={{
-                        flex: 5,
+                        flex: 4,
                         background: '#E8AA42',
                         width: 50,
                         height: 55,
@@ -70,7 +70,7 @@ export default function Post({post}) {
                         <Typography>{post.location}</Typography>
                     </Box>
                     <Box sx={{
-                        flex: 2,
+                        flex: 4,
                         background: '#E8AA42',
                         mr: '15px',
                         width: 50,
@@ -81,7 +81,7 @@ export default function Post({post}) {
                        <Typography>{post.date}</Typography>
                     </Box>
                     <Box sx={{
-                        flex: 3,
+                        flex: 4,
                         background: '#E8AA42',
                         mr: '15px',
                         width: 50,
@@ -90,17 +90,6 @@ export default function Post({post}) {
                     }}>
                         <Typography><AccessTime /></Typography>
                         <Typography>{post.time}</Typography>
-                    </Box>
-                    <Box sx={{
-                        flex: 4,
-                        background: '#E8AA42',
-                        mr: '15px',
-                        width: 50,
-                        height: 55,
-                        textAlign: 'center'
-                    }}>
-                        <Typography><LocalOffer /></Typography>
-                        <Typography>{post.price}</Typography> 
                     </Box>
                 </div>
                 <Box sx={{
