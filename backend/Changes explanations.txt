@@ -3,11 +3,12 @@ Migrations means that changes you do in the models.py file will
 update on the database, before it was done these changes didn't 
 change the database for me. Here is how you do it:
 1) install the module using: pip install flask-migrate
-2) Go to migrations folder, and to alembic.ini,
+2) run: flask db init
+3) Go to migrations folder, and to alembic.ini,
 there put at the end of the file (after the last line) the line:
 sqlalchemy.url = sqlite:///flaskdb.db
-3) run: flask db migrate -m "Initial migration"
-4) run: flask db upgrade
+4) run: flask db migrate -m "Initial migration"
+5) run: flask db upgrade
 
 
 Now if anytime during the code you change the database and want to
