@@ -1,11 +1,12 @@
-import { Box, styled, Typography } from "@mui/material";
+import { Box, IconButton, styled, Typography } from "@mui/material";
 import { Container } from "@mui/system";
 import React from "react";
 import CustomButton from "./CustomButton";
 import profilevid from '../../assets/ForProfile2.mp4'
 import farmer2u_logo from '../../assets/farmers2u_logo.png'
 import './Main.css';
-
+import { ExpandMore } from "@mui/icons-material";
+import {Link} from 'react-scroll'
 
 const HeaderTop = () => {
   const CustomBox = styled(Box)(({ theme }) => ({
@@ -38,7 +39,7 @@ const HeaderTop = () => {
         height={272}
       />  */
   return (
-    <Box dir="rtl" sx={{ backgroundColor: "", minHeight: "80vh" }}>
+    <Box dir="rtl" sx={{ backgroundColor: "", minHeight: "80vh", paddingBottom: '0px' }}>
       {/* <CustomBox> */}
         <div className='overlay'>
           {/* <div className='farmers2u' style={{ fontFamily: "Secular One", color: "#52d7de", fontSize: '58px'  }}> היכנסו לחוויית חקלאות ישירה </div> */}
@@ -49,7 +50,7 @@ const HeaderTop = () => {
                 fontSize: "22px",
                 color: "#687690",
                 fontWeight: "500",
-                mt: 10,
+                mt: 5,
                 mb: 4,
                 mr: 11,
               }}
@@ -69,7 +70,7 @@ const HeaderTop = () => {
             >
 כאן תוכלו למצוא חקלאים מכל רחבי הארץ, לצפות באירועים קרובים ולרכוש את הסחורה הטובה ביותר!
             </Typography>
-              <Box href="bullboard" marginRight={82}>
+              <Box href="bullboard" marginRight={72}>
                 <CustomButton
                 backgroundColor="#e8aa42"
                 color="#212121"
@@ -78,9 +79,17 @@ const HeaderTop = () => {
                 href="bullboard"
                 />
               </Box>
+              <Box display= 'flex' justifyContent='center' sx={{mt: '40px'}}>
+                <Link to='place_to_visit' smooth={true}>
+                  <IconButton sx={{fontSize: '80px', color: 'white', display: 'flex', justifyContent: 'center', justifyItems: 'center', zIndex:'3'}}>
+                    <ExpandMore sx={{width: '100%', fontSize: '70px', alignItems: 'center', alignSelf: 'center'}}/>
+                  </IconButton>
+                </Link>
+              </Box>
 
         </div>
         <video src={profilevid} autoPlay loop muted id='bg-video' playbackRate={2}/>
+        <div id="place_to_visit">
       {/* </CustomBox> */}
       <Container>
         <CustomBox>
@@ -133,7 +142,7 @@ const HeaderTop = () => {
               color: "#5A6473",
               // textAlign: "center",
             }}>
-             המודעה מכילה פרטים על מיקום המכירה, שעות המכירה וטווח המחירים.
+             המודעה מכילה פרטים על מיקום המכירה ושעות המכירה .
             </Typography>
           </Box>
             <img
@@ -146,6 +155,7 @@ const HeaderTop = () => {
             />
         </CustomBox>
       </Container>
+      </div>
     </Box>
   );
 
