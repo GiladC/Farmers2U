@@ -1,12 +1,206 @@
-import { Box, Button, Container, Stack, TextField, Typography } from '@mui/material'
-import React from 'react'
+import { Box, Button, Container, FormControlLabel, InputBase, Stack, Switch, TextField, Typography, colors } from '@mui/material'
+import React, { useEffect, useState } from 'react'
 import './profileSettings.css'
-import { AccessTime, Email, Facebook, Home, Instagram, Language, Person2, Phone, WhatsApp } from '@mui/icons-material'
+import { AccessTime, AssignmentInd, Badge, Email, Facebook, Home, Instagram, Language, Person2, Phone, WhatsApp } from '@mui/icons-material'
 import farm from '../../assets/Board_images/farm1.jpeg'
 import AddPost from '../../components/Post/AddPost'
 import WorkingHours from '../../components/Settings/workingHours'
+import axios from 'axios'
+import PlacesAutocomplete, {
+    geocodeByAddress,
+    getLatLng,
+  } from 'react-places-autocomplete';
+import {styled} from '@mui/material/styles'
+const IOSSwitch = styled((props) => (
+    <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
+  ))(({ theme }) => ({
+    width: '80px',
+    height: '28px',
+    padding: 0,
+    '& .MuiSwitch-switchBase': {
+      padding: "1px",
+      transitionDuration: '300ms',
+      '&.Mui-checked': {
+        transform: "translateX(51px) !important",
+        color: '#fff',
+        '& + .MuiSwitch-track': {
+          backgroundColor: '#E8AA42',
+          opacity: 1,
+          border: 0,
+        },
+        '&.Mui-disabled + .MuiSwitch-track': {
+          opacity: 0.5,
+        },
+      },
+      '&.Mui-focusVisible .MuiSwitch-thumb': {
+        color: '#33cf4d',
+        border: '6px solid #fff',
+      },
+      '&.Mui-disabled .MuiSwitch-thumb': {
+        color:
+          theme.palette.mode === 'light'
+            ? theme.palette.grey[100]
+            : theme.palette.grey[600],
+      },
+      '&.Mui-disabled + .MuiSwitch-track': {
+        opacity: theme.palette.mode === 'light' ? 0.7 : 0.3,
+      },
+    },
+    '& .MuiSwitch-thumb': {
+      boxSizing: 'border-box',
+      width: "25px",
+      height: "25px",
+      margin: "1px"
+    },
+    '& .MuiSwitch-track': {
+      borderRadius: '20px',
+      backgroundColor: '#1d3c45',
+      opacity: 1,
+      transition: theme.transitions.create(['background-color'], {
+        duration: 500,
+      }),
+      "&:after, &:before": {
+        color: "white",
+        fontSize: "18px",
+        position: "absolute",
+        top: "3px"
+      },
+      '&:after': {
+        content: '"כן"',
+        left: 8,
+      },
+      '&:before': {
+        content: '"לא"',
+        right: 5,
+      },
+    },
+  }));
 
-function profileSettings() {
+const ProfileSettings = (props) => {
+    const [profileData, setProfileData] = useState(null);
+    const [farmName, setFarmName] = useState("");
+    const [email, setEmail] = useState("");
+    const [about, setAbout] = useState("");
+    const [whatsApp, setWhatsapp] = useState("");
+    const [contactPerson, setContactPerson] = useState("");
+    const [phone, setPhone] = useState("");
+    const [address, setAddress] = useState("");
+    const [coordintes,setCoordinates] = useState({
+        lat: 'none',
+        lng: 'none'
+      })
+    
+    const handleSelect = async value => {
+        const results = await geocodeByAddress(value);
+        const latLng = await getLatLng(results[0]);
+        setAddress(value)
+        setCoordinates(latLng);
+      };
+    const [farmerName, setFarmerName] = useState("");
+    const [prices, setPrices] = useState("");
+    const [shipping, setShipping] = useState("");
+    const [facebook, setFacebook] = useState("");
+    const [instagram, setInstagram] = useState("");
+    const [website, setWebsite] = useState("");
+    const [isShipping, setIsShipping] = useState(false)
+
+    const handleSwitch = (event) => {
+        setIsShipping(event.target.checked);
+      };
+    
+      
+
+    useEffect(() => {
+        getUsers();
+      }, [props.token, props.profileEmail]);
+    
+      const storedEmail = localStorage.getItem('email');
+      const profileEmail = props.token?.profile_email || storedEmail || '';
+
+    
+      function getUsers() {
+        axios({
+          method: 'GET',
+          url: `http://127.0.0.1:5000/settings/${profileEmail}`,
+          headers: {
+            Authorization: 'Bearer ' + props.token,
+          },
+        })
+          .then((response) => {
+            console.log(response);
+            const res = response.data;
+            res.access_token && props.setToken(res.access_token);
+            setFarmName(res.farmName);
+            setEmail(profileEmail);
+            setAbout(res.about);
+            setWhatsapp(res.phoneNumber1);
+            setPhone(res.phoneNumber2);
+            setAddress(res.address);
+            setAbout(res.about);
+            setPrices(res.prices);
+            setFacebook(res.facebook);
+            setInstagram(res.instagram);
+            setWebsite(res.website);
+            setProfileData({
+              profile_farmName: res.farmName,
+              profile_email: res.email,
+              profile_about: res.about,
+              profile_phoneNumber1: res.phoneNumber1,
+              profile_phoneNumber2: res.phoneNumber2,
+              profile_address: res.address,
+              profile_city: res.city,
+              profile_farmerName: res.farmerName,
+              profile_prices: res.prices,
+              profile_products: res.products,
+              profile_facebook: res.facebook,
+              profile_instagram: res.instagram,
+            });
+          })
+          .catch((error) => {
+            if (error.response) {
+              console.log(error.response);
+              console.log(error.response.status);
+              console.log(error.response.headers);
+            }
+          });
+      }
+
+      const handleSave = (data) => {
+        data.preventDefault();
+    
+        axios({
+            method: "PUT",
+            url: `http://127.0.0.1:5000/settings/${profileEmail}`,
+            headers: {
+                Authorization: 'Bearer ' + props.token,
+              },
+            data:{
+            farmName: farmName,
+            email: email,
+            about: about,
+            phoneNumber1: whatsApp,
+            phoneNumber2: phone,
+            address: address,
+            facebook: facebook,
+            instagram: instagram,
+            }
+        })
+        .then(function (response) {
+            //handle success
+            console.log(response)
+
+            alert('המשתמש עודכן בהצלחה.'); 
+            window.location.href = '/settings'
+        })
+        .catch(function (response) {
+            //handle error
+            console.log(response)
+            if (response.status === 400) {
+                alert("שגיאה");
+            }
+        });
+    }
+
   return (
     <Box sx={{
         direction: 'rtl'
@@ -27,7 +221,7 @@ function profileSettings() {
                     <Box gap= {1}  sx={{
                         mt: '2rem',
                     }}>
-                        <label htmlFor='שם' className='inputLabel'>שם משתמש:</label>
+                        <label className='inputLabel'>שם משתמש:</label>
                         <Box width= '100%' border='2px solid #1d3c45' borderRadius='1rem'
                         alignItems='center' display= 'flex' gap='1rem' overflow='hidden'>
                             <Box fontSize='2rem' bgcolor= '#1d3c45' padding= '0.5rem 1rem'
@@ -39,35 +233,82 @@ function profileSettings() {
                             variant='standard'
                             width= '100%'
                             type='text'
-                            defaultValue='משק הגולן'
+                            value= {farmName}
+                            onChange={(event) => {
+                                setFarmName(event.target.value);
+                            }}
                             className='Form_box_input'
                             />
                         </Box>
                     </Box>
-                    <Box gap= {1}  sx={{
+                    <PlacesAutocomplete
+            value={address}
+            onChange={setAddress}
+            onSelect={handleSelect}
+          >
+            {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+              <div>
+                <Box gap= {1}  sx={{
                         mt: '2rem',
                     }}>
-                        <label htmlFor='כתובת/מיקום' className='inputLabel'>כתובת/מיקום:</label>
+                        <label className='inputLabel'>כתובת/מיקום:</label>
                         <Box width= '100%' border='2px solid #1d3c45' borderRadius='1rem'
                         alignItems='center' display= 'flex' gap='1rem' overflow='hidden'>
                             <Box fontSize='2rem' bgcolor= '#1d3c45' padding= '0.5rem 1rem'
                             color='white' display= 'grid' cursor='pointer'>
                                 <Home/>
                             </Box>
-                            <TextField
-                            InputProps={{ disableUnderline: true }}
-                            variant='standard'
-                            width= '100%'
-                            type='text'
-                            defaultValue='גולן'
-                            className='Form_box_input'
-                            />
-                        </Box>
+                <InputBase
+                inputProps={{disableUnderline:true, ...getInputProps({
+                    disableUnderline: true,
+                    className: 'underline',
+                    direction: 'rtl',
+                  })}}
+                  variant='standard'
+                  width= '100%'
+                  type='text'
+                  disableUnderline= {true}
+                  height= '100%'
+                  sx={{
+                    direction: 'rtl',
+                    WebkitTextUnderlinePosition: 'none',
+                    width: '100%',
+                    position: 'relative',
+                    fontSize: '16px',
+                    border: 'none'
+                }}
+                />
+                </Box>
                     </Box>
+                <div className="autocomplete-dropdown-container">
+                  {loading && <div>טוען...</div>}
+                  {suggestions.map((suggestion, index) => {
+                    const style = {
+                        //position: 'absolute',
+                        //zIndex: '1000',
+                        width: '90%',
+                        color: 'white',
+                        backgroundColor: suggestion.active ? "#1d3c45" : "#E8AA42",
+                        cursor: 'pointer',
+                        padding: '10px',                      
+                      };
+                    return ( 
+                        <div
+                        {...getSuggestionItemProps(suggestion, { style })}
+                        key={index}
+                      >
+                        <span>{suggestion.description}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </PlacesAutocomplete>
                     <Box gap= {1}  sx={{
                         mt: '2rem',
                     }}>
-                        <label htmlFor='ימי ושעות עבודה' className='inputLabel'>ימי ושעות עבודה:</label>
+                        <label className='inputLabel'>ימי ושעות עבודה:</label>
                         <Box width= '100%' border='2px solid #1d3c45' borderRadius='1rem'
                         alignItems='center' display= 'flex' flexDirection= 'column' gap='1rem' overflow='hidden'>
                             <WorkingHours day = 'ראשון' />
@@ -83,9 +324,9 @@ function profileSettings() {
                     </Box>
                     <Box gap={3} sx={{display: 'flex'}}>
                     <Box gap= {1}  sx={{
-                        mt: '2rem', flex: 4
+                        mt: '2rem', flex: 2.5
                     }}>
-                        <label htmlFor='טלפון' className='inputLabel'>טלפון:</label>
+                        <label className='inputLabel'>טלפון:</label>
                         <Box width= '100%' border='2px solid #1d3c45' borderRadius='1rem'
                         alignItems='center' display= 'flex' gap='1rem' overflow='hidden'>
                             <Box fontSize='2rem' bgcolor= '#1d3c45' padding= '0.5rem 1rem'
@@ -97,36 +338,18 @@ function profileSettings() {
                             variant='standard'
                             width= '100%'
                             type='text'
-                            defaultValue='0725437433'
+                            value={phone}
+                            onChange={(event) => {
+                                setPhone(event.target.value);
+                            }}
                             className='Form_box_input'
                             />
                         </Box>
                     </Box>
                     <Box gap= {1}  sx={{
-                            mt: '2rem', flex: 4
-                        }}>
-                            <label htmlFor='וואטסאפ' className='inputLabel'>וואטסאפ:</label>
-                            <Box width= '100%' border='2px solid #1d3c45' borderRadius='1rem'
-                            alignItems='center' display= 'flex' gap='1rem' overflow='hidden'>
-                                <Box fontSize='2rem' bgcolor= '#1d3c45' padding= '0.5rem 1rem'
-                                color='white' display= 'grid' cursor='pointer'>
-                                    <WhatsApp />
-                                </Box>
-                                <TextField
-                                InputProps={{ disableUnderline: true }}
-                                type='text'
-                                variant='standard'
-                                defaultValue='0547984551'
-                                className='Form_box_input'
-                                sx={{justifyContent:'center' ,width:'100%', border: '0', bgcolor: 'transparent', outline:'none', height: '30px'}}
-                                />
-                            </Box>
-                        </Box>
-                    </Box>
-                    <Box gap= {1}  sx={{
-                        mt: '2rem',
+                        mt: '2rem', flex: 4
                     }}>
-                        <label htmlFor='מייל' className='inputLabel'>מייל:</label>
+                        <label className='inputLabel'>מייל:</label>
                         <Box width= '100%' border='2px solid #1d3c45' borderRadius='1rem'
                         alignItems='center' display= 'flex' gap='1rem' overflow='hidden'>
                             <Box fontSize='2rem' bgcolor= '#1d3c45' padding= '0.5rem 1rem'
@@ -138,15 +361,67 @@ function profileSettings() {
                             variant='standard'
                             width= '100%'
                             type='text'
-                            defaultValue='golanFarm@gmail.com'
+                            value={email}
+                            onChange={(event) => {
+                                setEmail(event.target.value);
+                            }}
                             className='Form_box_input'
                             />
                         </Box>
                     </Box>
+                    </Box>
+                    <Box gap={3} sx={{display: 'flex'}}>
+                    <Box gap= {1}  sx={{
+                            mt: '2rem', flex: 2.5
+                        }}>
+                            <label className='inputLabel'>וואטסאפ:</label>
+                            <Box width= '100%' border='2px solid #1d3c45' borderRadius='1rem'
+                            alignItems='center' display= 'flex' gap='1rem' overflow='hidden'>
+                                <Box fontSize='2rem' bgcolor= '#1d3c45' padding= '0.5rem 1rem'
+                                color='white' display= 'grid' cursor='pointer'>
+                                    <WhatsApp />
+                                </Box>
+                                <TextField
+                                InputProps={{ disableUnderline: true }}
+                                type='text'
+                                variant='standard'
+                                value={whatsApp}
+                                onChange={(event) => {
+                                    setWhatsapp(event.target.value);
+                                }}
+                                className='Form_box_input'
+                                sx={{justifyContent:'center' ,width:'100%', border: '0', bgcolor: 'transparent', outline:'none', height: '30px'}}
+                                />
+                            </Box>
+                    </Box>
+                    <Box gap= {1}  sx={{
+                        mt: '2rem', flex: 4
+                    }}>
+                        <label className='inputLabel'>שם איש קשר:</label>
+                        <Box width= '100%' border='2px solid #1d3c45' borderRadius='1rem'
+                        alignItems='center' display= 'flex' gap='1rem' overflow='hidden'>
+                            <Box fontSize='2rem' bgcolor= '#1d3c45' padding= '0.5rem 1rem'
+                            color='white' display= 'grid' cursor='pointer'>
+                                <AssignmentInd />
+                            </Box>
+                            <TextField
+                            InputProps={{ disableUnderline: true }}
+                            variant='standard'
+                            width= '100%'
+                            type='text'
+                            value={contactPerson}
+                            onChange={(event) => {
+                                setContactPerson(event.target.value);
+                            }}
+                            className='Form_box_input'
+                            />
+                        </Box>
+                    </Box>
+                    </Box>
                     <Box gap= {1}  sx={{
                         mt: '2rem',
                     }}>
-                        <label htmlFor='אתר' className='inputLabel'>אתר:</label>
+                        <label className='inputLabel'>אתר:</label>
                         <Box width= '100%' border='2px solid #1d3c45' borderRadius='1rem'
                         alignItems='center' display= 'flex' gap='1rem' overflow='hidden'>
                             <Box fontSize='2rem' bgcolor= '#1d3c45' padding= '0.5rem 1rem'
@@ -159,6 +434,10 @@ function profileSettings() {
                             width= '100%'
                             type='text'
                             defaultValue=''
+                            value={website}
+                            onChange={(event) => {
+                                setWebsite(event.target.value);
+                            }}
                             className='Form_box_input'
                             />
                         </Box>
@@ -166,16 +445,17 @@ function profileSettings() {
                     <Box  gap= {1}  sx={{
                         mt: '2rem',
                     }}>
-                        <label htmlFor='תיאור' className='inputLabel'>תיאור:</label>
+                        <label className='inputLabel'>תיאור:</label>
                         <TextField 
                         id="outlined-multiline-static"
                         multiline
                         rows={8}
                         fullwidth
                         width= '100%'
-                        defaultValue="המשק קיים מזה 20 שנה והוא משק משפחתי שעובר מדור לדור. המטרה שלנו היא להביא את הירקות האיכותיים ביותר, במחירים הגונים.
-אנו מגדלים את הירקות שלנו בתנאים הטובים ביותר, על מנת להבטיח לכם את הטוב ביותר.
-הירקות שלנו גדלים תחת אוויר הרי גולן הפסטורליים, וצוות החקלאים שלנו משתמש בטכנולוגיה החדשנית ביותר בתחום."
+                        value= {about}
+                        onChange={(event) => {
+                            setAbout(event.target.value);
+                        }}
                         sx={{
                             width: '100%'
                         }} />
@@ -183,18 +463,17 @@ function profileSettings() {
                     <Box gap= {1}  sx={{
                         mt: '2rem',
                     }}>
-                        <label htmlFor='מחירון' className='inputLabel'>מחירון:</label>
+                        <label className='inputLabel'>מחירון:</label>
                         <TextField
                         id="outlined-multiline-static"
                         multiline
                         rows={8}
                         fullwidth
                         width= '100%'
-                        defaultValue= 'מלפפון: 5.9 ש"ח לק"ג
-עגבניה: 5 ש"ח לק"ג
-בצל: 6.4 ש"ח לק"ג
-גזר: 6 ש"ח לק"ג
-חציל: 7 ש"ח לק"ג'
+                        value= {prices}
+                        onChange={(event) => {
+                            setPrices(event.target.value);
+                        }}
                         sx={{
                             width: '100%'
                         }} />
@@ -202,7 +481,15 @@ function profileSettings() {
                     <Box gap= {1}  sx={{
                         mt: '2rem',
                     }}>
-                        <label htmlFor='מדיניות משלוחים' className='inputLabel'>מדיניות משלוחים:</label>
+                        <Stack direction='row' gap={5} alignItems="center" display='flex' justifyContent='center'>
+                            <Typography fontSize= '20px' color= 'rgb(23, 23, 91)'>העסק עושה משלוחים?</Typography>
+                            <IOSSwitch checked = {isShipping} onChange= {handleSwitch}/>
+                        </Stack>
+                    </Box>
+                    {isShipping? <Box gap= {1}  sx={{
+                        mt: '2rem',
+                    }}>
+                        <label className='inputLabel'>מדיניות משלוחים:</label>
                         <TextField
                         id="outlined-multiline-static"
                         multiline
@@ -214,12 +501,12 @@ function profileSettings() {
                         sx={{
                             width: '100%'
                         }} />
-                    </Box>
+                    </Box>: null}
                     <Box gap={3} sx={{display: 'flex'}}>
                         <Box gap= {1}  sx={{
                             mt: '2rem', flex: 4
                         }}>
-                            <label htmlFor='אינסטגרם' className='inputLabel'>אינסטגרם:</label>
+                            <label className='inputLabel'>אינסטגרם:</label>
                             <Box width= '100%' border='2px solid #1d3c45' borderRadius='1rem'
                             alignItems='center' display= 'flex' gap='1rem' overflow='hidden'>
                                 <Box fontSize='2rem' bgcolor= '#1d3c45' padding= '0.5rem 1rem'
@@ -230,7 +517,10 @@ function profileSettings() {
                                 InputProps={{ disableUnderline: true }}
                                 type='text'
                                 variant='standard'
-                                defaultValue='golan_farm20'
+                                value = {instagram}
+                                onChange={(event) => {
+                                    setInstagram(event.target.value);
+                                }}
                                 className='Form_box_input'
                                 sx={{justifyContent:'center' ,width:'100%', border: '0', bgcolor: 'transparent', outline:'none', height: '30px'}}
                                 />
@@ -239,7 +529,7 @@ function profileSettings() {
                         <Box gap= {1}  sx={{
                             mt: '2rem', flex: 4
                         }}>
-                            <label htmlFor='פייסבוק' className='inputLabel'>פייסבוק:</label>
+                            <label className='inputLabel'>פייסבוק:</label>
                             <Box width= '100%' border='2px solid #1d3c45' borderRadius='1rem'
                             alignItems='center' display= 'flex' gap='1rem' overflow='hidden'>
                                 <Box fontSize='2rem' bgcolor= '#1d3c45' padding= '0.5rem 1rem'
@@ -250,7 +540,10 @@ function profileSettings() {
                                 InputProps={{ disableUnderline: true }}
                                 type='text'
                                 variant='standard'
-                                defaultValue='משק גולן'
+                                value= {facebook}
+                                onChange={(event) => {
+                                    setFacebook(event.target.value);
+                                }}
                                 className='Form_box_input'
                                 sx={{justifyContent:'center' ,width:'100%', border: '0', bgcolor: 'transparent', outline:'none', height: '30px'}}
                                 />
@@ -258,7 +551,7 @@ function profileSettings() {
                         </Box>
                     </Box>
                     <Box display= 'flex' mt={5} mb={5} justifyContent='center' sx={{color: '#1d3c45'}}>
-                    <Button variant='contained' color= 'success' sx={{justifyContent: 'center'}}>שמירת פרטים</Button>
+                    <Button variant='contained' color= 'success' onClick={handleSave} sx={{justifyContent: 'center'}}>שמירת פרטים</Button>
                     </Box>
                 </form>
             </Container>
@@ -319,4 +612,4 @@ function profileSettings() {
   )
 }
 
-export default profileSettings
+export default ProfileSettings;
