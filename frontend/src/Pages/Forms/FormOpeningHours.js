@@ -2,6 +2,8 @@ import React from 'react';
 import { TextField, Box, Typography, Grid, Paper } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useState } from 'react';
+import WorkingHours from '../../components/Settings/workingHours'
+
 
 {/*const useStyles = makeStyles({
   transparentBackground: {
@@ -57,6 +59,23 @@ function FormOpeningHours(values, handleChange) {
         <Typography color="#37474f" fontFamily="aleph" minHeight={45} fontWeight="bold" fontSize={22} marginBottom={2} marginTop={3} variant="h2" textAlign="center">שלב 5 - שעות פתיחה וימי פעילות</Typography>
         <Grid container spacing={17.87} mr={6.9} mt={3} mb={-2}>
           <Grid item xs={1} ></Grid>
+          <Box gap= {1}  sx={{
+                        mt: '2rem',
+                    }}>
+                        <label className='inputLabel'>ימי ושעות עבודה:</label>
+                        <Box width= '100%' border='2px solid #1d3c45' borderRadius='1rem'
+                        alignItems='center' display= 'flex' flexDirection= 'column' gap='1rem' overflow='hidden'>
+                            <WorkingHours day = 'ראשון' />
+                            <WorkingHours day = 'שני' />
+                            <WorkingHours day = 'שלישי' />
+                            <WorkingHours day = 'רביעי' />
+                            <WorkingHours day = 'חמישי' />
+                            <WorkingHours day = 'שישי' />
+                            <div className="lastHour">
+                                <WorkingHours day = 'שבת' />
+                            </div>
+                        </Box>
+                    </Box>
           <Box ml={13.7} mr={.5}>
             <Typography color="#37474f" fontFamily="aleph" fontWeight="bold" fontSize={20}>ראשון</Typography>
           </Box>

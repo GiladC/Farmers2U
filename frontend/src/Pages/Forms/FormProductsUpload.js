@@ -37,6 +37,7 @@ function CheckboxMenu() {
     setChecked((prevChecked) => {
       const newChecked = [...prevChecked];
       newChecked[index] = !newChecked[index];
+      console.log(newChecked)
       return newChecked;
     });
     setSelectedItems((prevSelectedItems) => {
@@ -99,7 +100,7 @@ function CheckboxMenu() {
               </div>
             ))}
           </div>
-          : 'אילו מוצרים אתם מוכרים?'}
+          : 'אילו סוגי מוצרים אתם מוכרים?'}
             </Typography>
         </Button>
       <Menu

@@ -1,11 +1,12 @@
 import { TextField, Button, Box, ThemeProvider, createTheme, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {useNavigate} from "react-router-dom";
 import EmailIcon from '@mui/icons-material/Email';
 import PasswordIcon from '@mui/icons-material/Password';
 import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
 import axios from 'axios';
 import { Email } from '@mui/icons-material';
+import jwt_decode from "jwt-decode"
 
 const {palette} = createTheme();
 const { augmentColor } = palette;
@@ -18,6 +19,31 @@ const themeForButton = createTheme({
 });
 
 const FormLogin = (props) => {
+  const [ user, setUser ] = useState({});
+  function handleCallbackResponse(response){
+    console.log("Encoded JWT ID token: " + response.credential);
+    var userObject = jwt_decode(response.credential);
+    console.log(userObject);
+    setUser(userObject);
+  }
+
+  function handleSignOut(event){ {/*probably unecessery */}
+    setUser({});
+  }
+
+  useEffect(() => {
+    /* global google */
+    google.accounts.id.initialize({
+      client_id: "814952910063-shd06kmdd43a83r3etfpq73gqi0ddf5m.apps.googleusercontent.com",
+      callback: handleCallbackResponse
+    });
+    
+    google.accounts.id.renderButton(
+      document.getElementById("signInDiv"),
+      { theme: "outline", size: "large"}
+    );
+  },[]);
+
     const navigate = useNavigate();
     /*const [inputs, setInputs] = useState({email:"", password: ""})
     const handleChange = (e) => {setInputs((prevState)=> ({...prevState, [e.target.name] : e.target.value}))}*/
@@ -70,11 +96,19 @@ const FormLogin = (props) => {
       setEmail(''); 
       setPassword('');
 }
-    
+  // If we have no user: sign in button
+  //If we have a user: show the logout button
 
   return (
     <ThemeProvider theme={themeForButton}>
     <div dir="rtl">
+    {/*<button onClick={ (e) => handleSignOut(e)}>Sign Out</button>  GOOGLE SIGNOUT BUTTON, incomplete. needs to adapt to regular signout  */ }
+    { user &&
+    <div>
+      {/*<img src={user.picture}></img> !!!----OPTIONAL - farmers image shown in login----!!!
+      <h3>{user.name}</h3> */}
+      </div>
+    }
         <form autoComplete="off" /*onSubmit={handleSubmit}*/>
         <Box marginTop={6.1}>
       <Box
@@ -144,6 +178,7 @@ const FormLogin = (props) => {
                 ),
               }}
             />
+            <Box>
             <Button
               type="submit"
               onClick={logInUser}
@@ -163,6 +198,10 @@ const FormLogin = (props) => {
             >
               להתחבר <LoginOutlinedIcon sx={{ mr: 1 }} />
             </Button>
+            <Box>
+            <div id="signInDiv" style={{marginRight:'27%', paddingTop: '25px'}}></div>
+            </Box>
+            </Box>
           </form>
           {errorMessage && (
             <Box
@@ -178,6 +217,7 @@ const FormLogin = (props) => {
               {errorMessage}
             </Box>
           )}
+          <Box mt={1}>
           <Button
             variant="text"
             size="medium"
@@ -207,6 +247,7 @@ const FormLogin = (props) => {
               מעבר להרשמה
             </Button>
           </a>
+          </Box>
         </Box>
       </Box>
     </Box>

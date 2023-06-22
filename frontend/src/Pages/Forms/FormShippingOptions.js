@@ -137,7 +137,7 @@ function FormShippingOptions({values, handleChange}) {
       <Stack direction="row" spacing={1} alignItems="center" display='flex' justifyContent='center'>
             <Typography fontFamily="aleph">עושים משלוחים</Typography>
             <MaterialUISwitch sx={{ m: 1 }} checked = {isShipping} onChange= {handleSwitch}/>
-            <Typography fontFamily="aleph">איסוף עצמי בלבד</Typography>
+            <Typography fontFamily="aleph">רכישה במקום</Typography>
         </Stack>
         {/* מרחק המשלוח*/}
         {/*!isShipping */}

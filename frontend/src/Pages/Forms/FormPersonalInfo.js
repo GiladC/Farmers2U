@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import IconButton from '@mui/material/IconButton';
-import { TextField, Button, Box, Typography, ThemeProvider, createTheme, Grid, Paper, FormControl} from '@mui/material'
+import { TextField, Button, Box, Typography, ThemeProvider, createTheme, Grid, Paper, FormControl, Tooltip} from '@mui/material'
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -10,8 +10,12 @@ import FormLogin from './FormLogin';
 import { BrowserRouter, Link, useNavigate } from 'react-router-dom';
 import PhoneIcon from '@mui/icons-material/Phone';
 import LocationCityIcon from '@mui/icons-material/LocationCity';
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import TelegramIcon from '@mui/icons-material/Telegram';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { MuiTelInput, isValidPhoneNumber } from "mui-tel-input";
 import { Controller, useForm } from "react-hook-form";
+import { HelpOutline } from '@mui/icons-material';
 import axios from "axios";
 import PlacesAutocomplete, {
   geocodeByAddress,
@@ -29,7 +33,7 @@ const themeForButton = createTheme({
 });
 
 function FormPersonalInfo({values, handleChange, setFormValue}) {
-  const [address, setAddress] = useState("")
+    const [addressN, setAddress] = useState("")
   const [coordintes,setCoordinates] = useState({
     lat: null,
     lng: null
@@ -42,11 +46,13 @@ function FormPersonalInfo({values, handleChange, setFormValue}) {
     setCoordinates(latLng);
   };
 
-  const {farmName, email, password, phoneNumber1,
-     phoneNumber2, city, /*{address},*/ farmerName, prices, products, facebook, instagram} = values
-  const handleSubmit = (data) => {
-    data.preventDefault();
-    alert(values.address)
+  const {farm_name, /*email,*/ google_profile_picture, google_name, google_family_name, 
+  shipping_distance, is_shipping, opening_hours, closing_hours, logo_picture, products_pictures, 
+  farm_pictures, phone_number_official, phone_number_whatsapp, phone_number_telegram, about, address,
+  farmer_name, delivery_details, products, farm_site, facebook, instagram
+  } = values
+  data.preventDefault();
+  alert(values.address)
 
     axios({
         method: "POST",
@@ -116,10 +122,13 @@ function FormPersonalInfo({values, handleChange, setFormValue}) {
         <Box marginTop={5} bgcolor="#f7f1e5" boxShadow={0} borderRadius={2} border={2} display="flex" flexDirection={"column"} width={580} height={164.7} alignItems={"center"} justifyContent={"center"} mt={3.2} mr={2.3} padding={20} sx={{border: '1.5px solid #f7f1e5'}}  >
               <Typography color="#37474f" fontFamily="aleph" fontWeight={'bold'} fontSize={50} marginTop="-4.1rem" variant='h3' textAlign={"center"}> הרשמת חקלאי </Typography>
               <Typography color="#37474f" fontFamily="aleph" fontWeight={'bold'} mt={2} fontSize={22}   mr={2} marginBottom={8} marginTop={3} variant='h2'  textAlign={"center"}> שלב 2 - פרטי המשק החקלאי</Typography>
-            <Grid container style={{paddingRight: '0px', paddingLeft: '34px'}}>
-              <Grid item xs={5.8} >
-                <Box margin={2} border="none" dir="rtl" >
-                  <PlacesAutocomplete
+            
+  <Grid marginLeft={10.5} marginTop={-4} marginBottom={-10} container rowSpacing={3} columnSpacing={4}>
+  <Grid marginLeft={4} dir='rtl' item xs={9.57}>
+  <Grid item>
+      <LocationOnIcon sx={{marginRight: -3, my: -6 }}></LocationOnIcon>
+  </Grid>
+  <PlacesAutocomplete
             value={address}
             onChange={setAddress}
             onSelect={handleSelect}
@@ -128,22 +137,50 @@ function FormPersonalInfo({values, handleChange, setFormValue}) {
               region: 'il',
               language: 'iw',
             }}
-
           >
             {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-              <div>
+              <div style={{ position: 'relative' }}>
                 <input
                   {...getInputProps({
-                    placeholder: '*כתובת המשק החקלאי ',
+                    placeholder: 'כתובת המשק החקלאי ',
                     className: 'location-search-input',
+                    onBlur: () => {
+                      if (!address) setAddress('');
+                  }
                   })}
                   style={{
                     width: '100%',
                     padding: '10px',
                     fontSize: '16px',
+                    height: '35px',
+                    border: address ? '1px solid #bdbdbd' : '1px solid red',
+                    border: '1px solid #bdbdbd', 
+                    borderRadius: '4px',
+                    boxShadow: '0px 1px 1px rgba(0, 0, 0, 0.25)',
+                    fontFamily: 'arial',
+                    color: 'black',                  
                   }}
+                  required
                 />
-                <div style={{ position: 'relative', width: '100%' }}>
+                    {/* {!address && <p style={{ color: 'red', position: 'absolute', bottom: '-20px', left: '0' }}>שדה חובה</p>} */}
+                    <style type="text/css">
+                    {`
+                      .location-search-input::-webkit-input-placeholder { color: #9e9e9e; }
+                      .location-search-input::-moz-placeholder { color: #9e9e9e; }
+                      .location-search-input:-ms-input-placeholder { color: #9e9e9e; }
+                      .location-search-input:-moz-placeholder { color: #9e9e9e; }
+                    `}
+                  </style>
+                <div style={{position: 'absolute',
+                 zIndex: 1000,
+                backgroundColor: '#fff', 
+                width: '100%', 
+                maxWidth: '475px', 
+                left: '49.9%', 
+                transform: 'translateX(-50%)',
+                maxHeight: '220px',
+                overflowY: 'auto',
+                  }}>
                   {loading && <div>Loading...</div>}
                   {suggestions.map((suggestion, index) => {
                     const style = {
@@ -166,61 +203,66 @@ function FormPersonalInfo({values, handleChange, setFormValue}) {
               </div>
             )}
           </PlacesAutocomplete>
-                </Box>
-                <Box margin={2} mt={4}>
-                <Paper >
-                      <MuiTelInput
-                        /*label="Phone number"*/
-                        forceCallingCode
-                        value={valuePhone}
-                        disableAreaCodes
-                        preferredCountries={["IL"]}
-                        placeholder ="050 234 5678"
-                        defaultValue={values.phoneNumber1} 
-                        onChange={handleChangePhone}
-                        defaultCountry="IL"
-                        helperText="*וואטסאפ / טלגרם"
-                        inputProps={{
-                          maxLength: 12
-                        }}
-                        FormHelperTextProps={{
-                          dir: "rtl"
-                        }}
-                      />
-                    </Paper> 
-                </Box>
-              </Grid>
-              <Grid item xs={6}>
-                <FormControl>
-                  <Box margin={2} border="none" >
-                  <Paper>
-                    <TextField dir="rtl"
-                      /*label="שם פרטי"*/
-                      name ="name"
-                      /*value={values.firstName}*/
-                      variant='outlined'
-                      defaultValue={values.address} 
-                      onChange={handleChange('address')}
-                      type="text"
-                      position=''
-                      placeholder='לא בשימוש (אפשר שם איש קשר) '
-                      required="required"
-                      textAlign= "right"
-                      InputProps={{
-                        endAdornment: (
-                          <InputAdornment position={'end'}>
-                              <DriveFileRenameOutlineIcon sx={{ ml: 0.7, my: 0.5 }}>
-                              </DriveFileRenameOutlineIcon>
-                          </InputAdornment>
-                        )
-                        
-                      }}
-                      /* onChange = {handleInputChange} */
-                    />
-                  </Paper>
-                </Box>
-                <Box margin={2} border="none" mt={2}>
-                <Paper>
+  </Grid>
+  <Grid container item xs={5}>
+  <Grid item>
+    <Tooltip title="שם איש קשר">
+      <DriveFileRenameOutlineIcon sx={{marginLeft: '-140%', my: -6 }} />
+    </Tooltip>
+    </Grid>
+      <TextField fullWidth multiline dir="rtl"
+        /*label="שם פרטי"*/
+        name ="name"
+        /*value={values.firstName}*/
+        variant='outlined'
+        type="text"
+        placeholder='שם איש קשר'
+        required="required"
+        rows={1}
+        rowsMax={5}
+        sx={{ 
+          backgroundColor: 'white',
+          borderRadius: '4px',
+          boxShadow: '0px 1.5px 1.5px rgba(0, 0, 0, 0.25)',
+          fontFamily: 'arial'
+
+        }} 
+        /* onChange = {handleInputChange} */
+      />
+  </Grid>
+  <Grid container item xs={5}>
+  <Grid item>
+    <Tooltip title="שם העסק">
+      <DriveFileRenameOutlineIcon sx={{marginLeft: '980%', my: -6 }} />
+    </Tooltip>
+    </Grid>
+      <TextField fullWidth multiline dir="rtl"
+        /*label="שם פרטי"*/
+        name ="name"
+        /*value={values.firstName}*/
+        variant='outlined'
+        type="text"
+        placeholder='שם העסק'
+        required="required"
+        rows={1}
+        rowsMax={5}
+        sx={{ 
+          backgroundColor: 'white',
+          borderRadius: '4px',
+          boxShadow: '0px 1.5px 1.5px rgba(0, 0, 0, 0.25)',
+          fontFamily: 'arial'
+
+        }} 
+        /* onChange = {handleInputChange} */
+      />
+  </Grid>
+  <Grid item xs={5}>
+  <Grid item>
+    <Tooltip title="מספר וואטסאפ">
+      <WhatsAppIcon sx={{marginLeft: "-15%", my: -6 }}></WhatsAppIcon>
+    </Tooltip>
+  </Grid>
+  <Paper>
                   <MuiTelInput
                           /*label="Phone number"*/
                           forceCallingCode
@@ -232,7 +274,6 @@ function FormPersonalInfo({values, handleChange, setFormValue}) {
                           defaultValue={values.phoneNumber2} 
                           onChange={handleChangePhone2}
                           defaultCountry="IL"
-                          helperText="*מספר טלפון של העסק"
                           inputProps={{
                             maxLength: 12
                           }}
@@ -241,19 +282,46 @@ function FormPersonalInfo({values, handleChange, setFormValue}) {
                           }}
                         />
                     </Paper> 
-                </Box>
-                </FormControl>
-              </Grid>
-              
-            </Grid>
+  </Grid>
+  <Grid container item xs={5}>
+  <Grid item>
+    <Tooltip title="מספר טלפון של העסק">
+      <PhoneIcon sx={{ marginLeft: "980%", my: -6 }} />
+    </Tooltip>
+    </Grid>
+  <FormControl>
+                <Paper >
+                
+                      <MuiTelInput
+                        /*label="Phone number"*/
+                        forceCallingCode
+                        value={valuePhone}
+                        disableAreaCodes
+                        preferredCountries={["IL"]}
+                        placeholder ="050 234 5678"
+                        defaultValue={values.phoneNumber1} 
+                        onChange={handleChangePhone}
+                        defaultCountry="IL"
+                        inputProps={{
+                          maxLength: 12
+                        }}
+                        FormHelperTextProps={{
+                          dir: "rtl"
+                        }}
+                      />
+                    </Paper>
+                    </FormControl>
+  
+  </Grid>
+</Grid>
               <Button /*onClick={() => { <FormLogin></FormLogin> }}*/  variant='text' size='medium' color='nice' sx={{fontFamily:"aleph",  mt: 4, borderRadius: 4, fontSize: 16}} > .</Button>  
-              {/* <Button type="submit" onClick={handleSubmit}>  בדיקה</Button> */}
+              <Button type="submit" onClick={handleSubmit}>  בדיקה</Button> 
 
           </Box>    
       </form>
     </div>
     </ThemeProvider>
   )
-}
+
 
 export default FormPersonalInfo;
