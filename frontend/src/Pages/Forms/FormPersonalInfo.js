@@ -33,7 +33,7 @@ const themeForButton = createTheme({
 });
 
 function FormPersonalInfo({values, handleChange, setFormValue}) {
-    const [addressN, setAddress] = useState("")
+  const [addressN, setAddress] = useState("")
   const [coordintes,setCoordinates] = useState({
     lat: null,
     lng: null
@@ -47,12 +47,18 @@ function FormPersonalInfo({values, handleChange, setFormValue}) {
   };
 
   const {farm_name, /*email,*/ google_profile_picture, google_name, google_family_name, 
-  shipping_distance, is_shipping, opening_hours, closing_hours, logo_picture, products_pictures, 
+  shipping_distance, is_shipping, opening_hours, closing_hours, logo_picture, products_pictures, types_of_products, 
   farm_pictures, phone_number_official, phone_number_whatsapp, phone_number_telegram, about, address,
   farmer_name, delivery_details, products, farm_site, facebook, instagram
   } = values
-  data.preventDefault();
-  alert(values.address)
+  const handleSubmit = (data) => {
+    data.preventDefault();
+    alert(values.address)
+    alert(values.phone_number_official)
+    alert(values.phone_number_whatsapp)
+    alert(values.farmer_name)
+    alert(values.farm_name)
+
 
     axios({
         method: "POST",
@@ -93,16 +99,18 @@ function FormPersonalInfo({values, handleChange, setFormValue}) {
 
   const handleChangePhone = (newValue) => {
     setValuePhone(newValue)
-    setFormValue("phoneNumber1",newValue)
+    setFormValue("phone_number_official",newValue)
   }
   const [valuePhone2, setValuePhone2] = useState('')
 
   const handleChangePhone2 = (newValue) => {
     setValuePhone2(newValue)
-    setFormValue("phoneNumber2",newValue)
+    setFormValue("phone_number_whatsapp",newValue)
   }
   const [phone, setPhone] = useState('');
   const [value, setValue] = useState('')
+  const [farmName, setFarmName] = useState('')
+  const [farmerName, setFarmerName] = useState('')
   const [value2, setValue2] = useState('')
   const flagStyle = {
     flexDirection: 'row-reverse',
@@ -110,6 +118,14 @@ function FormPersonalInfo({values, handleChange, setFormValue}) {
   const handlePhoneChange = (e) => {
     setPhone(e.target.value);
   };
+  const handleChangeFarm = (newValue) =>{
+    setFarmName(newValue.target.value)
+    setFormValue("farm_name",newValue.target.value)
+  }
+  const handleChangeFarmerName = (newValue) =>{
+    setFarmerName(newValue.target.value)
+    setFormValue("farmer_name",newValue.target.value)
+  }
   //const { control, handleSubmit } = useForm({
   //  defaultValues: {
   //    phone: ""
@@ -129,7 +145,7 @@ function FormPersonalInfo({values, handleChange, setFormValue}) {
       <LocationOnIcon sx={{marginRight: -3, my: -6 }}></LocationOnIcon>
   </Grid>
   <PlacesAutocomplete
-            value={address}
+            value={addressN}
             onChange={setAddress}
             onSelect={handleSelect}
             searchOptions={{
@@ -213,10 +229,12 @@ function FormPersonalInfo({values, handleChange, setFormValue}) {
       <TextField fullWidth multiline dir="rtl"
         /*label="שם פרטי"*/
         name ="name"
-        /*value={values.firstName}*/
+        value={farmerName}
         variant='outlined'
         type="text"
         placeholder='שם איש קשר'
+        defaultValue={values.farmer_name} 
+        onChange={handleChangeFarmerName}
         required="required"
         rows={1}
         rowsMax={5}
@@ -239,11 +257,13 @@ function FormPersonalInfo({values, handleChange, setFormValue}) {
       <TextField fullWidth multiline dir="rtl"
         /*label="שם פרטי"*/
         name ="name"
-        /*value={values.firstName}*/
+        value={farmName}
         variant='outlined'
         type="text"
         placeholder='שם העסק'
         required="required"
+        defaultValue={values.farm_name} 
+        onChange={handleChangeFarm}
         rows={1}
         rowsMax={5}
         sx={{ 
@@ -270,8 +290,8 @@ function FormPersonalInfo({values, handleChange, setFormValue}) {
                           disableAreaCodes
                           preferredCountries={["IL"]}
                           type="tel"
-                          placeholder ="03 900 1234"
-                          defaultValue={values.phoneNumber2} 
+                          placeholder ="050 234 5678"
+                          defaultValue={values.phone_number_whatsapp} 
                           onChange={handleChangePhone2}
                           defaultCountry="IL"
                           inputProps={{
@@ -299,7 +319,7 @@ function FormPersonalInfo({values, handleChange, setFormValue}) {
                         disableAreaCodes
                         preferredCountries={["IL"]}
                         placeholder ="050 234 5678"
-                        defaultValue={values.phoneNumber1} 
+                        defaultValue={values.phone_number_official} 
                         onChange={handleChangePhone}
                         defaultCountry="IL"
                         inputProps={{
@@ -315,13 +335,13 @@ function FormPersonalInfo({values, handleChange, setFormValue}) {
   </Grid>
 </Grid>
               <Button /*onClick={() => { <FormLogin></FormLogin> }}*/  variant='text' size='medium' color='nice' sx={{fontFamily:"aleph",  mt: 4, borderRadius: 4, fontSize: 16}} > .</Button>  
-              <Button type="submit" onClick={handleSubmit}>  בדיקה</Button> 
+              <Button type="submit" onClick={handleSubmit}>  בדיקה</Button>
 
           </Box>    
       </form>
     </div>
     </ThemeProvider>
   )
-
+}
 
 export default FormPersonalInfo;
