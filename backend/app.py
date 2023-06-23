@@ -7,7 +7,7 @@ from flask_jwt_extended import create_access_token, get_jwt, get_jwt_identity, u
 from models import db, User
 from werkzeug.utils import secure_filename #pip install Werkzeug
 import json
-
+from flask_migrate import Migrate
 
  
 app = Flask(__name__)
@@ -25,10 +25,17 @@ bcrypt = Bcrypt(app)
 CORS(app, supports_credentials=True)
 db.init_app(app)
   
-with app.app_context():
-    db.create_all()
+#with app.app_context():
+#    db.create_all()
 
-#UPLOAD_FOLDER = 'photos'
+migrate = Migrate(app, db)
+
+from posts.routes import posts_blueprint
+app.register_blueprint(posts_blueprint)
+
+from posts.posts_sender import getposts_blueprint
+app.register_blueprint(getposts_blueprint)
+
 UPLOAD_FOLDER = os.path.join('..','frontend', 'public', 'Form_images','Logo_image')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
