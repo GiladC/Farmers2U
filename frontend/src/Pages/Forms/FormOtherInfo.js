@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { TextField, Box, Typography, Grid, Paper, Button, } from '@mui/material'
 import InputAdornment from '@mui/material/InputAdornment';
 import PhoneIcon from '@mui/icons-material/Phone';
@@ -8,10 +8,103 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import axios from "axios";
 import PublishSharpIcon from '@mui/icons-material/PublishSharp';
 
-function FormOtherInfo({values, handleChange}) {
+function FormOtherInfo({values, handleChange, setFormValue}) {
   console.log(values, handleChange);
-  const {farmName, email, password, phoneNumber1,
-    phoneNumber2, city, address, farmerName, prices, products, facebook, instagram} = values
+  const {farm_name, /*email,*/ google_profile_picture, google_name, google_family_name, 
+  shipping_distance, is_shipping, opening_hours, closing_hours, logo_picture, products_pictures, types_of_products,
+  farm_pictures, phone_number_official, phone_number_whatsapp, phone_number_telegram, about, address,
+  farmer_name, delivery_details, products, farm_site, facebook, instagram
+  } = values
+  const [responseMsg, setResponseMsg] = useState({
+    status: "",
+    message: "",
+    error: "",
+  });
+  const submitHandler = (e) => {
+    e.preventDefault();
+    const data = new FormData(); 
+    data.append("jsonData", JSON.stringify({
+      email: values.email,
+      google_name: values.google_name,
+      google_family_name: values.google_family_name,
+      google_profile_picture: values.google_profile_picture,
+      shipping_distance: values.shipping_distance,
+      is_shipping: values.is_shipping,
+      opening_hours: values.opening_hours,
+      closing_hours: values.closing_hours,
+      farm_name: values.farm_name,
+      //logo_picture: ,
+      //farm_pictures: "",
+      //products_pictures: "",
+      about: values.about,
+      phone_number_official: values.phone_number_official,
+      phone_number_whatsapp: values.phone_number_whatsapp,
+      phone_number_telegram: "0",
+      address: values.address,
+      types_of_products: "",
+      farmer_name: values.farmer_name,
+      delivery_details: values.delivery_details,
+      products: values.products,
+      farm_site: values.farm_site,
+      facebook: values.facebook,
+      instagram: values.instagram
+
+    }))
+    for (let i = 0; i < values.logo_picture.length; i++) {
+      data.append("files[]", values.logo_picture[i]);
+      data.append("labels[]", "1");
+    }
+    for (let i = 0; i < values.products_pictures.length; i++) {
+      data.append("files[]", values.products_pictures[i]);
+      data.append("labels[]", "2");
+    }
+    for (let i = 0; i < values.farm_pictures.length; i++) {
+      data.append("files[]", values.farm_pictures[i]);
+      data.append("labels[]", "3");
+    }
+    //console.log(image)
+    //console.log(productsImages)
+    //console.log(farmImages)
+    
+    axios.post("http://127.0.0.1:5000/signup", data)
+    .then(function (response) {
+      //handle success
+      console.log(response)
+
+      alert('המשתמש נוסף בהצלחה.');  
+      window.location.href = '/';
+      
+  })
+  .catch(function (response) {
+      //handle error
+      console.log(response)
+      if (response.status === 400) {
+          alert("שגיאה");
+      }
+  });
+     
+  };
+  
+
+  const fileValidate = (file) => {
+    if (
+      file.type === "image/png" ||
+      file.type === "image/jpg" ||
+      file.type === "image/jpeg"
+    ) {
+      setResponseMsg({
+        ...responseMsg,
+        error: "",
+      });
+      return true;
+    } else {
+      setResponseMsg({
+        ...responseMsg,
+        error: "File type allowed only jpg, png, jpeg",
+      });
+      return false;
+    }
+  };
   const handleSubmit = (data) => {
     data.preventDefault();
 
@@ -64,6 +157,7 @@ function FormOtherInfo({values, handleChange}) {
         /*value={values.firstName}*/
         variant='outlined'
         type="text"
+        onChange={handleChange('facebook')}
         placeholder='קישור לפייסבוק'
         required="required"
         rows={1}
@@ -91,6 +185,7 @@ function FormOtherInfo({values, handleChange}) {
         type="text"
         placeholder='קישור לאינסטגרם'
         required="required"
+        onChange={handleChange('instagram')}
         rows={1}
         rowsMax={5}
         InputProps={{
@@ -116,6 +211,7 @@ function FormOtherInfo({values, handleChange}) {
         type="text"
         placeholder='כתובת אתר (אם קיים)'
         rows={1}
+        onChange={handleChange('farm_site')}
         rowsMax={5}
         InputProps={{
           endAdornment: (
@@ -143,7 +239,7 @@ function FormOtherInfo({values, handleChange}) {
         helperText="*כאן תוכלו לשתף את הסיפור שלכם בכמה משפטים (יוצג באתר)"
         rows={2}
         rowsMax={5}
-        /* onChange = {handleInputChange} */
+        onChange={handleChange('about')}
       />
     </Paper> 
   </Grid>
@@ -160,7 +256,7 @@ function FormOtherInfo({values, handleChange}) {
 <Button style= {{borderWidth:'1px', minWidth:"50px", width:"5.1rem", backgroundColor: "#ffb74d", 
                 fontFamily:"aleph", fontSize: 16,
                 color: "#212121"}} variant="outlined" sx={{borderColor: 'black'}} 
-  type="submit" onClick={handleSubmit}>שלח</Button>
+  type="submit" onClick={submitHandler}>שלח</Button>
   </Box>
   </Box>
      

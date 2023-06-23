@@ -19,83 +19,70 @@ const themeForButton = createTheme({
 });
 
 const FormLogin = (props) => {
-  const [ user, setUser ] = useState({});
-  function handleCallbackResponse(response){
+  const [user, setUser] = useState({});
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const navigate = useNavigate();
+
+  const handleCallbackResponse = (response) => {
     console.log("Encoded JWT ID token: " + response.credential);
     var userObject = jwt_decode(response.credential);
-    console.log(userObject);
     setUser(userObject);
-  }
 
-  function handleSignOut(event){ {/*probably unecessery */}
-    setUser({});
-  }
+    // Check the structure of the response object to access the email
+    var idToken = response.credential.id_token;
+    //var decodedToken = jwt_decode(idToken);
+    //var email = decodedToken.email;
+
+    console.log(userObject.email);
+    setEmail(userObject.email); // Store the email in the component's state
+    axios({
+      method: 'POST',
+      url: 'http://127.0.0.1:5000/logintoken',
+      data: {
+        email: userObject.email // Include the email in the POST request
+      }
+    })
+      .then(function (response) {
+        console.log(response);
+        props.setToken(response.data.access_token);
+        alert('התחברת בהצלחה');
+        localStorage.setItem('email', userObject.email);
+        console.log(response.data);
+        navigate('/bullboard');
+      })
+      .catch(function (error) {
+        console.log(error.response);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+        if (error.response && error.response.status === 401) {
+          setErrorMessage('הפרטים שהוזנו שגויים');
+        }
+      });
+
+    setEmail('');
+    setPassword('');
+  };
+
+  const initializeGoogleSignIn = () => {
+    if (typeof window.google !== 'undefined' && typeof window.google.accounts !== 'undefined') {
+      window.google.accounts.id.initialize({
+        client_id: '814952910063-shd06kmdd43a83r3etfpq73gqi0ddf5m.apps.googleusercontent.com',
+        callback: handleCallbackResponse
+      });
+
+      window.google.accounts.id.renderButton(document.getElementById('signInDiv'), {
+        theme: 'outline',
+        size: 'large'
+      });
+    }
+  };
 
   useEffect(() => {
-    /* global google */
-    google.accounts.id.initialize({
-      client_id: "814952910063-shd06kmdd43a83r3etfpq73gqi0ddf5m.apps.googleusercontent.com",
-      callback: handleCallbackResponse
-    });
-    
-    google.accounts.id.renderButton(
-      document.getElementById("signInDiv"),
-      { theme: "outline", size: "large"}
-    );
-  },[]);
-
-    const navigate = useNavigate();
-    /*const [inputs, setInputs] = useState({email:"", password: ""})
-    const handleChange = (e) => {setInputs((prevState)=> ({...prevState, [e.target.name] : e.target.value}))}*/
-    /*const handleSubmit = (e) => {e.preventDefault(); console.log(inputs);}*/
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [errorMessage, setErrorMessage] = useState('');
-
-    const logInUser = (e) => {
-      e.preventDefault(); // Prevents the default form submission behavior, adding email and password to url
-      //setEmail(''); option to reset values after sumbitting
-      //setPassword('');
-      if(email.length === 0){
-        setErrorMessage("נא להזין כתובת מייל");
-      }
-      else if(password.length === 0){
-        setErrorMessage("נא להזין סיסמה");
-      }
-      else{
-        axios({
-          method: "POST",
-          url: "http://127.0.0.1:5000/logintoken",
-          data:{
-            email: email,
-            password: password
-          }
-      })
-        .then(function (response) {
-            console.log(response);
-            props.setToken(response.data.access_token)
-            //alert(email)
-            alert("התחברת בהצלחה");
-            
-            
-            localStorage.setItem('email', email)
-            console.log(response.data);
-            navigate("/bullboard");
-            
-            //navigate("/");
-        })
-        .catch(function (error) {
-          console.log(error.response)
-          console.log(error.response.status);
-          console.log(error.response.headers);
-          if (error.response && error.response.status === 401) {
-            setErrorMessage('הפרטים שהוזנו שגויים');
-          }
-        })
-    }
-      setEmail(''); 
-      setPassword('');
-}
+    initializeGoogleSignIn();
+  }, []);
   // If we have no user: sign in button
   //If we have a user: show the logout button
 
@@ -141,66 +128,9 @@ const FormLogin = (props) => {
           התחברות חקלאי
         </Typography>
         <Box marginTop={5}>
-          <form onSubmit={logInUser}>
-            <TextField
-              sx={{ backgroundColor: 'white', marginRight: '10rem' }}
-              name="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              type="email"
-              margin="normal"
-              variant="outlined"
-              placeholder="כתובת מייל"
-              InputProps={{
-                startAdornment: (
-                  <EmailIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
-                ),
-              }}
-            />
-            <TextField
-              sx={{ backgroundColor: 'white', marginRight: '10rem' }}
-              autoComplete="new-password"
-              name="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              type="password"
-              margin="normal"
-              variant="outlined"
-              placeholder="סיסמה"
-              InputProps={{
-                startAdornment: (
-                  <PasswordIcon
-                    color="action"
-                    sx={{ marginRight: '0.5rem' }}
-                  />
-                ),
-              }}
-            />
-            <Box>
-            <Button
-              type="submit"
-              onClick={logInUser}
-              sx={{
-                marginRight: '12.8rem',
-                fontFamily: 'aleph',
-                mt: 4,
-                borderRadius: 4,
-                textTransform: 'none',
-                display: 'flex',
-                alignItems: 'center',
-                '&:hover': { color: 'white' },
-              }}
-              variant="contained"
-              color="button"
-              dir="rtl"
-            >
-              להתחבר <LoginOutlinedIcon sx={{ mr: 1 }} />
-            </Button>
+          <form> 
             <Box>
             <div id="signInDiv" style={{marginRight:'27%', paddingTop: '25px'}}></div>
-            </Box>
             </Box>
           </form>
           {errorMessage && (

@@ -114,14 +114,25 @@ const PrettoSlider = styled(Slider)({
 });
 
 
-function FormShippingOptions({values, handleChange}) {
+function FormShippingOptions({values, handleChange, setFormValue}) {
+  const {farm_name, /*email,*/ google_profile_picture, google_name, google_family_name, 
+  shipping_distance, is_shipping, opening_hours, closing_hours, logo_picture, products_pictures, types_of_products,
+  farm_pictures, phone_number_official, phone_number_whatsapp, phone_number_telegram, about, address,
+  farmer_name, delivery_details, products, farm_site, facebook, instagram
+  } = values
   const [isShipping, setIsShipping] = useState(false)
   const handleSwitch = (event) => {
     setIsShipping(event.target.checked);
+    setFormValue("is_shipping", event.target.checked)
+    console.log(values.is_shipping)
   };
   const [distance, setDistance] = useState(5)
   const handleDistanceChange = (event, newValue) => {
       setDistance(newValue);
+      setFormValue("shipping_distance", newValue)
+      console.log(values.shipping_distance)
+      console.log(values.delivery_details)
+
     };
   console.log(values, handleChange);
   return (
@@ -169,8 +180,8 @@ function FormShippingOptions({values, handleChange}) {
         ציינו את כל הפרטים הרלוונטיים כמו: מינימום הזמנה, מחיר משלוח משתנה,
         בהתאם למיקום / סכום הזמנה וכו' ..."
         required="required"
-        defaultValue={values.prices} 
-        onChange={handleChange('prices')}
+        defaultValue={values.delivery_details} 
+        onChange={handleChange('delivery_details')}
         rows={3}
         rowsMax={5}
         /*helperText="*קישור לרשתות החברתיות (אופציונלי)"*/

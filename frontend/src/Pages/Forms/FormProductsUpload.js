@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useState, useRef } from 'react'
 import { TextField, Button, Box, Typography, Grid, Paper, ThemeProvider, Menu, MenuItem, FormControlLabel, Checkbox, createTheme, FormControl, FormLabel} from '@mui/material'
 import RemoveIcon from '@mui/icons-material/Remove';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
+import axios from "axios";
+
 
 
 const {palette} = createTheme();
@@ -154,9 +156,160 @@ function CheckboxMenu() {
   );
 }
 
-function FormProductsUpload({values, handleChange}) {
-  console.log(values, handleChange);
+function FormProductsUpload({values, handleChange, setFormValue}) {
+  const {farm_name, /*email,*/ google_profile_picture, google_name, google_family_name, 
+  shipping_distance, is_shipping, opening_hours, closing_hours, logo_picture, products_pictures, types_of_products,
+  farm_pictures, phone_number_official, phone_number_whatsapp, phone_number_telegram, about, address,
+  farmer_name, delivery_details, products, farm_site, facebook, instagram
+  } = values
   const additionalItems = ['אורגני', 'טבעוני'];
+  const [image, setImage] = useState(null);
+  const [productsImages, setProductsImages] = useState(null);
+  const [farmImages, setFarmImages] = useState(null);
+  const [responseMsg, setResponseMsg] = useState({
+    status: "",
+    message: "",
+    error: "",
+  });
+  const submitHandler = (e) => {
+    e.preventDefault();
+    const data = new FormData(); 
+    data.append("jsonData", JSON.stringify({
+      email:"tamirsadovsky@gmail.com",
+      google_name: "picture",
+      google_profile_picture: "picture",
+      shipping_distance: "",
+      is_shipping:"",
+      opening_hours:"",
+      closing_hours:"",
+      google_name: "Golan",
+      google_family_name: "Farmson",
+      farm_name: "משק הגולן",
+      logo_picture: "",
+      farm_pictures: "",
+      products_pictures: "",
+      about: "המשק קיים מזה 20 שנה והוא משק משפחתי שעובר מדור לדור. המטרה שלנו היא להביא את הירקות האיכותיים ביותר, במחירים הגונים.",
+      phone_number_official: "0",
+      phone_number_whatsapp: "0",
+      phone_number_telegram: "0",
+      address: "בן דרור 17",
+      farmer_name: "Golan",
+      delivery_details: "משלוחים רק בצפון, החל ממחיר הזמנה של 120 ש\"ח.\n\nניתן לעשות הזמנות מראש ולקחת באיסוף עצמי.",
+      products: "מלפפון: 5.9 ש\"ח לק\"ג\n\nעגבניה: 5 ש\"ח לק\"ג\n\nבצל: 6.4 ש\"ח לק\"ג\n\nגזר: 6 ש\"ח לק\"ג\n\nחציל: 7 ש\"ח לק\"ג",
+      farm_site: "www.golanfarm.com",
+      facebook: "www.facebook/golanfarm.com",
+      instagram: "www.instagram/golanfarm.com"
+
+    }))
+    for (let i = 0; i < image.length; i++) {
+      data.append("files[]", image[i]);
+      data.append("labels[]", "1");
+    }
+    for (let i = 0; i < productsImages.length; i++) {
+      data.append("files[]", productsImages[i]);
+      data.append("labels[]", "2");
+    }
+    for (let i = 0; i < farmImages.length; i++) {
+      data.append("files[]", farmImages[i]);
+      data.append("labels[]", "3");
+    }
+    console.log(image)
+    console.log(productsImages)
+    console.log(farmImages)
+    
+    axios.post("http://127.0.0.1:5000/signup", data)
+    .then((response) => {
+            console.log(response)
+        if (response.status === 201) {
+          this.setState({
+            responseMsg: {
+              status: response.data.status,
+              message: response.data.message,
+            },
+          });
+          setTimeout(() => {
+            this.setState({
+              image: "",
+              responseMsg: "",
+            });
+          }, 100000);
+  
+          document.querySelector("#imageForm").reset();
+        }
+            alert("Successfully Uploaded");
+    })
+    .catch((error) => {
+        console.error(error); 
+        if (error.response) {
+            console.log(error.response)
+            if (error.response.status === 401) {
+                alert("Invalid credentials");
+            }
+        }
+    });
+     
+  };
+  
+
+  const fileValidate = (file) => {
+    if (
+      file.type === "image/png" ||
+      file.type === "image/jpg" ||
+      file.type === "image/jpeg"
+    ) {
+      setResponseMsg({
+        ...responseMsg,
+        error: "",
+      });
+      return true;
+    } else {
+      setResponseMsg({
+        ...responseMsg,
+        error: "File type allowed only jpg, png, jpeg",
+      });
+      return false;
+    }
+  };
+
+  const handleChangePhotoLogo = (e) => {
+    if (e.target.files.length > 0) {
+      const selectedPhoto = e.target.files;
+      alert(selectedPhoto[0])
+      const labelLogo = "1"
+      fileValidate(selectedPhoto);
+      setImage(selectedPhoto)
+      console.log(selectedPhoto)
+      setFormValue("logo_picture", selectedPhoto)
+      //alert(image)
+      // Log the contents of the images object
+      //for (const [key, value] of images.entries()) {
+      //  console.log(`${key}: ${value}`);
+      //}
+    }
+  };
+  const handleChangePhotoFarm = (e) => {
+    if (e.target.files.length > 0) {
+      const selectedPhoto = e.target.files;
+      const labelLogo = "2"
+      fileValidate(selectedPhoto);
+      setFarmImages(selectedPhoto)
+      console.log(selectedPhoto)
+      setFormValue("farm_pictures", selectedPhoto)
+      console.log(values)
+
+    }
+  };
+  const handleChangePhotoProducts = (e) => {
+    if (e.target.files.length > 0) {
+      const selectedPhoto = e.target.files;
+      const labelLogo = "3"
+      fileValidate(selectedPhoto);
+      setProductsImages(selectedPhoto)
+      console.log(selectedPhoto)
+      setFormValue("products_pictures", selectedPhoto)
+    }
+  };
+
   return (
     <ThemeProvider theme={themeForButton}>
     <div>
@@ -259,6 +412,114 @@ function FormProductsUpload({values, handleChange}) {
   </Box> 
      
 </form>
+<form onSubmit={submitHandler} autoComplete="off" dir="rtl" /*className={classes.root}*/ encType="multipart/form-data">
+            
+            <Box marginTop={5} bgcolor="#f7f1e5" boxShadow={0} borderRadius={2} border={2} display="flex" flexDirection={"column"} width={580} height={142.5} alignItems={"center"} justifyContent={"center"} margin={3} mt={4} padding={20} sx={{border: '1.5px solid #f7f1e5'}}  >
+              <Grid container height={278} style={{ marginTop:"-4rem"}} >
+                
+          <Grid item xs={6} style={{ marginBottom:"-1rem"}}>
+              
+              <Box margin={2} border="none" Width={1000} style={{ marginBottom:"-1rem"}}>
+                <Button
+                /*margin={10}*/
+                variant="contained"
+                component="label"
+                color="button"
+                sx={{fontFamily: "aleph", '&:hover':{color: 'white'}}}
+              >
+                לוגו
+                <input
+                  type="file"
+                  label =""
+                  name="logo_picture"
+                  onChange={handleChangePhotoLogo}
+                />
+              </Button>
+            </Box>
+            <Box margin={2} marginTop={2.4}>
+
+            </Box>
+          </Grid>
+          <Grid item xs={6} style={{ marginBottom:"-1.5rem"}}>
+              <Box margin={2.7}>
+              </Box>
+
+            </Grid>
+            <Grid item xs={12} style={{ marginBottom:"-1rem"}}>
+          <Box margin={2} style={{ marginBottom:"0.2rem"}}>
+              <FormControl sx={{ m: 1, minWidth: 80 }}>
+                <FormLabel sx={{ typography: { fontFamily: 'aleph' } }}> כאן תוכלו להוסיף תמונות של המשק שתרצו שנפרסם בפרופיל שלכם! </FormLabel>
+              </FormControl>
+          </Box>
+          </Grid>
+          <Grid item xs={6} style={{ marginBottom:"-1rem"}}>
+              <Box margin={2} border="none" Width={1000} style={{ marginBottom:"-1rem"}}>
+                <Button
+                /*margin={10}*/
+                variant="contained"
+                component="label"
+                color="button"
+                sx={{fontFamily: "aleph", '&:hover':{color: 'white'}}}
+              >
+                מוצרי המשק
+                <input
+                  type="file"
+                  label =""
+                  name = "image"
+                  multiple
+                  onChange={handleChangePhotoProducts}
+                />
+              </Button>
+            </Box>
+            <Box margin={2} marginTop={2.4}>
+
+            </Box>
+          </Grid>
+          <Grid item xs={6} style={{ marginBottom:"-1rem"}}>
+              <Box margin={2.7}>
+              </Box>
+            </Grid>
+            <Box margin={2} marginRight={2} style={{ marginBottom:"-1rem"}}>
+              <FormControl sx={{ m: 1, minWidth: 80}}>
+                <FormLabel sx={{ typography: { fontFamily: 'aleph' } }}> כאן תוכלו להוסיף לוגו של המשק שלכם! </FormLabel>
+              </FormControl>
+          </Box>
+            <Grid item xs={6} >
+              <Box margin={2} border="none" Width={1000}>
+                <Button
+                /*margin={10}*/
+                variant="contained"
+                component="label"
+                color="button"
+                sx={{fontFamily: "aleph", '&:hover':{color: 'white'}}}
+              >
+                תמונות המשק
+                <input
+                  type="file"
+                  label =""
+                  name = "farm_photo"
+                  multiple
+                  onChange={handleChangePhotoFarm}
+                />
+              </Button>
+            </Box>
+            <Box margin={2} marginTop={2.4}>
+
+            </Box>
+          </Grid>
+            <Grid item xs={6} style={{ marginBottom:"-1rem"}}>
+              <Box marginBottom ={2.8}>
+                <Button type="submit">  בדיקה</Button> 
+              </Box>
+          
+            </Grid>
+                
+        </Grid>
+
+          </Box> 
+     
+</form>
+
 
     </div>
     </ThemeProvider>

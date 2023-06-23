@@ -7,7 +7,7 @@ import FormProductsUpload from './FormProductsUpload';
 import FormLogin from './FormLogin';
 import FormOpeningHours from './FormOpeningHours'
 import FormSubmitted from './FormSubmitted'
-import { Button,Stepper,Step,StepLabel ,StepConnector, theme, styled,Typography } from '@mui/material';
+import { Button,Stepper,Step,StepLabel,Typography } from '@mui/material';
 
 const steps = [
     'פרטים אישיים',
@@ -18,26 +18,36 @@ const steps = [
     'פרטים נוספים',
   ];
 
-
-
 function Form() {
     const [multiFormValues, setMultiFormValues] = useState({
-        farmname: "",
+        farm_name: "",
         email: "",
-        password: "",
-        phoneNumber1: "0",
-        phoneNumber2: "0",
+        google_profile_picture: "",
+        google_name: "",
+        google_family_name: "",
+        shipping_distance: "",
+        is_shipping: "",
+        opening_hours: "",
+        closing_hours: "",
+        logo_picture: "",
+        products_pictures: "",
+        types_of_products: "",
+        farm_pictures: "",
+        phone_number_official: "",
+        phone_number_whatsapp: "",
+        phone_number_telegram: "",
         about: "",
         address: "",
-        city: "",
-        farmerName: "",
-        prices: "",
+        farmer_name: "",
+        delivery_details: "",
         products: "",
+        farm_site: "",
         facebook: "",
         instagram: "",
 
 
       })
+
       function Lines() {
         return (
             <div style={{ position: 'relative', top: '13px', marginRight: '10%', display: 'flex', justifyContent: 'space-between', width: '80%' }}>
@@ -47,33 +57,40 @@ function Form() {
             </div>
         );
     }
+
     
     //Handle form value state on change
     const handleChange = (input) => (e) => {
     setMultiFormValues({...multiFormValues, [input]: e.target.value})
     }
+    const setFormValue = (input, value) => {
+        setMultiFormValues((prevValues) => ({
+          ...prevValues,
+          [input]: value,
+        }));
+      };
     const[page, setPage] = useState(0);
     /* const FormTitles = ["Sign Up", "Personal Info", "Other", "FormProducts","FormShippingDetails"]; */
     const FormTitles = ["Farmers2U", "Farmers2U", "Farmers2U", "Farmers2U","Farmers2U","Farmers2U", "Farmers2U"]; 
 
     const PageDisplay = () => {
         if (page === 0) {
-            return <FormSignUpInfo values={multiFormValues} handleChange={handleChange}/>
+            return <FormSignUpInfo values={multiFormValues} handleChange={handleChange} setFormValue={setFormValue}/>
         }
         else if (page === 1) {
-            return <FormPersonalInfo values={multiFormValues} handleChange={handleChange}/>
+            return <FormPersonalInfo values={multiFormValues} handleChange={handleChange} setFormValue={setFormValue}/>
         }
         else if (page === 2){
-            return <FormShippingOptions values={multiFormValues} handleChange={handleChange}/>
+            return <FormShippingOptions values={multiFormValues} handleChange={handleChange} setFormValue={setFormValue}/>
         }
         else if (page === 3){
-            return <FormProductsUpload values={multiFormValues} handleChange={handleChange}/>
+            return <FormProductsUpload values={multiFormValues} handleChange={handleChange} setFormValue={setFormValue}/>
         }
         else if (page == 4){
-            return <FormOpeningHours values={multiFormValues} handleChange={handleChange}/>
+            return <FormOpeningHours values={multiFormValues} handleChange={handleChange} setFormValue={setFormValue}/>
         }
         else if (page === 5){
-            return <FormOtherInfo values={multiFormValues} handleChange={handleChange}/>
+            return <FormOtherInfo values={multiFormValues} handleChange={handleChange} setFormValue={setFormValue}/>
         }
         else if (page == 6){
             return <FormSubmitted />
@@ -95,10 +112,6 @@ function Form() {
           ))}
         </Stepper>
       </div>
-        <div className='progressbar'>
-            <div style= {{marginTop: "-000px",
-             width: page === 0 ? "0%" : page == 1 ? "40%" : page == 2 ? "60%": page == 3 ? "80%" : "100%"}}  > </div> 
-        </div>
         <div className='form-container'>
             <div className='header' style={{ textAlign: 'center' }}> 
 {/*                 <h1>
