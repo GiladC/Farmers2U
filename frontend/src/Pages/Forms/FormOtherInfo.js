@@ -54,18 +54,24 @@ function FormOtherInfo({values, handleChange, setFormValue, props}) {
       instagram: values.instagram
 
     }))
+    if (values.logo_picture){
     for (let i = 0; i < values.logo_picture.length; i++) {
       data.append("files[]", values.logo_picture[i]);
       data.append("labels[]", "1");
     }
+    }
+    if (values.products_pictures){
     for (let i = 0; i < values.products_pictures.length; i++) {
       data.append("files[]", values.products_pictures[i]);
       data.append("labels[]", "2");
     }
+  }
+  if (values.farm_pictures){
     for (let i = 0; i < values.farm_pictures.length; i++) {
       data.append("files[]", values.farm_pictures[i]);
       data.append("labels[]", "3");
     }
+  }
     //console.log(image)
     //console.log(productsImages)
     //console.log(farmImages)
