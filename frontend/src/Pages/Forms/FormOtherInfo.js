@@ -6,10 +6,13 @@ import LanguageIcon from '@mui/icons-material/Language';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
+
 import PublishSharpIcon from '@mui/icons-material/PublishSharp';
 
-function FormOtherInfo({values, handleChange, setFormValue}) {
+function FormOtherInfo({values, handleChange, setFormValue, props}) {
   console.log(values, handleChange);
+  const navigate = useNavigate();
   const {farm_name, /*email,*/ google_profile_picture, google_name, google_family_name, 
   shipping_distance, is_shipping, opening_hours, closing_hours, logo_picture, products_pictures, types_of_products,
   farm_pictures, phone_number_official, phone_number_whatsapp, phone_number_telegram, about, address,
@@ -23,6 +26,7 @@ function FormOtherInfo({values, handleChange, setFormValue}) {
   const submitHandler = (e) => {
     e.preventDefault();
     const data = new FormData(); 
+    
     data.append("jsonData", JSON.stringify({
       email: values.email,
       google_name: values.google_name,
@@ -66,13 +70,34 @@ function FormOtherInfo({values, handleChange, setFormValue}) {
     //console.log(productsImages)
     //console.log(farmImages)
     
+    
     axios.post("http://127.0.0.1:5000/signup", data)
     .then(function (response) {
       //handle success
       console.log(response)
+      axios({
+        method: 'POST',
+        url: 'http://127.0.0.1:5000/logintoken',
+        data: {
+          email: values.email // Include the email in the POST request
+        }
+      })
+        .then(function (response) {
+          console.log(response);
+          props.setToken(response.data.access_token);
+          alert('נרשמת בהצלחה. מיד תועבר לאתר.');
+          localStorage.setItem('email', values.email);
+          console.log(response.data);
+          navigate('/bullboard');
+        })
+        .catch(function (error) {
+          if (error.response && error.response.status === 401) {
+            //setErrorMessage('הפרטים שהוזנו שגויים');
+          }
+        });
 
-      alert('המשתמש נוסף בהצלחה.');  
-      window.location.href = '/';
+      //alert('המשתמש נוסף בהצלחה.');  
+      //window.location.href = '/';
       
   })
   .catch(function (response) {
