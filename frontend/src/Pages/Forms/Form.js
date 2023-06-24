@@ -18,7 +18,7 @@ const steps = [
     'פרטים נוספים',
   ];
 
-function Form() {
+  const Form = (props) => {
     const [multiFormValues, setMultiFormValues] = useState({
         farm_name: "",
         email: "",
@@ -90,7 +90,7 @@ function Form() {
             return <FormOpeningHours values={multiFormValues} handleChange={handleChange} setFormValue={setFormValue}/>
         }
         else if (page === 5){
-            return <FormOtherInfo values={multiFormValues} handleChange={handleChange} setFormValue={setFormValue}/>
+            return <FormOtherInfo values={multiFormValues} handleChange={handleChange} setFormValue={setFormValue} props={props}/>
         }
         else if (page == 6){
             return <FormSubmitted />
