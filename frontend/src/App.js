@@ -40,11 +40,7 @@ function App() {
                 <LandPage/>
               </>
             } />
-            <Route exact path='/signup' element={
-              <>
-                <Form/>
-              </>
-            } />
+            <Route path="/signup" element={<Form setToken={setToken} />} />
             <Route path='/login' element={
               <>
                 <FormLogin setToken={setToken} />
