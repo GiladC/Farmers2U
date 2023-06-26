@@ -1,6 +1,6 @@
-from flask import jsonify, Blueprint, url_for
+from flask import jsonify, Blueprint
 from app import app
-from models import Post  # Assuming you have defined the Post model in a separate file
+from models import Post  
 
 getposts_blueprint = Blueprint('getposts', __name__)
 
@@ -8,7 +8,6 @@ getposts_blueprint = Blueprint('getposts', __name__)
 def get_posts():
     posts = Post.query.all()
     post_list = []
-
     for post in posts:
         post_dict = {
             'farmName': post.farmName,
@@ -17,7 +16,6 @@ def get_posts():
             'desc': post.desc,
             'posted': post.posted,
             'date': post.event_date.strftime('%m/%d/%Y') if post.event_date else None,
-            'price': "Irrelevant",
             'location': post.location,
             'when_posted_date': post.date,
             'when_posted_time': post.time,

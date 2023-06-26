@@ -4,6 +4,8 @@ from models import User, Post, db
 import os
 import pytz
 from werkzeug.utils import secure_filename
+from geopy.geocoders import Nominatim
+
 
 
 '''
@@ -56,6 +58,13 @@ def create_post():
         return jsonify({'error': 'חלה תקלה. נא להתחבר לאתר מחדש.'}), 400
     
 
+    # Validate that the location is an actual address
+    geolocator = Nominatim(user_agent="farmers2u_website")
+    address = geolocator.geocode(data['location'])
+    if address is None:
+        return jsonify({'error': 
+                            'נא למלא כתובת מדויקת בשדה המיקום או להשאיר ריק אם לא רוצים לסנן לפי כתובת'
+                            }), 400
     
     # Validate endTime > startTime
     start_time = datetime.datetime.strptime(data['startTime'], '%H:%M').time()
@@ -94,8 +103,7 @@ def create_post():
     product_types = data.get('products')
     if product_types:
         product_types = product_types.split(',')
-
-    print(data.get('area'))
+    
     new_post = Post(
         farmName = user.farmName,
         profilePicture = None, #profilePicture = user.profilePicture,
@@ -104,25 +112,18 @@ def create_post():
         date = current_time.date(),
         time = current_time.strftime('%H:%M:%S'),
         location = data.get('location'),
+        latitude = address.latitude,
+        longitude = address.longitude,
         event_date = datetime.datetime.strptime(data["date"], "%Y-%m-%d").date(),  # Convert to date object
         time_range = time_range,
         products = product_types,
-        area = data.get('area'),
+        email = data.get('email'),
+        isOrganic = data.get('isOrganic') == "true",
+        isVegan = data.get('isVegan') == "true",
     ) 
 
     db.session.add(new_post)
     db.session.commit()
-
     
-    
-
-    # Creating a new post object with the validated data
-    
-
-    
-    # Use SQLAlchemy to save the post to the database.
-    # Example: post_model = Post(**post); db.session.add(post_model); db.session.commit()
-
-    # Return a response indicating the success or failure of the post creation
     response = {'message': 'Post created successfully'}
     return jsonify(response), 201

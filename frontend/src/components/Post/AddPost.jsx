@@ -13,53 +13,13 @@ import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import axios from 'axios'
 import dayjs from 'dayjs'
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
+import PlacesAutocomplete, {
+  geocodeByAddress,
+  getLatLng,
+} from 'react-places-autocomplete';
+import products from "../../assets/lists"
 
-
-const productsType = [
-  { title: 'pab' },
-  { title: 'adad' },
-  { title: 'cdd' },
-  { title: 'aaaaa' }
-];
-
-const Areas = [
-  { title: 'אשדוד והסביבה', year: 1994 },
-  { title: 'גבעת זאב, בית חורון והסביבה', year: 1972 },
-  { title: 'הרצליה פיתוח ונוף הים', year: 1974 },
-  { title: 'הרצליה רחבי העיר', year: 2008 },
-  { title: 'חולון, בת ים', year: 1957 },
-  { title: "חיפה וחוף הכרמל", year: 1993 },
-  { title: 'חשמונאים מודיעין עילית והסביבה', year: 1994 },
-  {
-    title: 'יקנעם, טבעון והסביבה',
-    year: 2003,
-  },
-  { title: 'ירושלים והסביבה', year: 1966 },
-  {
-    title: 'כוכב יאיר,סלעית, גוש חורשים והסביבה',
-    year: 2001,
-  },
-  {
-    title: 'עמק חפר, חדרה, פרדס חנה ועד זיכרון יעקב',
-    year: 1980,
-  },
-  { title: 'עפולה, כפר תבור והסביבה', year: 1994 },
-  {
-    title: 'צפון תל אביב ורמת השרון',
-    year: 2002,
-  },
-  { title: "קריות וצפונה", year: 1975 },
-  { title: 'קריית אונו, יהוד, שוהם והסביבה', year: 1990 },
-  { title: 'רמת גן, גבעתיים והסביבה', year: 1999 },
-  { title: 'ראשון לציון, רחובות והסביבה', year: 1954 },
-  {
-    title: 'תל אביב מרכז + יפו',
-    year: 1977,
-  },
-  { title: 'תל אביב - צפון ישן', year: 2002 },
-  { title: 'אין משלוחים', year: 2002 }
-];
 
 
 const StyledModal = styled(Modal)({
@@ -97,7 +57,10 @@ const AddPost = () => {
   const [value2, setValue2] = useState(dayjs('2022-04-17T15:30'));
   const [value3, setValue3] = useState(dayjs('2022-04-17T15:30'));
   const [selectedProducts, setSelectedProducts] = useState([]);
-  const [selectedAreas, setSelectedAreas] = useState([]);
+  const [pfpAndName, setPfpAndName] = useState({
+    profilePicture: null,
+    profileName: null,
+  })
   const [postData, setPostData] = useState({
     isOrganic: false,
     isVegan: false,
@@ -105,15 +68,22 @@ const AddPost = () => {
   const [image, setImage] = useState(null);
   const inputRef = useRef(null);
   const storedEmail = localStorage.getItem('email');
+  const [coordintes,setCoordinates] = useState({
+    lat: null,
+    lng: null
+  })
+  const [address, setAddress] = useState("")
+
+
+const handleSelect = async value => {
+    const results = await geocodeByAddress(value);
+    const latLng = await getLatLng(results[0]);
+    setAddress(value)
+  };
 
 
     const handleProductChange = (event, value) => {
     setSelectedProducts(value);
-  };
-
-
-  const handleAreaChange = (event, value) => {
-    setSelectedAreas(value);
   };
 
 
@@ -141,31 +111,37 @@ const AddPost = () => {
     }
   };
 
+  useEffect(() => {
+    const mail = new FormData();
+    mail.append('email', storedEmail)
+    axios
+      .post('http://127.0.0.1:5000/api/small_data', mail)
+      .then((response) => {
+        setPfpAndName(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
 
   const handlePost = () => { /* The actual object to extract to the backend */
     const formData = new FormData();
     formData.append('text', postData.text);
-    formData.append('location', postData.location);
+    formData.append('location', address);
     formData.append('date', value.format('YYYY-MM-DD'));
     formData.append('startTime', value2.format('HH:mm'));
     formData.append('endTime', value3.format('HH:mm'));
-    formData.append('lowPrice', postData.lowPrice);
-    formData.append('highPrice', postData.highPrice);
     formData.append('image', image);
     formData.append('email', storedEmail);
     formData.append('isVegan', postData.isVegan);
     formData.append('isOrganic', postData.isOrganic);
 
     if (selectedProducts && selectedProducts.length > 0) {
-      const products = selectedProducts.map((p) => p.title);
+      const products = selectedProducts.map((p) => p.label);
       formData.append('products', products);
     }    
 
-  
-    if (selectedAreas) {
-      const area = selectedAreas.title
-      formData.append('area', area);
-    }
 
 
     const handleRequest = () => {
@@ -209,9 +185,9 @@ const AddPost = () => {
             ערכו מודעה
           </Typography>
           <UserBox>
-            <Avatar src="/Board_images/farmer1.jpg" sx={{ width: 30, height: 30 }} />
+            <Avatar src={pfpAndName.profilePicture} sx={{ width: 30, height: 30 }} />
             <Typography fontWeight={500} variant="span">
-              דוד כהן
+              {pfpAndName.profileName}
             </Typography>
           </UserBox>
           <TextField
@@ -225,42 +201,98 @@ const AddPost = () => {
             value={postData.text || ''}
             onChange={handleChange}
           />
-          <TextField
-            placeholder="כתובת/מיקום"
-            sx={{ width: '100%', paddingTop: '15px', direction: 'rtl' }}
-            name="location"
-            value={postData.location || ''}
-            onChange={handleChange}
-          />
+        <PlacesAutocomplete
+        value={address}
+        onChange={setAddress}
+        onSelect={handleSelect}
+      >
+        {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+          <div>
+            <Typography sx={{fontSize: '15px', color: 'rgb(141, 141, 138)',display: 'flex', justifyContent: 'center'}}>
+               {'זוהי הכתובת ממנה המרחק מחושב'}
+                </Typography>
+            <TextField
+              {...getInputProps({
+                placeholder:'כתובת',
+                className: 'location-search-input',
+                direction: 'rtl'
+              })}
+              sx={{
+                direction: 'rtl',
+                alignSelf:'center',
+                width: '100%',
+                position: 'relative',
+                paddingTop: '5px',
+                fontSize: '16px',}}
+            />
+            <div className="autocomplete-dropdown-container">
+              {loading && <div>טוען...</div>}
+              {suggestions.map((suggestion, index) => {
+                const style = {
+                    //position: 'absolute',
+                    //zIndex: '1000',
+                    width: '90%',
+                    color: 'white',
+                    backgroundColor: suggestion.active ? "#1d3c45" : "#E8AA42",
+                    cursor: 'pointer',
+                    padding: '10px',                      
+                  };
+                return (
+                    <div
+                    {...getSuggestionItemProps(suggestion, { style })}
+                    key={index}
+                  >
+                    <span>{suggestion.description}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+        </PlacesAutocomplete>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <Box display="flex" paddingTop={2} justifyContent="center">
               <DatePicker label={'תאריך '} views={['day']} 
-              value={value} onChange={(newValue) => setValue(newValue)} />
+              value={value} onChange={(newValue) => setValue(newValue)} sx={{"& label":{left: "unset",
+              right: "1.75rem",
+              transformOrigin: "right"},
+              "& legend": {
+                textAlign: "right",
+              }}} />
             </Box>
             <Box display="flex" gap={2} paddingTop={2}>
               <TimeField label="שעת התחלה" format="HH:mm" value={value2} 
-              onChange={(newValue) => setValue2(newValue)} />
+              onChange={(newValue) => setValue2(newValue)} sx={{"& label":{left: "unset",
+              right: "1.75rem",
+              transformOrigin: "right"},
+              "& legend": {
+                textAlign: "right",
+              }}}/>
               <TimeField label="שעת סיום" format="HH:mm" value={value3} 
-              onChange={(newValue) => setValue3(newValue)} />
+              onChange={(newValue) => setValue3(newValue)} sx={{"& label":{left: "unset",
+              right: "1.75rem",
+              transformOrigin: "right"},
+              "& legend": {
+                textAlign: "right",
+              }}}/>
             </Box>
           </LocalizationProvider>
-          <Box display="flex" gap={3} paddingTop={2} sx={{ direction: 'rtl' }}>
+          <Box display="flex" gap={3} paddingTop={2} sx={{ direction: 'rtl' }} justifyContent="center">
           <Autocomplete
             multiple
             id="areas-autocomplete"
-            options={productsType}
+            options={products}
             disableCloseOnSelect
-            getOptionLabel={(option) => option.title}
+            getOptionLabel={(option) => option.label}
             renderOption={(props, option, { selected }) => (
               <li {...props}>
                 <Checkbox
                   icon={icon}
                   checkedIcon={checkedIcon}
                   dir="rtl"
-                  style={{ marginRight: 8 }}
                   checked={selected}
                   />
-                {option.title}
+                {option.label}
                 </li>
             )}
             style={{ width: 239 }}
@@ -274,32 +306,6 @@ const AddPost = () => {
               dir="rtl"
               />
               )}
-              />
-              <Autocomplete
-                id="products-autocomplete"
-                options={Areas}
-                getOptionLabel={(option) => option.title}
-                renderOption={(props, option, { selected }) => (
-                  <li {...props}>
-                    <Radio
-                      {...props}
-                      style={{ marginRight: 8 }}
-                      checked={selected}
-                    />
-                    {option.title}
-                  </li>
-                )}
-                style={{ width: 239 }}
-                value={selectedAreas}
-                onChange={handleAreaChange}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    placeholder="אזורים"
-                    helperText="האזור הרלוונטי למודעה"
-                    dir="rtl"
-                  />
-                )}
               />
           </Box>
           <Box display="flex" sx={{ direction: 'rtl', justifyContent: 'center', right: '500px' }}>

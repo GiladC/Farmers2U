@@ -36,6 +36,13 @@ app.register_blueprint(posts_blueprint)
 from posts.posts_sender import getposts_blueprint
 app.register_blueprint(getposts_blueprint)
 
+from posts.posts_filter import posts_filter_blueprint
+app.register_blueprint(posts_filter_blueprint)
+
+from posts.small_data import smalldata_blueprint
+app.register_blueprint(smalldata_blueprint)
+
+
 UPLOAD_FOLDER = os.path.join('..','frontend', 'public', 'Form_images','Logo_image')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024

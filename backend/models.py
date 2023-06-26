@@ -42,17 +42,21 @@ class User(db.Model):
 class Post(db.Model):
     __tablename__ = "posts"
     id = db.Column(db.String(11), primary_key=True, unique=True, default=get_uuid)  # unique identifier of the post
-    farmName = db.Column(db.String(150), nullable=False)                            # Name of the farm
+    farmName = db.Column(db.String(150), nullable=False)   
+    email = db.Column(db.String(150), nullable=False)                         # Name of the farm
     profilePicture = db.Column(db.String(255))                                      # The logo of the farm
     photo = db.Column(db.String(255))                                               # The picture on the post
     desc = db.Column(db.String(1000))                                               # The text of the post
     date = db.Column(db.Date)                                                       # The date it was posted month/day/year              
+    latitude = db.Column(db.Float)                                                  # Latitude for the distance function
+    longitude = db.Column(db.Float)                                                 # Longitude for the distance function    
     location = db.Column(db.String(150))                                            # The location mentioned in the post
-    area = db.Column(db.String(150))                                                # The specific area it will be in, for the filter
     time = db.Column(db.String(100))                                                # The time it was posted in hour/minute/second
     event_date = db.Column(db.Date)                                                 # The date when the event takes place
-    time_range = db.Column(db.String(50))  
-    products = db.Column(db.JSON, nullable=True)
+    time_range = db.Column(db.String(50))                                           # The hour range the event will take place
+    products = db.Column(db.JSON, nullable=True)                                    # The list of the product types
+    isOrganic = db.Column(db.Boolean, default=False)                                # Only organic stuff on the post?
+    isVegan = db.Column(db.Boolean, default=False)                                  # Only vegan stuff on the post?
 
     ''' 
     posted explanation: How long was it since the post was posted:
