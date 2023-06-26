@@ -204,7 +204,7 @@ function FormPersonalInfo({values, handleChange, setFormValue}) {
   <Grid marginLeft={10.5} marginTop={-4} marginBottom={-10} container rowSpacing={3} columnSpacing={4}>
   <Grid marginLeft={4} dir='rtl' item xs={9.57}>
   <PlacesAutocomplete
-            value={address}
+            value={addressN}
             onChange={setAddress}
             onSelect={handleSelect}
 
