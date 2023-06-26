@@ -85,7 +85,7 @@ const FormSignUpInfo = ({values, handleChange, setFormValue}) => {
               <Typography color="#37474f" fontFamily="aleph" fontWeight={'bold'} mt={2} fontSize={22}  mr={2} marginBottom={8} marginTop={3} variant='h2'  textAlign={"center"}> שלב 1 - פרטים אישיים</Typography>
             <Grid container style={{paddingRight: '30px', paddingLeft: '10px'}}>
             <form>
-                <Box>
+                <Box sx={{marginLeft:"75%"}}>
                   <div
                     id="signUpDiv"
                     style={{ marginRight: '27%', paddingTop: '25px' }}
