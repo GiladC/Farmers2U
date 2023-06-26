@@ -12,6 +12,7 @@ import PhoneIcon from '@mui/icons-material/Phone';
 import LocationCityIcon from '@mui/icons-material/LocationCity';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import TelegramIcon from '@mui/icons-material/Telegram';
+import PersonIcon from '@mui/icons-material/Person';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { MuiTelInput, isValidPhoneNumber } from "mui-tel-input";
 import { Controller, useForm } from "react-hook-form";
@@ -21,6 +22,7 @@ import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
 } from 'react-places-autocomplete';
+
 
 
 const {palette} = createTheme();
@@ -59,7 +61,6 @@ function FormPersonalInfo({values, handleChange, setFormValue}) {
     alert(values.farmer_name)
     alert(values.farm_name)
 
-
     axios({
         method: "POST",
         url: "http://127.0.0.1:5000/signup",
@@ -68,8 +69,8 @@ function FormPersonalInfo({values, handleChange, setFormValue}) {
         email: values.email,
         password: values.password,
         about: "",
-        phoneNumber1: valuePhone,
-        phoneNumber2: valuePhone2,
+        phoneNumber1: phone,
+        phoneNumber2: whatsApp,
         city: values.city,
         address: values.address,
         farmerName: "",
@@ -95,29 +96,69 @@ function FormPersonalInfo({values, handleChange, setFormValue}) {
     });
 }
   console.log(values, handleChange);
-  const [valuePhone, setValuePhone] = useState('')
-
-  const handleChangePhone = (newValue) => {
-    setValuePhone(newValue)
-    setFormValue("phone_number_official",newValue)
-  }
-  const [valuePhone2, setValuePhone2] = useState('')
-
-  const handleChangePhone2 = (newValue) => {
-    setValuePhone2(newValue)
-    setFormValue("phone_number_whatsapp",newValue)
-  }
+  const handleKeyDown = (event) => {
+    // Check if the key is not a digit
+    if (!/^[0-9]$/.test(event.key) && event.key !== 'Backspace' && event.key !== 'Delete') {
+        event.preventDefault();
+    }
+};
   const [phone, setPhone] = useState('');
-  const [value, setValue] = useState('')
+  const [phoneError, setPhoneError] = useState(false);
+  const [phoneTouched, setPhoneTouched] = useState(false);
+  
+  const handleChangePhone = (event) => {
+    const phoneNumber = event.target.value;
+  
+    // Regex for 10 digit numbers starting with 05 or 07
+    const tenDigitPattern = /^0[57][0-9]{8}$/;
+  
+    // Regex for 9 digit numbers starting with 02, 03, 04, 08 or 09
+    const nineDigitPattern = /^0[23489][0-9]{7}$/;
+  
+    const isValid = tenDigitPattern.test(phoneNumber) || nineDigitPattern.test(phoneNumber);
+  
+    setPhone(phoneNumber);
+    setFormValue("phone_number_official",phoneNumber)
+    setPhoneError(!isValid && phoneTouched);
+  };
+  
+  const handlePhoneBlur = () => {
+    setPhoneTouched(true);
+    setPhoneError(!(/^0[57][0-9]{8}$/.test(phone) || /^0[23489][0-9]{7}$/.test(phone) || phone === ''));
+    if  (phone === '')
+    setPhoneTouched(false);
+  };
+
+  const [whatsApp, setWhatsApp] = useState('');
+  const [whatsAppError, setWhatsAppError] = useState(false);
+  const [whatsAppTouched, setWhatsAppTouched] = useState(false);
+  
+  const handleChangeWhatsApp = (event) => {
+    const whatsAppNumber = event.target.value;
+  
+    // Regex for 10 digit numbers starting with 05 or 07
+    const tenDigitPattern = /^0[57][0-9]{8}$/;
+  
+    // Regex for 9 digit numbers starting with 02, 03, 04, 08 or 09
+    const nineDigitPattern = /^0[23489][0-9]{7}$/;
+  
+    const isValid = tenDigitPattern.test(whatsAppNumber) || nineDigitPattern.test(whatsAppNumber);
+  
+    setWhatsApp(whatsAppNumber);
+    setFormValue("phone_number_whatsapp",whatsAppNumber)
+    setWhatsAppError(!isValid && whatsAppTouched);
+    console.log(whatsApp)
+
+  };
+  
+  const handleWhatsAppBlur = () => {
+    setWhatsAppTouched(true);
+    setWhatsAppError(!(/^0[57][0-9]{8}$/.test(whatsApp) || /^0[23489][0-9]{7}$/.test(whatsApp) || whatsApp === ''));
+    if  (whatsApp === '')
+    setWhatsAppTouched(false);
+  };
   const [farmName, setFarmName] = useState('')
   const [farmerName, setFarmerName] = useState('')
-  const [value2, setValue2] = useState('')
-  const flagStyle = {
-    flexDirection: 'row-reverse',
-  };
-  const handlePhoneChange = (e) => {
-    setPhone(e.target.value);
-  };
   const handleChangeFarm = (newValue) =>{
     setFarmName(newValue.target.value)
     setFormValue("farm_name",newValue.target.value)
@@ -126,6 +167,27 @@ function FormPersonalInfo({values, handleChange, setFormValue}) {
     setFarmerName(newValue.target.value)
     setFormValue("farmer_name",newValue.target.value)
   }
+  // const [valuePhone, setValuePhone] = useState('')
+
+  // const handleChangePhone = (newValue) => {
+  //   setValuePhone(newValue)
+  //   setFormValue("phoneNumber1",newValue)
+  // }
+  // const [valuePhone2, setValuePhone2] = useState('')
+
+  // const handleChangePhone2 = (newValue) => {
+  //   setValuePhone2(newValue)
+  //   setFormValue("phoneNumber2",newValue)
+  // }
+  // const [phone, setPhone] = useState('');
+  // const [value, setValue] = useState('')
+  // const [value2, setValue2] = useState('')
+  // const flagStyle = {
+  //   flexDirection: 'row-reverse',
+  // };
+  // const handlePhoneChange = (e) => {
+  //   setPhone(e.target.value);
+  // };
   //const { control, handleSubmit } = useForm({
   //  defaultValues: {
   //    phone: ""
@@ -141,13 +203,11 @@ function FormPersonalInfo({values, handleChange, setFormValue}) {
             
   <Grid marginLeft={10.5} marginTop={-4} marginBottom={-10} container rowSpacing={3} columnSpacing={4}>
   <Grid marginLeft={4} dir='rtl' item xs={9.57}>
-  <Grid item>
-      <LocationOnIcon sx={{marginRight: -3, my: -6 }}></LocationOnIcon>
-  </Grid>
   <PlacesAutocomplete
-            value={addressN}
+            value={address}
             onChange={setAddress}
             onSelect={handleSelect}
+
             searchOptions={{
               types: ['address'],
               region: 'il',
@@ -155,11 +215,15 @@ function FormPersonalInfo({values, handleChange, setFormValue}) {
             }}
           >
             {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-              <div style={{ position: 'relative' }}>
+              <div style={{ position: 'relative' }} >
+                <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                <LocationOnIcon style={{ color: 'gray' }} sx={{zIndex: 2, marginRight: 56, mb: -7 }}/>
+                </div>
                 <input
                   {...getInputProps({
                     placeholder: 'כתובת המשק החקלאי ',
                     className: 'location-search-input',
+                    
                     onBlur: () => {
                       if (!address) setAddress('');
                   }
@@ -174,7 +238,9 @@ function FormPersonalInfo({values, handleChange, setFormValue}) {
                     borderRadius: '4px',
                     boxShadow: '0px 1px 1px rgba(0, 0, 0, 0.25)',
                     fontFamily: 'arial',
-                    color: 'black',                  
+                    color: 'black',
+                    
+                                      
                   }}
                   required
                 />
@@ -190,14 +256,14 @@ function FormPersonalInfo({values, handleChange, setFormValue}) {
                 <div style={{position: 'absolute',
                  zIndex: 1000,
                 backgroundColor: '#fff', 
-                width: '100%', 
-                maxWidth: '475px', 
-                left: '49.9%', 
+                width: '105%', 
+                maxWidth: '485px', 
+                left: '45.5%', 
                 transform: 'translateX(-50%)',
                 maxHeight: '220px',
                 overflowY: 'auto',
                   }}>
-                  {loading && <div>Loading...</div>}
+                  {loading && <div>טוען...</div>}
                   {suggestions.map((suggestion, index) => {
                     const style = {
                       //position: 'absolute',
@@ -221,23 +287,28 @@ function FormPersonalInfo({values, handleChange, setFormValue}) {
           </PlacesAutocomplete>
   </Grid>
   <Grid container item xs={5}>
-  <Grid item>
-    <Tooltip title="שם איש קשר">
-      <DriveFileRenameOutlineIcon sx={{marginLeft: '-140%', my: -6 }} />
-    </Tooltip>
-    </Grid>
       <TextField fullWidth multiline dir="rtl"
         /*label="שם פרטי"*/
         name ="name"
-        value={farmerName}
+        /*value={values.firstName}*/
         variant='outlined'
+        marginTop={6}
         type="text"
         placeholder='שם איש קשר'
-        defaultValue={values.farmer_name} 
+        defaultValue={values.farmer_name}
         onChange={handleChangeFarmerName}
         required="required"
         rows={1}
         rowsMax={5}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position={'end'}>
+                <PersonIcon sx={{ ml: -0.5, my: 0.5 }}>
+                </PersonIcon>
+            </InputAdornment>
+          )
+          
+        }}
         sx={{ 
           backgroundColor: 'white',
           borderRadius: '4px',
@@ -249,23 +320,27 @@ function FormPersonalInfo({values, handleChange, setFormValue}) {
       />
   </Grid>
   <Grid container item xs={5}>
-  <Grid item>
-    <Tooltip title="שם העסק">
-      <DriveFileRenameOutlineIcon sx={{marginLeft: '980%', my: -6 }} />
-    </Tooltip>
-    </Grid>
       <TextField fullWidth multiline dir="rtl"
         /*label="שם פרטי"*/
         name ="name"
-        value={farmName}
+        /*value={values.firstName}*/
         variant='outlined'
         type="text"
         placeholder='שם העסק'
-        required="required"
-        defaultValue={values.farm_name} 
+        defaultValue={values.farm_name}
         onChange={handleChangeFarm}
+        required="required"
         rows={1}
-        rowsMax={5}
+        rowsMax={5}  
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position={'end'}>
+                <DriveFileRenameOutlineIcon sx={{ ml: -0.5, my: 0.5 }}>
+                </DriveFileRenameOutlineIcon>
+            </InputAdornment>
+          )
+          
+        }}
         sx={{ 
           backgroundColor: 'white',
           borderRadius: '4px',
@@ -276,24 +351,110 @@ function FormPersonalInfo({values, handleChange, setFormValue}) {
         /* onChange = {handleInputChange} */
       />
   </Grid>
-  <Grid item xs={5}>
+  <Grid container item xs={5}>
+  <div style={{ height: '10px' }}>  
+      <TextField fullWidth multiline dir="rtl"
+        /*label="שם פרטי"*/
+        name ="name"
+        /*value={values.firstName}*/
+        variant='outlined'
+        marginTop={6}
+        type="text"
+        placeholder='מספר וואטסאפ'
+        required="required"
+        onKeyDown={handleKeyDown}
+        error={whatsAppError}
+        // helperText={whatsAppError ? 'Invalid phone number' : ''}
+        value={whatsApp}
+        onChange={handleChangeWhatsApp}
+        onBlur={handleWhatsAppBlur}
+        rows={1}
+        inputProps={{
+          maxLength: 10,
+        }}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position={'end'}>
+                <WhatsAppIcon sx={{ ml: -0.5, my: 0.5 }}>
+                </WhatsAppIcon>
+            </InputAdornment>
+          )
+          
+        }}
+        sx={{ 
+          backgroundColor: 'white',
+          borderRadius: '4px',
+          boxShadow: '0px 1.5px 1.5px rgba(0, 0, 0, 0.25)',
+          fontFamily: 'arial'
+
+        }} 
+        /* onChange = {handleInputChange} */
+      />    <div style={{height: "20px" }}>
+          {whatsAppError && <Typography variant="body2" color="error">טלפון לא חוקי</Typography>}
+          </div>
+          </div>
+  </Grid>
+  <Grid container item xs={5}>
+  <div style={{ height: '10px' }}>  
+      <TextField fullWidth multiline dir="rtl"
+        /*label="שם פרטי"*/
+        name ="name"
+        /*value={values.firstName}*/
+        variant='outlined'
+        type="text"
+        placeholder='מספר טלפון של העסק'
+        required="required"
+        onKeyDown={handleKeyDown}
+        error={phoneError}
+       // helperText={phoneError ? 'Invalid phone number' : ''}
+        value={phone}
+        onChange={handleChangePhone}
+        onBlur={handlePhoneBlur}
+        rows={1}
+        inputProps={{
+          maxLength: 10,
+        }}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position={'end'}>
+                <PhoneIcon sx={{ ml: -0.5, my: 0.5 }}>
+                </PhoneIcon>
+            </InputAdornment>
+          )
+          
+        }}
+        sx={{ 
+          backgroundColor: 'white',
+          borderRadius: '4px',
+          boxShadow: '0px 1.5px 1.5px rgba(0, 0, 0, 0.25)',
+          fontFamily: 'arial'
+
+        }} 
+        /* onChange = {handleInputChange} */
+      /> <div style={{height: "20px"}}>
+        {phoneError && <Typography variant="body2" color="error">טלפון לא חוקי</Typography>}
+        </div>
+        </div>
+
+  </Grid>
+{/*   <Grid item xs={5}>
   <Grid item>
     <Tooltip title="מספר וואטסאפ">
-      <WhatsAppIcon sx={{marginLeft: "-15%", my: -6 }}></WhatsAppIcon>
+      <WhatsAppIcon sx={{ marginLeft: "8%", my: -6 }}></WhatsAppIcon>
     </Tooltip>
   </Grid>
   <Paper>
                   <MuiTelInput
-                          /*label="Phone number"*/
                           forceCallingCode
                           value={valuePhone2}
                           disableAreaCodes
-                          preferredCountries={["IL"]}
+                          // preferredCountries={["IL"]}
                           type="tel"
-                          placeholder ="050 234 5678"
-                          defaultValue={values.phone_number_whatsapp} 
+                          placeholder ="03 900 1234"
+                          defaultValue={values.phoneNumber2} 
                           onChange={handleChangePhone2}
                           defaultCountry="IL"
+                          flagSize="small"
                           inputProps={{
                             maxLength: 12
                           }}
@@ -302,8 +463,8 @@ function FormPersonalInfo({values, handleChange, setFormValue}) {
                           }}
                         />
                     </Paper> 
-  </Grid>
-  <Grid container item xs={5}>
+  </Grid> */}
+{/*   <Grid container item xs={5}>
   <Grid item>
     <Tooltip title="מספר טלפון של העסק">
       <PhoneIcon sx={{ marginLeft: "980%", my: -6 }} />
@@ -313,17 +474,17 @@ function FormPersonalInfo({values, handleChange, setFormValue}) {
                 <Paper >
                 
                       <MuiTelInput
-                        /*label="Phone number"*/
                         forceCallingCode
                         value={valuePhone}
                         disableAreaCodes
                         preferredCountries={["IL"]}
                         placeholder ="050 234 5678"
-                        defaultValue={values.phone_number_official} 
+                        defaultValue={values.phoneNumber1} 
                         onChange={handleChangePhone}
                         defaultCountry="IL"
                         inputProps={{
                           maxLength: 12
+                          
                         }}
                         FormHelperTextProps={{
                           dir: "rtl"
@@ -332,10 +493,10 @@ function FormPersonalInfo({values, handleChange, setFormValue}) {
                     </Paper>
                     </FormControl>
   
-  </Grid>
+  </Grid> */}
 </Grid>
               <Button /*onClick={() => { <FormLogin></FormLogin> }}*/  variant='text' size='medium' color='nice' sx={{fontFamily:"aleph",  mt: 4, borderRadius: 4, fontSize: 16}} > .</Button>  
-              <Button type="submit" onClick={handleSubmit}>  בדיקה</Button>
+              {/* <Button type="submit" onClick={handleSubmit}>  בדיקה</Button> */}
 
           </Box>    
       </form>
