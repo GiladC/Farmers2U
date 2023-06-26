@@ -201,8 +201,8 @@ function FormShippingOptions({values, handleChange, setFormValue}) {
   }
   const [distance, setDistance] = useState(5)
   const handleDistanceChange = (event, newValue) => {
-      setDistance(newValue);
-      setFormValue("shipping_distance", newValue)
+      setDistance(event.target.value);
+      setFormValue("shipping_distance", event.target.value)
       console.log(values.shipping_distance)
       console.log(values.delivery_details)
     };
@@ -225,7 +225,7 @@ function FormShippingOptions({values, handleChange, setFormValue}) {
       {isShipping && <Typography fontFamily="aleph" marginBottom={-10} marginTop={2} marginLeft={6.8} fontSize= '18px' color= 'rgb(23, 23, 91)'>טווח המשלוח (בק"מ):</Typography>}
       {isShipping && 
         <TextField 
-          value={shippingRange} 
+          value={distance} 
           onChange={handleDistanceChange} 
           disabled={!isShipping} 
           type="text"
