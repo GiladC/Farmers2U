@@ -25,6 +25,13 @@ function FormOtherInfo({values, handleChange, setFormValue, props}) {
   });
   const submitHandler = (e) => {
     e.preventDefault();
+    const openingHours = values.opening_hours.map(p => {
+      return p && p !== "none" ? p.format() : "none";
+    });
+    const closingHours = values.closing_hours.map(p => {
+      return p && p !== "none" ? p.format() : "none";
+    });
+    alert(closingHours)
     const data = new FormData(); 
     
     data.append("jsonData", JSON.stringify({
@@ -34,8 +41,8 @@ function FormOtherInfo({values, handleChange, setFormValue, props}) {
       google_profile_picture: values.google_profile_picture,
       shipping_distance: values.shipping_distance,
       is_shipping: values.is_shipping,
-      opening_hours: values.opening_hours,
-      closing_hours: values.closing_hours,
+      opening_hours: openingHours,
+      closing_hours: closingHours,
       farm_name: values.farm_name,
       //logo_picture: ,
       //farm_pictures: "",
