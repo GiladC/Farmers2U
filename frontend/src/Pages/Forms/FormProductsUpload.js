@@ -1,9 +1,10 @@
-import React, { useState, useRef } from 'react'
+import React, { useState } from 'react'
 import { TextField, Button, Box, Typography, Grid, Paper, ThemeProvider, Menu, MenuItem, FormControlLabel, Checkbox, createTheme, FormControl, FormLabel} from '@mui/material'
 import RemoveIcon from '@mui/icons-material/Remove';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
+import ProductList from './ProductList';
 import axios from "axios";
 
 
@@ -17,6 +18,8 @@ const themeForButton = createTheme({
     white: createColor('#ffffff'),
     garbage: createColor('#9e9e9e'),
     hovergarbage: createColor('#37474f'),
+    adder: createColor('#f7f1e5'),
+    addPicture: createColor('#f7f1e5'),
   },
 });
 function CheckboxMenu() {
@@ -74,7 +77,7 @@ function CheckboxMenu() {
   
   return (
     <div>
-      <Button variant="contained" color="white" onClick={handleClick}
+      <Button disableRipple variant="contained" color="white" onClick={handleClick}
        style={{
         width: "580px",
         height: "50px",
@@ -84,13 +87,14 @@ function CheckboxMenu() {
         display: "flex", 
         alignItems: "center", 
        justifyContent: "flex-start", 
-       background: "FFFFFF",
+       background: "#FFFFFF",
        '&:hover': {
-         backgroundColor: '#FFFFFF',
+        color: 'initial',
+        backgroundColor: 'initial !important'
        }, }}>
 
       {Boolean(anchorEl) ? <RemoveIcon /> : <AddIcon />}
-      <Typography style={{ color: '#9e9e9e', fontSize: '15px', fontFamily: 'aleph' }}>
+      <Typography style={{ color: '#37474f', fontSize: '15px', fontFamily: 'aleph' }}>
       {selectedItems.length > 0 ? 
           <div style={{ display: 'flex', flexWrap: 'nowrap' }}>
             {selectedItems.map((item, index) => (
@@ -157,11 +161,7 @@ function CheckboxMenu() {
 }
 
 function FormProductsUpload({values, handleChange, setFormValue}) {
-  const {farm_name, /*email,*/ google_profile_picture, google_name, google_family_name, 
-  shipping_distance, is_shipping, opening_hours, closing_hours, logo_picture, products_pictures, types_of_products,
-  farm_pictures, phone_number_official, phone_number_whatsapp, phone_number_telegram, about, address,
-  farmer_name, delivery_details, products, farm_site, facebook, instagram
-  } = values
+  console.log(values, handleChange);
   const additionalItems = ['אורגני', 'טבעוני'];
   const [image, setImage] = useState(null);
   const [productsImages, setProductsImages] = useState(null);
@@ -310,6 +310,18 @@ function FormProductsUpload({values, handleChange, setFormValue}) {
     }
   };
 
+  // const [products, setProducts] = useState([]);
+  // const [newProduct, setNewProduct] = useState(null);
+  // const initialState = {};  // Add your initial state here
+  // const [boxHeight, setBoxHeight] = useState(142.5);  // initialize with the initial height
+
+  // in the add product handler
+  // const handleAddProduct = () => {
+  //   setProducts([...products, newProduct]);
+  //   setNewProduct(initialState);
+  //   setBoxHeight(boxHeight + 20);  // increment the height by 20 each time
+  // };
+  
   return (
     <ThemeProvider theme={themeForButton}>
     <div>
@@ -322,7 +334,7 @@ function FormProductsUpload({values, handleChange, setFormValue}) {
   <Box marginBottom={2} marginTop={8} style={{ marginBottom:"-1rem"}}>
   <Box mb={2} dir="rtl">
     <CheckboxMenu />
-  <Typography color="#757575"fontFamily="aleph" marginTop={1} > מוכרים מוצרים מיוחדים? סמנו כאן! </Typography>
+  {/* <Typography color="#757575"fontFamily="aleph" marginTop={1} > מוכרים מוצרים מיוחדים? סמנו כאן! </Typography>
     <Box>
         <Grid container justifyContent="space-around">
             {additionalItems.map((item, index) => (
@@ -337,14 +349,12 @@ function FormProductsUpload({values, handleChange, setFormValue}) {
                 <Grid item xs={2} key={index}></Grid>
             ))}
         </Grid>
-    </Box>
-  </Box>
+    </Box>*/}
+  </Box> 
   <Typography color="#757575"fontFamily="aleph" marginTop={-2} > פירוט מבחר המוצרים ומחיריהם: </Typography>
     <Paper>
       <TextField fullWidth multiline dir="rtl"
-        /*label="שם פרטי"*/
         name ="name"
-        /*value={values.firstName}*/
         variant='outlined'
         type="text"
         defaultValue={values.products} 
@@ -353,17 +363,15 @@ function FormProductsUpload({values, handleChange, setFormValue}) {
         required="required"
         rows={2}
         rowsMax={5}       
-
-        /*helperText="*קישור לרשתות החברתיות (אופציונלי)"*/
-        /* onChange = {handleInputChange} */
       />
     </Paper> 
   </Box>
-  <Typography color="#757575"fontFamily="aleph" marginTop={3} marginBottom={2}> הוספת תמונות: </Typography>
+  {/* <ProductList /> */}
+  <Typography color="#757575"fontFamily="aleph" marginTop={3} marginBottom={-5}> הוספת תמונות: </Typography>
 
   </Grid>
 
-  <Grid item xs={12} style={{ marginBottom: "-1rem" }}>
+  {/* <Grid item xs={12} style={{ marginBottom: "-1rem" }}>
   <Box display="flex" justifyContent="space-between">
     <Box margin={2} border="none" minWidth={150}>
       <Button
@@ -404,30 +412,27 @@ function FormProductsUpload({values, handleChange, setFormValue}) {
       </Button>
     </Box>
   </Box>
-</Grid>
+</Grid> */}
 
         
-</Grid>
 
-  </Box> 
-     
-</form>
 <form onSubmit={submitHandler} autoComplete="off" dir="rtl" /*className={classes.root}*/ encType="multipart/form-data">
-            
-            <Box marginTop={5} bgcolor="#f7f1e5" boxShadow={0} borderRadius={2} border={2} display="flex" flexDirection={"column"} width={580} height={142.5} alignItems={"center"} justifyContent={"center"} margin={3} mt={4} padding={20} sx={{border: '1.5px solid #f7f1e5'}}  >
-              <Grid container height={278} style={{ marginTop:"-4rem"}} >
-                
-          <Grid item xs={6} style={{ marginBottom:"-1rem"}}>
+             <Box style={{marginRight: "10%"}}>              
+          <Grid marginTop={8} item xs={6} style={{ marginBottom:"-1rem"}}>
               
-              <Box margin={2} border="none" Width={1000} style={{ marginBottom:"-1rem"}}>
+              <Box margin={2} border="none" Width={1000} style={{ marginBottom:"2rem"}}>
                 <Button
                 /*margin={10}*/
+                disableRipple
                 variant="contained"
                 component="label"
-                color="button"
-                sx={{fontFamily: "aleph", '&:hover':{color: 'white'}}}
+                color="addPicture"
+                sx={{   display: 'flex',
+                justifyContent: 'space-between',width:"450px",fontFamily: "aleph", boxShadow: 'none !important', '&:hover , &:active, &:focus':{color: 'initial',
+                backgroundColor: 'initial', 
+                boxShadow: 'none !important', opacity: 1,}}}
               >
-                לוגו
+              הוספת לוגו
                 <input
                   type="file"
                   label =""
@@ -436,9 +441,6 @@ function FormProductsUpload({values, handleChange, setFormValue}) {
                 />
               </Button>
             </Box>
-            <Box margin={2} marginTop={2.4}>
-
-            </Box>
           </Grid>
           <Grid item xs={6} style={{ marginBottom:"-1.5rem"}}>
               <Box margin={2.7}>
@@ -446,52 +448,61 @@ function FormProductsUpload({values, handleChange, setFormValue}) {
 
             </Grid>
             <Grid item xs={12} style={{ marginBottom:"-1rem"}}>
-          <Box margin={2} style={{ marginBottom:"0.2rem"}}>
+          {/* <Box margin={2} style={{ marginBottom:"0.2rem"}}>
               <FormControl sx={{ m: 1, minWidth: 80 }}>
                 <FormLabel sx={{ typography: { fontFamily: 'aleph' } }}> כאן תוכלו להוסיף תמונות של המשק שתרצו שנפרסם בפרופיל שלכם! </FormLabel>
               </FormControl>
-          </Box>
+          </Box> */}
           </Grid>
           <Grid item xs={6} style={{ marginBottom:"-1rem"}}>
               <Box margin={2} border="none" Width={1000} style={{ marginBottom:"-1rem"}}>
                 <Button
                 /*margin={10}*/
+                disableRipple
                 variant="contained"
                 component="label"
-                color="button"
-                sx={{fontFamily: "aleph", '&:hover':{color: 'white'}}}
+                color="addPicture"
+                sx={{    display: 'flex',
+                justifyContent: 'space-between',width:"450px",fontFamily: "aleph", boxShadow: 'none !important', '&:hover':{color: 'initial',
+                backgroundColor: 'initial', 
+                boxShadow: 'none !important', }}}
               >
                 מוצרי המשק
+                <Box margin={2.7}>
+              </Box>
                 <input
                   type="file"
                   label =""
                   name = "image"
                   multiple
+                  sx={{color:'button'}}
                   onChange={handleChangePhotoProducts}
                 />
               </Button>
-            </Box>
-            <Box margin={2} marginTop={2.4}>
-
             </Box>
           </Grid>
           <Grid item xs={6} style={{ marginBottom:"-1rem"}}>
               <Box margin={2.7}>
               </Box>
             </Grid>
-            <Box margin={2} marginRight={2} style={{ marginBottom:"-1rem"}}>
+            {/* <Box margin={2} marginRight={2} style={{ marginBottom:"-1rem"}}>
               <FormControl sx={{ m: 1, minWidth: 80}}>
                 <FormLabel sx={{ typography: { fontFamily: 'aleph' } }}> כאן תוכלו להוסיף לוגו של המשק שלכם! </FormLabel>
               </FormControl>
-          </Box>
+          </Box> */}
             <Grid item xs={6} >
               <Box margin={2} border="none" Width={1000}>
                 <Button
                 /*margin={10}*/
+                disableRipple
                 variant="contained"
                 component="label"
-                color="button"
-                sx={{fontFamily: "aleph", '&:hover':{color: 'white'}}}
+                color="addPicture"
+                sx={{    display: 'flex',
+                justifyContent: 'space-between', width:"450px"
+,                fontFamily: "aleph", boxShadow: 'none !important', '&:hover':{color: 'initial',
+                backgroundColor: 'initial', 
+                boxShadow: 'none !important', }}}
               >
                 תמונות המשק
                 <input
@@ -503,24 +514,24 @@ function FormProductsUpload({values, handleChange, setFormValue}) {
                 />
               </Button>
             </Box>
-            <Box margin={2} marginTop={2.4}>
 
-            </Box>
           </Grid>
-            <Grid item xs={6} style={{ marginBottom:"-1rem"}}>
+          </Box> 
+            {/* <Grid item xs={6} style={{ marginBottom:"-1rem"}}>
               <Box marginBottom ={2.8}>
                 <Button type="submit">  בדיקה</Button> 
               </Box>
           
-            </Grid>
+            </Grid> */}
                 
-        </Grid>
 
-          </Box> 
      
 </form>
+</Grid>
 
-
+  </Box> 
+     
+</form>
     </div>
     </ThemeProvider>
 
