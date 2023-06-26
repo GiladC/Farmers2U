@@ -25,13 +25,15 @@ function FormOtherInfo({values, handleChange, setFormValue, props}) {
   });
   const submitHandler = (e) => {
     e.preventDefault();
-    const openingHours = values.opening_hours.map(p => {
+    const opening_hours = values.opening_hours.map(p => {
       return p && p !== "none" ? p.format() : "none";
     });
-    const closingHours = values.closing_hours.map(p => {
+    let openingHours = opening_hours.join(",");
+
+    const closing_hours = values.closing_hours.map(p => {
       return p && p !== "none" ? p.format() : "none";
     });
-    alert(closingHours)
+    let closingHours = closing_hours.join(",");
     const data = new FormData(); 
     
     data.append("jsonData", JSON.stringify({
