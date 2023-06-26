@@ -4,6 +4,7 @@ import { styled } from '@mui/material/styles';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { TimeField } from '@mui/x-date-pickers/TimeField';
+import dayjs from 'dayjs';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -20,6 +21,8 @@ function FormOpeningHours({values, setFormValue}) {
   farm_pictures, phone_number_official, phone_number_whatsapp, phone_number_telegram, about, address,
   farmer_name, delivery_details, products, farm_site, facebook, instagram
   } = values
+  const [openingTimesNew, setOpeningTimesNew] = useState(Array(7).fill(null));
+  const [closingTimesNew, setClosingTimesNew] = useState(Array(7).fill(null));
   const [openingTimes, setOpeningTimes] = useState(Array(7).fill(null));
   const [closingTimes, setClosingTimes] = useState(Array(7).fill(null));
 
@@ -54,39 +57,21 @@ function FormOpeningHours({values, setFormValue}) {
     return value;
   };
 
-useEffect(() => {
-  if (openingTimes.every(time => time)) { // Check if all openingTimes are set
-    const formattedOpeningHours = openingTimes.map(time => {
-      if (time) {
-        const date = new Date(time);
-        const hours = date.getHours();
-        const minutes = date.getMinutes();
-        return `${hours}:${minutes}`;
-      }
-      return '';
-    }).join(",");
-  
-    setFormValue("opening_hours", formattedOpeningHours);
-    console.log("Opening hours: ", formattedOpeningHours);
+  const handleSetOpeningTimeNew = (index, newValue) => {
+    let inputTime = newValue;
+    const newOpeningTime = [...openingTimesNew];
+    newOpeningTime[index] = inputTime;
+    setOpeningTimesNew(newOpeningTime);
+    setFormValue("opening_hours",newOpeningTime);
+};
+
+  const handleSetClosingTimeNew = (index, newValue) => {
+    const inputTime = newValue;
+    const newClosingTime = [...closingTimesNew];
+    newClosingTime[index] = inputTime
+    setOpeningTimesNew(newClosingTime)
+    setFormValue("closing_hours",newClosingTime)
   }
-}, [openingTimes]);
-  
-useEffect(() => {
-  if (closingTimes.every(time => time)) { // Check if all openingTimes are set
-    const formattedClosingHours = closingTimes.map(time => {
-      if (time) {
-        const date = new Date(time);
-        const hours = date.getHours();
-        const minutes = date.getMinutes();
-        return `${hours}:${minutes}`;
-      }
-      return '';
-    }).join(",");
-  
-    setFormValue("closing_hours", formattedClosingHours);
-    console.log("closing_hours: ", formattedClosingHours);
-  }
-}, [closingTimes]);
 
   return (
     <form autoComplete="off" dir="rtl">
@@ -106,8 +91,8 @@ useEffect(() => {
                       <TimeField
                         direction= 'rtl'
                         label="פתיחה"
-                        value={openingTimes[index]}
-                        onChange={(newValue) => handleChangeOpeningTime(index, newValue)}
+                        value={openingTimesNew[index]}
+                        onChange={(newValue) => handleSetOpeningTimeNew(index, newValue)}
                         format='HH:mm'
                         sx={{
                           "& label":{left: "unset",
@@ -122,22 +107,20 @@ useEffect(() => {
                     </Paper>
                   </Box>
                   <Paper>
-                    <TimeField
-                      label="סגירה"
-                      value={closingTimes[index]}
-                      onChange={(newValue) => handleChangeClosingTime(index, newValue)}
-                      format='HH:mm'
-                      sx={{
-                        "& label":{left: "unset",
-                        right: "1.75rem",
-                        transformOrigin: "right"},
-                        "& legend": {
-                          textAlign: "right",
-                        },
-                        width: '150px',
-                      }}
-                    />
-                  </Paper>
+                  <TimeField
+                    label="סגירה"
+                    value={closingTimesNew[index]}
+                    onChange={(newValue) => handleSetClosingTimeNew(index, newValue)}
+                    format='HH:mm'
+                    sx={{
+                      "& label": { left: "unset", right: "1.75rem", transformOrigin: "right" },
+                      "& legend": {
+                        textAlign: "right",
+                      },
+                      width: '150px',
+                    }}
+                  />
+                </Paper>
                 </Box>
               </LocalizationProvider>
             </Grid>
