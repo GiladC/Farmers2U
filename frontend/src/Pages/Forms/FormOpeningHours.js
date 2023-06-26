@@ -2,6 +2,16 @@ import React from 'react';
 import { TextField, Box, Typography, Grid, Paper } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useState } from 'react';
+import WorkingHours from '../../components/Settings/workingHours'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { TimeField } from '@mui/x-date-pickers/TimeField';
+
+// export default function WorkingHours({day}) {
+//   const [value, setValue] = React.useState(null);
+//   // const [value2, setValue2] = React.useState(dayjs('2022-04-17T17:300'));
+//   const [value2, setValue2] = React.useState(null);
+
 
 {/*const useStyles = makeStyles({
   transparentBackground: {
@@ -21,11 +31,13 @@ const Item = styled(Paper)(({ theme }) => ({
 function FormOpeningHours(values, handleChange) {
   {/*const classes = useStyles();*/}
   console.log(values, handleChange);
+
   const [openingTimes, setOpeningTimes] = useState(['', '', '', '', '', '', '']); // Opening times for each day
   const [closingTimes, setClosingTimes] = useState(['', '', '', '', '', '', '']); // Closing times for each day
-
-  const handleChangeOpeningTime = (dayIndex, event) => {
-    const inputTime = event.target.value;
+  const days = ['ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי', 'שבת'];
+  const handleChangeOpeningTime = (dayIndex, inputTime) => {
+    //const inputTime = event.target.value;
+    console.log(inputTime);
 
     // Check if the entered time matches the format "HH:MM"
     const isValidTime = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(inputTime);
@@ -35,11 +47,14 @@ function FormOpeningHours(values, handleChange) {
       newOpeningTimes[dayIndex] = inputTime;
       setOpeningTimes(newOpeningTimes);
       alert(newOpeningTimes)
+
     }
+    console.log(openingTimes);
+
   };
 
-  const handleChangeClosingTime = (dayIndex, event) => {
-    const inputTime = event.target.value;
+  const handleChangeClosingTime = (dayIndex, inputTime) => {
+    //const inputTime = event.target.value;
 
     // Check if the entered time matches the format "HH:MM"
     const isValidTime = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(inputTime);
@@ -49,76 +64,81 @@ function FormOpeningHours(values, handleChange) {
       newClosingTimes[dayIndex] = inputTime;
       setClosingTimes(newClosingTimes);
     }
+    console.log(closingTimes);
+
   };
+  const resetOpeningTime = (dayIndex) => {
+    const newOpeningTimes = [...openingTimes];
+    newOpeningTimes[dayIndex] = '';
+    setOpeningTimes(newOpeningTimes);
+  };
+  
+  const resetClosingTime = (dayIndex) => {
+    const newClosingTimes = [...closingTimes];
+    newClosingTimes[dayIndex] = '';
+    setClosingTimes(newClosingTimes);
+  };
+  
 
   return (
     <form autoComplete="off" dir="rtl">
       <Box style={{ marginBottom: '20px'}} marginTop={5}  bgcolor="#f7f1e5" boxShadow={0} borderRadius={2} border={2} display="flex" flexDirection="column" height={140} width={1300} alignItems="center" justifyContent="center" mt={3.8} mr={2.3} padding={20} sx={{ border: '1.5px solid #f7f1e5' }}>
         <Typography color="#37474f" fontFamily="aleph" fontWeight="bold" fontSize={50} marginTop="-9rem" variant="h3" textAlign="center">הרשמת חקלאי</Typography>
         <Typography color="#37474f" fontFamily="aleph" minHeight={45} fontWeight="bold" fontSize={22} marginBottom={2} marginTop={3} variant="h2" textAlign="center">שלב 5 - שעות פתיחה וימי פעילות</Typography>
-        <Grid container spacing={17.87} mr={6.9} mt={3} mb={-2}>
-          <Grid item xs={1} ></Grid>
-          <Box ml={13.7} mr={.5}>
-            <Typography color="#37474f" fontFamily="aleph" fontWeight="bold" fontSize={20}>ראשון</Typography>
-          </Box>
-          <Box ml={13.4}>
-            <Typography color="#37474f" fontFamily="aleph" fontWeight="bold" fontSize={20}>שני</Typography>
-          </Box>
-          <Box ml={12.2}>
-            <Typography color="#37474f" fontFamily="aleph" fontWeight="bold" fontSize={20}>שלישי</Typography>
-          </Box>
-          <Box ml={12.2}>
-            <Typography color="#37474f" fontFamily="aleph" fontWeight="bold" fontSize={20}>רביעי</Typography>
-          </Box>
-          <Box ml={12.5}>
-            <Typography color="#37474f" fontFamily="aleph" fontWeight="bold" fontSize={20}>חמישי</Typography>
-          </Box>
-          <Box ml={13.5}>
-            <Typography color="#37474f" fontFamily="aleph" fontWeight="bold" fontSize={20}>שישי</Typography>
-          </Box>
-          <Box ml={12.5}>
-            <Typography color="#37474f" fontFamily="aleph" fontWeight="bold" fontSize={20}>שבת</Typography>
-          </Box>
-        </Grid>
-        <Grid container spacing={0} alignItems="center" mt={-10}>
-          <Box item xs={1}>
-            <Typography color="#37474f" fontFamily="aleph" fontWeight="bold" fontSize={20}>שעת פתיחה</Typography>
-          </Box>
-          {openingTimes.map((openingTime, index) => (
-            <Grid item xs={1.1} key={index} mr={4}>
-              <TextField
-                sx={{ backgroundColor: '#fff', width: '100%' }}
-                value={openingTime}
-                type="time"
-                onChange={(event) => handleChangeOpeningTime(index, event)}
-                placeholder="10:00"
-                variant="outlined"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </Grid>
-          ))}
-        </Grid>
-        <Grid container spacing={0} alignItems="center">
-          <Box item xs={1} >
-            <Typography color="#37474f" fontFamily="aleph" fontWeight="bold" fontSize={20} mt={3} mr={.4} ml={.4}>שעת סגירה</Typography>
-          </Box>
-          {closingTimes.map((closingTime, index) => (
-            <Grid item xs={1.1} key={index} mr={4} mt={3}>
-              <TextField
-                sx={{ backgroundColor: '#fff', width: '100%' }}
-                value={closingTime}
-                type="time"
-                onChange={(event) => handleChangeClosingTime(index, event)}
-                placeholder="17:00"
-                variant="outlined"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </Grid>
-          ))}
+        <Grid container spacing={22} mr={24}>
+        {days.map((day, index) => (
+            <Grid item xs={1} key={day}>
+    <LocalizationProvider dateAdapter={AdapterDayjs} >
+      <Box gap={2} display= 'flex' flexDirection='column'  gridTemplateColumns= '1fr 3fr 3fr' paddingTop={2} paddingRight={2} paddingLeft={2} sx={{direction: 'rtl'}} direction= 'row' alignItems= 'center'>
+        <Typography variant='h5' fontFamily="aleph" color= 'rgb(2, 0, 99)' fontSize={20} fontWeight= {540}>
+          {day}
+          </Typography>
+      <Box position="relative">
+      <Paper>
+        <TimeField
+          direction= 'rtl'
+          label="פתיחה"
+          value={null}
+          onChange={(event) => handleChangeOpeningTime(index, event)}
+          //value={value}
+          //onChange={(newValue) => setValue(newValue)}
+          format='HH:mm'
+          sx={{
+          "& label":{left: "unset",
+          right: "1.75rem",
+          transformOrigin: "right"},
+          "& legend": {
+            textAlign: "right",
+          },
+          width: '150px',
+          }}
+        />
+        </Paper>
+      {/* <button style={{position: 'absolute', bottom: 0, left: 0}} onClick={() => resetOpeningTime(index)}>X</button> */}
+      </Box>
+      <Paper>
+        <TimeField
+          label="סגירה"
+          value={null}
+          onChange={(event) => handleChangeClosingTime(index, event)}
+          //value={value2}
+          //onChange={(newValue) => setValue2(newValue)}
+          format='HH:mm'
+          sx={{
+          "& label":{left: "unset",
+          right: "1.75rem",
+          transformOrigin: "right"},
+          "& legend": {
+            textAlign: "right",
+          },
+          width: '150px',
+          }}
+        />
+        </Paper>
+      </Box>
+    </LocalizationProvider>
+    </Grid>
+        ))}
         </Grid>
       </Box>
     </form>
