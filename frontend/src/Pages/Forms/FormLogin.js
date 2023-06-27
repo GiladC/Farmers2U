@@ -72,14 +72,17 @@ const FormLogin = (props) => {
         client_id: '814952910063-shd06kmdd43a83r3etfpq73gqi0ddf5m.apps.googleusercontent.com',
         callback: handleCallbackResponse
       });
-
+  
       window.google.accounts.id.renderButton(document.getElementById('signInDiv'), {
         theme: 'outline',
         size: 'large'
       });
+    } else {
+      // Google's library is not loaded yet, let's try again in a moment
+      setTimeout(initializeGoogleSignIn, 5);
     }
   };
-
+  
   useEffect(() => {
     initializeGoogleSignIn();
   }, []);
