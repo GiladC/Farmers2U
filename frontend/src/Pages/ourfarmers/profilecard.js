@@ -51,7 +51,7 @@ const dummyBusiness = {
 };
 
 
-const FarmCard = ({ farmName, Image, location, fullProfile, style }) => {
+const FarmCard = ({Image, business, style }) => {
   const [isHovered, setIsHovered] = React.useState(false);
 
   const handleMouseEnter = () => {
@@ -96,7 +96,7 @@ const FarmCard = ({ farmName, Image, location, fullProfile, style }) => {
         >
           <img
             src={Image}
-            alt={farmName}
+            alt={business.name}
             style={{
               width: '100%',
               height: '100%',
@@ -107,12 +107,12 @@ const FarmCard = ({ farmName, Image, location, fullProfile, style }) => {
         </div>
         <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <Typography gutterBottom variant="h5" component="div" sx={{fontFamily: "aleph", fontSize: '1.35rem' }} style={{ marginTop: '-30px' }}>
-            {farmName}
+            {business.farm_name}
           </Typography>
           <div style={{ display: 'flex', alignItems: 'center', marginTop: '-14px' }}>
             <Typography variant="body2" color="text.secondary" sx={{fontFamily: "aleph", fontSize: '1rem' }} style={{ marginTop: '10px' }}>
               <LocationOnIcon sx={{ fontSize: 18, marginLeft: '8px' }} />
-              {location}
+              {business.location}
             </Typography>
           </div>
           <Button
@@ -134,7 +134,7 @@ const FarmCard = ({ farmName, Image, location, fullProfile, style }) => {
             לפרטים נוספים
           </Button>
         <BusinessCard
-          business={dummyBusiness}
+          business={business}
           image={Image}
           open={isBusinessCardOpen}
           close={()=>setBusinessCardOpen(false)} />
