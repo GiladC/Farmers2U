@@ -69,7 +69,7 @@ function FormOpeningHours({values, setFormValue}) {
     const inputTime = newValue;
     const newClosingTime = [...closingTimesNew];
     newClosingTime[index] = inputTime
-    setOpeningTimesNew(newClosingTime)
+    setClosingTimesNew(newClosingTime)
     setFormValue("closing_hours",newClosingTime)
   }
 
