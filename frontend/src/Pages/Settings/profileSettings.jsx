@@ -387,7 +387,14 @@ const ProfileSettings = (props) => {
             setFridayClosing(checkNull(close[5], null, false));
             setSaturdayClosing(checkNull(close[6], null, false));
 
-            const types = res.types_of_products.split(',');
+            const products_list = res.type_of_products.split(',');
+            let types = null;
+            if(products_list === ['']){
+                types = [];
+            }
+            else{
+                types = products_list;
+            }
             const indexes = types.map(t => labels.indexOf(t));
             const newArr = Array(9).fill(false).map((a,index) => {
                 if(indexes.includes(index)){
@@ -397,11 +404,8 @@ const ProfileSettings = (props) => {
                     return a;
                 }
             });
-            console.log("hello");
-            console.log(newArr);
 
             setChecked(newArr);
-
             setSelectedItems(types);
 
             
