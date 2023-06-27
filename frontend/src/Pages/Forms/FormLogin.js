@@ -130,7 +130,7 @@ const FormLogin = (props) => {
         <Box marginTop={5}>
           <form> 
             <Box>
-            <div id="signInDiv" style={{marginRight:'27%', paddingTop: '25px'}}></div>
+            <div id="signInDiv" style={{marginRight:'0%', paddingTop: '25px'}}></div>
             </Box>
           </form>
           {errorMessage && (
@@ -147,7 +147,7 @@ const FormLogin = (props) => {
               {errorMessage}
             </Box>
           )}
-          <Box mt={1}>
+          <Box mt={1} marginRight={-20}>
           <Button
             variant="text"
             size="medium"
