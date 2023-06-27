@@ -80,7 +80,7 @@ function App() {
                 } />
                 <Route path="/settings" element={
                   <>
-                    <ProfileSettings />
+                    <ProfileSettings token={token} setToken={setToken} />
                   </>
                 } />
               </>
