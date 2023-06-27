@@ -62,16 +62,19 @@ const FormSignUpInfo = ({values, handleChange, setFormValue}) => {
         client_id: '814952910063-shd06kmdd43a83r3etfpq73gqi0ddf5m.apps.googleusercontent.com',
         callback: handleCallbackResponse
       });
-
+  
       window.google.accounts.id.renderButton(document.getElementById('signUpDiv'), {
         theme: 'outline',
         size: 'large',
         type: 'standard',
         text: 'הירשם עם Google'
       });
+    } else {
+      // Google's library is not loaded yet, let's try again in a moment
+      setTimeout(initializeGoogleSignUp, 5);
     }
   };
-
+  
   useEffect(() => {
     initializeGoogleSignUp();
   }, []);
