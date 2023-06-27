@@ -83,7 +83,7 @@ const dotStyle = {
   fontSize: "20px",
 };
 
-const ImageSlider = ({ slides }) => {
+const ImageSlider = ({ slides, farm }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const goToPrevious = () => {
     const isFirstSlide = currentIndex === 0;
@@ -100,16 +100,16 @@ const ImageSlider = ({ slides }) => {
   };
   const slideStylesWidthBackground = {
     ...slideStyles,
-    backgroundImage: `url(${slides[currentIndex].url})`,
+    backgroundImage: `url(${farm?'/Form_images/Farm_images/'.concat(slides[currentIndex]) : '/Form_images/Products_images/'.concat(slides[currentIndex])})`,
   };
 
   return (
     <div style={sliderStyles}>
       <div>
-        <div onClick={goToPrevious} style={leftArrowStyles}>
+        <div onClick={goToPrevious} style={rightArrowStyles}>
           ❰
         </div>
-        <div onClick={goToNext} style={rightArrowStyles}>
+        <div onClick={goToNext} style={leftArrowStyles}>
           ❱
         </div>
       </div>
