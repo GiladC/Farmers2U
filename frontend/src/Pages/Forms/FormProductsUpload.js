@@ -22,7 +22,96 @@ const themeForButton = createTheme({
     addPicture: createColor('#f7f1e5'),
   },
 });
-function CheckboxMenu() {
+
+function CheckboxMenu(props) {
+
+  
+  return (
+    <div>
+      <Button disableRipple variant="contained" color="white" onClick={props.handleClick}
+       style={{
+        width: "580px",
+        height: "50px",
+        border: "1px solid #bdbdbd", 
+        overflowX: "scroll", 
+        whiteSpace: "nowrap", 
+        display: "flex", 
+        alignItems: "center", 
+       justifyContent: "flex-start", 
+       background: "#FFFFFF",
+       '&:hover': {
+        color: 'initial',
+        backgroundColor: 'initial !important'
+       }, }}>
+
+      {Boolean(props.anchorEl) ? <RemoveIcon /> : <AddIcon />}
+      <Typography style={{ color: '#37474f', fontSize: '15px', fontFamily: 'aleph' }}>
+      {props.selectedItems.length > 0 ? 
+          <div style={{ display: 'flex', flexWrap: 'nowrap' }}>
+            {props.selectedItems.map((item, index) => (
+              <div key={index} style={{ backgroundColor: '#f5f5f5', margin: '5px', padding: '5px' }}>
+                {item }
+                <span style={{ cursor: 'pointer', marginRight: '10px' }} onClick={(event) => props.handleRemove(event,item)}>
+                  x
+                </span>
+              </div>
+            ))}
+          </div>
+          : 'אילו סוגי מוצרים אתם מוכרים?'}
+            </Typography>
+        </Button>
+      <Menu
+        id="checkbox-menu"
+        anchorEl={props.anchorEl}
+        keepMounted
+        dir="rtl"
+        open={Boolean(props.anchorEl)}
+        onClose={props.handleClose}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }} // Position where the menu will be attached
+        transformOrigin={{ vertical: 'top', horizontal: 'left' }}  // Position from where the menu will appear
+        PaperProps={{
+          style: {
+            maxHeight: 200, // Sets the maximum height for menu
+            width: '57.7ch',
+            flexGrow:1,
+            
+          },
+        }}
+      >
+      <Grid container rowSpacing={1} columnSpacing={-5}>
+      {props.labels.map((label, i) => (
+          <Grid item xs={4} key={i}>
+          <MenuItem  onClick={(event) => event.stopPropagation()}>
+            <FormControlLabel
+              control={<Checkbox checked={props.checked[i]} onChange={() => props.handleToggle(i)} color={props.checked[i] ? 'button' : 'default'}/>}
+              label={label}
+
+            />
+          </MenuItem>
+          </Grid>
+        ))}
+            </Grid>
+    <div style={{ borderTop: '1px solid #ccc', marginTop: '10px', paddingTop: '10px' }}>
+      {props.selectedItems.join(', ')}
+    </div>
+      </Menu>
+      {/*<div style={{ display: 'flex', flexWrap: 'wrap' }}>
+        <strong></strong>
+        {selectedItems.map((item, index) => (
+          <div key={index} style={{ backgroundColor: '#f5f5f5', margin: '5px', padding: '5px' }}>
+            {item }
+            <span style={{ cursor: 'pointer', marginRight: '10px' }} onClick={() => handleRemove(item)}>
+              x
+            </span>
+          </div>
+        ))}
+        </div>*/}
+    </div>
+
+  );
+}
+
+function FormProductsUpload({values, handleChange, setFormValue}) {
   const labels = ["ירקות", "פירות", "גבינות ומוצרי חלב", "ביצים", "דבש", "צמחים", "יינות ושמן זית", "תבלינים", "דגנים"];
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [checked, setChecked] = React.useState(
@@ -53,6 +142,7 @@ function CheckboxMenu() {
       } else {
         newSelectedItems.push(labels[index]);
       }
+      setFormValue("types_of_products", newSelectedItems.join())
       return newSelectedItems;
     });
   };
@@ -69,98 +159,10 @@ function CheckboxMenu() {
       const newSelectedItems = [...prevSelectedItems];
       const itemIndex = newSelectedItems.indexOf(label);
       newSelectedItems.splice(itemIndex, 1);
+      setFormValue("types_of_products", newSelectedItems.join())
       return newSelectedItems;
     });
   };
-
-    
-  
-  return (
-    <div>
-      <Button disableRipple variant="contained" color="white" onClick={handleClick}
-       style={{
-        width: "580px",
-        height: "50px",
-        border: "1px solid #bdbdbd", 
-        overflowX: "scroll", 
-        whiteSpace: "nowrap", 
-        display: "flex", 
-        alignItems: "center", 
-       justifyContent: "flex-start", 
-       background: "#FFFFFF",
-       '&:hover': {
-        color: 'initial',
-        backgroundColor: 'initial !important'
-       }, }}>
-
-      {Boolean(anchorEl) ? <RemoveIcon /> : <AddIcon />}
-      <Typography style={{ color: '#37474f', fontSize: '15px', fontFamily: 'aleph' }}>
-      {selectedItems.length > 0 ? 
-          <div style={{ display: 'flex', flexWrap: 'nowrap' }}>
-            {selectedItems.map((item, index) => (
-              <div key={index} style={{ backgroundColor: '#f5f5f5', margin: '5px', padding: '5px' }}>
-                {item }
-                <span style={{ cursor: 'pointer', marginRight: '10px' }} onClick={(event) => handleRemove(event,item)}>
-                  x
-                </span>
-              </div>
-            ))}
-          </div>
-          : 'אילו סוגי מוצרים אתם מוכרים?'}
-            </Typography>
-        </Button>
-      <Menu
-        id="checkbox-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        dir="rtl"
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }} // Position where the menu will be attached
-        transformOrigin={{ vertical: 'top', horizontal: 'left' }}  // Position from where the menu will appear
-        PaperProps={{
-          style: {
-            maxHeight: 200, // Sets the maximum height for menu
-            width: '57.7ch',
-            flexGrow:1,
-            
-          },
-        }}
-      >
-      <Grid container rowSpacing={1} columnSpacing={-5}>
-      {labels.map((label, i) => (
-          <Grid item xs={4} key={i}>
-          <MenuItem  onClick={(event) => event.stopPropagation()}>
-            <FormControlLabel
-              control={<Checkbox checked={checked[i]} onChange={() => handleToggle(i)} color={checked[i] ? 'button' : 'default'}/>}
-              label={label}
-
-            />
-          </MenuItem>
-          </Grid>
-        ))}
-            </Grid>
-    <div style={{ borderTop: '1px solid #ccc', marginTop: '10px', paddingTop: '10px' }}>
-      {selectedItems.join(', ')}
-    </div>
-      </Menu>
-      {/*<div style={{ display: 'flex', flexWrap: 'wrap' }}>
-        <strong></strong>
-        {selectedItems.map((item, index) => (
-          <div key={index} style={{ backgroundColor: '#f5f5f5', margin: '5px', padding: '5px' }}>
-            {item }
-            <span style={{ cursor: 'pointer', marginRight: '10px' }} onClick={() => handleRemove(item)}>
-              x
-            </span>
-          </div>
-        ))}
-        </div>*/}
-    </div>
-
-  );
-}
-
-function FormProductsUpload({values, handleChange, setFormValue}) {
   console.log(values, handleChange);
   const additionalItems = ['אורגני', 'טבעוני'];
   const [image, setImage] = useState(null);
@@ -333,7 +335,18 @@ function FormProductsUpload({values, handleChange, setFormValue}) {
   <Grid item xs={12} style={{ marginBottom:"-1.2rem"}}>
   <Box marginBottom={2} marginTop={8} style={{ marginBottom:"-1rem"}}>
   <Box mb={2} dir="rtl">
-    <CheckboxMenu />
+    <CheckboxMenu
+     anchorEl={anchorEl}
+    selectedItems={selectedItems}
+    setSelectedItems={setSelectedItems}
+    handleToggle={handleToggle}
+    handleClick={handleClick}
+    handleClose={handleClose}
+    handleRemove={handleRemove}
+    setChecked={setChecked}
+    checked={checked}
+    labels={labels}
+     />
   {/* <Typography color="#757575"fontFamily="aleph" marginTop={1} > מוכרים מוצרים מיוחדים? סמנו כאן! </Typography>
     <Box>
         <Grid container justifyContent="space-around">
