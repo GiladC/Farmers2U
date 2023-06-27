@@ -48,6 +48,8 @@ def filterTheFarmers():
             if (shipping and cond_dist(result, int(farmer.shipping_distance))) or (not(shipping) and cond_dist(result, int(dist))):
                 products_pictures = farmer.products_pictures.split(',')
                 farm_pictures = farmer.farm_pictures.split(',')
+                opening_hours = farmer.opening_hours.split(',')
+                closing_hours = farmer.closing_hours.split(',')
                 dict = {
                         "id": farmer.id,
                         "farm_name": farmer.farm_name,
@@ -66,6 +68,8 @@ def filterTheFarmers():
                         "farm_images_list": farm_pictures,
                         "farmer_name" : farmer.farmer_name,
                         "delivery_details" : farmer.delivery_details,
+                        "opening_hours": opening_hours,
+                        "closing_hours": closing_hours
                     }
                 good_farmers.append(dict)
         
