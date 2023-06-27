@@ -1,7 +1,7 @@
 import datetime
 from flask import  Blueprint, request, jsonify
 from app import app
-from models import Post  
+from models import Post, User  
 from geopy.distance import geodesic
 
 
@@ -62,8 +62,25 @@ def filter_posts():
             if dist > int(data['distance']):
                 continue
 
+        user = User.query.filter_by(email=post.email).first()
+        opening_hours= user.opening_hours.split(',')
+        closing_hours= user.closing_hours.split(',')
         post_dict = {
             'farmName': post.farmName,
+            'farm_address': user.address,
+            'phone': user.phone_number_official,
+            'email': post.email,
+            'about': user.about,
+            'prices': user.products,
+            'delivery_details': user.delivery_details,
+            'farm_images_list': user.farm_pictures.split(','),
+            'products_images_list': user.products_pictures.split(','),
+            'whatsapp': user.phone_number_whatsapp,
+            'instagram': user.instagram,
+            'facebook': user.facebook,
+            'farm_site': user.farm_site,
+            'opening_hours': opening_hours,
+            'closing_hours': closing_hours,
             'profilePicture': post.profilePicture,
             'photo': post.photo,
             'desc': post.desc,
