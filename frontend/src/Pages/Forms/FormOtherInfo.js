@@ -54,7 +54,7 @@ function FormOtherInfo({values, handleChange, setFormValue, props}) {
       phone_number_whatsapp: values.phone_number_whatsapp,
       phone_number_telegram: "0",
       address: values.address,
-      types_of_products: "",
+      types_of_products: values.types_of_products,
       farmer_name: values.farmer_name,
       delivery_details: values.delivery_details,
       products: values.products,
