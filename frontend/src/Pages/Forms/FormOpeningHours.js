@@ -76,8 +76,10 @@ function FormOpeningHours({values, setFormValue}) {
   return (
     <form autoComplete="off" dir="rtl">
       <Box style={{ marginBottom: '20px'}} marginTop={5}  bgcolor="#f7f1e5" boxShadow={0} borderRadius={2} border={2} display="flex" flexDirection="column" height={140} width={1300} alignItems="center" justifyContent="center" mt={3.8} mr={2.3} padding={20} sx={{ border: '1.5px solid #f7f1e5' }}>
+        <Box style={{ marginBottom: '19px'}}>
         <Typography color="#37474f" fontFamily="aleph" fontWeight="bold" fontSize={50} marginTop="-9rem" variant="h3" textAlign="center">הרשמת חקלאי</Typography>
         <Typography color="#37474f" fontFamily="aleph" minHeight={45} fontWeight="bold" fontSize={22} marginBottom={2} marginTop={3} variant="h2" textAlign="center">שלב 5 - שעות פתיחה וימי פעילות</Typography>
+        </Box>
         <Grid container spacing={22} mr={24}>
         {days.map((day, index) => (
             <Grid item xs={1} key={day}>
