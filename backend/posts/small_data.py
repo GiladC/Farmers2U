@@ -12,6 +12,6 @@ def small_data():
     user = User.query.filter_by(email=data['email']).first()
 
 
-    small_data = { 'profilePicture': None, 'profileName': user.farmName }
+    small_data = { 'profilePicture': user.logo_picture, 'profileName': user.farm_name }
     print(small_data)
-    return jsonify(small_data), 201
+    return jsonify(small_data), 200

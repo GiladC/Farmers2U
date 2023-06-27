@@ -89,7 +89,7 @@ def create_post():
         
         post_image_filename = generate_unique_filename(secure_filename(post_image.filename))
         #post_image_path = os.path.join('posts', 'post_images', post_image_filename)
-        post_image_path = os.path.join('..', 'farmers2u_proj', 'public', 'Board_images', post_image_filename)
+        post_image_path = os.path.join('..', 'farmers_private', 'public', 'Board_images', post_image_filename)
         post_image.save(post_image_path)
 
 
@@ -105,8 +105,8 @@ def create_post():
         product_types = product_types.split(',')
     
     new_post = Post(
-        farmName = user.farmName,
-        profilePicture = None, #profilePicture = user.profilePicture,
+        farmName = user.farm_name,
+        profilePicture = user.logo_picture, #profilePicture = user.profilePicture,
         photo = post_image_filename,
         desc = data.get('text'),
         date = current_time.date(),

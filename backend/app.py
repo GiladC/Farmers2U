@@ -7,7 +7,7 @@ from flask_jwt_extended import create_access_token, get_jwt, get_jwt_identity, u
 from models import db, User
 from werkzeug.utils import secure_filename #pip install Werkzeug
 import json
-from flask_migrate import Migrate
+# from flask_migrate import Migrate
 
  
 app = Flask(__name__)
@@ -25,10 +25,10 @@ bcrypt = Bcrypt(app)
 CORS(app, supports_credentials=True)
 db.init_app(app)
   
-#with app.app_context():
-#    db.create_all()
+with app.app_context():
+   db.create_all()
 
-migrate = Migrate(app, db)
+# migrate = Migrate(app, db)
 
 from posts.routes import posts_blueprint
 app.register_blueprint(posts_blueprint)
@@ -42,8 +42,16 @@ app.register_blueprint(posts_filter_blueprint)
 from posts.small_data import smalldata_blueprint
 app.register_blueprint(smalldata_blueprint)
 
+from posts.user_posts import userposts_blueprint
+app.register_blueprint(userposts_blueprint)
 
-UPLOAD_FOLDER = os.path.join('..','frontend', 'public', 'Form_images','Logo_image')
+from busCard import business_blueprint
+app.register_blueprint(business_blueprint)
+
+from farmFilt import farmfilter_blueprint
+app.register_blueprint(farmfilter_blueprint)
+
+UPLOAD_FOLDER = os.path.join('..', 'farmers_private', 'public', 'Form_images','Logo_image')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
@@ -167,13 +175,13 @@ def signup():
             print(files[i].filename)
             image_filename = generate_unique_filename(files[i].filename)
             if labels[i] == "1":           
-                files[i].save(os.path.join('..', 'frontend', 'public', 'Form_images', 'Logo_image', image_filename))
+                files[i].save(os.path.join('..','farmers_private', 'public', 'Form_images', 'Logo_image', image_filename))
                 logo_image.append(image_filename)
             if labels[i] == "2":  
-                files[i].save(os.path.join('..', 'frontend', 'public', 'Form_images', 'Products_images', image_filename))
+                files[i].save(os.path.join('..','farmers_private', 'public', 'Form_images', 'Products_images', image_filename))
                 products_images.append(image_filename)
             if labels[i] == "3":
-                files[i].save(os.path.join('..', 'frontend', 'public', 'Form_images', 'Farm_images', image_filename))
+                files[i].save(os.path.join('..','farmers_private', 'public', 'Form_images', 'Farm_images', image_filename))
                 farm_images.append(image_filename)
 
             logo_image_string = ','.join(logo_image)
@@ -303,9 +311,9 @@ def my_profile(getemail):
         "google_family_name": user.google_family_name,
         "farmName": user.farmName,
         "about" : user.about,
-        "phoneNumber_official": user.phoneNumber_official,
-        "phoneNumber_whatsapp": user.phoneNumber_whatsapp,
-        "phoneNumber_telegram": user.phoneNumber_telegram,
+        "phoneNumber_official": user.phone_number_official,
+        "phoneNumber_whatsapp": user.phone_number_whatsapp,
+        "phoneNumber_telegram": user.phone_number_telegram,
         "address" : user.address,
         "farmerName" : user.farmerName,
         "delivery_details" : user.delivery_details,
@@ -316,6 +324,77 @@ def my_profile(getemail):
     }
   
     return response_body
+
+@app.route('/settings/<getemail>')
+@jwt_required() 
+def my_settings(getemail):
+    print(getemail)
+    if not getemail:
+        return jsonify({"error": "Unauthorized Access"}), 401
+    user = User.query.filter_by(email=getemail).first()
+    products_pictures = user.products_pictures.split(',')
+    farm_pictures = user.farm_pictures.split(',')
+    response_body = {
+        "id": user.id,
+        "google_profile_picture": user.google_profile_picture,
+        "google_name": user.google_name,
+        "google_family_name": user.google_family_name,
+        "logo_picture": user.logo_picture,
+        "farm_name": user.farm_name,
+        "about" : user.about,
+        "phone_number_official": user.phone_number_official,
+        "phone_number_whatsapp": user.phone_number_whatsapp,
+        "phone_number_telegram": user.phone_number_telegram,
+        "address" : user.address,
+        "farmer_name" : user.farmer_name,
+        "delivery_details" : user.delivery_details,
+        "products" : user.products,
+        "farm_site" : user.farm_site,
+        "facebook" : user.facebook,
+        "instagram" : user.instagram,
+        "is_shipping" : user.is_shipping,
+        "shipping_distance" : user.shipping_distance,
+        "products_images_list": products_pictures,
+        "farm_images_list": farm_pictures,
+        "opening_hours": user.opening_hours,
+        "closing_hours": user.closing_hours,
+        'types_of_products' : user.types_of_products
+    }
+  
+    return response_body
+
+@app.route('/settings/<getemail>', methods=["PUT"])
+@jwt_required() 
+def update_my_settings(getemail):
+    print(getemail)
+    if not getemail:
+        return jsonify({"error": "Unauthorized Access"}), 401
+    user = User.query.filter_by(email=getemail).first()
+    # user.logo_picture = request.json['logo_picture']
+    user.farm_name = request.json['farm_name']
+    user.facebook = request.json['facebook']
+    user.instagram = request.json["instagram"]
+    user.farm_site = request.json["farm_site"]
+    user.about = request.json['about']
+    user.phone_number_official = request.json['phone_number_official']
+    user.phone_number_whatsapp = request.json['phone_number_whatsapp']
+    # user.phone_number_telegram = request.json['phone_number_telegram']
+    user.address = request.json['address']
+    user.farmer_name = request.json['farmer_name']
+    user.delivery_details = request.json['delivery_information']
+    user.products = request.json['products']
+    user.is_shipping = request.json['is_shipping']
+    user.shipping_distance = request.json['shipping_distance']
+    user.opening_hours = request.json["opening_hours"]
+    user.closing_hours = request.json["closing_hours"]
+    user.types_of_products = request.json['types_of_products']
+    
+    db.session.commit()
+
+    return jsonify({
+        "id": user.id,
+        "email": user.email
+    })
 
  
 if __name__ == "__main__":
