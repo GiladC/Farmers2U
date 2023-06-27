@@ -1,7 +1,7 @@
 
 import styled from '@emotion/styled'
-import { Email, Facebook, Home, Instagram, Phone, WhatsApp } from '@mui/icons-material'
-import { Box, Button, Container, Modal, Rating, Stack, TextField, Typography } from '@mui/material'
+import { Email, Facebook, Home, Instagram, Language, Phone, WhatsApp } from '@mui/icons-material'
+import { Box, Button, Container, IconButton, Modal, Rating, Stack, TextField, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import './businessCard.css'
 import Price from '../../components/prices/prices'
@@ -15,6 +15,7 @@ import image5 from '../../DummyData/ProfilePageImages/image5.jpg'
 
 
 import Work from '../days/work'
+import dayjs from 'dayjs'
 
 const StyledModal = styled(Modal)({
     direction: 'rtl',
@@ -34,19 +35,48 @@ const slides = [
     { url: image5 },
   ];
 
-const days = {
-    sunday: '08:00 - 17:00',
-    monday: '08:00 - 17:00',
-    tuesday: '08:00 - 17:00',
-    wednesday: '08:00 - 17:00',
-    thursday: '08:00 - 17:00',
-    friday: 'סגור',
-    saturday: 'סגור',
-};
+// const days = {
+//     sunday: '08:00 - 17:00',
+//     monday: '08:00 - 17:00',
+//     tuesday: '08:00 - 17:00',
+//     wednesday: '08:00 - 17:00',
+//     thursday: '08:00 - 17:00',
+//     friday: 'סגור',
+//     saturday: 'סגור',
+// };
 
 export default function BusinessCard({image, business, open, close}){
     // const [open, setOpen] = useState(false)
+    function addZero(val) {
+        const ret = val < 10 ? "0" + val : val;
+        return ret;
+    }
 
+    function hoursFormat(start, end){
+        if(start === "none" || end === "none "){
+            return "סגור";
+        }
+        else{
+            return addZero(dayjs(end).hour()) + ":" + addZero(dayjs(end).minute()) + " - " + addZero(dayjs(start).hour()) + ":" + addZero(dayjs(start).minute())
+        }
+    }
+    const sunday = hoursFormat(business.opening_hours[0], business.closing_hours[0])
+    const monday = hoursFormat(business.opening_hours[1], business.closing_hours[1])
+    const tuesday = hoursFormat(business.opening_hours[2], business.closing_hours[2])
+    const wednesday = hoursFormat(business.opening_hours[3], business.closing_hours[3])
+    const thursday = hoursFormat(business.opening_hours[4], business.closing_hours[4])
+    const friday = hoursFormat(business.opening_hours[5], business.closing_hours[5])
+    const saturday = hoursFormat(business.opening_hours[6], business.closing_hours[6])
+
+    const days = {
+        sunday : sunday,
+        monday: monday,
+        tuesday: tuesday,
+        wednesday: wednesday,
+        thursday: thursday,
+        friday: friday,
+        saturday: saturday
+    }
   return (
     <div>
         <StyledModal
@@ -62,8 +92,8 @@ export default function BusinessCard({image, business, open, close}){
                 <Container sx={{display: 'grid', gridTemplateColumns: '1fr 0fr', direction: 'rtl'}}>
                     <Box>
                         <Box sx={{direction: 'rtl', flex: '7', paddingRight: '200px', justifyContent: 'center', alignContent: 'center'}}>
-                            <h1>{business.name}</h1>
-                            <div className="products">
+                            <h1>{business.farm_name}</h1>
+                            {/* <div className="products">
                                 <div className="products-wrapper">
                                     <div className="product-item">מלפפונים</div>
                                     <div className="product-item">עגבניות</div>
@@ -71,7 +101,7 @@ export default function BusinessCard({image, business, open, close}){
                                     <div className="product-item">בצלים</div>
                                     <div className="product-item">חצילים</div>
                                 </div>
-                            </div>
+                            </div> */}
                         </Box>
                         <Box paddingRight = {8}>
                             <Stack
@@ -87,7 +117,7 @@ export default function BusinessCard({image, business, open, close}){
                             alignItems= 'center'
                             gap= {1}>
                                 <Phone />
-                                <Typography variants= 'body1'>{business.phone}</Typography>
+                                <Typography variants= 'body1' sx={{direction: 'ltr'}}>{business.phone}</Typography>
                             </Stack>
                                 <Stack 
                                 direction= 'row'
@@ -112,16 +142,16 @@ export default function BusinessCard({image, business, open, close}){
                     fontSize: '15px',
                     position: 'relative',
                     width: '700px',
-                    top: '30px'}}>
-                    <Box> {business.about}</Box>
+                    top: '0px'}}>
+                    <Box paddingBottom={5}> {business.about}</Box>
                     <div className="workContainer">
                         <Work days={days} />
                     </div>
                     <div className="pricesContainer">
-                        <Price />
+                        <Price prices={business.products}/>
                     </div>
                     <div className="shippingContainer">
-                        <Shipping />
+                        <Shipping policy={business.delivery_details} />
                     </div>
                     <Container sx={{
                         display: 'flex',
@@ -137,7 +167,7 @@ export default function BusinessCard({image, business, open, close}){
                             marginBottom: '80px'
                         }}>
                             <Typography variant='h6'>תמונות של המקום:</Typography>
-                            <Slider slides={slides} />
+                            <Slider slides={business.farm_images_list} farm={true}/>
                         </Box>
                         <Box sx={{
                             width: '350px',
@@ -145,7 +175,7 @@ export default function BusinessCard({image, business, open, close}){
                             marginBottom: '80px'
                         }}>
                             <Typography variant= 'h6'>תמונות של המוצרים:</Typography>
-                            <Slider slides={slides} />
+                            <Slider slides={business.products_images_list} farm={false} />
                         </Box>
                     </Container>
                     <div className="social">
@@ -155,22 +185,36 @@ export default function BusinessCard({image, business, open, close}){
                         ml={4}
                         gap= {1}>
                             <WhatsApp />
-                            <Typography variants= 'body1'>{business.whatsApp} </Typography>
+                            <Typography variants= 'body1' sx={{direction: 'ltr'}}>{business.whatsapp} </Typography>
                         </Stack>
                         <Stack
                         direction= 'row'
                         alignItems= 'center'
                         ml={4}
                         gap= {1}>
-                            <Instagram />
-                            <Typography variants= 'body1'>{business.instagram}</Typography>
+                            <IconButton onClick={() => window.open(business.instagram, "_blank")}>
+                                <Instagram />
+                            </IconButton>
+                            {/* <Typography variants= 'body1'>{business.instagram}</Typography> */}
+                        </Stack>
+                        <Stack
+                            direction= 'row'
+                            alignItems= 'center'
+                            gap= {1}
+                            ml={4}>
+                                <IconButton onClick={() => window.open(business.facebook,"_blank")}>
+                                    <Facebook />
+                                </IconButton>
+                                {/* <Typography variants= 'body1'>{business.facebook}</Typography> */}
                         </Stack>
                         <Stack
                             direction= 'row'
                             alignItems= 'center'
                             gap= {1}>
-                                <Facebook />
-                                <Typography variants= 'body1'>{business.facebook}</Typography>
+                                <IconButton onClick={() => window.open(business.farm_site,"_blank")}>
+                                    <Language />
+                                </IconButton>
+                                {/* <Typography variants= 'body1'>{business.facebook}</Typography> */}
                         </Stack>
                     </div>
                     <Stack direction= 'row' sx={{

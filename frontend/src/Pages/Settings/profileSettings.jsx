@@ -1,7 +1,7 @@
-import { Box, Button, Container, FormControlLabel, InputBase, Stack, Switch, TextField, Typography, colors } from '@mui/material'
+import { Box, Button, Checkbox, Container, FormControlLabel, Grid, InputAdornment, InputBase, Menu, MenuItem, Stack, Switch, TextField, Typography, colors } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import './profileSettings.css'
-import { AccessTime, AssignmentInd, Badge, Email, Facebook, Home, Instagram, Language, Person2, Phone, WhatsApp } from '@mui/icons-material'
+import { AccessTime, Add, AssignmentInd, Badge, Email, Facebook, Home, Instagram, Language, Person2, Phone, Remove, WhatsApp } from '@mui/icons-material'
 import farm from '../../assets/Board_images/farm1.jpeg'
 import AddPost from '../../components/Post/AddPost'
 import WorkingHours from '../../components/Settings/workingHours'
@@ -10,7 +10,25 @@ import PlacesAutocomplete, {
     geocodeByAddress,
     getLatLng,
   } from 'react-places-autocomplete';
-import {styled} from '@mui/material/styles'
+import {ThemeProvider, createTheme, styled} from '@mui/material/styles'
+import Slider from '../../Pages/ShowFarmerProfile/ImageSlider'
+import image1 from '../../DummyData/ProfilePageImages/image1.jpg'
+import image2 from '../../DummyData/ProfilePageImages/image2.jpg'
+import image3 from '../../DummyData/ProfilePageImages/image3.jpg'
+import image4 from '../../DummyData/ProfilePageImages/image4.jpg'
+import image5 from '../../DummyData/ProfilePageImages/image5.jpg'
+import dayjs from 'dayjs'
+import UserPosts from './userPosts'
+import './userPosts.css'
+
+const slides = [
+    { url: image1 },
+    { url: image2 },
+    { url: image3 },
+    { url: image4 },
+    { url: image5 },
+  ];
+
 const IOSSwitch = styled((props) => (
     <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
   ))(({ theme }) => ({
@@ -76,15 +94,109 @@ const IOSSwitch = styled((props) => (
     },
   }));
 
+const {palette} = createTheme();
+const { augmentColor } = palette;
+const createColor = (mainColor) => augmentColor({ color: { main: mainColor } });
+const themeForButton = createTheme({
+  palette: {
+    button: createColor('#E8AA42'),
+    white: createColor('#ffffff'),
+    garbage: createColor('#9e9e9e'),
+    hovergarbage: createColor('#37474f'),
+    adder: createColor('#f7f1e5'),
+    addPicture: createColor('#f7f1e5'),
+  },
+});
+
+
+function CheckboxMenu(props) {
+    return (
+      <div>
+        <Button disableRipple variant="outlined" onClick={props.handleClick}
+         style={{
+          width: "580px",
+          height: "50px",
+          border: "1px solid #bdbdbd", 
+          overflowX: "scroll", 
+          whiteSpace: "nowrap", 
+          display: "flex", 
+          alignItems: "center", 
+         justifyContent: "flex-start", 
+        //  background: "#FFFFFF",
+         '&:hover': {
+          color: 'initial',
+          backgroundColor: 'initial !important'
+         }, 
+         }}>
+  
+        {Boolean(props.anchorEl) ? <Remove /> : <Add />}
+        {console.log(props.selectedItems)}
+        {console.log(props.checked)}
+        <Typography style={{ color: '#37474f', fontSize: '15px', fontFamily: 'aleph'}}>
+        {props.selectedItems.length > 0 ? 
+            <div style={{ display: 'flex', flexWrap: 'nowrap' }}>
+              {props.selectedItems.map((item, index) => (
+                <div key={index} style={{ backgroundColor: '#f5f5f5', margin: '5px', padding: '5px' }}>
+                  {item }
+                  <span style={{ cursor: 'pointer', marginRight: '10px' }} onClick={(event) => props.handleRemove(event,item)}>
+                    x
+                  </span>
+                </div>
+              ))}
+            </div>
+            : 'אילו סוגי מוצרים אתם מוכרים?'}
+              </Typography>
+          </Button>
+        <Menu
+          id="checkbox-menu"
+          anchorEl={props.anchorEl}
+          keepMounted
+          variant='outlined'
+          dir="rtl"
+          open={Boolean(props.anchorEl)}
+          onClose={props.handleClose}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }} // Position where the menu will be attached
+          transformOrigin={{ vertical: 'top', horizontal: 'left' }}  // Position from where the menu will appear
+          PaperProps={{
+            style: {
+              maxHeight: 200, // Sets the maximum height for menu
+              width: '57.7ch',
+              flexGrow:1,
+              
+            },
+          }}
+        >
+        <Grid container rowSpacing={1} columnSpacing={-5}>
+        {props.labels.map((label, i) => (
+            <Grid item xs={4} key={i}>
+            <MenuItem  onClick={(event) => event.stopPropagation()}>
+              <FormControlLabel
+                control={<Checkbox checked={props.checked[i]} onChange={() => props.handleToggle(i)} color={props.checked[i] ? 'default' : 'default'}/>}
+                label={label}
+  
+              />
+            </MenuItem>
+            </Grid>
+          ))}
+              </Grid>
+      <div style={{ borderTop: '1px solid #ccc', marginTop: '10px', paddingTop: '10px' }}>
+        {props.selectedItems.join(', ')}
+      </div>
+        </Menu>
+      </div>
+  
+    );
+  }
+
 const ProfileSettings = (props) => {
     const [profileData, setProfileData] = useState(null);
     const [farmName, setFarmName] = useState("");
     const [email, setEmail] = useState("");
     const [about, setAbout] = useState("");
     const [whatsApp, setWhatsapp] = useState("");
-    const [contactPerson, setContactPerson] = useState("");
     const [phone, setPhone] = useState("");
     const [address, setAddress] = useState("");
+    const [menu,setMenu] = useState("");
     const [coordintes,setCoordinates] = useState({
         lat: 'none',
         lng: 'none'
@@ -96,19 +208,123 @@ const ProfileSettings = (props) => {
         setAddress(value)
         setCoordinates(latLng);
       };
-    const [farmerName, setFarmerName] = useState("");
-    const [prices, setPrices] = useState("");
-    const [shipping, setShipping] = useState("");
+    const [farmer, setFarmer] = useState("");
+    const [delivery, setDelivery] = useState('');
+    const [shipping_distance, setShippingDist] = useState("");
     const [facebook, setFacebook] = useState("");
     const [instagram, setInstagram] = useState("");
     const [website, setWebsite] = useState("");
     const [isShipping, setIsShipping] = useState(false)
+    const [logo, setLogo] = useState("");
+    const [farmImages, setFarmImages] = useState([]);
+    const [productsImages, setProductsImages] = useState([]);
+    const [sundayOpening, setSundayOpening] = useState(null);
+    const [sundayClosing, setSundayClosing] = useState(null);
+    const [mondayOpening, setMondayOpening] = useState(null);
+    const [mondayClosing, setMondayClosing] = useState(null);
+    const [tuesdayOpening, setTuesdayOpening] = useState(null);
+    const [tuesdayClosing, setTuesdayClosing] = useState(null);
+    const [wednesdayOpening, setWednesdayOpening] = useState(null);
+    const [wednesdayClosing, setWednesdayClosing] = useState(null);
+    const [thursdayOpening, setThursdayOpening] = useState(null);
+    const [thursdayClosing, setThursdayClosing] = useState(null);
+    const [fridayOpening, setFridayOpening] = useState(null);
+    const [fridayClosing, setFridayClosing] = useState(null);
+    const [saturdayOpening, setSaturdayOpening] = useState(null);
+    const [saturdayClosing, setSaturdayClosing] = useState(null);
+    const labels = ["ירקות", "פירות", "גבינות ומוצרי חלב", "ביצים", "דבש", "צמחים", "יינות ושמן זית", "תבלינים", "דגנים"];
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [checked, setChecked] = useState(
+      Array(9).fill(false) // Initial state for 9 checkboxes
+    );
+    const [selectedItems, setSelectedItems] = useState([]);
+  
+    const handleClick = (event) => {
+      setAnchorEl(event.currentTarget);
+    };
+  
+    const handleClose = () => {
+      setAnchorEl(null);
+    };
+  
+    const handleToggle = (index) => {
+      setChecked((prevChecked) => {
+        const newChecked = [...prevChecked];
+        newChecked[index] = !newChecked[index];
+        console.log(newChecked)
+        return newChecked;
+      });
+      setSelectedItems((prevSelectedItems) => {
+        const newSelectedItems = [...prevSelectedItems];
+        if (newSelectedItems.includes(labels[index])) {
+          const itemIndex = newSelectedItems.indexOf(labels[index]);
+          newSelectedItems.splice(itemIndex, 1);
+        } else {
+          newSelectedItems.push(labels[index]);
+        }
+        return newSelectedItems;
+      });
+    };
+    const handleRemove = (event,label) => {
+      event.stopPropagation();
+      const index = labels.indexOf(label);
+      setChecked((prevChecked) => {
+        const newChecked = [...prevChecked];
+        newChecked[index] = false;
+        return newChecked;
+      });
+  
+      setSelectedItems((prevSelectedItems) => {
+        const newSelectedItems = [...prevSelectedItems];
+        const itemIndex = newSelectedItems.indexOf(label);
+        newSelectedItems.splice(itemIndex, 1);
+        return newSelectedItems;
+      });
+    };
 
     const handleSwitch = (event) => {
-        setIsShipping(event.target.checked);
+        const val = event.target.checked;
+        setIsShipping(val);
+        if(val === false){
+            setShippingDist("");
+        }
+        
       };
     
-      
+    function checkNull(val , alternative, format) {
+        if (format === true){
+            const ret1 = val != null? val.format() : alternative;
+            return(ret1)
+        }
+        else{
+            const ret2 = val != "none"? dayjs(val) : alternative;
+            return (ret2);
+        }
+
+    }
+
+    function put_hours(open){
+        if(open === true){
+            const res1 = checkNull(sundayOpening, "none", true) + "," 
+            + checkNull(mondayOpening, "none", true) + ","
+            + checkNull(tuesdayOpening, "none", true) + ","
+            + checkNull(wednesdayOpening, "none", true) + ","
+            + checkNull(thursdayOpening, "none", true) + ","
+            + checkNull(fridayOpening, "none", true) + ","
+            + checkNull(saturdayOpening, "none", true);
+            return res1;
+        }
+        else{
+            const res2 = checkNull(sundayClosing, "none", true) + "," 
+            + checkNull(mondayClosing, "none", true) + ","
+            + checkNull(tuesdayClosing, "none", true) + ","
+            + checkNull(wednesdayClosing, "none", true) + ","
+            + checkNull(thursdayClosing, "none", true) + ","
+            + checkNull(fridayClosing, "none", true) + ","
+            + checkNull(saturdayClosing, "none", true);
+            return res2;
+        }
+    }
 
     useEffect(() => {
         getUsers();
@@ -130,32 +346,68 @@ const ProfileSettings = (props) => {
             console.log(response);
             const res = response.data;
             res.access_token && props.setToken(res.access_token);
-            setFarmName(res.farmName);
+            setFarmName(res.farm_name);
             setEmail(profileEmail);
             setAbout(res.about);
-            setWhatsapp(res.phoneNumber1);
-            setPhone(res.phoneNumber2);
+            setWhatsapp(res.phone_number_whatsapp);
+            setPhone(res.phone_number_official);
             setAddress(res.address);
             setAbout(res.about);
-            setPrices(res.prices);
             setFacebook(res.facebook);
             setInstagram(res.instagram);
-            setWebsite(res.website);
-            setProfileData({
-              profile_farmName: res.farmName,
-              profile_email: res.email,
-              profile_about: res.about,
-              profile_phoneNumber1: res.phoneNumber1,
-              profile_phoneNumber2: res.phoneNumber2,
-              profile_address: res.address,
-              profile_city: res.city,
-              profile_farmerName: res.farmerName,
-              profile_prices: res.prices,
-              profile_products: res.products,
-              profile_facebook: res.facebook,
-              profile_instagram: res.instagram,
+            setWebsite(res.farm_site);
+            setMenu(res.products);
+            setIsShipping(parseInt(res.is_shipping));
+            setShippingDist(res.shipping_distance);
+            setDelivery(res.delivery_details);
+            setFarmer(res.farmer_name);
+            
+            setLogo(res.logo_picture);
+            setFarmImages(res.farm_images_list);
+            setProductsImages(res.products_images_list);
+            
+            const open = res.opening_hours.split(",");
+
+            setSundayOpening(checkNull(open[0], null, false));
+            setMondayOpening(checkNull(open[1], null, false));
+            setTuesdayOpening(checkNull(open[2], null, false));
+            setWednesdayOpening(checkNull(open[3], null, false));
+            setThursdayOpening(checkNull(open[4], null, false));
+            setFridayOpening(checkNull(open[5], null, false));
+            setSaturdayOpening(checkNull(open[6], null, false));
+
+
+            const close = res.closing_hours.split(",");
+            setSundayClosing(checkNull(close[0], null, false));
+            console.log(checkNull(close[0], null, false));
+            setMondayClosing(checkNull(close[1], null, false));
+            setTuesdayClosing(checkNull(close[2], null, false));
+            setWednesdayClosing(checkNull(close[3], null, false));
+            setThursdayClosing(checkNull(close[4], null, false));
+            setFridayClosing(checkNull(close[5], null, false));
+            setSaturdayClosing(checkNull(close[6], null, false));
+
+            const types = res.types_of_products.split(',');
+            const indexes = types.map(t => labels.indexOf(t));
+            const newArr = Array(9).fill(false).map((a,index) => {
+                if(indexes.includes(index)){
+                    return true;
+                }
+                else{
+                    return a;
+                }
             });
+            console.log("hello");
+            console.log(newArr);
+
+            setChecked(newArr);
+
+            setSelectedItems(types);
+
+            
+
           })
+
           .catch((error) => {
             if (error.response) {
               console.log(error.response);
@@ -175,14 +427,23 @@ const ProfileSettings = (props) => {
                 Authorization: 'Bearer ' + props.token,
               },
             data:{
-            farmName: farmName,
+            farm_name: farmName,
             email: email,
             about: about,
-            phoneNumber1: whatsApp,
-            phoneNumber2: phone,
+            phone_number_official: phone,
+            phone_number_whatsapp: whatsApp,
             address: address,
             facebook: facebook,
             instagram: instagram,
+            farm_site: website,
+            products: menu,
+            is_shipping: isShipping,
+            shipping_distance: shipping_distance,
+            delivery_information: delivery,
+            farmer_name: farmer,
+            opening_hours: put_hours(true),
+            closing_hours: put_hours(false),
+            types_of_products: selectedItems.join()
             }
         })
         .then(function (response) {
@@ -201,7 +462,10 @@ const ProfileSettings = (props) => {
         });
     }
 
+    
+
   return (
+    // <ThemeProvider theme={themeForButton}>
     <Box sx={{
         direction: 'rtl'
     }}>
@@ -218,10 +482,11 @@ const ProfileSettings = (props) => {
                 width: '100%',
             }}>
                 <form>
-                    <Box gap= {1}  sx={{
-                        mt: '2rem',
+                <Box gap={3} sx={{display: 'flex'}}>
+                <Box gap= {1}  sx={{
+                        mt: '2rem', flex: 4
                     }}>
-                        <label className='inputLabel'>שם משתמש:</label>
+                        <label className='inputLabel'>שם העסק:</label>
                         <Box width= '100%' border='2px solid #1d3c45' borderRadius='1rem'
                         alignItems='center' display= 'flex' gap='1rem' overflow='hidden'>
                             <Box fontSize='2rem' bgcolor= '#1d3c45' padding= '0.5rem 1rem'
@@ -241,10 +506,88 @@ const ProfileSettings = (props) => {
                             />
                         </Box>
                     </Box>
+                    <Box gap= {1}  sx={{
+                        mt: '2rem', flex: 3
+                    }}>
+                        <label className='inputLabel'>שם איש קשר:</label>
+                        <Box width= '100%' border='2px solid #1d3c45' borderRadius='1rem'
+                        alignItems='center' display= 'flex' gap='1rem' overflow='hidden'>
+                            <Box fontSize='2rem' bgcolor= '#1d3c45' padding= '0.5rem 1rem'
+                            color='white' display= 'grid' cursor='pointer'>
+                                <AssignmentInd />
+                            </Box>
+                            <TextField
+                            InputProps={{ disableUnderline: true }}
+                            variant='standard'
+                            width= '100%'
+                            type='text'
+                            value={farmer}
+                            onChange={(event) => {
+                                setFarmer(event.target.value);
+                            }}
+                            className='Form_box_input'
+                            />
+                        </Box>
+                    </Box>
+                    </Box>
+                    <Box gap={3} sx={{display: 'flex'}}>
+                    <Box gap= {1}  sx={{
+                        mt: '2rem', flex: 2.5
+                    }}>
+                        <label className='inputLabel'>טלפון:</label>
+                        <Box width= '100%' border='2px solid #1d3c45' borderRadius='1rem'
+                        alignItems='center' display= 'flex' gap='1rem' overflow='hidden'>
+                            <Box fontSize='2rem' bgcolor= '#1d3c45' padding= '0.5rem 1rem'
+                            color='white' display= 'grid' cursor='pointer'>
+                                <Phone />
+                            </Box>
+                            <TextField
+                            InputProps={{ disableUnderline: true }}
+                            variant='standard'
+                            width= '100%'
+                            type='text'
+                            value={phone}
+                            onChange={(event) => {
+                                setPhone(event.target.value);
+                            }}
+                            className='Form_box_input'
+                            sx={{direction : 'ltr', paddingLeft: '3%'}}
+                            />
+                        </Box>
+                    </Box>
+                    <Box gap= {1}  sx={{
+                            mt: '2rem', flex: 2.5
+                        }}>
+                            <label className='inputLabel'>וואטסאפ:</label>
+                            <Box width= '100%' border='2px solid #1d3c45' borderRadius='1rem'
+                            alignItems='center' display= 'flex' gap='1rem' overflow='hidden'>
+                                <Box fontSize='2rem' bgcolor= '#1d3c45' padding= '0.5rem 1rem'
+                                color='white' display= 'grid' cursor='pointer'>
+                                    <WhatsApp />
+                                </Box>
+                                <TextField
+                                InputProps={{ disableUnderline: true, style: { textAlign: 'center' } }}
+                                type='text'
+                                variant='standard'
+                                value={whatsApp}
+                                onChange={(event) => {
+                                    setWhatsapp(event.target.value);
+                                }}
+                                className='Form_box_input'
+                                sx={{paddingLeft: '3%',width:'100%', border: '0', bgcolor: 'transparent', outline:'none', height: '30px', direction: 'ltr'}}
+                                />
+                            </Box>
+                    </Box>
+                    </Box>
                     <PlacesAutocomplete
             value={address}
             onChange={setAddress}
             onSelect={handleSelect}
+            searchOptions={{
+                types: ['address'],
+                region: 'il',
+                language: 'iw',
+              }}
           >
             {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
               <div>
@@ -287,8 +630,8 @@ const ProfileSettings = (props) => {
                         //position: 'absolute',
                         //zIndex: '1000',
                         width: '90%',
-                        color: 'white',
-                        backgroundColor: suggestion.active ? "#1d3c45" : "#E8AA42",
+                        color: 'black',
+                        backgroundColor: suggestion.active ? "#E8AA42" : "white",
                         cursor: 'pointer',
                         padding: '10px',                      
                       };
@@ -311,135 +654,15 @@ const ProfileSettings = (props) => {
                         <label className='inputLabel'>ימי ושעות עבודה:</label>
                         <Box width= '100%' border='2px solid #1d3c45' borderRadius='1rem'
                         alignItems='center' display= 'flex' flexDirection= 'column' gap='1rem' overflow='hidden'>
-                            <WorkingHours day = 'ראשון' />
-                            <WorkingHours day = 'שני' />
-                            <WorkingHours day = 'שלישי' />
-                            <WorkingHours day = 'רביעי' />
-                            <WorkingHours day = 'חמישי' />
-                            <WorkingHours day = 'שישי' />
+                            <WorkingHours day = 'ראשון' opening = {sundayOpening} closing = {sundayClosing} setOpening = {setSundayOpening} setClosing={setSundayClosing}/>
+                            <WorkingHours day = 'שני' opening = {mondayOpening} closing = {mondayClosing} setOpening = {setMondayOpening} setClosing={setMondayClosing}/>
+                            <WorkingHours day = 'שלישי' opening = {tuesdayOpening} closing = {tuesdayClosing} setOpening = {setTuesdayOpening} setClosing={setTuesdayClosing}/>
+                            <WorkingHours day = 'רביעי' opening = {wednesdayOpening} closing = {wednesdayClosing} setOpening = {setWednesdayOpening} setClosing={setWednesdayClosing}/>
+                            <WorkingHours day = 'חמישי' opening = {thursdayOpening} closing = {thursdayClosing} setOpening = {setThursdayOpening} setClosing={setThursdayClosing}/>
+                            <WorkingHours day = 'שישי' opening = {fridayOpening} closing = {fridayClosing} setOpening = {setFridayOpening} setClosing={setFridayClosing}/>
                             <div className="lastHour">
-                                <WorkingHours day = 'שבת' />
+                            <WorkingHours day = 'שבת' opening = {saturdayOpening} closing = {saturdayClosing} setOpening = {setSaturdayOpening} setClosing={setSaturdayClosing}/>
                             </div>
-                        </Box>
-                    </Box>
-                    <Box gap={3} sx={{display: 'flex'}}>
-                    <Box gap= {1}  sx={{
-                        mt: '2rem', flex: 2.5
-                    }}>
-                        <label className='inputLabel'>טלפון:</label>
-                        <Box width= '100%' border='2px solid #1d3c45' borderRadius='1rem'
-                        alignItems='center' display= 'flex' gap='1rem' overflow='hidden'>
-                            <Box fontSize='2rem' bgcolor= '#1d3c45' padding= '0.5rem 1rem'
-                            color='white' display= 'grid' cursor='pointer'>
-                                <Phone />
-                            </Box>
-                            <TextField
-                            InputProps={{ disableUnderline: true }}
-                            variant='standard'
-                            width= '100%'
-                            type='text'
-                            value={phone}
-                            onChange={(event) => {
-                                setPhone(event.target.value);
-                            }}
-                            className='Form_box_input'
-                            />
-                        </Box>
-                    </Box>
-                    <Box gap= {1}  sx={{
-                        mt: '2rem', flex: 4
-                    }}>
-                        <label className='inputLabel'>מייל:</label>
-                        <Box width= '100%' border='2px solid #1d3c45' borderRadius='1rem'
-                        alignItems='center' display= 'flex' gap='1rem' overflow='hidden'>
-                            <Box fontSize='2rem' bgcolor= '#1d3c45' padding= '0.5rem 1rem'
-                            color='white' display= 'grid' cursor='pointer'>
-                                <Email />
-                            </Box>
-                            <TextField
-                            InputProps={{ disableUnderline: true }}
-                            variant='standard'
-                            width= '100%'
-                            type='text'
-                            value={email}
-                            onChange={(event) => {
-                                setEmail(event.target.value);
-                            }}
-                            className='Form_box_input'
-                            />
-                        </Box>
-                    </Box>
-                    </Box>
-                    <Box gap={3} sx={{display: 'flex'}}>
-                    <Box gap= {1}  sx={{
-                            mt: '2rem', flex: 2.5
-                        }}>
-                            <label className='inputLabel'>וואטסאפ:</label>
-                            <Box width= '100%' border='2px solid #1d3c45' borderRadius='1rem'
-                            alignItems='center' display= 'flex' gap='1rem' overflow='hidden'>
-                                <Box fontSize='2rem' bgcolor= '#1d3c45' padding= '0.5rem 1rem'
-                                color='white' display= 'grid' cursor='pointer'>
-                                    <WhatsApp />
-                                </Box>
-                                <TextField
-                                InputProps={{ disableUnderline: true }}
-                                type='text'
-                                variant='standard'
-                                value={whatsApp}
-                                onChange={(event) => {
-                                    setWhatsapp(event.target.value);
-                                }}
-                                className='Form_box_input'
-                                sx={{justifyContent:'center' ,width:'100%', border: '0', bgcolor: 'transparent', outline:'none', height: '30px'}}
-                                />
-                            </Box>
-                    </Box>
-                    <Box gap= {1}  sx={{
-                        mt: '2rem', flex: 4
-                    }}>
-                        <label className='inputLabel'>שם איש קשר:</label>
-                        <Box width= '100%' border='2px solid #1d3c45' borderRadius='1rem'
-                        alignItems='center' display= 'flex' gap='1rem' overflow='hidden'>
-                            <Box fontSize='2rem' bgcolor= '#1d3c45' padding= '0.5rem 1rem'
-                            color='white' display= 'grid' cursor='pointer'>
-                                <AssignmentInd />
-                            </Box>
-                            <TextField
-                            InputProps={{ disableUnderline: true }}
-                            variant='standard'
-                            width= '100%'
-                            type='text'
-                            value={contactPerson}
-                            onChange={(event) => {
-                                setContactPerson(event.target.value);
-                            }}
-                            className='Form_box_input'
-                            />
-                        </Box>
-                    </Box>
-                    </Box>
-                    <Box gap= {1}  sx={{
-                        mt: '2rem',
-                    }}>
-                        <label className='inputLabel'>אתר:</label>
-                        <Box width= '100%' border='2px solid #1d3c45' borderRadius='1rem'
-                        alignItems='center' display= 'flex' gap='1rem' overflow='hidden'>
-                            <Box fontSize='2rem' bgcolor= '#1d3c45' padding= '0.5rem 1rem'
-                            color='white' display= 'grid' cursor='pointer'>
-                                <Language />
-                            </Box>
-                            <TextField
-                            InputProps={{ disableUnderline: true }}
-                            variant='standard'
-                            width= '100%'
-                            type='text'
-                            defaultValue=''
-                            value={website}
-                            onChange={(event) => {
-                                setWebsite(event.target.value);
-                            }}
-                            className='Form_box_input'
-                            />
                         </Box>
                     </Box>
                     <Box  gap= {1}  sx={{
@@ -463,6 +686,12 @@ const ProfileSettings = (props) => {
                     <Box gap= {1}  sx={{
                         mt: '2rem',
                     }}>
+                        <label className='inputLabel'>סוגי מוצרים:</label>
+                        <CheckboxMenu handleClick={handleClick} anchorEl={anchorEl} selectedItems={selectedItems} handleRemove={handleRemove} handleClose={handleClose} labels={labels} checked={checked} handleToggle={handleToggle}/>
+                    </Box>
+                    <Box gap= {1}  sx={{
+                        mt: '2rem',
+                    }}>
                         <label className='inputLabel'>מחירון:</label>
                         <TextField
                         id="outlined-multiline-static"
@@ -470,9 +699,9 @@ const ProfileSettings = (props) => {
                         rows={8}
                         fullwidth
                         width= '100%'
-                        value= {prices}
+                        value= {menu}
                         onChange={(event) => {
-                            setPrices(event.target.value);
+                            setMenu(event.target.value);
                         }}
                         sx={{
                             width: '100%'
@@ -481,55 +710,84 @@ const ProfileSettings = (props) => {
                     <Box gap= {1}  sx={{
                         mt: '2rem',
                     }}>
-                        <Stack direction='row' gap={5} alignItems="center" display='flex' justifyContent='center'>
+                        <Stack direction='row' gap={3} alignItems="center" display='flex' justifyContent='center'>
                             <Typography fontSize= '20px' color= 'rgb(23, 23, 91)'>העסק עושה משלוחים?</Typography>
                             <IOSSwitch checked = {isShipping} onChange= {handleSwitch}/>
                         </Stack>
                     </Box>
-                    {isShipping? <Box gap= {1}  sx={{
+                    {console.log(isShipping)}
+                    {isShipping? 
+                    <Box gap= {1}  sx={{
                         mt: '2rem',
                     }}>
-                        <label className='inputLabel'>מדיניות משלוחים:</label>
+                        <Box display='flex' justifyContent='center'>
+                            <TextField
+                            label='טווח משלוחים'
+                            type = 'number'
+                            sx={{alignSelf:'center',direction: 'ltr', m: 1, width: '12ch', 
+                            "& label":{left: "unset",
+                            right: "1.75rem",
+                            transformOrigin: "right"},
+                            "& legend": {
+                            textAlign: "right",
+                            }}}
+                            InputProps={{
+                                startAdornment: <InputAdornment position="start">ק"מ</InputAdornment>,
+                                inputProps: { min: "0", max: "150", step: "1" }
+                            }}
+                            value = {shipping_distance}
+                            onChange={(event) => {
+                                setShippingDist(event.target.value);
+                            }}
+                            />
+                        </Box>
+                    </Box>: null}
+                    <Box gap= {1}  sx={{
+                        mt: '2rem',
+                    }}>
+                        <label className='inputLabel'>מדיניות משלוחים והזמנות:</label>
                         <TextField
                         id="outlined-multiline-static"
                         multiline
                         rows={8}
                         fullwidth
                         width= '100%'
-                        defaultValue= 'משלוחים רק בצפון, החל ממחיר הזמנה של 120 ש"ח.
-ניתן לעשות הזמנות מראש ולקחת באיסוף עצמי.'
+                        value = {delivery}
+                        onChange={(event) => {
+                            setDelivery(event.target.value);
+                        }}
                         sx={{
                             width: '100%'
                         }} />
-                    </Box>: null}
-                    <Box gap={3} sx={{display: 'flex'}}>
-                        <Box gap= {1}  sx={{
-                            mt: '2rem', flex: 4
-                        }}>
-                            <label className='inputLabel'>אינסטגרם:</label>
-                            <Box width= '100%' border='2px solid #1d3c45' borderRadius='1rem'
-                            alignItems='center' display= 'flex' gap='1rem' overflow='hidden'>
-                                <Box fontSize='2rem' bgcolor= '#1d3c45' padding= '0.5rem 1rem'
-                                color='white' display= 'grid' cursor='pointer'>
-                                    <Instagram />
-                                </Box>
-                                <TextField
-                                InputProps={{ disableUnderline: true }}
-                                type='text'
-                                variant='standard'
-                                value = {instagram}
-                                onChange={(event) => {
-                                    setInstagram(event.target.value);
-                                }}
-                                className='Form_box_input'
-                                sx={{justifyContent:'center' ,width:'100%', border: '0', bgcolor: 'transparent', outline:'none', height: '30px'}}
-                                />
+                    </Box>
+                    <Box gap= {1}  sx={{
+                        mt: '2rem',
+                    }}>
+                        <label className='inputLabel'>קישור לאתר:</label>
+                        <Box width= '100%' border='2px solid #1d3c45' borderRadius='1rem'
+                        alignItems='center' display= 'flex' gap='1rem' overflow='hidden'>
+                            <Box fontSize='2rem' bgcolor= '#1d3c45' padding= '0.5rem 1rem'
+                            color='white' display= 'grid' cursor='pointer'>
+                                <Language />
                             </Box>
+                            <TextField
+                            InputProps={{ disableUnderline: true }}
+                            variant='standard'
+                            width= '100%'
+                            type='text'
+                            value={website}
+                            onChange={(event) => {
+                                setWebsite(event.target.value);
+                            }}
+                            sx={{direction: 'ltr'}}
+                            className='Form_box_input'
+                            />
                         </Box>
-                        <Box gap= {1}  sx={{
+                    </Box>
+                    <Box gap= {1}  sx={{
                             mt: '2rem', flex: 4
                         }}>
-                            <label className='inputLabel'>פייסבוק:</label>
+                            <label className='inputLabel'>קישור לפייסבוק:</label>
                             <Box width= '100%' border='2px solid #1d3c45' borderRadius='1rem'
                             alignItems='center' display= 'flex' gap='1rem' overflow='hidden'>
                                 <Box fontSize='2rem' bgcolor= '#1d3c45' padding= '0.5rem 1rem'
@@ -545,18 +803,40 @@ const ProfileSettings = (props) => {
                                     setFacebook(event.target.value);
                                 }}
                                 className='Form_box_input'
-                                sx={{justifyContent:'center' ,width:'100%', border: '0', bgcolor: 'transparent', outline:'none', height: '30px'}}
+                                sx={{direction: 'ltr',justifyContent:'center' ,width:'100%', border: '0', bgcolor: 'transparent', outline:'none', height: '30px'}}
                                 />
                             </Box>
                         </Box>
-                    </Box>
+                    <Box gap= {1}  sx={{
+                            mt: '2rem', flex: 4
+                        }}>
+                            <label className='inputLabel'>קישור לאינסטגרם:</label>
+                            <Box width= '100%' border='2px solid #1d3c45' borderRadius='1rem'
+                            alignItems='center' display= 'flex' gap='1rem' overflow='hidden'>
+                                <Box fontSize='2rem' bgcolor= '#1d3c45' padding= '0.5rem 1rem'
+                                color='white' display= 'grid' cursor='pointer'>
+                                    <Instagram />
+                                </Box>
+                                <TextField
+                                InputProps={{ disableUnderline: true }}
+                                type='text'
+                                variant='standard'
+                                value = {instagram}
+                                onChange={(event) => {
+                                    setInstagram(event.target.value);
+                                }}
+                                className='Form_box_input'
+                                sx={{direction: 'ltr',justifyContent:'center' ,width:'100%', border: '0', bgcolor: 'transparent', outline:'none', height: '30px'}}
+                                />
+                            </Box>
+                        </Box>
                     <Box display= 'flex' mt={5} mb={5} justifyContent='center' sx={{color: '#1d3c45'}}>
                     <Button variant='contained' color= 'success' onClick={handleSave} sx={{justifyContent: 'center'}}>שמירת פרטים</Button>
                     </Box>
                 </form>
             </Container>
             <Container>
-                <Box gap={10} sx={{display: 'flex', justifyContent: 'center'}}>
+                <Box gap={10} sx={{display: 'grid',gridTemplate: '1fr', justifyContent: 'center'}}>
                     <Box className='account_box_img' sx={{
                         mt: '2rem',
                         cursor: 'pointer',
@@ -564,7 +844,7 @@ const ProfileSettings = (props) => {
                         textAlign: 'center'
                     }}>
                         <img 
-                        src = {farm}
+                        src = {'/Form_images/Logo_image/'.concat(logo)}
                         width= {150}
                         height= {150}
                         className= 'profileImg'
@@ -579,36 +859,52 @@ const ProfileSettings = (props) => {
                         alignContent: 'center'
                         }}>החלפת תמונה</Typography>
                     </Box>
-                    <Box className='account_box_img' sx={{
-                        mt: '2rem',
-                        cursor: 'pointer',
-                        position: 'relative',
-                        textAlign: 'center'
-                    }}>
-                        <img 
-                        src = {farm}
-                        width= {150}
-                        height= {150}
-                        className='profileImg'
-                        />
-                        <Typography className='account_box_img_para' sx={{
-                        fontWeight: '700',
-                        fontSize: '1.2rem',
-                        lineHeight: '0',
-                        mt: '10px',
-                        justifyContent: 'center',
-                        justifyItems: 'center',
-                        alignContent: 'center'
-                        }}>החלפת לוגו</Typography>
+                    <Box sx={{
+                            width: '580px',
+                            height: '300px',
+                            marginBottom: '80px'
+                        }}>
+                    <Box display= 'flex' justifyContent='center'>
+                    <Typography  sx={{fontWeight: '600', fontSize: '30px',justifySelf: 'center', color: '#1d3c45'}}>תמונות המקום</Typography>
                     </Box>
+                    
+                    <Slider slides={farmImages} farm={true} />
+                    <Button size="large">עריכה</Button>
+                    </Box>
+                    <Box sx={{
+                                width: '580px',
+                                height: '300px',
+                                marginBottom: '80px'
+                            }}>
+                        <Box display= 'flex' justifyContent='center'>
+                        <Typography sx={{fontWeight: '600', fontSize: '30px',justifySelf: 'center', color: '#1d3c45'}}>תמונות מוצרי העסק</Typography>
+                        </Box>
+                        <Slider slides={productsImages} farm={false} />
+                        <Button size="large">עריכה</Button>
+                    </Box>
+                    <Box sx={{
+                                width: '580px',
+                                height: '380px',
+                                marginBottom: '80px',
+                                marginLeft: '10%',
+                            }}>
+                                <Box display= 'flex' justifyContent='center'>
+                                    <Typography  sx={{fontWeight: '600', fontSize: '30px',justifySelf: 'center', color: '#1d3c45'}}>מודעות שפורסמו</Typography>
+                                </Box>
+                                <Box sx={{border: '5px solid #1d3c45',
+                                direction: 'ltr'}}>
+                                    <UserPosts width={580} height={660} />
+                                </Box>
+                            </Box>
                 </Box>
-                <Container sx={{paddingTop: '30px', display: 'flex', justifyContent: 'center'}}>
+                <Container sx={{paddingTop: '30px', display: 'flex', justsifyContent: 'center'}}>
                            {/* <Typography>מקום לתמונות</Typography>*/}
                 </Container>
             </Container>
             <AddPost />
         </Box>
     </Box>
+    // </ThemeProvider>
   )
 }
 

@@ -3,6 +3,7 @@ import './post.css'
 import {AccessTime, EventNote, LocationOn, MoreVert} from '@mui/icons-material'
 import { Box, Button, Typography } from '@mui/material'
 import BusinessCard from './businessCard'
+import userEvent from '@testing-library/user-event'
 
 // this is how 'business' should look like in line 28
 const dummyBusiness = { 
@@ -37,6 +38,24 @@ Post objects:
 
 export default function Post({post}) {
     const [open, setOpen] = useState(false)
+    const logo = post.profilePicture;
+    const business = {
+        farm_name: post.farmName,
+        location: post.farm_address,
+        phone: post.phone,
+        mail: post.email,
+        about: post.about,
+        products: post.prices,
+        delivery_details: post.delivery_details,
+        farm_images_list: post.farm_images_list,
+        products_images_list: post.products_images_list,
+        whatsapp: post.whatsapp,
+        instagram: post.instagram,
+        facebook: post.facebook,
+        farm_site: post.farm_site,
+        opening_hours: post.opening_hours,
+        closing_hours: post.closing_hours
+    }
 
   return (
     <div className='post'>
@@ -44,13 +63,13 @@ export default function Post({post}) {
             <div className="postTop">
                 <div className="postTopLeft">
                         <Button onClick={e=>setOpen(true)}>
-                            <img className= 'Img' src={post.profilePicture} object-fit = 'cover' alt="" />
+                            <img className= 'Img' src = {'/Form_images/Logo_image/'.concat(logo)}  alt="" />
                         </Button>
                         <Button onClick={e=>setOpen(true)}>
                             <Typography variant='h5'color={'black'}>{post.farmName}</Typography>
                         </Button>
-                        <BusinessCard image={post.profilePicture}
-                        business={dummyBusiness} open={open} close={()=>setOpen(false)} />
+                        <BusinessCard image={'/Form_images/Logo_image/'.concat(logo)}
+                        business={business} open={open} close={()=>setOpen(false)} />
                     <span className="postDate">{post.posted}</span> 
                 </div>
                 <div className="postTopRight">

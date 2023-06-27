@@ -1,10 +1,30 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import FarmCard from './profilecard';
 import './styles.css';
+import Filter from '../../components/newFilterPanel/filter'
+import { Container } from '@mui/material';
+import axios from 'axios';
 
 const Catalogue = ({ List }) => {
+  // const [businesses, setBusinesses] = useState(List)
+
+    // useEffect(() => {
+    //   axios
+    //     .get('http://127.0.0.1:5000/businessCard')
+    //     .then((response) => {
+    //       console.log(response.data);
+    //       setBusinesses(response.data)
+    //     })
+    //     .catch((error) => {
+    //       console.error(error);
+    //     });
+    // }, []);
+
+  
+  
+
   const rowsPerPage = 3;
-  const cardsPerPage = 4*rowsPerPage; // Number of cards to display per page (4 cards per row x 3 rows per page)
+  const cardsPerPage = 3*rowsPerPage; // Number of cards to display per page (4 cards per row x 3 rows per page)
   const totalPages = Math.ceil(List.length / cardsPerPage); // Calculate the total number of pages
   const [currentPage, setCurrentPage] = useState(1); // Current page state
 
@@ -22,11 +42,17 @@ const Catalogue = ({ List }) => {
 
   return (
     <div className="catalogue-container" dir='rtl'>
-      <div className="card-grid">
-        {currentCards.map((item, index) => (
-          <FarmCard key={index} {...item} />
-        ))}
-      </div>
+      <Container display= 'flex'>
+        {/* <Filter /> */}
+        <div className="card-grid">
+          {currentCards.map((business, index) => (
+            <FarmCard key={index} Image={'/Form_images/Logo_image/'.concat(business.logo_picture)} business={business} />
+          ))}
+          <Container sx={{flex: '5'}}>
+          </Container>
+        </div>
+      </Container>
+      {/* <Filter /> */}
       <div className="pagination">
         {Array.from({ length: totalPages }, (_, index) => (
           <button

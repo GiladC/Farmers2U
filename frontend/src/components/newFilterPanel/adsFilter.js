@@ -10,7 +10,7 @@ import PlacesAutocomplete, {
     getLatLng,
   } from 'react-places-autocomplete';
 import { useState } from 'react';
-import { Autocomplete, Box, Button, Checkbox, Container, Slider, TextField } from '@mui/material';
+import { Autocomplete, Box, Button, Checkbox, Container, ListItem, Slider, TextField } from '@mui/material';
 import { Close } from '@mui/icons-material';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
@@ -302,6 +302,11 @@ const PrettoSlider = styled(Slider)({
         value={address}
         onChange={setAddress}
         onSelect={handleSelect}
+        searchOptions={{
+          types: ['address'],
+          region: 'il',
+          language: 'iw',
+        }}
       >
         {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
           <div>
@@ -329,10 +334,11 @@ const PrettoSlider = styled(Slider)({
                     //position: 'absolute',
                     //zIndex: '1000',
                     width: '90%',
-                    color: 'white',
-                    backgroundColor: suggestion.active ? "#1d3c45" : "#E8AA42",
+                    color: 'black',
+                    backgroundColor: suggestion.active ? "#E8AA42" : "white",
                     cursor: 'pointer',
-                    padding: '10px',                      
+                    padding: '10px',
+                    direction: 'rtl'                     
                   };
                 return (
                     <div
@@ -348,7 +354,7 @@ const PrettoSlider = styled(Slider)({
         )}
       </PlacesAutocomplete>
         <Stack>
-             <Typography sx={{ fontSize: '20px', color: '#1d3c45', display: 'flex', justifyContent: 'center', paddingTop: '5%'}}>מרחק מבית העסק (בק"מ)</Typography>
+             <Typography sx={{ fontSize: '20px', color: '#1d3c45', display: 'flex', justifyContent: 'center', paddingTop: '5%'}}>מרחק ממיקום המודעה (בק"מ)</Typography>
              <PrettoSlider
         aria-label="distance"
         defaultValue={5}
@@ -363,7 +369,7 @@ const PrettoSlider = styled(Slider)({
       />
         </Stack>
         {/* מוצרים */}
-        <Typography sx={{ fontSize: '20px', color: '#1d3c45', display: 'flex', justifyContent: 'center', paddingTop: '5%'}}>סינון לפי מוצרי העסק</Typography>
+        <Typography sx={{ fontSize: '20px', color: '#1d3c45', display: 'flex', justifyContent: 'center', paddingTop: '5%'}}>סינון לפי מוצרים</Typography>
         <Autocomplete
       multiple
       id="checkboxes-tags-demo"
@@ -374,19 +380,21 @@ const PrettoSlider = styled(Slider)({
         ]);
       }}
       options={products}
+      direction= 'rtl'
       disableCloseOnSelect
       getOptionLabel={(option) => option.label}
       renderOption={(props, option, { selected }) => (
-        <li {...props} style={{direction: 'rtl', backgroundColor:'#E8AA42', color: 'white', fontSize: '18px'}}>
+        <ListItem {...props} sx={{direction: 'rtl', fontSize: '18px',
+        '&:hover': {backgroundColor: '#E8AA42!important'}, '&&.Mui-selected':{color: '#E8AA42!important'}}}>
           <Checkbox
             icon={icon}
             checkedIcon={checkedIcon}
             style={{ marginRight: 8 }}
             checked={selected}
-            sx={{direction: 'rtl'}}
+            sx={{direction: 'rtl', '&.Mui-checked':{color: "black"}}}
           />
           {option.label}
-        </li>
+        </ListItem>
       )}
       style={{ width: '100%' }}
       renderTags={(value, getTagProps) =>
@@ -396,7 +404,7 @@ const PrettoSlider = styled(Slider)({
       renderInput={(params) => (
         <TextField {...params} placeholder="סוגי מוצרים"  direction= 'rtl'/>
       )}
-      sx={{paddingTop:'0%'}}
+      sx={{paddingTop:'0%', direction: 'rtl'}}
     />
         {/* אורגני,טבעוני */}
         <Container sx={{display:'flex', mt:'11px', justifyContent:'center'}}>
@@ -420,13 +428,21 @@ const PrettoSlider = styled(Slider)({
                 }} />
         </Container>
         </FormGroup>
-        <Box display= 'flex' justifyContent='center' paddingBottom= '5px' paddingTop= '5%'>
+        <Box display= 'flex' justifyContent='center' paddingBottom= '5px' paddingTop= '5%' gap= {3}>
+            <Button /*onClick={handleClear}*/ sx={{backgroundColor: '#1d3c45', color: 'white',
+                ":hover": {
+                bgcolor: "#1d3c45",
+                color: "#E8AA42"
+                }, 
+                display: 'flex', alignSelf: 'center'
+                }}>ניקוי
+            </Button>
             <Button sx={{backgroundColor: '#E8AA42', color: 'black',
             ":hover": {
-            bgcolor: "#1d3c45",
+            bgcolor: "#E8AA42",
             color: "white"
             }, display: 'flex', alignSelf: 'center'
-            }} onClick={handleFilter}>הפעל סינון</Button>
+            }} onClick={handleFilter}>הפעלת סינון</Button>
         </Box>
         
       </div>

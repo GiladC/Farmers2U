@@ -493,7 +493,7 @@ const products = [
                         direction: 'rtl'
                     }} />
             </Container> */}
-            <Box display= 'flex' justifyContent='center' paddingBottom= '10px' paddingTop= '5%'>
+            <Box display= 'flex' justifyContent='center' gap= {3} paddingBottom= '10px' paddingTop= '5%'>
                 <Button onClick={handleFilter} sx={{backgroundColor: '#E8AA42', color: 'black',
                 ":hover": {
                 bgcolor: "#E8AA42",
@@ -501,8 +501,15 @@ const products = [
                 }, 
                 display: 'flex', alignSelf: 'center'
                 }}>הפעלת סינון</Button>
+                <Button onClick={handleClear} sx={{backgroundColor: '#1d3c45', color: 'white',
+                ":hover": {
+                bgcolor: "#1d3c45",
+                color: "#E8AA42"
+                }, 
+                display: 'flex', alignSelf: 'center'
+                }}>ניקוי</Button>
             </Box>
-            <Box display= 'flex' justifyContent='center' paddingBottom= '10px' paddingTop= '5%'>
+            {/* <Box display= 'flex' justifyContent='center' paddingBottom= '10px' paddingTop= '5%'>
                 <Button onClick={handleClear} sx={{backgroundColor: '#1d3c45', color: 'white',
                 ":hover": {
                 bgcolor: "#1d3c45",
@@ -510,7 +517,7 @@ const products = [
                 }, 
                 display: 'flex', alignSelf: 'center'
                 }}>איפוס סינון</Button>
-            </Box>
+            </Box> */}
           </FormGroup>
         </Box>
         {/* <Box flex='2.5' marginLeft='none' sx={{'&::-webkit-scrollbar': { display: 'none' }, direction: 'rtl', overflowY:'scroll', height:'70vh', scrollBehavior:'smooth'}}>

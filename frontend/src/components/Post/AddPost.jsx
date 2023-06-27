@@ -185,7 +185,7 @@ const handleSelect = async value => {
             ערכו מודעה
           </Typography>
           <UserBox>
-            <Avatar src={pfpAndName.profilePicture} sx={{ width: 30, height: 30 }} />
+            <Avatar src = {'/Form_images/Logo_image/'.concat(pfpAndName.profilePicture)} sx={{ width: 30, height: 30 }} />
             <Typography fontWeight={500} variant="span">
               {pfpAndName.profileName}
             </Typography>
@@ -205,6 +205,11 @@ const handleSelect = async value => {
         value={address}
         onChange={setAddress}
         onSelect={handleSelect}
+        searchOptions={{
+          types: ['address'],
+          region: 'il',
+          language: 'iw',
+        }}
       >
         {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
           <div>
@@ -232,10 +237,11 @@ const handleSelect = async value => {
                     //position: 'absolute',
                     //zIndex: '1000',
                     width: '90%',
-                    color: 'white',
-                    backgroundColor: suggestion.active ? "#1d3c45" : "#E8AA42",
+                    color: 'black',
+                    backgroundColor: suggestion.active ? "#E8AA42" : "white",
                     cursor: 'pointer',
-                    padding: '10px',                      
+                    padding: '10px',
+                    direction: 'rtl'                      
                   };
                 return (
                     <div
