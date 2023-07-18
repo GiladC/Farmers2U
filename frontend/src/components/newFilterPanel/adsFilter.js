@@ -210,7 +210,8 @@ const PrettoSlider = styled(Slider)({
           setCoordinates(latLng)
         }
         else{
-          setIsRealAddress(false);
+          setIsRealAddress(true);
+          //setIsRealAddress(false);
         }
       };
 
@@ -270,15 +271,15 @@ const PrettoSlider = styled(Slider)({
   }
     
     return (
-      <div style={{paddingLeft:'8px', paddingTop: '40px'}}>
+      <div style={{marginRight:"5%", borderLeft: 'solid 0.5px #1d3c45', paddingLeft:'8px', paddingTop: '40px'}}>
         <FormGroup display='flex' justifyContent='center' sx={{display: 'flex', flexDirection:'column', justifyContent:'center'}}>
-            <Typography sx={{ fontSize: '26px', color: '#1d3c45', display: 'flex', justifyContent: 'center'}}>סינון מתקדם</Typography>
+            <Typography sx={{marginTop:"-8%", fontFamily:'aleph', fontSize: '36px', color: '#1d3c45', display: 'flex', justifyContent: 'center'}}>סינון מתקדם</Typography>
         
        {/* טווח תאריכים */}
-        <Typography sx={{paddingTop: '5%', fontSize: '20px', color: '#1d3c45', display: 'flex', justifyContent: 'center'}}>
+        <Typography sx={{fontFamily:'aleph',paddingTop: '5%', fontSize: '20px', color: '#1d3c45', display: 'flex', justifyContent: 'center'}}>
             {'טווח תאריכים'}
         </Typography>
-        <Typography sx={{fontSize: '15px', color: 'rgb(141, 141, 138)',display: 'flex', justifyContent: 'center'}}>
+        <Typography sx={{fontFamily:'aleph',fontSize: '13px', color: 'rgb(141, 141, 138)',display: 'flex', justifyContent: 'center'}}>
                {'יוצגו רק המודעות שנמצאות בטווח התאריכים הזה (כולל)'}
         </Typography>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -295,7 +296,7 @@ const PrettoSlider = styled(Slider)({
 
 
         {/* נקודת מוצא */}
-        <Typography sx={{paddingTop: '5%', fontSize: '20px', color: '#1d3c45', display: 'flex', justifyContent: 'center'}}>
+        <Typography sx={{fontFamily:'aleph',paddingTop: '5%', fontSize: '20px', color: '#1d3c45', display: 'flex', justifyContent: 'center'}}>
             {'מיקום נוכחי'}
         </Typography>
         <PlacesAutocomplete
@@ -310,7 +311,7 @@ const PrettoSlider = styled(Slider)({
       >
         {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
           <div>
-            <Typography sx={{fontSize: '15px', color: 'rgb(141, 141, 138)',display: 'flex', justifyContent: 'center'}}>
+            <Typography sx={{fontFamily:'aleph',fontSize: '15px', color: 'rgb(141, 141, 138)',display: 'flex', justifyContent: 'center'}}>
                {'זוהי הכתובת ממנה המרחק יחושב'}
                 </Typography>
             <TextField
@@ -354,7 +355,7 @@ const PrettoSlider = styled(Slider)({
         )}
       </PlacesAutocomplete>
         <Stack>
-             <Typography sx={{ fontSize: '20px', color: '#1d3c45', display: 'flex', justifyContent: 'center', paddingTop: '5%'}}>מרחק ממיקום המודעה (בק"מ)</Typography>
+             <Typography sx={{fontFamily:'aleph', fontSize: '20px', color: '#1d3c45', display: 'flex', justifyContent: 'center', paddingTop: '5%'}}>מרחק ממיקום המודעה (בק"מ)</Typography>
              <PrettoSlider
         aria-label="distance"
         defaultValue={5}
@@ -369,7 +370,7 @@ const PrettoSlider = styled(Slider)({
       />
         </Stack>
         {/* מוצרים */}
-        <Typography sx={{ fontSize: '20px', color: '#1d3c45', display: 'flex', justifyContent: 'center', paddingTop: '5%'}}>סינון לפי מוצרים</Typography>
+        <Typography sx={{fontFamily:'aleph', fontSize: '20px', color: '#1d3c45', display: 'flex', justifyContent: 'center', paddingTop: '5%'}}>סינון לפי מוצרים</Typography>
         <Autocomplete
       multiple
       id="checkboxes-tags-demo"
@@ -408,7 +409,7 @@ const PrettoSlider = styled(Slider)({
     />
         {/* אורגני,טבעוני */}
         <Container sx={{display:'flex', mt:'11px', justifyContent:'center'}}>
-                <FormControlLabel control={<Checkbox checked={organic} onChange={handleOrganic} sx={{'&.Mui-checked':{color: "#E8AA42"}}} />} label={<Typography 
+                <FormControlLabel control={<Checkbox checked={organic} onChange={handleOrganic} sx={{fontFamily:'aleph','&.Mui-checked':{color: "#E8AA42"}}} />} label={<Typography 
                   sx={{fontSize: '1.25rem'}}>אורגני</Typography>}
                   sx={{
                     width:'100%',
@@ -417,7 +418,7 @@ const PrettoSlider = styled(Slider)({
                     marginLeft:5,
                     direction: 'rtl'
                 }} />
-                <FormControlLabel control={<Checkbox checked={vegan} onChange={handleVegan} sx={{'&.Mui-checked':{color: "#E8AA42"}}} />} label={<Typography 
+                <FormControlLabel control={<Checkbox checked={vegan} onChange={handleVegan} sx={{fontFamily:'aleph','&.Mui-checked':{color: "#E8AA42"}}} />} label={<Typography 
                   sx={{fontSize: '1.25rem'}}>טבעוני</Typography>}
                   sx={{
                     width:'100%',
@@ -429,7 +430,7 @@ const PrettoSlider = styled(Slider)({
         </Container>
         </FormGroup>
         <Box display= 'flex' justifyContent='center' paddingBottom= '5px' paddingTop= '5%' gap= {3}>
-            <Button /*onClick={handleClear}*/ sx={{backgroundColor: '#1d3c45', color: 'white',
+            <Button /*onClick={handleClear}*/ sx={{fontFamily:'aleph',backgroundColor: '#1d3c45', color: 'white',
                 ":hover": {
                 bgcolor: "#1d3c45",
                 color: "#E8AA42"
@@ -437,7 +438,7 @@ const PrettoSlider = styled(Slider)({
                 display: 'flex', alignSelf: 'center'
                 }}>ניקוי
             </Button>
-            <Button sx={{backgroundColor: '#E8AA42', color: 'black',
+            <Button sx={{fontFamily:'aleph',backgroundColor: '#E8AA42', color: 'black',
             ":hover": {
             bgcolor: "#E8AA42",
             color: "white"

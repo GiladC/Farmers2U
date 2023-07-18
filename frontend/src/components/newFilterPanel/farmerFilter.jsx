@@ -317,12 +317,14 @@ const products = [
       })
       .then(function (response) {
           //handle success
+          console.log(distance)
           console.log(response.data)
           props.setFilteredCards(response.data);
           props.setShownCards(response.data);
       })
       .catch(function (response) {
           //handle error
+          console.log(distance)
           console.log(response)
           if (response.status === 400) {
               alert("שגיאה");
@@ -337,17 +339,17 @@ const products = [
   }
     
     return (
-      <div style={{display: 'flex'}}>
+      <div style={{marginRight: "3%",display: 'flex'}}>
         <Box className='filter' flex='1' sx={{'&::-webkit-scrollbar': { display: 'none' }, direction: 'rtl',borderLeft: 'solid 0.5px #1d3c45',overflowY:'scroll', height: '70vh'}}>
           <FormGroup display='flex' justifyContent='center' sx={{display: 'flex', flexDirection:'column', justifyContent:'center', paddingLeft:'8px'}}>
-            <Typography sx={{ fontSize: '20px', color: '#1d3c45', display: 'flex', justifyContent: 'center'}}>אפשרויות צריכה</Typography>
+            <Typography sx={{fontFamily:'aleph', fontSize: '18px', color: '#1d3c45', display: 'flex', justifyContent: 'center'}}>אפשרויות צריכה</Typography>
             <Stack direction="row" spacing={0.5} alignItems="center" display='flex' justifyContent='center'>
-                <Typography>משלוחים</Typography>
+                <Typography sx={{fontFamily:'aleph'}}>משלוחים</Typography>
                 <MaterialUISwitch sx={{ m: 1 }} checked = {isShipping} onChange= {handleSwitch}/>
-                <Typography> רכישה בעסק</Typography>
+                <Typography sx={{fontFamily:'aleph'}}> רכישה בעסק</Typography>
             </Stack>
             {/* נקודת מוצא */}
-            <Typography sx={{paddingTop: '5%', fontSize: '20px', color: '#1d3c45', display: 'flex', justifyContent: 'center'}}>
+            <Typography sx={{fontFamily:'aleph',paddingTop: '5%', fontSize: '18px', color: '#1d3c45', display: 'flex', justifyContent: 'center'}}>
                 {isShipping? 'יעד המשלוח' : ' מיקום נוכחי'}
             </Typography>
             <PlacesAutocomplete
@@ -362,7 +364,7 @@ const products = [
           >
             {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
               <div>
-                <Typography sx={{fontSize: '15px', color: 'rgb(141, 141, 138)',display: 'flex', justifyContent: 'center'}}>
+                <Typography sx={{fontFamily:'aleph',fontSize: '15px', color: 'rgb(141, 141, 138)',display: 'flex', justifyContent: 'center'}}>
                   {isShipping?' זוהי הכתובת אליה תרצו שיגיע המשלוח' : ' זוהי הכתובת ממנה תרצו להגיע לבית העסק'}
                     </Typography>
                 <TextField
@@ -407,10 +409,10 @@ const products = [
             {/* מרחק מבית העסק בק"מ*/}
             {isShipping ? null :
             <Stack>
-                <Typography sx={{ fontSize: '20px', color: '#1d3c45', display: 'flex', justifyContent: 'center', paddingTop: '5%'}}>מרחק מבית העסק (בק"מ)</Typography>
+                <Typography sx={{fontFamily:'aleph', fontSize: '18px', color: '#1d3c45', display: 'flex', justifyContent: 'center', paddingTop: '5%'}}>מרחק מבית העסק (בק"מ)</Typography>
                 <PrettoSlider
             aria-label="distance"
-            defaultValue={5}
+            //defaultValue={5}
             value = {distance}
             onChange={handleDistanceChange}
             // getAriaValueText={valuetext}
@@ -422,7 +424,7 @@ const products = [
           />
                 </Stack>}
             {/* מוצרים */}
-            <Typography sx={{ fontSize: '20px', color: '#1d3c45', display: 'flex', justifyContent: 'center', paddingTop: '5%'}}>סינון לפי מוצרי העסק</Typography>
+            <Typography sx={{fontFamily:'aleph', fontSize: '18px', color: '#1d3c45', display: 'flex', justifyContent: 'center', paddingTop: '5%'}}>סינון לפי מוצרי העסק</Typography>
             <Autocomplete
           multiple
           id="checkboxes-tags-demo"
@@ -494,14 +496,14 @@ const products = [
                     }} />
             </Container> */}
             <Box display= 'flex' justifyContent='center' gap= {3} paddingBottom= '10px' paddingTop= '5%'>
-                <Button onClick={handleFilter} sx={{backgroundColor: '#E8AA42', color: 'black',
+                <Button onClick={handleFilter} sx={{fontFamily:'aleph',backgroundColor: '#E8AA42', color: 'black',
                 ":hover": {
                 bgcolor: "#E8AA42",
                 color: "white"
                 }, 
                 display: 'flex', alignSelf: 'center'
                 }}>הפעלת סינון</Button>
-                <Button onClick={handleClear} sx={{backgroundColor: '#1d3c45', color: 'white',
+                <Button onClick={handleClear} sx={{fontFamily:'aleph',backgroundColor: '#1d3c45', color: 'white',
                 ":hover": {
                 bgcolor: "#1d3c45",
                 color: "#E8AA42"
