@@ -39,7 +39,7 @@ const CustomButton = ({
     },
   }));
 
-  return <CustomButton>{buttonText}</CustomButton>;
+  return <CustomButton >{buttonText}</CustomButton>;
 };
 
 export default CustomButton;

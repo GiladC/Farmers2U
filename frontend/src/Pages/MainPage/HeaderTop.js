@@ -70,13 +70,13 @@ const HeaderTop = () => {
             >
 כאן תוכלו למצוא חקלאים מכל רחבי הארץ, לצפות באירועים קרובים ולרכוש את הסחורה הטובה ביותר!
             </Typography>
-              <Box href="/bullboard" marginRight={72}>
+              <Box href="bullboard" marginRight={82}>
                 <CustomButton
                 backgroundColor="#e8aa42"
                 color="#212121"
                 buttonText="לוח המודעות"
                 heroBtn={true}
-                href='/bullboard'
+                href='bullboard'
                 />
               </Box>
               <Box display= 'flex' justifyContent='center' sx={{mt: '40px'}}>
