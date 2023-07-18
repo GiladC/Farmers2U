@@ -4,7 +4,7 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
-import ProductList from './ProductList';
+// import ProductList from './ProductList';
 import axios from "axios";
 
 
@@ -276,7 +276,7 @@ function FormProductsUpload({values, handleChange, setFormValue}) {
   const handleChangePhotoLogo = (e) => {
     if (e.target.files.length > 0) {
       const selectedPhoto = e.target.files;
-      alert(selectedPhoto[0])
+      //alert(selectedPhoto[0])
       const labelLogo = "1"
       fileValidate(selectedPhoto);
       setImage(selectedPhoto)

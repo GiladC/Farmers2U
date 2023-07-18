@@ -37,6 +37,7 @@ function FormOtherInfo({values, handleChange, setFormValue, props}) {
     const data = new FormData(); 
     
     data.append("jsonData", JSON.stringify({
+      //email: "golan@gmail.com",
       email: values.email,
       google_name: values.google_name,
       google_family_name: values.google_family_name,
@@ -94,6 +95,7 @@ function FormOtherInfo({values, handleChange, setFormValue, props}) {
         method: 'POST',
         url: 'http://127.0.0.1:5000/logintoken',
         data: {
+          //email: "golan@gmail.com" // Include the email in the POST request
           email: values.email // Include the email in the POST request
         }
       })
@@ -102,6 +104,7 @@ function FormOtherInfo({values, handleChange, setFormValue, props}) {
           props.setToken(response.data.access_token);
           alert('נרשמת בהצלחה. מיד תועבר לאתר.');
           localStorage.setItem('email', values.email);
+          //localStorage.setItem('email', "golan@gmail.com");
           console.log(response.data);
           navigate('/bullboard');
         })
