@@ -10,7 +10,12 @@ def send_businesses():
     for user in users:
         products_pictures = user.products_pictures.split(',')
         farm_pictures = user.farm_pictures.split(',')
-        opening_hours = user.opening_hours.split(',')
+        if user.opening_hours is not None:
+            opening_hours = user.opening_hours.split(',')
+        else:
+            print(str(user.opening_hours))
+            opening_hours = []
+            print(str(user.farm_name))
         closing_hours = user.closing_hours.split(',')
         dict = {
             "id": user.id,
@@ -34,6 +39,7 @@ def send_businesses():
             "opening_hours": opening_hours,
             "closing_hours": closing_hours
         }
+        
         useres_list.append(dict)
   
     return jsonify(useres_list)

@@ -51,7 +51,7 @@ app.register_blueprint(business_blueprint)
 from farmFilt import farmfilter_blueprint
 app.register_blueprint(farmfilter_blueprint)
 
-UPLOAD_FOLDER = os.path.join('..', 'farmers_private', 'public', 'Form_images','Logo_image')
+UPLOAD_FOLDER = os.path.join('..', 'frontend', 'public', 'Form_images','Logo_image')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
@@ -175,13 +175,13 @@ def signup():
             print(files[i].filename)
             image_filename = generate_unique_filename(files[i].filename)
             if labels[i] == "1":           
-                files[i].save(os.path.join('..','farmers_private', 'public', 'Form_images', 'Logo_image', image_filename))
+                files[i].save(os.path.join('..','frontend', 'public', 'Form_images', 'Logo_image', image_filename))
                 logo_image.append(image_filename)
             if labels[i] == "2":  
-                files[i].save(os.path.join('..','farmers_private', 'public', 'Form_images', 'Products_images', image_filename))
+                files[i].save(os.path.join('..','frontend', 'public', 'Form_images', 'Products_images', image_filename))
                 products_images.append(image_filename)
             if labels[i] == "3":
-                files[i].save(os.path.join('..','farmers_private', 'public', 'Form_images', 'Farm_images', image_filename))
+                files[i].save(os.path.join('..','frontend', 'public', 'Form_images', 'Farm_images', image_filename))
                 farm_images.append(image_filename)
 
             logo_image_string = ','.join(logo_image)
