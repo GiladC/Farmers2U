@@ -38,12 +38,16 @@ function App() {
             <Route path='/home' element={
              <>
                 <LandPage/>
+                <Footer />
+
               </>
             } />
             <Route path="/signup" element={<Form setToken={setToken} />} />
             <Route path='/login' element={
               <>
                 <FormLogin setToken={setToken} />
+                <Footer />
+
               </>
             } />
             <Route path='/bullboard' element={
@@ -69,6 +73,8 @@ function App() {
             <Route path="/" element={
               <>
                 <LandPage/>
+                <Footer />
+
               </>
             } />
             {token && token !== "" && token !== undefined && (
@@ -76,18 +82,21 @@ function App() {
                 <Route exact path="/profile" element={
                   <>
                     <Intro token={token} setToken={setToken} />
+                    <Footer />
+
                   </>
                 } />
                 <Route path="/settings" element={
                   <>
                     <ProfileSettings token={token} setToken={setToken} />
+                    <Footer />
+
                   </>
                 } />
               </>
             )}
           </Routes>
         </div>
-        <Footer />
       </div>
     </BrowserRouter>
   );
