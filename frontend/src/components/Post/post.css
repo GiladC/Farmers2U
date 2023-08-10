@@ -136,3 +136,14 @@ a:hover, a:active {
     align-content: flex-end;
     position: inherit;
 }
+
+.menuContainer {
+    position: relative;
+    display: inline-block;
+}
+
+.moreVertButton:hover {
+    background-color: #e0e0e0; 
+    border-radius: 50%; 
+    cursor: pointer; 
+}

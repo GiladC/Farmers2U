@@ -1,10 +1,10 @@
 import styled from '@emotion/styled'
-import { Add, AddPhotoAlternate } from '@mui/icons-material'
+import { AddPhotoAlternate } from '@mui/icons-material'
 import { Avatar, Box, Button, 
-    Fab, FormControlLabel, Radio,
+    FormControlLabel, 
     Checkbox, IconButton, 
     Modal, Autocomplete, 
-    TextField, Tooltip, Typography, ThemeProvider, createTheme 
+    TextField, Typography, ThemeProvider, createTheme 
 } from '@mui/material'
 import { DatePicker, LocalizationProvider, 
     TimeField } from '@mui/x-date-pickers'
@@ -50,29 +50,29 @@ const themeForButton = createTheme({
   },
 });
 
-
-const AddPost = () => {
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(dayjs().startOf('day'));
-  const [value2, setValue2] = useState(dayjs('2022-04-17T15:30'));
-  const [value3, setValue3] = useState(dayjs('2022-04-17T15:30'));
-  const [selectedProducts, setSelectedProducts] = useState([]);
+/* initial_text, initial_value, initial_value2, initial_value3,
+     initial_products, initial_address, initial_vegan, initial_organic, id, */
+const EditPost = ({ post, open, onClose }) => {
+  const [value, setValue] = useState(post.initial_value || dayjs().startOf('day'));
+  const [value2, setValue2] = useState(post.initial_value2 || dayjs('2022-04-17T15:30'));
+  const [value3, setValue3] = useState(post.initial_value3 || dayjs('2022-04-17T15:30'));
+  const matchingProducts = products.filter((prod) => 
+    post.initial_products.includes(prod.label)
+  )
+  const [selectedProducts, setSelectedProducts] = useState(matchingProducts);
   const [pfpAndName, setPfpAndName] = useState({
     profilePicture: null,
     profileName: null,
   })
   const [postData, setPostData] = useState({
-    isOrganic: false,
-    isVegan: false,
+    isOrganic: post.initial_organic || false,
+    isVegan: post.initial_vegan || false,
+    text: post.initial_text || "",
   });  
   const [image, setImage] = useState(null);
   const inputRef = useRef(null);
   const storedEmail = localStorage.getItem('email');
-  const [coordintes,setCoordinates] = useState({
-    lat: null,
-    lng: null
-  })
-  const [address, setAddress] = useState("")
+  const [address, setAddress] = useState(post.initial_address || "")
 
 
 const handleSelect = async value => {
@@ -125,7 +125,7 @@ const handleSelect = async value => {
   }, []);
 
 
-  const handlePost = () => { /* The actual object to extract to the backend */
+  const handleEdit = () => { /* The actual object to extract to the backend */
     const formData = new FormData();
     formData.append('text', postData.text);
     formData.append('location', address);
@@ -136,17 +136,16 @@ const handleSelect = async value => {
     formData.append('email', storedEmail);
     formData.append('isVegan', postData.isVegan);
     formData.append('isOrganic', postData.isOrganic);
+    formData.append('post_id', post.id);
 
     if (selectedProducts && selectedProducts.length > 0) {
       const products = selectedProducts.map((p) => p.label);
       formData.append('products', products);
     }    
 
-
-
     const handleRequest = () => {
       axios
-        .post("http://127.0.0.1:5000/api/posts", formData)
+        .post("http://127.0.0.1:5000/api/update_post", formData)
         .then((response) => {
             console.log(response.data)
             window.location.reload()
@@ -167,15 +166,9 @@ const handleSelect = async value => {
   return (
     <div>
       <ThemeProvider theme={themeForButton}>
-      <Tooltip onClick={() => setOpen(true)} title="פרסום מודעה" 
-      sx={{ position: 'fixed', bottom: 20, left: 40 }}>
-        <Fab color="button" aria-label="add">
-          <Add />
-        </Fab>
-      </Tooltip>
       <StyledModal
         open={open}
-        onClose={() => setOpen(false)}
+        onClose={onClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
@@ -350,8 +343,8 @@ const handleSelect = async value => {
               <AddPhotoAlternate />
             </IconButton>
             <Button variant="contained" 
-            sx={{ direction: 'rtl' }} onClick={handlePost}>
-              פרסום
+            sx={{ direction: 'rtl', marginRight: '-30px' }} onClick={handleEdit}>
+              שמירת שינויים
             </Button>
           </Box>
         </Box>
@@ -361,6 +354,6 @@ const handleSelect = async value => {
   )
 }
 
-export default AddPost
+export default EditPost;
 
 

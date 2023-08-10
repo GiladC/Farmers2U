@@ -12,8 +12,27 @@ def get_posts():
         user = User.query.filter_by(email=post.email).first()
         opening_hours= user.opening_hours.split(',')
         closing_hours= user.closing_hours.split(',')
+        print(post.products)
+        if not post.products:
+            post.products = []
+        prods = '#'.join(post.products)
         post_dict = {
             'farmName': post.farmName,
+            'profilePicture': post.profilePicture,
+            'photo': post.photo,
+            'desc': post.desc,
+            'posted': post.posted,
+            'date': post.event_date.strftime('%m/%d/%Y') if post.event_date else None,
+            'location': post.location,
+            'when_posted_date': post.date,
+            'when_posted_time': post.time,
+            'id': post.id,
+            'time': post.time_range,
+            'vegan': post.isVegan,
+            'organic': post.isOrganic,
+            'post_products': prods or "",
+
+            # BusinessCard data
             'farm_address': user.address,
             'phone': user.phone_number_official,
             'email': post.email,
@@ -28,18 +47,11 @@ def get_posts():
             'farm_site': user.farm_site,
             'opening_hours': opening_hours,
             'closing_hours': closing_hours,
-            'profilePicture': post.profilePicture,
-            'photo': post.photo,
-            'desc': post.desc,
-            'posted': post.posted,
-            'date': post.event_date.strftime('%m/%d/%Y') if post.event_date else None,
-            'location': post.location,
-            'when_posted_date': post.date,
-            'when_posted_time': post.time,
-            'id': post.id,
-            'time': post.time_range,
         }
         post_list.append(post_dict)
+  
+
+
 
     # The next line ensures the posts are sorted such that the latest posts are presented first.
     post_list.sort(key=lambda post: (post['when_posted_date'], post['when_posted_time']), reverse=True)

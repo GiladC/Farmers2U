@@ -1,28 +1,16 @@
-from flask import Blueprint, request, jsonify
-import datetime
-from models import User, Post, db
-import os
-import pytz
-from werkzeug.utils import secure_filename
+from flask import jsonify, request, Blueprint
+from app import app
+from models import Post, User, db
 from geopy.geocoders import Nominatim
+import datetime
+import os
+from werkzeug.utils import secure_filename
 
 
 
-'''
-Assumption:
-AddPost.jsx is supposed to use this route. It sends a POST request with
-the new post made and the data is:
-{
-    text: ?,
-    location: ?,
-    date: ?,
-    startTime: ?,
-    endTime: ?,
-    lowPrice: ?,
-    highPrice: ?,
-    image: ?,
-}
-'''
+
+updatePost_blueprint = Blueprint('update_post', __name__)
+
 def generate_unique_filename(filename):
     from uuid import uuid4
     # Generate a unique filename by combining a random UUID and the original filename
@@ -30,10 +18,8 @@ def generate_unique_filename(filename):
     return unique_filename
 
 
-posts_blueprint = Blueprint('posts', __name__)
-
-@posts_blueprint.route('/api/posts', methods=['POST'])
-def create_post():
+@app.route('/api/update_post', methods=['POST'])
+def update_post():
     data = request.form.to_dict()
     print(data)
 
@@ -93,38 +79,27 @@ def create_post():
         post_image.save(post_image_path)
 
 
-
-
-    israel_timezone = pytz.timezone('Asia/Jerusalem')  # Set the time zone to IST (Israel Standard Time)
-    current_time = datetime.datetime.now(israel_timezone)
     time_range = f"{data['endTime']}-{data['startTime']}"
 
     product_types = data.get('products')
     if product_types:
         product_types = product_types.split(',')
-    else:
-        product_types = []
-    
-    new_post = Post(
-        farmName = user.farm_name,
-        profilePicture = user.logo_picture, #profilePicture = user.profilePicture,
-        photo = post_image_filename,
-        desc = data.get('text'),
-        date = current_time.date(),
-        time = current_time.strftime('%H:%M:%S'),
-        location = data.get('location'),
-        latitude = address.latitude,
-        longitude = address.longitude,
-        event_date = datetime.datetime.strptime(data["date"], "%Y-%m-%d").date(),  # Convert to date object
-        time_range = time_range,
-        products = product_types,
-        email = data.get('email'),
-        isOrganic = data.get('isOrganic') == "true",
-        isVegan = data.get('isVegan') == "true",
-    ) 
 
-    db.session.add(new_post)
+    post = Post.query.get(data['post_id'])
+    if post_image:
+        post.photo = post_image_filename
+
+    post.desc = data.get('text')
+    post.location = data.get('location')
+    post.latitude = address.latitude
+    post.longitude = address.longitude
+    post.event_date = datetime.datetime.strptime(data["date"], "%Y-%m-%d").date()
+    post.time_range = time_range
+    post.products = product_types
+    post.isOrganic = data.get('isOrganic') == "true"
+    post.isVegan = data.get('isVegan') == "true" 
+
     db.session.commit()
-    
-    response = {'message': 'Post created successfully'}
+
+    response = {'message': 'Post updated successfully'}
     return jsonify(response), 201

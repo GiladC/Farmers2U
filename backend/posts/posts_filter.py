@@ -1,7 +1,7 @@
 import datetime
 from flask import  Blueprint, request, jsonify
 from app import app
-from models import Post, User  
+from models import Post, User
 from geopy.distance import geodesic
 
 
@@ -41,6 +41,7 @@ def filter_posts():
     
     post_list = []
     for post in posts:
+        user = User.query.filter_by(email=post.email).first()
 
         if data['isOrganic'] and not post.isOrganic:
             continue
@@ -62,11 +63,19 @@ def filter_posts():
             if dist > int(data['distance']):
                 continue
 
-        user = User.query.filter_by(email=post.email).first()
-        opening_hours= user.opening_hours.split(',')
-        closing_hours= user.closing_hours.split(',')
         post_dict = {
             'farmName': post.farmName,
+            'profilePicture': post.profilePicture,
+            'photo': post.photo,
+            'desc': post.desc,
+            'posted': post.posted,
+            'date': post.event_date.strftime('%m/%d/%Y') if post.event_date else None,
+            'location': post.location,
+            'when_posted_date': post.date,
+            'when_posted_time': post.time,
+            'id': post.id,
+            'time': post.time_range,
+            #BusinessCard data
             'farm_address': user.address,
             'phone': user.phone_number_official,
             'email': post.email,
@@ -79,18 +88,8 @@ def filter_posts():
             'instagram': user.instagram,
             'facebook': user.facebook,
             'farm_site': user.farm_site,
-            'opening_hours': opening_hours,
-            'closing_hours': closing_hours,
-            'profilePicture': post.profilePicture,
-            'photo': post.photo,
-            'desc': post.desc,
-            'posted': post.posted,
-            'date': post.event_date.strftime('%m/%d/%Y') if post.event_date else None,
-            'location': post.location,
-            'when_posted_date': post.date,
-            'when_posted_time': post.time,
-            'id': post.id,
-            'time': post.time_range,
+            'opening_hours': user.opening_hours.split(','),
+            'closing_hours': user.closing_hours.split(','),
         }
         post_list.append(post_dict)
 

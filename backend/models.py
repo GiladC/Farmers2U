@@ -44,7 +44,7 @@ class Post(db.Model):
     __tablename__ = "posts"
     id = db.Column(db.String(11), primary_key=True, unique=True, default=get_uuid)  # unique identifier of the post
     farmName = db.Column(db.String(150), nullable=False)   
-    email = db.Column(db.String(150), nullable=False)                         # Name of the farm
+    email = db.Column(db.String(150), nullable=False)                        
     profilePicture = db.Column(db.String(255))                                      # The logo of the farm
     photo = db.Column(db.String(255))                                               # The picture on the post
     desc = db.Column(db.String(1000))                                               # The text of the post

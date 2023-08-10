@@ -1,43 +1,38 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './post.css'
 import {AccessTime, EventNote, LocationOn, MoreVert} from '@mui/icons-material'
-import { Box, Button, Typography } from '@mui/material'
+import { Box, Button, Menu, MenuItem, Typography, Dialog,
+    DialogTitle, DialogContent, DialogActions } from '@mui/material'
 import BusinessCard from './businessCard'
-import userEvent from '@testing-library/user-event'
-
-// this is how 'business' should look like in line 28
-const dummyBusiness = { 
-    name: 'משק הגולן',
-    location: 'רמת הגולן' ,
-    phone: '0725437433',
-    mail: 'golanFarm@gmail.com',
-    about: 'המשק קיים מזה 20 שנה והוא משק משפחתי שעובר מדור לדור. המטרה שלנו היא להביא את הירקות האיכותיים ביותר, במחירים הגונים. \
-    אנו מגדלים את הירקות שלנו בתנאים הטובים ביותר, על מנת להבטיח לכם את הטוב ביותר. \
-    הירקות שלנו גדלים תחת אוויר הרי גולן הפסטורליים, וצוות החקלאים שלנו משתמש בטכנולוגיה החדשנית ביותר בתחום.',
-    whatsApp: '0547984551',
-    instagram: 'golan_farm20',
-    facebook: 'משק הגולן'
-};
+import axios from 'axios'; 
+import EditPostWrapper from '../edit_post/wrapper';
 
 
-/* 
 
-Post objects:
-{
-    farmName: ?,        the name of the farm
-    profilePicture: ?,  the profile image
-    photo: ?,           the photo to be used in the post, might exist and might not
-    desc: ?,            the free text of the post
-    posted: ?,          how long ago it was posted
-    date: ?,            the date when the event happens
-    price: ?,           the price range. Will be deleted
-    location: ?,        the location of the specified event
-    time: ?,            the time range (in hours) of the event
-}
-*/
+export default function Post({post, token}) {
+    const storedEmail = localStorage.getItem('email');
+    const profileEmail = token?.profile_email || storedEmail || '';
+    const [showMenu, setShowMenu] = useState(false);
+    let postEmail = null;
+    const [open, setOpen] = useState(false);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [ShowDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+    const [openEditPost, setOpenEditPost] = useState(false);
 
-export default function Post({post}) {
-    const [open, setOpen] = useState(false)
+    useEffect(() => {
+        const id = new FormData();
+        id.append('id', post.id)
+        axios
+          .post('http://127.0.0.1:5000/api/get_owner', id)
+          .then((response) => {
+            postEmail = response.data.email;
+            setShowMenu(postEmail === profileEmail);
+          })
+          .catch((error) => {
+            console.log("Error: ", error);
+          });
+      }, []);
+
     const logo = post.profilePicture;
     const business = {
         farm_name: post.farmName,
@@ -57,6 +52,43 @@ export default function Post({post}) {
         closing_hours: post.closing_hours
     }
 
+    const handleMoreClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleMoreClose = () => {
+        setAnchorEl(null);
+    }
+
+    const handleDeleteConfirmation = () => {
+        setShowDeleteConfirmation(true);
+        setAnchorEl(null);
+    }
+
+    const handleDeleteCancel = () => {
+        setShowDeleteConfirmation(false);
+    }
+
+    const handleOpenEditMode = () => {
+        setAnchorEl(null);
+        setOpenEditPost(true);
+    }
+
+    const handleDeleteConfirm = () => {
+        const id = new FormData();
+        id.append('postId', post.id);
+        axios
+          .post('http://127.0.0.1:5000/api/delete_post', id)
+          .then((response) => {
+            console.log('Post deleted successfully');
+            window.location.reload();
+          })
+          .catch((error) => {
+            console.error('Error deleting post:', error);
+            window.location.reload();
+          });    
+    };
+
   return (
     <div className='post'>
         <div className="postWrapper">
@@ -73,7 +105,33 @@ export default function Post({post}) {
                     <span className="postDate">{post.posted}</span> 
                 </div>
                 <div className="postTopRight">
-                    <MoreVert /> 
+                  {showMenu && (
+                    <div className="menuContainer">
+                    <MoreVert onClick={handleMoreClick} className="moreVertButton" /> 
+                      <Menu anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)}
+                        onClose={handleMoreClose} anchorOrigin={{
+                          vertical: 'top', horizontal: 'right',
+                        }}
+                        transformOrigin={{
+                          vertical: 'top', horizontal: 'left',
+                        }}
+                        PaperProps={{
+                          style: {
+                              position: 'absolute',
+                              top: '0',
+                              right: '100%',
+                              borderRadius: '8px',
+                              background: 'linear-gradient(to bottom, #E8AA42, #f0b148)',
+                              color: 'white',
+                              boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)',
+                              width: '150px',
+                          },
+                        }}>
+                        <MenuItem onClick={handleDeleteConfirmation}> מחיקת הפוסט </MenuItem>
+                        <MenuItem onClick={handleOpenEditMode}> עריכת הפוסט</MenuItem>
+                        </Menu>
+                    </div>
+                  )}
                 </div>
             </div>
             <div className="postCenter">
@@ -133,6 +191,21 @@ export default function Post({post}) {
                 </div>
             </div>
         </div>
+        <Dialog open={ShowDeleteConfirmation} onClose={handleDeleteCancel}>
+            <DialogTitle> האם אתה בטוח? </DialogTitle>
+            <DialogContent>
+                <Typography> בעת לחיצה על "כן" המודעה תימחק לצמיתות</Typography>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={handleDeleteCancel}>
+                    לא
+                </Button>
+                <Button onClick={handleDeleteConfirm}>
+                    כן
+                </Button>
+            </DialogActions>
+        </Dialog>
+        <EditPostWrapper open={openEditPost} onClose={() => setOpenEditPost(false)} original_post={post}/>
     </div>
   )
 }
