@@ -12,26 +12,13 @@ import EditPostWrapper from '../edit_post/wrapper';
 export default function Post({post, token}) {
     const storedEmail = localStorage.getItem('email');
     const profileEmail = token?.profile_email || storedEmail || '';
-    const [showMenu, setShowMenu] = useState(false);
+    const showMenu = profileEmail === post.email;
     let postEmail = null;
     const [open, setOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
     const [ShowDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
     const [openEditPost, setOpenEditPost] = useState(false);
 
-    useEffect(() => {
-        const id = new FormData();
-        id.append('id', post.id)
-        axios
-          .post('http://127.0.0.1:5000/api/get_owner', id)
-          .then((response) => {
-            postEmail = response.data.email;
-            setShowMenu(postEmail === profileEmail);
-          })
-          .catch((error) => {
-            console.log("Error: ", error);
-          });
-      }, []);
 
     const logo = post.profilePicture;
     const business = {
@@ -54,6 +41,7 @@ export default function Post({post, token}) {
 
     const handleMoreClick = (event) => {
         setAnchorEl(event.currentTarget);
+        console.log(post.desc)
     };
 
     const handleMoreClose = () => {
@@ -73,6 +61,8 @@ export default function Post({post, token}) {
         setAnchorEl(null);
         setOpenEditPost(true);
     }
+
+
 
     const handleDeleteConfirm = () => {
         const id = new FormData();
@@ -174,9 +164,14 @@ export default function Post({post, token}) {
                     display: 'flex',
                     justifyContent: 'flex-start',
                 }}>
-                    <Typography sx={{
-                        align: 'right'
-                    }}>{post.desc}</Typography>
+                    <Typography 
+                    sx={{
+                        align: 'right',
+                        whiteSpace: 'pre-line'
+                    }}
+                    >
+                        {post.desc}
+                    </Typography>
                 </Box>
                 <div className="imgWrapper">
                 <img className='postImg' 
