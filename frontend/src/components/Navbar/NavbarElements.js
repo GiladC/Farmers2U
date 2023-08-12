@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { AppBar, Toolbar, Tabs, Tab, Button, useMediaQuery, ThemeProvider, createTheme, useTheme, Box } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { AppBar, Toolbar, Tabs, Tab, Button, useMediaQuery, Typography,
+  ThemeProvider, createTheme, useTheme, Box } from '@mui/material';
 import Farmers2ULogo from '../../assets/farmers2u_logo.svg'
 import DrawerComp from './DrawerComp';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -17,13 +18,32 @@ const themeForButton = createTheme({
 });
 
   const NavbarElements = ({ token, removeToken }) => {
+
   const navigate = useNavigate();
+  const [profile, setProfile] = useState({
+    logo: "", farmName: "",
+  })
   const handleSettingsClick = () => {
     navigate('/settings');
   };
-  const handleProfileClick = () => {
-    navigate('/profile');
-  };
+
+
+  useEffect(() => {
+    if (token){
+      const storedEmail = localStorage.getItem('email');
+      const mail = new FormData();
+      mail.append('email', storedEmail)
+      axios
+        .post('http://127.0.0.1:5000/api/get_profile', mail)
+        .then((response) => {
+          setProfile(response.data)
+        })
+        .catch((error) => {
+          console.log("Error: ", error);
+        }); 
+    }
+  }, []);
+
   const theme = useTheme();
   const isMatch = useMediaQuery(theme.breakpoints.down('lg'));
   const { pathname } = useLocation();
@@ -51,7 +71,6 @@ const themeForButton = createTheme({
 
   const pages = [
     { label: 'שאלות נפוצות', href: 'faq' },
-    { label: 'על האתר', href: 'about' },
     { label: 'החקלאים שלנו', href: 'ourfarmers' },
     { label: 'לוח המודעות', href: 'bullboard' },
     { label: 'דף הבית', href: 'home' }
@@ -66,12 +85,12 @@ const themeForButton = createTheme({
   return (
     <ThemeProvider theme={themeForButton}>
       <React.Fragment>
-        <AppBar position="static" sx={{ background: '#1d3c45' }}> {/*old version 1B9C85*/}
+        <AppBar position="static" sx={{ background: '#1d3c45' }}> 
           <Toolbar sx={{ display: 'flex', justifyContent: 'flex-end' }}>
             {isMatch ? (
               <>
                 <img src={Farmers2ULogo} alt="Farmers2ULogo" style={{ width: '65px', height: '65px' }} />
-                <DrawerComp />
+                <DrawerComp token={token} removeToken={removeToken} />
               </>
             ) : (
               <>
@@ -89,13 +108,40 @@ const themeForButton = createTheme({
                   <>
                     <LogoutIcon  type="submit" onClick={logMeOut}
                     sx={{width: '30px', height:'40px', fontSize: 'large', cursor: 'pointer'}}/>
-                    {/* optional-red color while hovering. doesn't look good: , '&:hover': { color: 'red' , fontWeight:'bold'}*/}
-                    {/*<button className="btn btn-outline-danger" type="submit" onClick={logMeOut} 
-                    style={{width: '140px', height:'36px', fontFamily: "aleph", marginRight: 'auto', marginLeft: '4rem', '&:hover': { color: 'white' , fontWeight:'bold'} }} variant="contained">התנתקות</button>*/}
-                    <Button color= "button" type="submit" onClick={handleSettingsClick} 
-                    sx={{ width: '140px', height:'36px', fontSize: "medium", fontFamily: "aleph", marginRight: 'auto', marginLeft: '1.8rem', cursor: 'pointer', '&:hover': { color: 'white' , fontWeight:'bold'} }}  variant="contained">אזור אישי</Button>
-                    {/* <Button color= "button" type="submit" onClick={handleProfileClick} 
-                    sx={{width: '140px', height:'36px', fontSize: "medium", fontFamily: "aleph", marginRight: 'auto', marginLeft: '2rem', cursor: 'pointer', '&:hover': { color: 'white' , fontWeight:'bold'} }} variant="contained">פרופיל</Button> */}
+                    <Button onClick={handleSettingsClick}
+                    sx={{ marginRight: 'auto', marginLeft: '1.8rem',}}>
+                      <img className = 'Img' src = {'/Form_images/Logo_image/'.concat(profile.logo)} alt=""
+                      style={{ width: '60px', height: '60px', borderRadius: '50%', 
+                      objectFit: 'cover', cursor: 'pointer' }} />
+                    </Button>
+                    <Button onClick={handleSettingsClick}>
+                        <Typography
+                          variant='h5'
+                          sx={{
+                            color: '#a5b1b5',
+                            fontFamily: 'aleph',
+                            '&:hover': {
+                              color: '#ffffff',
+                              transition: 'color 0.3s', 
+                            },
+                          }}
+                        >
+                          {profile.farmName}
+                        </Typography>
+                    </Button>
+                    {/* <Button color= "button" type="submit" onClick={handleSettingsClick} 
+                    sx={{ width: '140px', height:'36px', fontSize: "medium", 
+                    fontFamily: "aleph", marginRight: 'auto', marginLeft: '1.8rem', 
+                    cursor: 'pointer', '&:hover': { color: 'white' , fontWeight:'bold'} 
+                    }}  variant="contained">אזור אישי</Button>  */}
+                    {/*
+                        <Button onClick={e=>setOpen(true)}>
+                            <img className= 'Img' src = {'/Form_images/Logo_image/'.concat(logo)}  alt="" />
+                        </Button>
+                        <Button onClick={e=>setOpen(true)}>
+                            <Typography variant='h5'color={'black'}>{post.farmName}</Typography>
+                        </Button> 
+                  */}
                   </>
                 )}
                 <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
