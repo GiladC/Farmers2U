@@ -20,11 +20,14 @@ const themeForButton = createTheme({
   const NavbarElements = ({ token, removeToken }) => {
 
   const navigate = useNavigate();
+  const [farmNameActive, setFarmNameActive] = useState(false);
   const [profile, setProfile] = useState({
     logo: "", farmName: "",
   })
   const handleSettingsClick = () => {
     navigate('/settings');
+    setValue(-1);
+    setFarmNameActive(true);
   };
 
 
@@ -118,7 +121,8 @@ const themeForButton = createTheme({
                         <Typography
                           variant='h5'
                           sx={{
-                            color: '#a5b1b5',
+                            color: farmNameActive ? '#ffffff' : '#a5b1b5',
+                            fontWeight: 'bold',
                             fontFamily: 'aleph',
                             '&:hover': {
                               color: '#ffffff',
@@ -154,9 +158,12 @@ const themeForButton = createTheme({
                     {pages.map((page, index) => (
                       <Tab
                         key={index}
+                        onClick={()=>{setFarmNameActive(false);}}
                         label={page.label}
                         href={page.href}
-                        sx={{ marginRight: 'auto', marginLeft: "45px", fontFamily: "aleph", fontSize: '18.5px', '&:hover': { textDecoration: 'none' } }}
+                        sx={{ marginRight: 'auto', marginLeft: "45px", 
+                        fontFamily: "aleph", fontSize: '18.5px', 
+                        '&:hover': { textDecoration: 'none' } }}
                         value={index}
                         style={{color: '#FFFFFF', fontWeight:'bold'}}
                       />
@@ -167,7 +174,7 @@ const themeForButton = createTheme({
                   <img
                     src={Farmers2ULogo}
                     alt="Farmers2ULogo"
-                    style={{ width: '65px', height: '65px', marginRight: 'auto' }}
+                    style={{ width: '60px', height: '60px', marginRight: 'auto' }}
                   />
                 </Box>
               </>
