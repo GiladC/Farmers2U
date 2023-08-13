@@ -13,6 +13,7 @@ import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import axios from 'axios'
 import dayjs from 'dayjs'
+import 'dayjs/locale/he';
 import React, { useState, useRef, useEffect } from 'react'
 import PlacesAutocomplete, {
   geocodeByAddress,
@@ -127,6 +128,7 @@ const handleSelect = async value => {
 
   const handlePost = () => { /* The actual object to extract to the backend */
     const formData = new FormData();
+    console.log(postData.text);
     formData.append('text', postData.text);
     formData.append('location', address);
     formData.append('date', value.format('YYYY-MM-DD'));
@@ -256,9 +258,9 @@ const handleSelect = async value => {
           </div>
         )}
         </PlacesAutocomplete>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <LocalizationProvider dateAdapter={AdapterDayjs} locale="he">
             <Box display="flex" paddingTop={2} justifyContent="center">
-              <DatePicker label={'תאריך '} views={['day']} 
+              <DatePicker label={'תאריך '} views={['day']} format='DD/MM/YYYY'
               value={value} onChange={(newValue) => setValue(newValue)} sx={{"& label":{left: "unset",
               right: "1.75rem",
               transformOrigin: "right"},

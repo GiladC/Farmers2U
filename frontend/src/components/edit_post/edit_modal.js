@@ -251,7 +251,7 @@ const handleSelect = async value => {
         </PlacesAutocomplete>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <Box display="flex" paddingTop={2} justifyContent="center">
-              <DatePicker label={'תאריך '} views={['day']} 
+              <DatePicker label={'תאריך '} views={['day']} format='DD/MM/YYYY'
               value={value} onChange={(newValue) => setValue(newValue)} sx={{"& label":{left: "unset",
               right: "1.75rem",
               transformOrigin: "right"},
