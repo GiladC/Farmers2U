@@ -286,10 +286,10 @@ const PrettoSlider = styled(Slider)({
             <Box display="flex" paddingTop={2} justifyContent="center">
               <Box style={{width: '50%', marginRight: '19px'}}>
               <DatePicker label={'תאריך סיום'} views={['day']} defaultValue={endDate.toDate()}
-              value={endDate} onChange={(newValue) => setEndDate(dayjs(newValue))} /> </Box>
+              value={endDate} onChange={(newValue) => setEndDate(dayjs(newValue))} format='DD/MM/YYYY'/> </Box>
               <Box style={{width: '50%'}}>
               <DatePicker label={'תאריך התחלה'} views={['day']} 
-              value={startDate} onChange={(newValue) => setStartDate(newValue)} /> </Box>
+              value={startDate} onChange={(newValue) => setStartDate(newValue)} format='DD/MM/YYYY'/> </Box>
             </Box>
             
           </LocalizationProvider>
