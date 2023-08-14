@@ -9,7 +9,6 @@ import AdsPage from './Pages/Bullboard/adsPage';
 import Form from './Pages/Forms/Form';
 import About from './Pages/About';
 import OurFarmers from './Pages/ourfarmers/OurFarmers';
-import FilterPanel from './components/FilterPanel/FilterPanel';
 import Intro from './Pages/ShowFarmerProfile/intro';
 import ProfileSettings from './Pages/Settings/profileSettings';
 import './App.css';
@@ -18,27 +17,18 @@ import UseToken from './Pages/Forms/UseToken';
 function App() {
   const { token, removeToken, setToken } = UseToken();
 
-  const appContainerStyles = {
-    display: 'flex',
-    flexDirection: 'column',
-    minHeight: '100vh',
-  };
 
-  const contentContainerStyles = {
-    flexGrow: 1,
-    paddingTop: '0rem', // How much padding we want to have for the navbar
-  };
 
   return (
     <BrowserRouter>
-      <div style={appContainerStyles}>
+      <div >
         <NavbarElements token={token} removeToken={() => { removeToken(); }} />
-        <div style={contentContainerStyles}>
+        <div>
         <Routes>
             <Route path='/home' element={
              <>
                 <LandPage/>
-                <Footer />
+                <Footer token={token} />
 
               </>
             } />
@@ -46,7 +36,7 @@ function App() {
             <Route path='/login' element={
               <>
                 <FormLogin setToken={setToken} />
-                <Footer />
+                <Footer token={token}/>
 
               </>
             } />
@@ -63,17 +53,13 @@ function App() {
             <Route path='/faq' element={
               <>
                 <Faq/>
-              </>
-            } />
-            <Route path='/about' element={
-              <>
-                <About/>
+                <Footer token={token}/>
               </>
             } />
             <Route path="/" element={
               <>
                 <LandPage/>
-                <Footer />
+                <Footer token={token}/>
 
               </>
             } />
@@ -82,14 +68,14 @@ function App() {
                 <Route exact path="/profile" element={
                   <>
                     <Intro token={token} setToken={setToken} />
-                    <Footer />
+                    <Footer token={token}/>
 
                   </>
                 } />
                 <Route path="/settings" element={
                   <>
                     <ProfileSettings token={token} setToken={setToken} />
-                    <Footer />
+                    <Footer token={token}/>
 
                   </>
                 } />
