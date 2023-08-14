@@ -69,17 +69,20 @@ const AddPost = () => {
   const [image, setImage] = useState(null);
   const inputRef = useRef(null);
   const storedEmail = localStorage.getItem('email');
-  const [coordintes,setCoordinates] = useState({
+  const [isRealAddress, setIsRealAddress] = useState(false);
+  const [coordinates,setCoordinates] = useState({
     lat: null,
     lng: null
   })
   const [address, setAddress] = useState("")
 
 
-const handleSelect = async value => {
+  const handleSelect = async value => {
     const results = await geocodeByAddress(value);
     const latLng = await getLatLng(results[0]);
-    setAddress(value)
+    setAddress(value);
+    setCoordinates(latLng);
+    setIsRealAddress(true);
   };
 
 
@@ -112,6 +115,30 @@ const handleSelect = async value => {
     }
   };
 
+  const handleChangeAddress = async value => {
+    setAddress(value);
+    try {
+      const results = await geocodeByAddress(value);
+  
+      if (results.length === 0) {
+        setIsRealAddress(false);
+        return;
+      }
+  
+      const latLng = await getLatLng(results[0]);
+  
+      if (latLng && latLng.lat && latLng.lng) {
+        setIsRealAddress(true);
+        setCoordinates(latLng);
+      } else {
+        setIsRealAddress(false);
+      }
+      console.log("Latitude and Longitude: ", latLng)
+    } catch (error) {
+      setIsRealAddress(false);
+    }
+  };
+
   useEffect(() => {
     const mail = new FormData();
     mail.append('email', storedEmail)
@@ -128,7 +155,7 @@ const handleSelect = async value => {
 
   const handlePost = () => { /* The actual object to extract to the backend */
     const formData = new FormData();
-    console.log(postData.text);
+    formData.append('isRealAddress', isRealAddress);
     formData.append('text', postData.text);
     formData.append('location', address);
     formData.append('date', value.format('YYYY-MM-DD'));
@@ -138,6 +165,8 @@ const handleSelect = async value => {
     formData.append('email', storedEmail);
     formData.append('isVegan', postData.isVegan);
     formData.append('isOrganic', postData.isOrganic);
+    formData.append('latitude', coordinates.lat);
+    formData.append('longitude', coordinates.lng);
 
     if (selectedProducts && selectedProducts.length > 0) {
       const products = selectedProducts.map((p) => p.label);
@@ -150,7 +179,6 @@ const handleSelect = async value => {
       axios
         .post("http://127.0.0.1:5000/api/posts", formData)
         .then((response) => {
-            console.log(response.data)
             window.location.reload()
         })
         .catch((error) => {
@@ -205,7 +233,7 @@ const handleSelect = async value => {
           />
         <PlacesAutocomplete
         value={address}
-        onChange={setAddress}
+        onChange={handleChangeAddress}
         onSelect={handleSelect}
         searchOptions={{
           types: ['address'],

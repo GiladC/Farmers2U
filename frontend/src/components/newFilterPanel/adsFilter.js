@@ -203,14 +203,32 @@ const PrettoSlider = styled(Slider)({
     const handleSelect = async value => {
         const results = await geocodeByAddress(value);
         const latLng = await getLatLng(results[0]);
-
         setAddress(value);
-        if (latLng && latLng.lat && latLng.lng){
-          setIsRealAddress(true);
-          setCoordinates(latLng)
-        }
-        else{
-          setIsRealAddress(true);
+        setCoordinates(latLng);
+        setIsRealAddress(true);
+      };
+
+      const handleChangeAddress = async value => {
+        setAddress(value);
+        try {
+          const results = await geocodeByAddress(value);
+      
+          if (results.length === 0) {
+            setIsRealAddress(false);
+            return;
+          }
+      
+          const latLng = await getLatLng(results[0]);
+      
+          if (latLng && latLng.lat && latLng.lng) {
+            setIsRealAddress(true);
+            setCoordinates(latLng);
+          } else {
+            setIsRealAddress(false);
+          }
+          console.log("Latitude and Longitude: ", latLng)
+        } catch (error) {
+          setIsRealAddress(false);
         }
       };
 
@@ -313,7 +331,7 @@ const PrettoSlider = styled(Slider)({
         </Typography>
         <PlacesAutocomplete
         value={address}
-        onChange={setAddress}
+        onChange={handleChangeAddress}
         onSelect={handleSelect}
         searchOptions={{
           types: ['address'],
