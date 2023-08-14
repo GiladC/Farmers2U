@@ -21,8 +21,21 @@ def filterTheFarmers():
     dist = request.json['distance']
     # categoriesToFilter = request.args.get('categories')
     categoriesToFilter = request.json['categories']
-    print(categoriesToFilter)
     products_list = ['ירקות', 'פירות','גבינות ומוצרי חלב', 'ביצים', 'דבש', 'צמחים', 'יינוץ ושמן זית', 'תבלינים', 'דגנים']
+    isRealAddress = request.json['isRealAddress']
+    print("isRealaddress: " + str(isRealAddress))
+    print("address: " + address)
+    if (isRealAddress == False):
+        print(dist)
+        if (address == "" and shipping == True and int(dist) != 0):
+            return jsonify({'error': 
+                            'נא למלא את שדה הכתובת עם כתובת תקינה על מנת לסנן לפי מרחק'
+                            }), 400
+        if (address != ''):
+            return jsonify({'error': 
+                            'נא לבחור כתובת תקינה בשדה המיקום או להשאיר ריק אם לא רוצים לסנן לפי כתובת'
+                            }), 400
+    
 
     users_query = User.query
     if shipping:
@@ -42,10 +55,6 @@ def filterTheFarmers():
     for farmer in farmers:
         if address != '':
             gmaps = googlemaps.Client(key='AIzaSyAW-HDgK8fdEceybLwvRN_7wYgI_TtHmQ0')
-            # if dist is None:
-            #     dist = 0
-            print(str(dist))
-            print(str())
             result = gmaps.distance_matrix(address, farmer.address)["rows"][0]["elements"][0]["distance"]["value"]
             result = result / 1000
         if cond_categories(farmer.types_of_products.split(',')):
@@ -84,6 +93,7 @@ def filterTheFarmers():
 
     
         
+
 
 
 

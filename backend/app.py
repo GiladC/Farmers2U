@@ -60,7 +60,10 @@ app.register_blueprint(updatePost_blueprint)
 from posts.getowner import getowner_blueprint
 app.register_blueprint(getowner_blueprint)
 
-UPLOAD_FOLDER = os.path.join('..', 'farmers2u_proj', 'public', 'Form_images','Logo_image')
+from navbar_profile import getprofile_blueprint
+app.register_blueprint(getprofile_blueprint)
+
+UPLOAD_FOLDER = os.path.join('..', 'farmers_private', 'public', 'Form_images','Logo_image')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
@@ -184,18 +187,22 @@ def signup():
             print(files[i].filename)
             image_filename = generate_unique_filename(files[i].filename)
             if labels[i] == "1":           
-                files[i].save(os.path.join('..','farmers2u_proj', 'public', 'Form_images', 'Logo_image', image_filename))
+                files[i].save(os.path.join('..','farmers_private', 'public', 'Form_images', 'Logo_image', image_filename))
                 logo_image.append(image_filename)
             if labels[i] == "2":  
-                files[i].save(os.path.join('..','farmers2u_proj', 'public', 'Form_images', 'Products_images', image_filename))
+                files[i].save(os.path.join('..','farmers_private', 'public', 'Form_images', 'Products_images', image_filename))
                 products_images.append(image_filename)
             if labels[i] == "3":
-                files[i].save(os.path.join('..','farmers2u_proj', 'public', 'Form_images', 'Farm_images', image_filename))
+                files[i].save(os.path.join('..','farmers_private', 'public', 'Form_images', 'Farm_images', image_filename))
                 farm_images.append(image_filename)
 
             logo_image_string = ','.join(logo_image)
             products_images_string = ','.join(products_images)
             farm_images_string = ','.join(farm_images)
+
+            if(logo_image_string == ""):
+                logo_image_string = "farmers2u_logo.png"
+
             print(logo_image_string)
             print(products_images_string)
             print(farm_images_string)
