@@ -198,7 +198,7 @@ const PrettoSlider = styled(Slider)({
     const [isRealAddress, setIsRealAddress] = useState(false);
     const [coordinates,setCoordinates] = useState({
       lat: null,
-      lng: null
+      lng: null,
     })    
     const handleSelect = async value => {
         const results = await geocodeByAddress(value);
@@ -211,7 +211,6 @@ const PrettoSlider = styled(Slider)({
         }
         else{
           setIsRealAddress(true);
-          //setIsRealAddress(false);
         }
       };
 
@@ -230,45 +229,58 @@ const PrettoSlider = styled(Slider)({
     const handleVegan = (event) => {
         setVegan(event.target.checked);};
 
-        
-  const handleFilter = () => { /* The actual object to extract to the backend */
-    const formData = new FormData();
+    const handleClear = () => {
+      setOrganic(false);
+      setVegan(false);
+      setDistance(0);
+      setCategories([]);
+      setAddress('');
+      setIsRealAddress(false);
+      setCoordinates({
+        lat: null,
+        lng: null,
+      });
+      setEndDate(defaultEndDate);
+      setStartDate(dayjs().startOf('day'));
+    }
 
-    if (categories && categories.length > 0) {
-      const products = categories.map((p) => p.label);
-      formData.append('products', products);
-    }    
-    formData.append('isVegan', vegan);
-    formData.append('isOrganic', organic);
-    formData.append('distance', distance);
-    formData.append('startDate', startDate.format('YYYY-MM-DD'));
-    formData.append('endDate', endDate.format('YYYY-MM-DD'));
-    formData.append('isRealAddress', isRealAddress);
-    formData.append('latitude', coordinates.lat);
-    formData.append('longitude', coordinates.lng);
-    formData.append('address', address)
+
+    const handleFilter = () => { /* The actual object to extract to the backend */
+      const formData = new FormData();
+
+      if (categories && categories.length > 0) {
+        const products = categories.map((p) => p.label);
+        formData.append('products', products);
+      }    
+      formData.append('isVegan', vegan);
+      formData.append('isOrganic', organic);
+      formData.append('distance', distance);
+      formData.append('startDate', startDate.format('YYYY-MM-DD'));
+      formData.append('endDate', endDate.format('YYYY-MM-DD'));
+      formData.append('isRealAddress', isRealAddress);
+      formData.append('latitude', coordinates.lat);
+      formData.append('longitude', coordinates.lng);
+      formData.append('address', address);
 
     
-
-
-    const handleRequest = () => {
-      axios
-        .post("http://127.0.0.1:5000/api/filter_posts", formData)
-        .then((response) => {
+      const handleRequest = () => {
+        axios
+          .post("http://127.0.0.1:5000/api/filter_posts", formData)
+          .then((response) => {
             console.log(response.data)
             setFilteredPosts(response.data)
-        })
-        .catch((error) => {
-          if (error.response && error.response.data && error.response.data.error) {
-            const errorMessage = error.response.data.error;
-            window.alert(errorMessage);
-          } else {
-            console.error(error);
-          }
-        })
+          })
+          .catch((error) => {
+            if (error.response && error.response.data && error.response.data.error) {
+              const errorMessage = error.response.data.error;
+              window.alert(errorMessage);
+            } else {
+              console.error(error);
+            }
+          })
+      }
+      handleRequest()
     }
-    handleRequest()
-  }
     
     return (
       <div style={{marginRight:"5%", borderLeft: 'solid 0.5px #1d3c45', paddingLeft:'8px', paddingTop: '40px'}}>
@@ -430,7 +442,7 @@ const PrettoSlider = styled(Slider)({
         </Container>
         </FormGroup>
         <Box display= 'flex' justifyContent='center' paddingBottom= '5px' paddingTop= '5%' gap= {3}>
-            <Button /*onClick={handleClear}*/ sx={{fontFamily:'aleph',backgroundColor: '#1d3c45', color: 'white',
+            <Button onClick={handleClear} sx={{fontFamily:'aleph',backgroundColor: '#1d3c45', color: 'white',
                 ":hover": {
                 bgcolor: "#1d3c45",
                 color: "#E8AA42"
