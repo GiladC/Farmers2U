@@ -14,7 +14,7 @@ import Slider from '../../Pages/ShowFarmerProfile/ImageSlider'
 import dayjs from 'dayjs'
 import UserPosts from './userPosts'
 import './userPosts.css'
-import {ValidateFacebook, ValidateInstagram, ValidatePhone, ValidateWebsite, ValidateWhatsapp} from '../../components/validations'
+import {ValidateAddress, ValidateFacebook, ValidateInstagram, ValidatePhone, ValidateWebsite, ValidateWhatsapp} from '../../components/validations'
 
 const IOSSwitch = styled((props) => (
     <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
@@ -107,8 +107,6 @@ function CheckboxMenu(props) {
          }}>
   
         {Boolean(props.anchorEl) ? <Remove /> : <Add />}
-        {console.log(props.selectedItems)}
-        {console.log(props.checked)}
         <Typography style={{ color: '#37474f', fontSize: '15px', fontFamily: 'aleph'}}>
         {props.selectedItems.length > 0 ? 
             <div style={{ display: 'flex', flexWrap: 'nowrap' }}>
@@ -219,6 +217,8 @@ const ProfileSettings = (props) => {
     const [validWebsite, setValidWebsite] = useState(true);
     const [validFacebook, setValidFacebook] = useState(true);
     const [validInstagram, setValidInstagram] = useState(true);
+    const [validAddress, setValidAddress] = useState(true);
+    const [isInitialized, setIsInitialized] = useState(false);
 
     const [validSunday, setValidSunday] = useState(true);
     const [validMonday, setValidMonday] = useState(true);
@@ -229,7 +229,7 @@ const ProfileSettings = (props) => {
     const [validSaturday, setValidSaturday] = useState(true);
 
     const validDays = validSunday && validMonday && validTuesday && validWednesday && validThursday && validFriday && validSaturday;
-    const validForm = validPhone && validWhatsapp && validWebsite && validFacebook && validInstagram && validDays;
+    const validForm = validPhone && validWhatsapp && validWebsite && validFacebook && validInstagram && validDays && validAddress;
   
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
@@ -243,7 +243,6 @@ const ProfileSettings = (props) => {
       setChecked((prevChecked) => {
         const newChecked = [...prevChecked];
         newChecked[index] = !newChecked[index];
-        console.log(newChecked)
         return newChecked;
       });
       setSelectedItems((prevSelectedItems) => {
@@ -319,6 +318,7 @@ const ProfileSettings = (props) => {
     }
 
     useEffect(() => {
+        setIsInitialized(false);
         getUsers();
       }, [props.token, props.profileEmail]);
     
@@ -357,6 +357,7 @@ const ProfileSettings = (props) => {
             setLogo(res.logo_picture);
             setFarmImages(res.farm_images_list);
             setProductsImages(res.products_images_list);
+
             
             const open = res.opening_hours.split(",");
 
@@ -371,7 +372,6 @@ const ProfileSettings = (props) => {
 
             const close = res.closing_hours.split(",");
             setSundayClosing(checkNull(close[0], null, false));
-            console.log(checkNull(close[0], null, false));
             setMondayClosing(checkNull(close[1], null, false));
             setTuesdayClosing(checkNull(close[2], null, false));
             setWednesdayClosing(checkNull(close[3], null, false));
@@ -379,20 +379,14 @@ const ProfileSettings = (props) => {
             setFridayClosing(checkNull(close[5], null, false));
             setSaturdayClosing(checkNull(close[6], null, false));
 
-            console.log('hello')
             const products_list = res.types_of_products.split(',');
-            console.log("hi");
-            console.log(products_list);
             let types = null;
-            console.log(res.types_of_products === '')
             if(res.types_of_products === ''){
                 types = [];
-                console.log('here')
             }
             else{
                 types = products_list;
             }
-            console.log(types);
             const indexes = types.map(t => labels.indexOf(t));
             const newArr = Array(9).fill(false).map((a,index) => {
                 if(indexes.includes(index)){
@@ -406,7 +400,7 @@ const ProfileSettings = (props) => {
             setChecked(newArr);
             setSelectedItems(types);
 
-            
+            setIsInitialized(true);
 
           })
 
@@ -599,6 +593,7 @@ const ProfileSettings = (props) => {
                         mt: '2rem',
                     }}>
                         <label className='inputLabel'>כתובת/מיקום:</label>
+                        <ValidateAddress address={address} setValidFlag={setValidAddress} isInitialized={isInitialized}/>
                         <Box width= '100%' border='2px solid #1d3c45' borderRadius='1rem'
                         alignItems='center' display= 'flex' gap='1rem' overflow='hidden'>
                             <Box fontSize='2rem' bgcolor= '#1d3c45' padding= '0.5rem 1rem'
@@ -719,7 +714,7 @@ const ProfileSettings = (props) => {
                             <IOSSwitch checked = {isShipping} onChange= {handleSwitch}/>
                         </Stack>
                     </Box>
-                    {/* {console.log(isShipping)} */}
+                    
                     {isShipping? 
                     <Box gap= {1}  sx={{
                         mt: '2rem',
@@ -761,7 +756,7 @@ const ProfileSettings = (props) => {
                             setDelivery(event.target.value);
                         }}
                         sx={{
-                            width: '100%'
+                            width: '100%',
                         }} />
                     </Box>
                     <Box gap= {1}  sx={{
@@ -900,7 +895,7 @@ const ProfileSettings = (props) => {
                                 </Box>
                                 <Box sx={{border: '5px solid #1d3c45',
                                 direction: 'ltr'}}>
-                                    <UserPosts width={580} height={660} />
+                                    <UserPosts width={580} height={660} email={storedEmail}/>
                                 </Box>
                             </Box>
                 </Box>

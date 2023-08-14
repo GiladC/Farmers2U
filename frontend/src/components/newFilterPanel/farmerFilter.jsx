@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch, { SwitchProps } from '@mui/material/Switch';
+import Switch from '@mui/material/Switch';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import PlacesAutocomplete, {
@@ -10,29 +9,13 @@ import PlacesAutocomplete, {
     getLatLng,
   } from 'react-places-autocomplete';
 import { useState } from 'react';
-import { Autocomplete, Box, Button, Checkbox, Container, ListItem, Slider, TextField } from '@mui/material';
+import { Autocomplete, Box, Button, Checkbox, ListItem, Slider, TextField } from '@mui/material';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
-import List from '../../DummyData/CardList';
-import Catalogue from '../../Pages/ourfarmers/Catalogue';
 import axios from 'axios';
 import { Close } from '@mui/icons-material';
 import PropTypes from 'prop-types';
-import { autocompleteClasses } from '@mui/material/Autocomplete';
-import { hover } from '@testing-library/user-event/dist/hover';
-import { useEffect } from 'react';
-import QueryString from 'qs';
 
-const shipping_policy = [
-    {
-      id: 1,
-      label: 'משלוחים'
-    },
-    {
-      id: 2,
-      label: 'איסוף עצמי'
-    },
-  ]
 
   const marks = [
     {
@@ -40,8 +23,16 @@ const shipping_policy = [
       label: '0',
     },
     {
+      value: 25,
+      label: '25',
+    },
+    {
       value: 50,
       label: '50',
+    },
+    {
+      value: 75,
+      label: '75',
     },
     {
       value: 100,
@@ -232,33 +223,7 @@ const products = [
       label: 'דגנים'
     },
   ]
-  
-  const special = [
-    {
-      id: 1,
-      label: 'אורגני'
-    },
-    {
-      id: 2,
-      label: 'טבעוני'
-    },
-  ]
-  
-  const extraSpecial = [
-    {
-      id: 2,
-      label: 'דבש טהור'
-    },
-    {
-      id: 3,
-      label: 'ביצי חופש'
-    },
-    {
-      id: 4,
-      label: 'גידול מקומי'
-    },
-  ]
-
+    
   const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
   const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
@@ -269,13 +234,39 @@ const products = [
         lat: 'none',
         lng: 'none'
       })
-    
     const handleSelect = async value => {
         const results = await geocodeByAddress(value);
         const latLng = await getLatLng(results[0]);
-        setAddress(value)
-        // setFormValue("address",value)
+        console.log(latLng);
+        setIsRealAddress(true);
+        setAddress(value);
         setCoordinates(latLng);
+      };
+
+      const handleChangeAddress = async value => {
+        setAddress(value);
+        console.log(value);
+        try {
+          const results = await geocodeByAddress(value);
+      
+          if (results.length === 0) {
+            setIsRealAddress(false);
+            return;
+          }
+      
+          const latLng = await getLatLng(results[0]);
+      
+          if (latLng && latLng.lat && latLng.lng) {
+            setIsRealAddress(true);
+            setCoordinates(latLng);
+          } else {
+            setIsRealAddress(false);
+          }
+          console.log("Latitude and Longitude: ", latLng)
+        } catch (error) {
+          setIsRealAddress(false);
+          console.log(value);
+        }
       };
 
     const [isShipping, setIsShipping] = useState(true)
@@ -284,25 +275,20 @@ const products = [
         setIsShipping(event.target.checked);
       };
 
-    const [distance, setDistance] = useState(5)
+    const [distance, setDistance] = useState(0)
     const handleDistanceChange = (event, newValue) => {
         setDistance(newValue);
       };
 
     const [categories, setCategories] = useState([])
 
-    // const [organic, setOrganic] = useState(false)
-    // const handleOrganic = (event) => {
-    //     setOrganic(event.target.checked);};
-    
-    // const [vegan, setVegan] = useState(false)
-    // const handleVegan = (event) => {
-    //     setVegan(event.target.checked);};
-    
+    const [isRealAddress, setIsRealAddress] = useState(true);
 
     const handleFilter = (data) => {
+      console.log("start of filter handler");
       data.preventDefault();
       const categories_list = categories.map((category) => (category.label));
+      console.log("isRealAddress: " + isRealAddress);
   
       axios({
         method: 'POST',
@@ -310,51 +296,52 @@ const products = [
         headers: {
           Authorization: 'Bearer ',
         },
-        data: {shipping: isShipping, address: address, distance: distance, categories: categories_list},
-        // paramsSerializer: params => {
-        //   return QueryString.stringify(params)
-        // }
+        data: {shipping: isShipping, address: address, isRealAddress: isRealAddress, distance: distance, categories: categories_list},
       })
       .then(function (response) {
           //handle success
-          console.log(distance)
           console.log(response.data)
           props.setFilteredCards(response.data);
-          props.setShownCards(response.data);
+          // props.setCurrentCards(response.data);
       })
-      .catch(function (response) {
-          //handle error
-          console.log(distance)
-          console.log(response)
-          if (response.status === 400) {
-              alert("שגיאה");
-          }
-      });
+      .catch((error) => {
+        if (error.response && error.response.data && error.response.data.error) {
+          const errorMessage = error.response.data.error;
+          window.alert(errorMessage);
+        } else {
+          console.error(error);
+        }
+      })
   }
 
   const handleClear = (data) => {
     data.preventDefault();
     props.setFilteredCards(props.cards);
-    props.setShownCards(props.cards);
+    props.setCurrentCards(props.cards);
+    setCategories([]);
+    setDistance(0);
+    setAddress('');
+    props.setSearchTerm('');
   }
     
     return (
-      <div style={{marginRight: "3%",display: 'flex'}}>
+      <div style={{display: 'flex'}}>
         <Box className='filter' flex='1' sx={{'&::-webkit-scrollbar': { display: 'none' }, direction: 'rtl',borderLeft: 'solid 0.5px #1d3c45',overflowY:'scroll', height: '70vh'}}>
           <FormGroup display='flex' justifyContent='center' sx={{display: 'flex', flexDirection:'column', justifyContent:'center', paddingLeft:'8px'}}>
-            <Typography sx={{fontFamily:'aleph', fontSize: '18px', color: '#1d3c45', display: 'flex', justifyContent: 'center'}}>אפשרויות צריכה</Typography>
+            <Typography sx={{ fontSize: '20px', color: '#1d3c45', display: 'flex', justifyContent: 'center'}}>אפשרויות צריכה</Typography>
             <Stack direction="row" spacing={0.5} alignItems="center" display='flex' justifyContent='center'>
-                <Typography sx={{fontFamily:'aleph'}}>משלוחים</Typography>
+                <Typography>משלוחים</Typography>
                 <MaterialUISwitch sx={{ m: 1 }} checked = {isShipping} onChange= {handleSwitch}/>
-                <Typography sx={{fontFamily:'aleph'}}> רכישה בעסק</Typography>
+                <Typography> רכישה בעסק</Typography>
             </Stack>
             {/* נקודת מוצא */}
-            <Typography sx={{fontFamily:'aleph',paddingTop: '5%', fontSize: '18px', color: '#1d3c45', display: 'flex', justifyContent: 'center'}}>
+            <Typography sx={{paddingTop: '5%', fontSize: '20px', color: '#1d3c45', display: 'flex', justifyContent: 'center'}}>
                 {isShipping? 'יעד המשלוח' : ' מיקום נוכחי'}
             </Typography>
+           
             <PlacesAutocomplete
             value={address}
-            onChange={setAddress}
+            onChange={handleChangeAddress}
             onSelect={handleSelect}
             searchOptions={{
               types: ['address'],
@@ -364,9 +351,10 @@ const products = [
           >
             {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
               <div>
-                <Typography sx={{fontFamily:'aleph',fontSize: '15px', color: 'rgb(141, 141, 138)',display: 'flex', justifyContent: 'center'}}>
+                <Typography sx={{fontSize: '15px', color: 'rgb(141, 141, 138)',display: 'flex', justifyContent: 'center'}}>
                   {isShipping?' זוהי הכתובת אליה תרצו שיגיע המשלוח' : ' זוהי הכתובת ממנה תרצו להגיע לבית העסק'}
-                    </Typography>
+                </Typography>
+                
                 <TextField
                   {...getInputProps({
                     placeholder:'כתובת',
@@ -409,22 +397,22 @@ const products = [
             {/* מרחק מבית העסק בק"מ*/}
             {isShipping ? null :
             <Stack>
-                <Typography sx={{fontFamily:'aleph', fontSize: '18px', color: '#1d3c45', display: 'flex', justifyContent: 'center', paddingTop: '5%'}}>מרחק מבית העסק (בק"מ)</Typography>
+                <Typography sx={{ fontSize: '20px', color: '#1d3c45', display: 'flex', justifyContent: 'center', paddingTop: '5%'}}>מרחק מבית העסק (בק"מ)</Typography>
                 <PrettoSlider
             aria-label="distance"
-            //defaultValue={5}
+            defaultValue={5}
             value = {distance}
             onChange={handleDistanceChange}
             // getAriaValueText={valuetext}
             valueLabelDisplay="auto"
-            step={5}
+            step={1}
             marks = {marks}
             min={0}
-            max={150}
+            max={100}
           />
                 </Stack>}
             {/* מוצרים */}
-            <Typography sx={{fontFamily:'aleph', fontSize: '18px', color: '#1d3c45', display: 'flex', justifyContent: 'center', paddingTop: '5%'}}>סינון לפי מוצרי העסק</Typography>
+            <Typography sx={{ fontSize: '20px', color: '#1d3c45', display: 'flex', justifyContent: 'center', paddingTop: '5%'}}>סינון לפי מוצרי העסק</Typography>
             <Autocomplete
           multiple
           id="checkboxes-tags-demo"
@@ -496,14 +484,14 @@ const products = [
                     }} />
             </Container> */}
             <Box display= 'flex' justifyContent='center' gap= {3} paddingBottom= '10px' paddingTop= '5%'>
-                <Button onClick={handleFilter} sx={{fontFamily:'aleph',backgroundColor: '#E8AA42', color: 'black',
+                <Button onClick={handleFilter} sx={{backgroundColor: '#E8AA42', color: 'black',
                 ":hover": {
                 bgcolor: "#E8AA42",
                 color: "white"
                 }, 
                 display: 'flex', alignSelf: 'center'
                 }}>הפעלת סינון</Button>
-                <Button onClick={handleClear} sx={{fontFamily:'aleph',backgroundColor: '#1d3c45', color: 'white',
+                <Button onClick={handleClear} sx={{backgroundColor: '#1d3c45', color: 'white',
                 ":hover": {
                 bgcolor: "#1d3c45",
                 color: "#E8AA42"

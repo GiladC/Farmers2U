@@ -9,7 +9,7 @@ import EditPostWrapper from '../edit_post/wrapper';
 
 
 
-export default function Post({post, token}) {
+export default function Post({post, token, disabled}) {
     const storedEmail = localStorage.getItem('email');
     const profileEmail = token?.profile_email || storedEmail || '';
     const showMenu = profileEmail === post.email;
@@ -84,10 +84,10 @@ export default function Post({post, token}) {
         <div className="postWrapper">
             <div className="postTop">
                 <div className="postTopLeft">
-                        <Button onClick={e=>setOpen(true)}>
+                        <Button disabled = {disabled? true : false} onClick={e=>setOpen(true)}>
                             <img className= 'Img' src = {'/Form_images/Logo_image/'.concat(logo)}  alt="" />
                         </Button>
-                        <Button onClick={e=>setOpen(true)}>
+                        <Button disabled = {disabled? true : false} onClick={e=>setOpen(true)}>
                             <Typography variant='h5'color={'black'}>{post.farmName}</Typography>
                         </Button>
                         <BusinessCard image={'/Form_images/Logo_image/'.concat(logo)}
@@ -132,9 +132,28 @@ export default function Post({post, token}) {
                         width: 50,
                         height: 55,
                         textAlign: 'center',
+                        overflowY: 'scroll',
+                        
+                        '&::-webkit-scrollbar': {
+                            width: '0.6em',
+                            border: 'none',
+                            backgroundColor: 'transparent'
+                        },
+                        '&::-webkit-scrollbar-track': {
+                            backgroundColor: 'transparent'
+                        },
+                        '&::-webkit-scrollbar-thumb': {
+                            backgroundColor: 'rgba(158, 85, 11, 0.6)',
+                            borderRadius: '20px',
+                            border: '4px solid transparent'
+                        },
+                        '&::-webkit-scrollbar-thumb:hover': {
+                            background: 'rgb(158, 85, 11)'
+                        }
+                       
                     }}>
                         <Typography><LocationOn /></Typography> 
-                        <Typography>{post.location}</Typography>
+                        <Typography sx={{position: 'relative', width: '100%', height: "100%"}}>{post.location}</Typography>
                     </Box>
                     <Box sx={{
                         flex: 4,
@@ -142,7 +161,26 @@ export default function Post({post, token}) {
                         mr: '15px',
                         width: 50,
                         height: 55,
-                        textAlign: 'center'
+                        textAlign: 'center',
+
+                        overflowY: 'scroll',
+                        
+                        '&::-webkit-scrollbar': {
+                            width: '0.6em',
+                            border: 'none',
+                            backgroundColor: 'transparent'
+                        },
+                        '&::-webkit-scrollbar-track': {
+                            backgroundColor: 'transparent'
+                        },
+                        '&::-webkit-scrollbar-thumb': {
+                            backgroundColor: 'rgba(158, 85, 11, 0.6)',
+                            borderRadius: '20px',
+                            border: '4px solid transparent'
+                        },
+                        '&::-webkit-scrollbar-thumb:hover': {
+                            background: 'rgb(158, 85, 11)'
+                        }
                     }}>
                        <Typography><EventNote /></Typography> 
                        <Typography>{post.date}</Typography>
@@ -153,7 +191,26 @@ export default function Post({post, token}) {
                         mr: '15px',
                         width: 50,
                         height: 55,
-                        textAlign: 'center'
+                        textAlign: 'center',
+
+                        overflowY: 'scroll',
+                        
+                        '&::-webkit-scrollbar': {
+                            width: '0.6em',
+                            border: 'none',
+                            backgroundColor: 'transparent'
+                        },
+                        '&::-webkit-scrollbar-track': {
+                            backgroundColor: 'transparent'
+                        },
+                        '&::-webkit-scrollbar-thumb': {
+                            backgroundColor: 'rgba(158, 85, 11, 0.6)',
+                            borderRadius: '20px',
+                            border: '4px solid transparent'
+                        },
+                        '&::-webkit-scrollbar-thumb:hover': {
+                            background: 'rgb(158, 85, 11)'
+                        }
                     }}>
                         <Typography><AccessTime /></Typography>
                         <Typography>{post.time}</Typography>

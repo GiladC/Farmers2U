@@ -11,17 +11,18 @@ import axios from 'axios';
 function OurFarmers() {
   const [cards, setCards] = useState([]);
   const [filteredCards, setFilteredCards] = useState([]); // State to hold the filtered cards
-  const [shownCards, setShownCards] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [currentCards, setCurrentCards] = useState([]);
 
   const handleSearch = (searchTerm) => {
-    const filtered = filteredCards.filter((item) =>
+    const searched = filteredCards.filter((item) =>
       item.farm_name.toLowerCase().includes(searchTerm.toLowerCase())
     );
-    if(searchTerm == ''){
-      setFilteredCards(shownCards);
+    if(searchTerm == '' || !searchTerm){
+      setCurrentCards(filteredCards);
     }
     else{
-    setFilteredCards(filtered);
+    setCurrentCards(searched);
     }
   };
 
@@ -31,7 +32,7 @@ function OurFarmers() {
       .then((response) => {
         console.log(response.data);
         setCards(response.data);
-        setShownCards(response.data);
+        setCurrentCards(response.data);
         setFilteredCards(response.data);
       })
       .catch((error) => {
@@ -39,17 +40,21 @@ function OurFarmers() {
       });
   }, []);
 
+  useEffect(() => {
+    handleSearch(searchTerm);
+  }, [filteredCards])
+
   return (
     <Box display='flex' flexDirection='column' overglowX= 'none'>
       <Container>
-        <Searchbar onSearch={handleSearch} /> {/* Pass the handleSearch function as prop */}
+        <Searchbar onSearch={handleSearch} searchTerm={searchTerm} setSearchTerm={setSearchTerm} /> {/* Pass the handleSearch function as prop */}
       </Container>
       <Box display='flex' width='100%' justifyItems='flex-start' sx={{direction: 'ltr'}}>
         <Box flex='2.5' marginLeft='none' sx={{'&::-webkit-scrollbar': { display: 'none' }, direction: 'rtl', overflowY:'scroll', height:'70vh', scrollBehavior:'smooth'}}>
-          <Catalogue List={filteredCards} /> {/*Pass the filtered cards to the Catalogue component */}
+          <Catalogue List={currentCards} /> {/*Pass the filtered cards to the Catalogue component */}
         </Box> 
         <Box className='filter' flex='1' sx={{'&::-webkit-scrollbar': { display: 'none' }, direction: 'rtl',borderLeft: 'solid 0.5px #1d3c45',overflowY:'scroll', height: '70vh'}}>
-          <FarmerFilter setFilteredCards={setFilteredCards} cards={cards} setShownCards={setShownCards}/>
+          <FarmerFilter setFilteredCards={setFilteredCards} cards={cards} setCurrentCards={setCurrentCards} setSearchTerm={setSearchTerm}/>
         </Box>
       </Box>
     </Box>

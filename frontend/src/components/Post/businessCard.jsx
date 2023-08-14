@@ -16,6 +16,7 @@ import image5 from '../../DummyData/ProfilePageImages/image5.jpg'
 
 import Work from '../days/work'
 import dayjs from 'dayjs'
+import UserPosts from '../../Pages/Settings/userPosts'
 
 const StyledModal = styled(Modal)({
     direction: 'rtl',
@@ -86,7 +87,7 @@ export default function BusinessCard({image, business, open, close}){
         aria-describedby="modal-modal-description"
         display= 'flex'
         >
-            <Box width={900} height={400} bgcolor="white" p={3} sx={{
+            <Box width={900} height={420} bgcolor="white" p={3} sx={{
                 display: 'flex', flexDirection: 'column', alignItems: 'center', overflowY: 'scroll', direction: 'ltr'
             }}>
                 <Container sx={{display: 'grid', gridTemplateColumns: '1fr 0fr', direction: 'rtl'}}>
@@ -133,7 +134,7 @@ export default function BusinessCard({image, business, open, close}){
                     <Box display='flex' direction= 'ltr' paddingRight= '200px' flexDirection= 'column' sx={{flex: '1', position: 'flex-end'}}>
                         <img src={image} alt="" className="cardImg" />
                         <Box width = '200px' position= 'relative' paddingTop={3} paddingRight={4}>
-                        <Rating name="read-only" value={4} readOnly />
+                        {/* <Rating name="read-only" value={4} readOnly /> */}
                         </Box>
                     </Box>
                 </Container>
@@ -143,7 +144,7 @@ export default function BusinessCard({image, business, open, close}){
                     position: 'relative',
                     width: '700px',
                     top: '0px'}}>
-                    <Box paddingBottom={5}> {business.about}</Box>
+                    <Box paddingBottom={5} sx={{whiteSpace: 'pre-line'}}> {business.about}</Box>
                     <div className="workContainer">
                         <Work days={days} />
                     </div>
@@ -162,42 +163,54 @@ export default function BusinessCard({image, business, open, close}){
                         justifyItems: 'space-between'
                     }}>
                         <Box sx={{
-                            width: '350px',
-                            height: '200px',
+                            width: '450px',
+                            height: '230px',
                             marginBottom: '80px'
                         }}>
                             <Typography variant='h6'>תמונות של המקום:</Typography>
                             <Slider slides={business.farm_images_list} farm={true}/>
                         </Box>
                         <Box sx={{
-                            width: '350px',
-                            height: '200px',
+                            width: '450px',
+                            height: '230px',
                             marginBottom: '80px'
                         }}>
                             <Typography variant= 'h6'>תמונות של המוצרים:</Typography>
                             <Slider slides={business.products_images_list} farm={false} />
                         </Box>
+                        <Typography  sx={{fontWeight: '600', fontSize: '30px',justifySelf: 'center', color: '#1d3c45'}}>מודעות שפורסמו</Typography>
+                        <Box sx={{border: '5px solid #1d3c45',
+                                direction: 'ltr', marginBottom: '30px'}}>
+                                   { console.log(business.mail)}
+                                <UserPosts width={480} height={420} email={business.mail}/>
+                        </Box>
                     </Container>
                     <div className="social">
-                        <Stack
-                        direction= 'row'
-                        alignItems= 'center'
-                        ml={4}
-                        gap= {1}>
-                            <WhatsApp />
-                            <Typography variants= 'body1' sx={{direction: 'ltr'}}>{business.whatsapp} </Typography>
-                        </Stack>
-                        <Stack
-                        direction= 'row'
-                        alignItems= 'center'
-                        ml={4}
-                        gap= {1}>
-                            <IconButton onClick={() => window.open(business.instagram, "_blank")}>
-                                <Instagram />
-                            </IconButton>
-                            {/* <Typography variants= 'body1'>{business.instagram}</Typography> */}
-                        </Stack>
-                        <Stack
+                        {!business.whatsapp ? null :
+                            <Stack
+                            direction= 'row'
+                            alignItems= 'center'
+                            ml={4}
+                            gap= {1}>
+                                <WhatsApp />
+                                <Typography variants= 'body1' sx={{direction: 'ltr'}}>{business.whatsapp} </Typography>
+                            </Stack>
+                        }
+                        {
+                            !business.instagram ? null :
+                            <Stack
+                            direction= 'row'
+                            alignItems= 'center'
+                            ml={4}
+                            gap= {1}>
+                                <IconButton onClick={() => window.open(business.instagram, "_blank")}>
+                                    <Instagram />
+                                </IconButton>
+                                {/* <Typography variants= 'body1'>{business.instagram}</Typography> */}
+                            </Stack>
+                        }
+                        {!business.facebook ? null :
+                            <Stack
                             direction= 'row'
                             alignItems= 'center'
                             gap= {1}
@@ -206,8 +219,10 @@ export default function BusinessCard({image, business, open, close}){
                                     <Facebook />
                                 </IconButton>
                                 {/* <Typography variants= 'body1'>{business.facebook}</Typography> */}
-                        </Stack>
-                        <Stack
+                            </Stack>
+                        }
+                        {!business.website ? null : 
+                            <Stack
                             direction= 'row'
                             alignItems= 'center'
                             gap= {1}>
@@ -216,8 +231,9 @@ export default function BusinessCard({image, business, open, close}){
                                 </IconButton>
                                 {/* <Typography variants= 'body1'>{business.facebook}</Typography> */}
                         </Stack>
+                        }
                     </div>
-                    <Stack direction= 'row' sx={{
+                    {/* <Stack direction= 'row' sx={{
                         display: 'flex',
                         flexDirection: 'column',
                         direction: 'rtl',
@@ -230,7 +246,7 @@ export default function BusinessCard({image, business, open, close}){
                         }} />
                         <Button variant='contained'>הרשמה</Button>
                         </Box>
-                    </Stack>
+                    </Stack> */}
                 </Box>
             </Box>
         </StyledModal>

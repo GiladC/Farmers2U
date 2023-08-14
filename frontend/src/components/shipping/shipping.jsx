@@ -23,7 +23,7 @@ export default function Shipping({policy}) {
           <Typography>מדיניות משלוחים:</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>{policy}</Typography>
+          <Typography sx={{whiteSpace: 'pre-line'}}>{policy}</Typography>
         </AccordionDetails>
       </Accordion>
     </div>
