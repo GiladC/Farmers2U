@@ -5,6 +5,7 @@ import os
 import pytz
 from werkzeug.utils import secure_filename
 from geopy.geocoders import Nominatim
+import urllib.parse
 
 
 
@@ -35,7 +36,6 @@ posts_blueprint = Blueprint('posts', __name__)
 @posts_blueprint.route('/api/posts', methods=['POST'])
 def create_post():
     data = request.form.to_dict()
-    print(data)
 
 
     # Validate data
@@ -59,12 +59,12 @@ def create_post():
     
 
     # Validate that the location is an actual address
-    geolocator = Nominatim(user_agent="farmers2u_website")
-    address = geolocator.geocode(data['location'])
-    if address is None:
+    if data['isRealAddress'] == "false":
         return jsonify({'error': 
-                            'נא למלא כתובת מדויקת בשדה המיקום או להשאיר ריק אם לא רוצים לסנן לפי כתובת'
-                            }), 400
+                        'נא למלא כתובת מדויקת בשדה המיקום'
+                        }), 400
+    
+
     
     # Validate endTime > startTime
     start_time = datetime.datetime.strptime(data['startTime'], '%H:%M').time()
@@ -105,16 +105,17 @@ def create_post():
     else:
         product_types = []
     
+    
     new_post = Post(
         farmName = user.farm_name,
         profilePicture = user.logo_picture, #profilePicture = user.profilePicture,
         photo = post_image_filename,
-        desc = data.get('text'),
+        desc = urllib.parse.unquote(data.get('text')),
         date = current_time.date(),
         time = current_time.strftime('%H:%M:%S'),
         location = data.get('location'),
-        latitude = address.latitude,
-        longitude = address.longitude,
+        latitude = data['latitude'],
+        longitude = data['longitude'],
         event_date = datetime.datetime.strptime(data["date"], "%Y-%m-%d").date(),  # Convert to date object
         time_range = time_range,
         products = product_types,

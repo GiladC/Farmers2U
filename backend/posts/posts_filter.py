@@ -15,14 +15,12 @@ def filter_posts():
     data['startDate'] = datetime.datetime.strptime(data["startDate"], "%Y-%m-%d").date()
     data['endDate'] = datetime.datetime.strptime(data["endDate"], "%Y-%m-%d").date()
     data['products'] = data['products'].split(',') if 'products' in data else []
-    print("Data: ")
-    print(data)
-    print("Data ended.")
 
     if data['startDate']> data['endDate']:
         return jsonify({'error': 'נא למלא טווח תאריכים תקין'}), 400
     
     coords_user = (data['latitude'], data['longitude'])
+
 
     if data['address'] != '':
         if data['isRealAddress'] == "false":
@@ -57,7 +55,7 @@ def filter_posts():
         if not all(product in post_products for product in data['products']):
             continue
 
-        if data['address'] != '':
+        if data['address'] != '' and data['isRealAddress'] != "false":
             coords_post = (post.latitude, post.longitude)
             dist = geodesic(coords_user, coords_post)
             if dist > int(data['distance']):
