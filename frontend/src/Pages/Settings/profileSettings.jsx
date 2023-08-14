@@ -1,8 +1,7 @@
-import { Box, Button, Checkbox, Container, FormControlLabel, Grid, InputAdornment, InputBase, Menu, MenuItem, Stack, Switch, TextField, Typography, colors } from '@mui/material'
+import { Box, Button, Checkbox, Container, FormControlLabel, Grid, InputAdornment, InputBase, Menu, MenuItem, Stack, Switch, TextField, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import './profileSettings.css'
-import { AccessTime, Add, AssignmentInd, Badge, Email, Facebook, Home, Instagram, Language, Person2, Phone, Remove, WhatsApp } from '@mui/icons-material'
-import farm from '../../assets/Board_images/farm1.jpeg'
+import { Add, AssignmentInd, Facebook, Home, Instagram, Language, Person2, Phone, Remove, WhatsApp } from '@mui/icons-material'
 import AddPost from '../../components/Post/AddPost'
 import WorkingHours from '../../components/Settings/workingHours'
 import axios from 'axios'
@@ -10,24 +9,12 @@ import PlacesAutocomplete, {
     geocodeByAddress,
     getLatLng,
   } from 'react-places-autocomplete';
-import {ThemeProvider, createTheme, styled} from '@mui/material/styles'
+import {createTheme, styled} from '@mui/material/styles'
 import Slider from '../../Pages/ShowFarmerProfile/ImageSlider'
-import image1 from '../../DummyData/ProfilePageImages/image1.jpg'
-import image2 from '../../DummyData/ProfilePageImages/image2.jpg'
-import image3 from '../../DummyData/ProfilePageImages/image3.jpg'
-import image4 from '../../DummyData/ProfilePageImages/image4.jpg'
-import image5 from '../../DummyData/ProfilePageImages/image5.jpg'
 import dayjs from 'dayjs'
 import UserPosts from './userPosts'
 import './userPosts.css'
-
-const slides = [
-    { url: image1 },
-    { url: image2 },
-    { url: image3 },
-    { url: image4 },
-    { url: image5 },
-  ];
+import {ValidateFacebook, ValidateInstagram, ValidatePhone, ValidateWebsite, ValidateWhatsapp} from '../../components/validations'
 
 const IOSSwitch = styled((props) => (
     <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
@@ -97,16 +84,6 @@ const IOSSwitch = styled((props) => (
 const {palette} = createTheme();
 const { augmentColor } = palette;
 const createColor = (mainColor) => augmentColor({ color: { main: mainColor } });
-const themeForButton = createTheme({
-  palette: {
-    button: createColor('#E8AA42'),
-    white: createColor('#ffffff'),
-    garbage: createColor('#9e9e9e'),
-    hovergarbage: createColor('#37474f'),
-    adder: createColor('#f7f1e5'),
-    addPicture: createColor('#f7f1e5'),
-  },
-});
 
 
 function CheckboxMenu(props) {
@@ -189,7 +166,6 @@ function CheckboxMenu(props) {
   }
 
 const ProfileSettings = (props) => {
-    const [profileData, setProfileData] = useState(null);
     const [farmName, setFarmName] = useState("");
     const [email, setEmail] = useState("");
     const [about, setAbout] = useState("");
@@ -238,6 +214,22 @@ const ProfileSettings = (props) => {
       Array(9).fill(false) // Initial state for 9 checkboxes
     );
     const [selectedItems, setSelectedItems] = useState([]);
+    const [validPhone, setValidPhone] = useState(true);
+    const [validWhatsapp, setValidWhatsapp] = useState(true);
+    const [validWebsite, setValidWebsite] = useState(true);
+    const [validFacebook, setValidFacebook] = useState(true);
+    const [validInstagram, setValidInstagram] = useState(true);
+
+    const [validSunday, setValidSunday] = useState(true);
+    const [validMonday, setValidMonday] = useState(true);
+    const [validTuesday, setValidTuesday] = useState(true);
+    const [validWednesday, setValidWednesday] = useState(true);
+    const [validThursday, setValidThursday] = useState(true);
+    const [validFriday, setValidFriday] = useState(true);
+    const [validSaturday, setValidSaturday] = useState(true);
+
+    const validDays = validSunday && validMonday && validTuesday && validWednesday && validThursday && validFriday && validSaturday;
+    const validForm = validPhone && validWhatsapp && validWebsite && validFacebook && validInstagram && validDays;
   
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
@@ -387,14 +379,20 @@ const ProfileSettings = (props) => {
             setFridayClosing(checkNull(close[5], null, false));
             setSaturdayClosing(checkNull(close[6], null, false));
 
-            const products_list = res.type_of_products.split(',');
+            console.log('hello')
+            const products_list = res.types_of_products.split(',');
+            console.log("hi");
+            console.log(products_list);
             let types = null;
-            if(products_list === ['']){
+            console.log(res.types_of_products === '')
+            if(res.types_of_products === ''){
                 types = [];
+                console.log('here')
             }
             else{
                 types = products_list;
             }
+            console.log(types);
             const indexes = types.map(t => labels.indexOf(t));
             const newArr = Array(9).fill(false).map((a,index) => {
                 if(indexes.includes(index)){
@@ -555,9 +553,10 @@ const ProfileSettings = (props) => {
                                 setPhone(event.target.value);
                             }}
                             className='Form_box_input'
-                            sx={{direction : 'ltr', paddingLeft: '3%'}}
+                            sx={{direction : 'ltr', paddingLeft: '8%'}}
                             />
                         </Box>
+                        <ValidatePhone phone={phone} setValidFlag={setValidPhone}/>
                     </Box>
                     <Box gap= {1}  sx={{
                             mt: '2rem', flex: 2.5
@@ -578,9 +577,10 @@ const ProfileSettings = (props) => {
                                     setWhatsapp(event.target.value);
                                 }}
                                 className='Form_box_input'
-                                sx={{paddingLeft: '3%',width:'100%', border: '0', bgcolor: 'transparent', outline:'none', height: '30px', direction: 'ltr'}}
+                                sx={{paddingLeft: '8%',width:'100%', border: '0', bgcolor: 'transparent', outline:'none', height: '30px', direction: 'ltr'}}
                                 />
                             </Box>
+                            <ValidateWhatsapp whatsapp={whatsApp} setValidFlag={setValidWhatsapp}/>
                     </Box>
                     </Box>
                     <PlacesAutocomplete
@@ -658,14 +658,14 @@ const ProfileSettings = (props) => {
                         <label className='inputLabel'>ימי ושעות עבודה:</label>
                         <Box width= '100%' border='2px solid #1d3c45' borderRadius='1rem'
                         alignItems='center' display= 'flex' flexDirection= 'column' gap='1rem' overflow='hidden'>
-                            <WorkingHours day = 'ראשון' opening = {sundayOpening} closing = {sundayClosing} setOpening = {setSundayOpening} setClosing={setSundayClosing}/>
-                            <WorkingHours day = 'שני' opening = {mondayOpening} closing = {mondayClosing} setOpening = {setMondayOpening} setClosing={setMondayClosing}/>
-                            <WorkingHours day = 'שלישי' opening = {tuesdayOpening} closing = {tuesdayClosing} setOpening = {setTuesdayOpening} setClosing={setTuesdayClosing}/>
-                            <WorkingHours day = 'רביעי' opening = {wednesdayOpening} closing = {wednesdayClosing} setOpening = {setWednesdayOpening} setClosing={setWednesdayClosing}/>
-                            <WorkingHours day = 'חמישי' opening = {thursdayOpening} closing = {thursdayClosing} setOpening = {setThursdayOpening} setClosing={setThursdayClosing}/>
-                            <WorkingHours day = 'שישי' opening = {fridayOpening} closing = {fridayClosing} setOpening = {setFridayOpening} setClosing={setFridayClosing}/>
+                            <WorkingHours day = 'ראשון' setValidFlag = {setValidSunday} opening = {sundayOpening} closing = {sundayClosing} setOpening = {setSundayOpening} setClosing={setSundayClosing}/>
+                            <WorkingHours day = 'שני' setValidFlag = {setValidMonday} opening = {mondayOpening} closing = {mondayClosing} setOpening = {setMondayOpening} setClosing={setMondayClosing}/>
+                            <WorkingHours day = 'שלישי' setValidFlag = {setValidTuesday} opening = {tuesdayOpening} closing = {tuesdayClosing} setOpening = {setTuesdayOpening} setClosing={setTuesdayClosing}/>
+                            <WorkingHours day = 'רביעי' setValidFlag = {setValidWednesday} opening = {wednesdayOpening} closing = {wednesdayClosing} setOpening = {setWednesdayOpening} setClosing={setWednesdayClosing}/>
+                            <WorkingHours day = 'חמישי' setValidFlag = {setValidThursday} opening = {thursdayOpening} closing = {thursdayClosing} setOpening = {setThursdayOpening} setClosing={setThursdayClosing}/>
+                            <WorkingHours day = 'שישי' setValidFlag = {setValidFriday} opening = {fridayOpening} closing = {fridayClosing} setOpening = {setFridayOpening} setClosing={setFridayClosing}/>
                             <div className="lastHour">
-                            <WorkingHours day = 'שבת' opening = {saturdayOpening} closing = {saturdayClosing} setOpening = {setSaturdayOpening} setClosing={setSaturdayClosing}/>
+                            <WorkingHours day = 'שבת' setValidFlag = {setValidSaturday} opening = {saturdayOpening} closing = {saturdayClosing} setOpening = {setSaturdayOpening} setClosing={setSaturdayClosing}/>
                             </div>
                         </Box>
                     </Box>
@@ -719,7 +719,7 @@ const ProfileSettings = (props) => {
                             <IOSSwitch checked = {isShipping} onChange= {handleSwitch}/>
                         </Stack>
                     </Box>
-                    {console.log(isShipping)}
+                    {/* {console.log(isShipping)} */}
                     {isShipping? 
                     <Box gap= {1}  sx={{
                         mt: '2rem',
@@ -783,10 +783,11 @@ const ProfileSettings = (props) => {
                             onChange={(event) => {
                                 setWebsite(event.target.value);
                             }}
-                            sx={{direction: 'ltr'}}
+                            sx={{direction: 'ltr',  paddingLeft: '4%'}}
                             className='Form_box_input'
                             />
                         </Box>
+                        <ValidateWebsite url={website} setValidFlag={setValidWebsite}/>
                     </Box>
                     <Box gap= {1}  sx={{
                             mt: '2rem', flex: 4
@@ -807,9 +808,10 @@ const ProfileSettings = (props) => {
                                     setFacebook(event.target.value);
                                 }}
                                 className='Form_box_input'
-                                sx={{direction: 'ltr',justifyContent:'center' ,width:'100%', border: '0', bgcolor: 'transparent', outline:'none', height: '30px'}}
+                                sx={{direction: 'ltr',justifyContent:'center' ,width:'100%', border: '0', bgcolor: 'transparent', outline:'none', height: '30px',  paddingLeft: '4%'}}
                                 />
                             </Box>
+                            <ValidateFacebook facebook={facebook} setValidFlag={setValidFacebook}/>
                         </Box>
                     <Box gap= {1}  sx={{
                             mt: '2rem', flex: 4
@@ -830,12 +832,13 @@ const ProfileSettings = (props) => {
                                     setInstagram(event.target.value);
                                 }}
                                 className='Form_box_input'
-                                sx={{direction: 'ltr',justifyContent:'center' ,width:'100%', border: '0', bgcolor: 'transparent', outline:'none', height: '30px'}}
+                                sx={{direction: 'ltr',justifyContent:'center' ,width:'100%', border: '0', bgcolor: 'transparent', outline:'none', height: '30px',  paddingLeft: '4%'}}
                                 />
                             </Box>
+                            <ValidateInstagram instagram={instagram} setValidFlag={setValidInstagram}/>
                         </Box>
                     <Box display= 'flex' mt={5} mb={5} justifyContent='center' sx={{color: '#1d3c45'}}>
-                    <Button variant='contained' color= 'success' onClick={handleSave} sx={{justifyContent: 'center'}}>שמירת פרטים</Button>
+                    <Button disabled = {!validForm} variant='contained' color= 'success' onClick={handleSave} sx={{justifyContent: 'center'}}>שמירת פרטים</Button>
                     </Box>
                 </form>
             </Container>

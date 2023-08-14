@@ -1,11 +1,10 @@
 import * as React from 'react';
-import dayjs, { Dayjs } from 'dayjs';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { TimeField } from '@mui/x-date-pickers/TimeField';
-import { Box, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import { useState } from 'react';
+import { useEffect } from 'react';
 
 // day, setOpenening, setClosing
 export default function WorkingHours(props) {
@@ -19,6 +18,67 @@ export default function WorkingHours(props) {
     props.setClosing(newValue);
   }
 
+  const [validRange, setValidRange] = useState(true);
+  const [valid, setValid] = useState(true);
+
+  const open = props.opening;
+  const close = props.closing;
+
+  useEffect(() => {
+    validateHours();
+  }, [props.opening, props.closing, props.setValidFlag]);
+
+  function validateHours()
+  {
+    if (!(open) && !(close)) // in this day the business does not work
+    {
+      setValid(true);
+      setValidRange(true);
+      props.setValidFlag(true);
+    }
+    else if (open && close)
+    {
+      if (!(open.isValid() && close.isValid())) // not valid hours
+      {
+        setValid(false);
+        setValidRange(true);
+        props.setValidFlag(false);
+      }
+      else if(open.diff(close) >= 0) // not valid hours range
+      {
+        setValidRange(false);
+        setValid(true);
+        props.setValidFlag(false);
+      }
+      else // valid hours range
+      {
+        setValidRange(true);
+        setValid(true);
+        props.setValidFlag(true);
+      }
+    }
+    else // at least one of the hour fields (open, close) is empty
+    {
+      if(open && !open.isValid()) // open is notempty and npt valid
+      {
+        setValid(false);
+        setValidRange(true);
+        props.setValidFlag(false);
+      }
+      else if(close && !close.isValid()) // close is not empty and not valid
+      {
+        setValid(false);
+        setValidRange(true);
+        props.setValidFlag(false);
+      }
+      else // both are valid, but only one is not empty
+      {
+        setValidRange(false);
+        setValid(true);
+        props.setValidFlag(false);
+      }
+    }
+  }
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} >
@@ -52,6 +112,8 @@ export default function WorkingHours(props) {
           }}}
         />
       </Box>
+      {validRange ? null : <Stack sx={{color: 'red', fontWeight: '640'}}>נא להזין טווח שעות תקין</Stack>}
+      {valid ? null : <Stack sx={{color: 'red', fontWeight: '640'}}>נא להזין שעה תקינה </Stack>}
     </LocalizationProvider>
   );
 }
