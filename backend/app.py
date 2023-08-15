@@ -164,8 +164,8 @@ def signup():
     email = data.get("email")
     is_shipping = data.get("is_shipping")
     user_exists = User.query.filter_by(email=email).first() is not None
-    if user_exists:
-        return jsonify({"error": "Email already exists"}), 409
+    if user_exists or email == "":
+        return jsonify({"error": "Email already exists or None"}), 409
     if is_shipping is None:
         return jsonify({"success": "Valid email"})
     
