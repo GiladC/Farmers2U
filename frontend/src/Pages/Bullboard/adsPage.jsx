@@ -17,11 +17,6 @@ import Typography from '@mui/material/Typography';
         .get('http://127.0.0.1:5000/api/getposts')
         .then((response) => {
           setFilteredPosts(response.data);
-          console.log(response.data.length)
-          let i;
-          for (i = 0; i < filteredPosts.length; i++){
-            console.log(filteredPosts[i].post_products)
-          }
         })
         .catch((error) => {
           console.error(error);

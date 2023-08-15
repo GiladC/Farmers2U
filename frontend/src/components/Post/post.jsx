@@ -13,7 +13,6 @@ export default function Post({post, token, disabled}) {
     const storedEmail = localStorage.getItem('email');
     const profileEmail = token?.profile_email || storedEmail || '';
     const showMenu = profileEmail === post.email;
-    let postEmail = null;
     const [open, setOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
     const [ShowDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
@@ -82,140 +81,65 @@ export default function Post({post, token, disabled}) {
   return (
     <div className='post'>
         <div className="postWrapper">
-            <div className="postTop">
-                <div className="postTopLeft">
-                        <Button disabled = {disabled? true : false} onClick={e=>setOpen(true)}>
-                            <img className= 'Img' src = {'/Form_images/Logo_image/'.concat(logo)}  alt="" />
-                        </Button>
-                        <Button disabled = {disabled? true : false} onClick={e=>setOpen(true)}>
-                            <Typography variant='h5'color={'black'}>{post.farmName}</Typography>
-                        </Button>
-                        <BusinessCard image={'/Form_images/Logo_image/'.concat(logo)}
+<div className="postTop">
+    <div className="postTopLeft">
+        <Button disabled={disabled ? true : false} onClick={e => setOpen(true)}>
+            <img className='Img' src={'/Form_images/Logo_image/'.concat(logo)} alt="" />
+        </Button>
+        <Button disabled={disabled ? true : false} onClick={e => setOpen(true)}>
+            <Typography className="farmName" variant='h5' color={'black'}>{post.farmName}</Typography>
+        </Button>
+        <BusinessCard image={'/Form_images/Logo_image/'.concat(logo)}
                         business={business} open={open} close={()=>setOpen(false)} />
-                    <span className="postDate">{post.posted}</span> 
-                </div>
-                <div className="postTopRight">
-                  {showMenu && (
-                    <div className="menuContainer">
-                    <MoreVert onClick={handleMoreClick} className="moreVertButton" /> 
-                      <Menu anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)}
-                        onClose={handleMoreClose} anchorOrigin={{
-                          vertical: 'top', horizontal: 'right',
-                        }}
-                        transformOrigin={{
-                          vertical: 'top', horizontal: 'left',
-                        }}
-                        PaperProps={{
-                          style: {
-                              position: 'absolute',
-                              top: '0',
-                              right: '100%',
-                              borderRadius: '8px',
-                              background: 'linear-gradient(to bottom, #E8AA42, #f0b148)',
-                              color: 'white',
-                              boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)',
-                              width: '150px',
-                          },
-                        }}>
-                        <MenuItem onClick={handleDeleteConfirmation}> מחיקת הפוסט </MenuItem>
-                        <MenuItem onClick={handleOpenEditMode}> עריכת הפוסט</MenuItem>
-                        </Menu>
-                    </div>
-                  )}
-                </div>
+        <span className="postDate">{post.posted}</span>
+    </div>
+    <div className="postTopRight">
+        {showMenu && (
+            <div className="menuContainer">
+                <MoreVert onClick={handleMoreClick} className="moreVertButton" />
+                <Menu anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)}
+                    onClose={handleMoreClose} anchorOrigin={{
+                        vertical: 'top', horizontal: 'right',
+                    }}
+                    transformOrigin={{
+                        vertical: 'top', horizontal: 'left',
+                    }}
+                    PaperProps={{
+                        style: {
+                            position: 'absolute',
+                            top: '0',
+                            right: '100%',
+                            borderRadius: '8px',
+                            background: 'linear-gradient(to bottom, #E8AA42, #f0b148)',
+                            color: 'white',
+                            boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)',
+                            width: '150px',
+                        },
+                    }}>
+                    <MenuItem onClick={handleDeleteConfirmation}> מחיקת הפוסט </MenuItem>
+                    <MenuItem onClick={handleOpenEditMode}> עריכת הפוסט</MenuItem>
+                </Menu>
             </div>
+        )}
+        {/* Insert your logo image and farm name here */}
+        {/* Insert your posted date here */}
+    </div>
+</div>
             <div className="postCenter">
             <div className="details">
-                    <Box sx={{
-                        flex: 4,
-                        background: '#E8AA42',
-                        width: 50,
-                        height: 55,
-                        textAlign: 'center',
-                        overflowY: 'scroll',
-                        
-                        '&::-webkit-scrollbar': {
-                            width: '0.6em',
-                            border: 'none',
-                            backgroundColor: 'transparent'
-                        },
-                        '&::-webkit-scrollbar-track': {
-                            backgroundColor: 'transparent'
-                        },
-                        '&::-webkit-scrollbar-thumb': {
-                            backgroundColor: 'rgba(158, 85, 11, 0.6)',
-                            borderRadius: '20px',
-                            border: '4px solid transparent'
-                        },
-                        '&::-webkit-scrollbar-thumb:hover': {
-                            background: 'rgb(158, 85, 11)'
-                        }
-                       
-                    }}>
-                        <Typography><LocationOn /></Typography> 
-                        <Typography sx={{position: 'relative', width: '100%', height: "100%"}}>{post.location}</Typography>
-                    </Box>
-                    <Box sx={{
-                        flex: 4,
-                        background: '#E8AA42',
-                        mr: '15px',
-                        width: 50,
-                        height: 55,
-                        textAlign: 'center',
-
-                        overflowY: 'scroll',
-                        
-                        '&::-webkit-scrollbar': {
-                            width: '0.6em',
-                            border: 'none',
-                            backgroundColor: 'transparent'
-                        },
-                        '&::-webkit-scrollbar-track': {
-                            backgroundColor: 'transparent'
-                        },
-                        '&::-webkit-scrollbar-thumb': {
-                            backgroundColor: 'rgba(158, 85, 11, 0.6)',
-                            borderRadius: '20px',
-                            border: '4px solid transparent'
-                        },
-                        '&::-webkit-scrollbar-thumb:hover': {
-                            background: 'rgb(158, 85, 11)'
-                        }
-                    }}>
-                       <Typography><EventNote /></Typography> 
-                       <Typography>{post.date}</Typography>
-                    </Box>
-                    <Box sx={{
-                        flex: 4,
-                        background: '#E8AA42',
-                        mr: '15px',
-                        width: 50,
-                        height: 55,
-                        textAlign: 'center',
-
-                        overflowY: 'scroll',
-                        
-                        '&::-webkit-scrollbar': {
-                            width: '0.6em',
-                            border: 'none',
-                            backgroundColor: 'transparent'
-                        },
-                        '&::-webkit-scrollbar-track': {
-                            backgroundColor: 'transparent'
-                        },
-                        '&::-webkit-scrollbar-thumb': {
-                            backgroundColor: 'rgba(158, 85, 11, 0.6)',
-                            borderRadius: '20px',
-                            border: '4px solid transparent'
-                        },
-                        '&::-webkit-scrollbar-thumb:hover': {
-                            background: 'rgb(158, 85, 11)'
-                        }
-                    }}>
-                        <Typography><AccessTime /></Typography>
-                        <Typography>{post.time}</Typography>
-                    </Box>
-                </div>
+    <Box className="location">
+        <Typography><LocationOn /></Typography>
+        <Typography>{post.location}</Typography>
+    </Box>
+    <Box className="date">
+        <Typography><EventNote /></Typography>
+        <Typography>{post.date}</Typography>
+    </Box>
+    <Box className="time">
+        <Typography><AccessTime /></Typography>
+        <Typography>{post.time}</Typography>
+    </Box>
+</div>
                 <Box sx={{
                     mt: '20px',
                     display: 'flex',
@@ -259,6 +183,6 @@ export default function Post({post, token, disabled}) {
         </Dialog>
         <EditPostWrapper open={openEditPost} onClose={() => setOpenEditPost(false)} original_post={post}/>
     </div>
+    
   )
 }
-

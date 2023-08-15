@@ -11,6 +11,20 @@
     flex: 2.5;
 }
 
+@media screen and (max-width: 600px) {
+    .adsLayer {
+      flex-direction: column; /* Change flex direction for narrow screens */
+    }
+  
+    .leftBar {
+      flex: 0; /* Set width to 0 for narrow screens */
+    }
+  
+    .rightbar {
+      flex: 1; /* Take full width for narrow screens */
+    }
+  }
+
 .rightbar{
     flex: 2.5;
     height: 100vh;

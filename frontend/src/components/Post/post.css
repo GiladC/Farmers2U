@@ -1,40 +1,19 @@
-.post{
+
+.post {
     width: 100%;
     border-radius: 10px;
-    box-shadow: 0px 0px 16px -8px rgba(0,0,0,0.68);
-    -webkit-box-shadow: 0px 0px 16px -8px rgba(0,0,0,0.68);
+    box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+    -webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
     margin: 30px 0;
     direction: rtl;
-    background-color: white; 
+    background-color: white;
 }
 
-.postWrapper{
+.postWrapper {
     padding: 10px;
 }
 
-.postTop{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.topLeftWrapper{
-    align-items: flex-start;
-}
-.postTopLeft{
-    display: flex;
-    align-items: center;
-}
-
-.Img{
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    object-fit: cover;
-    cursor: pointer;
-}
-
-.postUserName{
+.postUserName {
     font-size: 20px;
     font-weight: 500;
     margin: 0 10px;
@@ -49,27 +28,14 @@ a:hover, a:active {
     color: black;
     text-decoration: underline;
 }
-.postDate{
-    font-size: 15px;
-}
 
-.postCenter{
+.postCenter {
     margin: 20px 0;
     direction: rtl;
     align-items: right;
 }
 
-/* .imgWrapper{
-    display: flex;
-    object-fit: cover;
-} */
-
-.postText{
-    align-content: right;
-    text-align: right;
-    direction: rtl;
-}
-.postImg{
+.postImg {
     margin-top: 20px;
     width: 100%;
     max-height: 500px;
@@ -78,72 +44,114 @@ a:hover, a:active {
     flex: 5;
 }
 
-.postBottom{
+.postBottom {
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-.postCommentText{
+.postCommentText {
     cursor: pointer;
     border-bottom: 1px dashed gray;
     font-size: 15px;
 }
 
-.score{
-    align-content:space-around;
+.score {
+    align-content: space-around;
     align-items: center;
     right: 100px;
 }
 
-.details{
+/* Add a responsive grid layout to details */
+.details {
     margin-top: 15px;
-    display: flex;
-    align-items: flex-start;
-    align-content: center;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(113px, 1fr)); /* Responsive grid */
+    gap: 15px;
     direction: rtl;
+    align-items: flex-start;
+    justify-content: space-between;
 }
 
-.location{
-    flex: 4;
-    background: #f2fa07;
-    margin-right: 15px;
-}
-
-.date{
-    flex: 4;
-    background: #f2fa07;
-    margin-right: 15px;
-}
-
-.time{
-    flex: 4;
-    background: #f2fa07;
-    margin-right: 15px;
-}
-
-.price{
-    flex: 4;
-    background: #f2fa07;
-    margin-right: 15px;
-}
-
-.RatingWrapper{
-    display: flex;
-    direction: ltr;
-    align-items: right;
-    align-content: flex-end;
-    position: inherit;
-}
-
-.menuContainer {
+/* Styling for each box in the details section */
+.location, .date, .time {
+    background: #E8AA42;
+    padding: 10px;
+    text-align: center;
+    overflow-y: scroll; /* Vertical scroll */
+    white-space: pre-wrap; /* Allow text to wrap */
+    word-wrap: break-word; /* Break long words */
+    max-height: 50px; /* Set a maximum height for the box */
     position: relative;
-    display: inline-block;
 }
 
-.moreVertButton:hover {
-    background-color: #e0e0e0; 
-    border-radius: 50%; 
-    cursor: pointer; 
+/* Add an after pseudo-element to create a background for the scrollbar */
+.location::after, .date::after, .time::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 6px; /* Width of the scrollbar */
+    background-color: transparent; /* Or a color that matches your design */
+    z-index: -1; /* Place it behind the scrollbar content */
+}
+
+.location::-webkit-scrollbar, .date::-webkit-scrollbar, .time::-webkit-scrollbar {
+    width: 6px;
+}
+
+.location::-webkit-scrollbar-thumb, .date::-webkit-scrollbar-thumb, .time::-webkit-scrollbar-thumb {
+    background-color: rgba(158, 85, 11, 0.6);
+    border: 4px solid transparent;
+}
+
+.location::-webkit-scrollbar-thumb:hover, .date::-webkit-scrollbar-thumb:hover, .time::-webkit-scrollbar-thumb:hover {
+    background: rgb(158, 85, 11);
+}
+
+/* Make the post image (logo) responsive */
+.Img {
+    max-width: 70px;
+    max-height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+.postTop {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .postTopLeft {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .postTopRight {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  @media screen and (max-width: 750px) {
+    .postTopLeft .postDate {
+      display: none;
+    }
+  }
+
+  @media screen and (max-width: 330px) {
+    .postTopLeft .farmName {
+      display: none;
+    }
+  }
+
+  @media screen and (max-width: 250px) {
+    .location, .date, .time {
+        padding: 0px; /* Decrease padding for narrow screens */
+        font-size: 10px; /* Decrease font size for narrow screens */
+    }
 }
