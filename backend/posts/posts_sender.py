@@ -12,7 +12,6 @@ def get_posts():
         user = User.query.filter_by(email=post.email).first()
         opening_hours= user.opening_hours.split(',')
         closing_hours= user.closing_hours.split(',')
-        print(post.products)
         if not post.products:
             post.products = []
         prods = '#'.join(post.products)
@@ -22,7 +21,7 @@ def get_posts():
             'photo': post.photo,
             'desc': post.desc,
             'posted': post.posted,
-            'date': post.event_date.strftime('%m/%d/%Y') if post.event_date else None,
+            'date': post.event_date.strftime('%d/%m/%Y') if post.event_date else None,
             'location': post.location,
             'when_posted_date': post.date,
             'when_posted_time': post.time,

@@ -72,13 +72,20 @@ const EditPost = ({ post, open, onClose }) => {
   const [image, setImage] = useState(null);
   const inputRef = useRef(null);
   const storedEmail = localStorage.getItem('email');
+  const [isRealAddress, setIsRealAddress] = useState(false);
+  const [coordinates,setCoordinates] = useState({
+    lat: null,
+    lng: null
+  })
   const [address, setAddress] = useState(post.initial_address || "")
 
 
 const handleSelect = async value => {
     const results = await geocodeByAddress(value);
     const latLng = await getLatLng(results[0]);
-    setAddress(value)
+    setAddress(value);
+    setCoordinates(latLng);
+    setIsRealAddress(true);
   };
 
 
@@ -111,6 +118,31 @@ const handleSelect = async value => {
     }
   };
 
+  const handleChangeAddress = async value => {
+    setAddress(value);
+    try {
+      const results = await geocodeByAddress(value);
+  
+      if (results.length === 0) {
+        setIsRealAddress(false);
+        return;
+      }
+  
+      const latLng = await getLatLng(results[0]);
+  
+      if (latLng && latLng.lat && latLng.lng) {
+        setIsRealAddress(true);
+        setCoordinates(latLng);
+      } else {
+        setIsRealAddress(false);
+      }
+      console.log("Latitude and Longitude: ", latLng)
+    } catch (error) {
+      setIsRealAddress(false);
+    }
+  };
+
+
   useEffect(() => {
     const mail = new FormData();
     mail.append('email', storedEmail)
@@ -128,7 +160,10 @@ const handleSelect = async value => {
   const handleEdit = () => { /* The actual object to extract to the backend */
     const formData = new FormData();
     formData.append('text', postData.text);
+    formData.append('isRealAddress', isRealAddress);
     formData.append('location', address);
+    formData.append('latitude', coordinates.lat);
+    formData.append('longitude', coordinates.lng);
     formData.append('date', value.format('YYYY-MM-DD'));
     formData.append('startTime', value2.format('HH:mm'));
     formData.append('endTime', value3.format('HH:mm'));
@@ -196,7 +231,7 @@ const handleSelect = async value => {
           />
         <PlacesAutocomplete
         value={address}
-        onChange={setAddress}
+        onChange={handleChangeAddress}
         onSelect={handleSelect}
         searchOptions={{
           types: ['address'],

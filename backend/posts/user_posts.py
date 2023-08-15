@@ -8,7 +8,6 @@ userposts_blueprint = Blueprint('getuserposts', __name__)
 @app.route('/api/getuserposts', methods=['POST'])
 def get_user_posts():
     data = request.form.to_dict()
-    print(data)
     user = User.query.filter_by(email=data['email']).first()
     posts = Post.query.filter_by(email=data['email']).all()
     opening_hours= user.opening_hours.split(',')
@@ -36,7 +35,7 @@ def get_user_posts():
             'photo': post.photo,
             'desc': post.desc,
             'posted': post.posted,
-            'date': post.event_date.strftime('%m/%d/%Y') if post.event_date else None,
+            'date': post.event_date.strftime('%d/%m/%Y') if post.event_date else None,
             'location': post.location,
             'when_posted_date': post.date,
             'when_posted_time': post.time,
@@ -45,7 +44,6 @@ def get_user_posts():
         }
         post_list.append(post_dict)
 
-    print(post_list)
 
     post_list.sort(key=lambda post: (post['when_posted_date'], post['when_posted_time']), reverse=True)
 

@@ -1,7 +1,6 @@
 from flask import jsonify, request, Blueprint
 from app import app
 from models import Post, User, db
-from geopy.geocoders import Nominatim
 import datetime
 import os
 from werkzeug.utils import secure_filename
@@ -21,7 +20,6 @@ def generate_unique_filename(filename):
 @app.route('/api/update_post', methods=['POST'])
 def update_post():
     data = request.form.to_dict()
-    print(data)
 
 
     # Validate data
@@ -45,12 +43,10 @@ def update_post():
     
 
     # Validate that the location is an actual address
-    geolocator = Nominatim(user_agent="farmers2u_website")
-    address = geolocator.geocode(data['location'])
-    if address is None:
+    if data['isRealAddress'] == "false":
         return jsonify({'error': 
-                            'נא למלא כתובת מדויקת בשדה המיקום או להשאיר ריק אם לא רוצים לסנן לפי כתובת'
-                            }), 400
+                        'נא למלא כתובת מדויקת בשדה המיקום'
+                        }), 400
     
     # Validate endTime > startTime
     start_time = datetime.datetime.strptime(data['startTime'], '%H:%M').time()
@@ -91,8 +87,8 @@ def update_post():
 
     post.desc = data.get('text')
     post.location = data.get('location')
-    post.latitude = address.latitude
-    post.longitude = address.longitude
+    post.latitude = data['latitude']
+    post.longitude = data['longitude']
     post.event_date = datetime.datetime.strptime(data["date"], "%Y-%m-%d").date()
     post.time_range = time_range
     post.products = product_types
