@@ -150,21 +150,7 @@ const FormLogin = (props) => {
               {errorMessage}
             </Box>
           )}
-          <Box mt={1} marginRight={-20}>
-          <Button
-            variant="text"
-            size="medium"
-            sx={{
-              marginRight: '9.3rem',
-              fontFamily: 'aleph',
-              mt: 4,
-              borderRadius: 4,
-              '&:hover': { textDecoration: 'none' },
-            }}
-            color="nice"
-          >
-            שחזור סיסמה
-          </Button>
+          <Box mt={1} marginRight={3}>
           <a href="/signup">
             <Button
               variant="text"
