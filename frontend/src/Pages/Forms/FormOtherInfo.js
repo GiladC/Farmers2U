@@ -25,15 +25,21 @@ function FormOtherInfo({values, handleChange, setFormValue, props}) {
   });
   const submitHandler = (e) => {
     e.preventDefault();
-    const opening_hours = values.opening_hours.map(p => {
-      return p && p !== "none" ? p.format() : "none";
-    });
-    let openingHours = opening_hours.join(",");
+    let openingHours = "none,none,none,none,none,none,none"
+    let closingHours = "none,none,none,none,none,none,none"
+    if (values.opening_hours != ""){
+      const opening_hours = values.opening_hours.map(p => {
+        return p && p !== "none" ? p.format() : "none";
+      });
+      openingHours = opening_hours.join(",");
+  }
 
+    if (values.closing_hours != ""){
     const closing_hours = values.closing_hours.map(p => {
       return p && p !== "none" ? p.format() : "none";
     });
-    let closingHours = closing_hours.join(",");
+    closingHours = closing_hours.join(",");
+  }
     const data = new FormData(); 
     
     data.append("jsonData", JSON.stringify({
@@ -47,9 +53,6 @@ function FormOtherInfo({values, handleChange, setFormValue, props}) {
       opening_hours: openingHours,
       closing_hours: closingHours,
       farm_name: values.farm_name,
-      //logo_picture: ,
-      //farm_pictures: "",
-      //products_pictures: "",
       about: values.about,
       phone_number_official: values.phone_number_official,
       phone_number_whatsapp: values.phone_number_whatsapp,
@@ -120,9 +123,8 @@ function FormOtherInfo({values, handleChange, setFormValue, props}) {
   })
   .catch(function (response) {
       //handle error
-      console.log(response)
-      if (response.status === 400) {
-          alert("שגיאה");
+      if (error.response && error.response.status === 409) {
+        alert("המייל שאיתו ביקשתם להירשם כבר רשום במערכת.");
       }
   });
      
