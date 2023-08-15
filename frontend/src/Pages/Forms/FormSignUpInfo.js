@@ -35,8 +35,6 @@ const FormSignUpInfo = ({values, handleChange, setFormValue}) => {
     const data = new FormData(); 
     console.log("Encoded JWT ID token: " + response.credential);
     var userObject = jwt_decode(response.credential);
-    setFormValue("email",userObject.email)
-    setEmail(userObject.email);
     data.append("jsonData", JSON.stringify({
     email: userObject.email,
     }))
@@ -46,6 +44,7 @@ const FormSignUpInfo = ({values, handleChange, setFormValue}) => {
         setFormValue("google_name", userObject.given_name); 
         setFormValue("google_family_name", userObject.name);
         setFormValue("google_profile_picture", userObject.picture);
+        setEmail(userObject.email);
         console.log(userObject);
       })
       .catch(function (error) {        
