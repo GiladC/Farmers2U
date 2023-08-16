@@ -1,8 +1,7 @@
-import { Box, Button, Checkbox, Container, FormControlLabel, Grid, InputAdornment, InputBase, Menu, MenuItem, Stack, Switch, TextField, Typography, colors } from '@mui/material'
+import { Box, Button, Checkbox, Container, FormControlLabel, Grid, InputAdornment, InputBase, Menu, MenuItem, Stack, Switch, TextField, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import './profileSettings.css'
-import { AccessTime, Add, AssignmentInd, Badge, Email, Facebook, Home, Instagram, Language, Person2, Phone, Remove, WhatsApp } from '@mui/icons-material'
-import farm from '../../assets/Board_images/farm1.jpeg'
+import { Add, AssignmentInd, Facebook, Home, Instagram, Language, Person2, Phone, Remove, WhatsApp } from '@mui/icons-material'
 import AddPost from '../../components/Post/AddPost'
 import WorkingHours from '../../components/Settings/workingHours'
 import axios from 'axios'
@@ -10,24 +9,12 @@ import PlacesAutocomplete, {
     geocodeByAddress,
     getLatLng,
   } from 'react-places-autocomplete';
-import {ThemeProvider, createTheme, styled} from '@mui/material/styles'
+import {createTheme, styled} from '@mui/material/styles'
 import Slider from '../../Pages/ShowFarmerProfile/ImageSlider'
-import image1 from '../../DummyData/ProfilePageImages/image1.jpg'
-import image2 from '../../DummyData/ProfilePageImages/image2.jpg'
-import image3 from '../../DummyData/ProfilePageImages/image3.jpg'
-import image4 from '../../DummyData/ProfilePageImages/image4.jpg'
-import image5 from '../../DummyData/ProfilePageImages/image5.jpg'
 import dayjs from 'dayjs'
 import UserPosts from './userPosts'
 import './userPosts.css'
-
-const slides = [
-    { url: image1 },
-    { url: image2 },
-    { url: image3 },
-    { url: image4 },
-    { url: image5 },
-  ];
+import {ValidateAddress, ValidateFacebook, ValidateInstagram, ValidatePhone, ValidateWebsite, ValidateWhatsapp} from '../../components/validations'
 
 const IOSSwitch = styled((props) => (
     <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
@@ -97,16 +84,6 @@ const IOSSwitch = styled((props) => (
 const {palette} = createTheme();
 const { augmentColor } = palette;
 const createColor = (mainColor) => augmentColor({ color: { main: mainColor } });
-const themeForButton = createTheme({
-  palette: {
-    button: createColor('#E8AA42'),
-    white: createColor('#ffffff'),
-    garbage: createColor('#9e9e9e'),
-    hovergarbage: createColor('#37474f'),
-    adder: createColor('#f7f1e5'),
-    addPicture: createColor('#f7f1e5'),
-  },
-});
 
 
 function CheckboxMenu(props) {
@@ -130,8 +107,6 @@ function CheckboxMenu(props) {
          }}>
   
         {Boolean(props.anchorEl) ? <Remove /> : <Add />}
-        {console.log(props.selectedItems)}
-        {console.log(props.checked)}
         <Typography style={{ color: '#37474f', fontSize: '15px', fontFamily: 'aleph'}}>
         {props.selectedItems.length > 0 ? 
             <div style={{ display: 'flex', flexWrap: 'nowrap' }}>
@@ -189,12 +164,7 @@ function CheckboxMenu(props) {
   }
 
 const ProfileSettings = (props) => {
-    const [profileData, setProfileData] = useState(null);
-    const [responseMsg, setResponseMsg] = useState({
-      status: "",
-      message: "",
-      error: "",
-    });
+
     const [newLogo, setNewlogo] = useState("");
     const [newProductsImages, setNewProductsImages] = useState("");
     const [newFarmImages, setNewFarmImages] = useState("");
@@ -246,6 +216,24 @@ const ProfileSettings = (props) => {
       Array(9).fill(false) // Initial state for 9 checkboxes
     );
     const [selectedItems, setSelectedItems] = useState([]);
+    const [validPhone, setValidPhone] = useState(true);
+    const [validWhatsapp, setValidWhatsapp] = useState(true);
+    const [validWebsite, setValidWebsite] = useState(true);
+    const [validFacebook, setValidFacebook] = useState(true);
+    const [validInstagram, setValidInstagram] = useState(true);
+    const [validAddress, setValidAddress] = useState(true);
+    const [isInitialized, setIsInitialized] = useState(false);
+
+    const [validSunday, setValidSunday] = useState(true);
+    const [validMonday, setValidMonday] = useState(true);
+    const [validTuesday, setValidTuesday] = useState(true);
+    const [validWednesday, setValidWednesday] = useState(true);
+    const [validThursday, setValidThursday] = useState(true);
+    const [validFriday, setValidFriday] = useState(true);
+    const [validSaturday, setValidSaturday] = useState(true);
+
+    const validDays = validSunday && validMonday && validTuesday && validWednesday && validThursday && validFriday && validSaturday;
+    const validForm = validPhone && validWhatsapp && validWebsite && validFacebook && validInstagram && validDays && validAddress;
   
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
@@ -259,7 +247,6 @@ const ProfileSettings = (props) => {
       setChecked((prevChecked) => {
         const newChecked = [...prevChecked];
         newChecked[index] = !newChecked[index];
-        console.log(newChecked)
         return newChecked;
       });
       setSelectedItems((prevSelectedItems) => {
@@ -335,6 +322,7 @@ const ProfileSettings = (props) => {
     }
 
     useEffect(() => {
+        setIsInitialized(false);
         getUsers();
       }, [props.token, props.profileEmail]);
     
@@ -361,7 +349,6 @@ const ProfileSettings = (props) => {
             setPhone(res.phone_number_official);
             setAddress(res.address);
             setAbout(res.about);
-            console.log("address",address)
             setFacebook(res.facebook);
             setInstagram(res.instagram);
             setWebsite(res.farm_site);
@@ -372,11 +359,9 @@ const ProfileSettings = (props) => {
             setFarmer(res.farmer_name);
             
             setLogo(res.logo_picture);
-            console.log("logo",logo)
             setFarmImages(res.farm_images_list);
-            console.log("farmImages",farmImages)
             setProductsImages(res.products_images_list);
-            console.log("productImages",productsImages)
+
             
             const open = res.opening_hours.split(",");
 
@@ -391,7 +376,6 @@ const ProfileSettings = (props) => {
 
             const close = res.closing_hours.split(",");
             setSundayClosing(checkNull(close[0], null, false));
-            console.log(checkNull(close[0], null, false));
             setMondayClosing(checkNull(close[1], null, false));
             setTuesdayClosing(checkNull(close[2], null, false));
             setWednesdayClosing(checkNull(close[3], null, false));
@@ -399,9 +383,9 @@ const ProfileSettings = (props) => {
             setFridayClosing(checkNull(close[5], null, false));
             setSaturdayClosing(checkNull(close[6], null, false));
 
-            const products_list = res.type_of_products.split(',');
+            const products_list = res.types_of_products.split(',');
             let types = null;
-            if(products_list === ['']){
+            if(res.types_of_products === ''){
                 types = [];
             }
             else{
@@ -420,7 +404,7 @@ const ProfileSettings = (props) => {
             setChecked(newArr);
             setSelectedItems(types);
 
-            
+            setIsInitialized(true);
 
           })
 
@@ -436,7 +420,6 @@ const ProfileSettings = (props) => {
       const handleSave = (data) => {
         data.preventDefault();
         const data_update = new FormData(); 
-    
         data_update.append("jsonData", JSON.stringify({
           //email: "golan@gmail.com",
           email: email,
@@ -504,51 +487,8 @@ const ProfileSettings = (props) => {
             alert("שגיאה");
         }
     });
-    
-    /*
-    
-        axios({
-            method: "PUT",
-            url: `http://127.0.0.1:5000/settings/${profileEmail}`,
-            headers: {
-                Authorization: 'Bearer ' + props.token,
-              },
-            data:{
-            farm_name: farmName,
-            email: email,
-            about: about,
-            phone_number_official: phone,
-            phone_number_whatsapp: whatsApp,
-            address: address,
-            facebook: facebook,
-            instagram: instagram,
-            farm_site: website,
-            products: menu,
-            is_shipping: isShipping,
-            shipping_distance: shipping_distance,
-            delivery_information: delivery,
-            farmer_name: farmer,
-            opening_hours: put_hours(true),
-            closing_hours: put_hours(false),
-            types_of_products: selectedItems.join()
-            }
-        })
-        .then(function (response) {
-            //handle success
-            console.log(response)
-
-            alert('המשתמש עודכן בהצלחה.'); 
-            window.location.href = '/settings'
-        })
-        .catch(function (response) {
-            //handle error
-            console.log(response)
-            if (response.status === 400) {
-                alert("שגיאה");
-            }
-        });
-        */
     }
+
     const handleChangePhotoLogo = (e) => {
       if (e.target.files.length > 0) {
         const selectedPhotos = e.target.files;
@@ -699,9 +639,10 @@ const ProfileSettings = (props) => {
                                 setPhone(event.target.value);
                             }}
                             className='Form_box_input'
-                            sx={{direction : 'ltr', paddingLeft: '3%'}}
+                            sx={{direction : 'ltr', paddingLeft: '8%'}}
                             />
                         </Box>
+                        <ValidatePhone phone={phone} setValidFlag={setValidPhone}/>
                     </Box>
                     <Box gap= {1}  sx={{
                             mt: '2rem', flex: 2.5
@@ -722,9 +663,10 @@ const ProfileSettings = (props) => {
                                     setWhatsapp(event.target.value);
                                 }}
                                 className='Form_box_input'
-                                sx={{paddingLeft: '3%',width:'100%', border: '0', bgcolor: 'transparent', outline:'none', height: '30px', direction: 'ltr'}}
+                                sx={{paddingLeft: '8%',width:'100%', border: '0', bgcolor: 'transparent', outline:'none', height: '30px', direction: 'ltr'}}
                                 />
                             </Box>
+                            <ValidateWhatsapp whatsapp={whatsApp} setValidFlag={setValidWhatsapp}/>
                     </Box>
                     </Box>
                     <PlacesAutocomplete
@@ -743,6 +685,7 @@ const ProfileSettings = (props) => {
                         mt: '2rem',
                     }}>
                         <label className='inputLabel'>כתובת/מיקום:</label>
+                        <ValidateAddress address={address} setValidFlag={setValidAddress} isInitialized={isInitialized}/>
                         <Box width= '100%' border='2px solid #1d3c45' borderRadius='1rem'
                         alignItems='center' display= 'flex' gap='1rem' overflow='hidden'>
                             <Box fontSize='2rem' bgcolor= '#1d3c45' padding= '0.5rem 1rem'
@@ -802,14 +745,14 @@ const ProfileSettings = (props) => {
                         <label className='inputLabel'>ימי ושעות עבודה:</label>
                         <Box width= '100%' border='2px solid #1d3c45' borderRadius='1rem'
                         alignItems='center' display= 'flex' flexDirection= 'column' gap='1rem' overflow='hidden'>
-                            <WorkingHours day = 'ראשון' opening = {sundayOpening} closing = {sundayClosing} setOpening = {setSundayOpening} setClosing={setSundayClosing}/>
-                            <WorkingHours day = 'שני' opening = {mondayOpening} closing = {mondayClosing} setOpening = {setMondayOpening} setClosing={setMondayClosing}/>
-                            <WorkingHours day = 'שלישי' opening = {tuesdayOpening} closing = {tuesdayClosing} setOpening = {setTuesdayOpening} setClosing={setTuesdayClosing}/>
-                            <WorkingHours day = 'רביעי' opening = {wednesdayOpening} closing = {wednesdayClosing} setOpening = {setWednesdayOpening} setClosing={setWednesdayClosing}/>
-                            <WorkingHours day = 'חמישי' opening = {thursdayOpening} closing = {thursdayClosing} setOpening = {setThursdayOpening} setClosing={setThursdayClosing}/>
-                            <WorkingHours day = 'שישי' opening = {fridayOpening} closing = {fridayClosing} setOpening = {setFridayOpening} setClosing={setFridayClosing}/>
+                            <WorkingHours day = 'ראשון' setValidFlag = {setValidSunday} opening = {sundayOpening} closing = {sundayClosing} setOpening = {setSundayOpening} setClosing={setSundayClosing}/>
+                            <WorkingHours day = 'שני' setValidFlag = {setValidMonday} opening = {mondayOpening} closing = {mondayClosing} setOpening = {setMondayOpening} setClosing={setMondayClosing}/>
+                            <WorkingHours day = 'שלישי' setValidFlag = {setValidTuesday} opening = {tuesdayOpening} closing = {tuesdayClosing} setOpening = {setTuesdayOpening} setClosing={setTuesdayClosing}/>
+                            <WorkingHours day = 'רביעי' setValidFlag = {setValidWednesday} opening = {wednesdayOpening} closing = {wednesdayClosing} setOpening = {setWednesdayOpening} setClosing={setWednesdayClosing}/>
+                            <WorkingHours day = 'חמישי' setValidFlag = {setValidThursday} opening = {thursdayOpening} closing = {thursdayClosing} setOpening = {setThursdayOpening} setClosing={setThursdayClosing}/>
+                            <WorkingHours day = 'שישי' setValidFlag = {setValidFriday} opening = {fridayOpening} closing = {fridayClosing} setOpening = {setFridayOpening} setClosing={setFridayClosing}/>
                             <div className="lastHour">
-                            <WorkingHours day = 'שבת' opening = {saturdayOpening} closing = {saturdayClosing} setOpening = {setSaturdayOpening} setClosing={setSaturdayClosing}/>
+                            <WorkingHours day = 'שבת' setValidFlag = {setValidSaturday} opening = {saturdayOpening} closing = {saturdayClosing} setOpening = {setSaturdayOpening} setClosing={setSaturdayClosing}/>
                             </div>
                         </Box>
                     </Box>
@@ -863,7 +806,7 @@ const ProfileSettings = (props) => {
                             <IOSSwitch checked = {isShipping} onChange= {handleSwitch}/>
                         </Stack>
                     </Box>
-                    {console.log(isShipping)}
+                    
                     {isShipping? 
                     <Box gap= {1}  sx={{
                         mt: '2rem',
@@ -905,7 +848,7 @@ const ProfileSettings = (props) => {
                             setDelivery(event.target.value);
                         }}
                         sx={{
-                            width: '100%'
+                            width: '100%',
                         }} />
                     </Box>
                     <Box gap= {1}  sx={{
@@ -927,10 +870,11 @@ const ProfileSettings = (props) => {
                             onChange={(event) => {
                                 setWebsite(event.target.value);
                             }}
-                            sx={{direction: 'ltr'}}
+                            sx={{direction: 'ltr',  paddingLeft: '4%'}}
                             className='Form_box_input'
                             />
                         </Box>
+                        <ValidateWebsite url={website} setValidFlag={setValidWebsite}/>
                     </Box>
                     <Box gap= {1}  sx={{
                             mt: '2rem', flex: 4
@@ -951,9 +895,10 @@ const ProfileSettings = (props) => {
                                     setFacebook(event.target.value);
                                 }}
                                 className='Form_box_input'
-                                sx={{direction: 'ltr',justifyContent:'center' ,width:'100%', border: '0', bgcolor: 'transparent', outline:'none', height: '30px'}}
+                                sx={{direction: 'ltr',justifyContent:'center' ,width:'100%', border: '0', bgcolor: 'transparent', outline:'none', height: '30px',  paddingLeft: '4%'}}
                                 />
                             </Box>
+                            <ValidateFacebook facebook={facebook} setValidFlag={setValidFacebook}/>
                         </Box>
                     <Box gap= {1}  sx={{
                             mt: '2rem', flex: 4
@@ -974,12 +919,13 @@ const ProfileSettings = (props) => {
                                     setInstagram(event.target.value);
                                 }}
                                 className='Form_box_input'
-                                sx={{direction: 'ltr',justifyContent:'center' ,width:'100%', border: '0', bgcolor: 'transparent', outline:'none', height: '30px'}}
+                                sx={{direction: 'ltr',justifyContent:'center' ,width:'100%', border: '0', bgcolor: 'transparent', outline:'none', height: '30px',  paddingLeft: '4%'}}
                                 />
                             </Box>
+                            <ValidateInstagram instagram={instagram} setValidFlag={setValidInstagram}/>
                         </Box>
                     <Box display= 'flex' mt={5} mb={5} justifyContent='center' sx={{color: '#1d3c45'}}>
-                    <Button variant='contained' color= 'success' onClick={handleSave} sx={{justifyContent: 'center'}}>שמירת פרטים</Button>
+                    <Button disabled = {!validForm} variant='contained' color= 'success' onClick={handleSave} sx={{justifyContent: 'center'}}>שמירת פרטים</Button>
                     </Box>
                 </form>
             </Container>
@@ -1006,24 +952,24 @@ const ProfileSettings = (props) => {
                         justifyItems: 'center',
                         alignContent: 'center'
                         }}>החלפת תמונה</Typography>
-              <Button
-                    /*margin={10}*/
-                    disableRipple
-                    variant="contained"
-                    component="label"
-                    //color="addPicture"
-                    sx={{   display: 'flex',
-                    justifyContent: 'space-between',width:"450px",fontFamily: "aleph", boxShadow: 'none !important', '&:hover , &:active, &:focus':{color: 'initial',
-                    backgroundColor: 'initial', 
-                    boxShadow: 'none !important', opacity: 1,}}}
-                  >
-                  הוספת לוגו
-                    <input
-                      type="file"
-                      label =""
-                      name="logo_picture"
-                      onChange={handleChangePhotoLogo}
-                    />
+                        <Button
+                        /*margin={10}*/
+                        disableRipple
+                        variant="contained"
+                        component="label"
+                        //color="addPicture"
+                        sx={{   display: 'flex',
+                        justifyContent: 'space-between',width:"450px",fontFamily: "aleph", boxShadow: 'none !important', '&:hover , &:active, &:focus':{color: 'initial',
+                        backgroundColor: 'initial', 
+                        boxShadow: 'none !important', opacity: 1,}}}
+                      >
+                      הוספת לוגו
+                        <input
+                          type="file"
+                          label =""
+                          name="logo_picture"
+                          onChange={handleChangePhotoLogo}
+                        />
               </Button>
                     </Box>
                     <Box sx={{
@@ -1055,7 +1001,7 @@ const ProfileSettings = (props) => {
                       multiple
                       onChange={handleChangeFarmImages}
                     />
-              </Button>
+                    </Button>
                     </Box>
                     <Box sx={{
                                 width: '580px',
@@ -1085,7 +1031,7 @@ const ProfileSettings = (props) => {
                       multiple
                       onChange={handleChangeProductsImages}
                     />
-              </Button>
+                    </Button>
                     </Box>
                     <Box sx={{
                                 width: '580px',
@@ -1098,7 +1044,7 @@ const ProfileSettings = (props) => {
                                 </Box>
                                 <Box sx={{border: '5px solid #1d3c45',
                                 direction: 'ltr'}}>
-                                    <UserPosts width={580} height={660} />
+                                    <UserPosts width={580} height={660} email={storedEmail}/>
                                 </Box>
                             </Box>
                 </Box>
