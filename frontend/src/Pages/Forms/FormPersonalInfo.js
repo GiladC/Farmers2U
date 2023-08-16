@@ -1,22 +1,10 @@
 import React, {useEffect, useState } from 'react';
-import IconButton from '@mui/material/IconButton';
 import { TextField, Button, Box, Typography, ThemeProvider, createTheme, Grid, Paper, FormControl, Tooltip} from '@mui/material'
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import InputAdornment from '@mui/material/InputAdornment';
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
-import EmailIcon from '@mui/icons-material/Email';
-import FormLogin from './FormLogin';
-import { BrowserRouter, Link, useNavigate } from 'react-router-dom';
 import PhoneIcon from '@mui/icons-material/Phone';
-import LocationCityIcon from '@mui/icons-material/LocationCity';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
-import TelegramIcon from '@mui/icons-material/Telegram';
 import PersonIcon from '@mui/icons-material/Person';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import { MuiTelInput, isValidPhoneNumber } from "mui-tel-input";
-import { Controller, useForm } from "react-hook-form";
-import { HelpOutline } from '@mui/icons-material';
 import axios from "axios";
 import PlacesAutocomplete, {
   geocodeByAddress,
@@ -55,6 +43,26 @@ function ValidateFarmName({farmName, setValidFlag}) {
   </div>
 );
 }
+
+function ValidateAddress({ address, setAddress, setValidFlag }) {
+  const [valid, setValid] = useState(true);
+
+  useEffect(() => {
+    setValid(isValidAddress());
+  }, [address, setValidFlag]);
+
+  function isValidAddress() {
+    const res = address !== "";
+    setValidFlag(res);
+    return res;
+  }
+
+  return (
+    <div dir='ltr' style={{  height: "0px" }}>
+      {!valid && <Typography variant="body2" color="error" >שדה חובה</Typography>}
+    </div>
+  );
+}
 // function ValidateFarmerName({farmerName, setValidFlag}) {
 //   const [valid ,setValid] = useState(true);
   
@@ -89,9 +97,10 @@ function FormPersonalInfo({values, handleChange, setFormValue, setIsFormPersonal
   const [isValidWhatsApp, setIsValidWhatsApp] = useState('');
   const [farmName, setFarmName] = useState('');
   const [isValidFarmName, setIsValidFarmName] = useState(true);
+  const [isValidAddress, setIsValidAddress] = useState(false);
   const [farmerName, setFarmerName] = useState('');
   //const [isValidFarmerName, setIsValidFarmerName] = useState(true);
-  const formValid = isValidPhone && isValidWhatsApp && isValidFarmName;
+  const formValid = isValidPhone && isValidWhatsApp && isValidFarmName && isValidAddress;
   // const validateForm = () => {
   //     const phoneIsValid = !phoneError;
   //     const whatsappIsValid = !whatsAppError;
@@ -329,6 +338,11 @@ function FormPersonalInfo({values, handleChange, setFormValue, setIsFormPersonal
               </div>
             )}
           </PlacesAutocomplete>
+          <ValidateAddress
+  address={addressN}
+  setAddress={setAddress}
+  setValidFlag={setIsValidAddress} // You need to create and manage this state
+/>
   </Grid>
   <Grid container item xs={5}>
       <TextField fullWidth multiline dir="rtl"

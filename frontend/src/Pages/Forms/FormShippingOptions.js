@@ -94,88 +94,7 @@ const IOSSwitch = styled((props) => (
   },
 }));
 
-// const MaterialUISwitch = styled(Switch)(({ theme }) => ({
-//   width: 62,
-//   height: 34,
-//   padding: 7,
-//   '& .MuiSwitch-switchBase': {
-//     margin: 1,
-//     padding: 0,
-//     transform: 'translateX(6px)',
-//     '&.Mui-checked': {
-//       color: '#fff',
-//       transform: 'translateX(22px)',
-//       '& .MuiSwitch-thumb:before': {
-//         backgroundImage: `url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="24" height="24" viewBox="0 0 24 24"%3E%3Cpath fill="currentColor" d="M3 4a2 2 0 0 0-2 2v11h2a3 3 0 0 0 3 3a3 3 0 0 0 3-3h6a3 3 0 0 0 3 3a3 3 0 0 0 3-3h2v-5l-3-4h-3V4m-7 2l4 4l-4 4v-3H4V9h6m7 .5h2.5l1.97 2.5H17M6 15.5A1.5 1.5 0 0 1 7.5 17A1.5 1.5 0 0 1 6 18.5A1.5 1.5 0 0 1 4.5 17A1.5 1.5 0 0 1 6 15.5m12 0a1.5 1.5 0 0 1 1.5 1.5a1.5 1.5 0 0 1-1.5 1.5a1.5 1.5 0 0 1-1.5-1.5a1.5 1.5 0 0 1 1.5-1.5Z"%2F%3E%3C%2Fsvg%3E')`,
-//       },
-//       '& + .MuiSwitch-track': {
-//         opacity: 1,
-//         backgroundColor: theme.palette.mode === 'dark' ? '#E8AA42' : '#aab4be',
-//       },
-//     },
-//   },
-//   '& .MuiSwitch-thumb': {
-//     backgroundColor: '#E8AA42',
-//     width: 32,
-//     height: 32,
-//     '&:before': {
-//       content: "''",
-//       position: 'absolute',
-//       width: '100%',
-//       height: '100%',
-//       left: 0,
-//       top: 0,
-//       backgroundRepeat: 'no-repeat',
-//       backgroundPosition: 'center',
-//       backgroundImage: `url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="24" height="24" viewBox="0 0 24 24"%3E%3Cpath fill="currentColor" fill-rule="evenodd" d="M9 8a3 3 0 1 1 6 0H9ZM7 8a5 5 0 0 1 10 0h3a1 1 0 0 1 .996 1.09l-.835 9.182A3 3 0 0 1 17.174 21H6.826a3 3 0 0 1-2.987-2.728L3.004 9.09A1 1 0 0 1 4 8h3Z" clip-rule="evenodd"%2F%3E%3C%2Fsvg%3E')`,
-//     },
-//   },
-//   '& .MuiSwitch-track': {
-//     opacity: 1,
-//     backgroundColor: theme.palette.mode === 'dark' ? '#8796A5' : '#aab4be',
-//     borderRadius: 20 / 2,
-//   },
-// }));
-// const PrettoSlider = styled(Slider)({
-//   width:'90%',
-//   alignSelf:'center',
-//   color: '#E8AA42',
-//   height: 8,
-//   '& .MuiSlider-track': {
-//     border: 'none',
-//   },
-//   '& .MuiSlider-thumb': {
-//     height: 24,
-//     width: 24,
-//     backgroundColor: '#fff',
-//     border: '2px solid currentColor',
-//     '&:focus, &:hover, &.Mui-active, &.Mui-focusVisible': {
-//       boxShadow: 'inherit',
-//     },
-//     '&:before': {
-//       display: 'none',
-//     },
-//   },
-//   '& .MuiSlider-valueLabel': {
-//     lineHeight: 1.2,
-//     fontSize: 12,
-//     background: 'unset',
-//     padding: 0,
-//     width: 32,
-//     height: 32,
-//     borderRadius: '50% 50% 50% 0',
-//     backgroundColor: '#E8AA42',
-//     transformOrigin: 'bottom left',
-//     transform: 'translate(50%, -100%) rotate(-45deg) scale(0)',
-//     '&:before': { display: 'none' },
-//     '&.MuiSlider-valueLabelOpen': {
-//       transform: 'translate(50%, -100%) rotate(-45deg) scale(1)',
-//     },
-//     '& > *': {
-//       transform: 'rotate(45deg)',
-//     },
-//   },
-// });
+
 
 
 function FormShippingOptions({values, handleChange, setFormValue}) {
@@ -185,27 +104,34 @@ function FormShippingOptions({values, handleChange, setFormValue}) {
   farmer_name, delivery_details, products, farm_site, facebook, instagram
   } = values
   const [isShipping, setIsShipping] = useState(values.is_shipping || false)
-  const [shippingRange, setShippingRange] = useState('');
   const handleSwitch = (event) => {
     setIsShipping(event.target.checked);
     setFormValue("is_shipping", event.target.checked)
     console.log(values.is_shipping)
   };
+  
   const handleChangeRange = (event) => {
     const val = event.target.value;
     // Regular expression to match numbers from 1 to 999, disallowing leading zeros
     const regex = /^[1-9][0-9]{0,2}$/;
     if (regex.test(val) || val === '') {
-      setShippingRange(val);
+      setDistance(val);
     }
   }
+
   const [distance, setDistance] = useState(5)
-  const handleDistanceChange = (event, newValue) => {
-      setDistance(event.target.value);
-      setFormValue("shipping_distance", event.target.value)
-      console.log(values.shipping_distance)
-      console.log(values.delivery_details)
-    };
+
+  const handleDistanceChange = (event) => {
+    const val = event.target.value;
+    // Regular expression to match numbers from 1 to 999, disallowing leading zeros
+    const regex = /^[1-9][0-9]{0,2}$/;
+  
+    if (regex.test(val) || val === '') {
+      setDistance(val); // Update the local state
+      setFormValue("shipping_distance", val); // Update the form value
+    }
+  };
+
    console.log(values, handleChange,setFormValue);
   return (
     <div>
