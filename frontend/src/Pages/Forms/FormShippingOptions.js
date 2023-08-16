@@ -225,7 +225,6 @@ function FormShippingOptions({values, handleChange, setFormValue}) {
       {isShipping && <Typography fontFamily="aleph" marginBottom={-10} marginTop={2} marginLeft={6.8} fontSize= '18px' color= 'rgb(23, 23, 91)'>טווח המשלוח (בק"מ):</Typography>}
       {isShipping && 
         <TextField 
-          //value={distance} 
           onChange={handleDistanceChange} 
           disabled={!isShipping}
           value={shipping_distance} 
