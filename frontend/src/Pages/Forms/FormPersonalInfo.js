@@ -64,25 +64,6 @@ function ValidateAddress({ address, setValidFlag }) {
     </div>
   );
 }
-// function ValidateFarmerName({farmerName, setValidFlag}) {
-//   const [valid ,setValid] = useState(true);
-  
-//   useEffect(() => {
-//       setValid(isValidFarmerName());
-//   }, [farmerName, setValidFlag]);
-
-//   function isValidFarmerName() {
-//       const res =  farmerName !== "";
-//       setValidFlag(res);
-//       return res;
-//     }
-
-//   return (
-//     <div style={{ height: "0px" }}>
-//     {!valid && <Typography variant="body2" color="error">שדה חובה</Typography>}
-//   </div>
-// );
-// }
 
 function FormPersonalInfo({values, handleChange, setFormValue, setIsFormPersonalInfoValid }) {
   const [addressN, setAddress] = useState(values.address)
@@ -410,7 +391,7 @@ function FormPersonalInfo({values, handleChange, setFormValue, setIsFormPersonal
         }} 
         /* onChange = {handleInputChange} */
       />
-      <ValidateFarmName farmName={farmName} setValidFlag={setIsValidFarmName}/>
+      <ValidateFarmName farmName={values.farm_name} setFarmName={setFarmName} setValidFlag={setIsValidFarmName}/>
   </Grid>
   <Grid container item xs={5}>
   <div style={{ height: '10px' }}>  
