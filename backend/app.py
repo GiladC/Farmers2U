@@ -8,10 +8,9 @@ from models import db, User
 from werkzeug.utils import secure_filename #pip install Werkzeug
 import json
 from google.cloud import storage
-
 # from flask_migrate import Migrate
 
-storage_client = storage.Client.from_service_account_json('C:\\Users\\tamir\\OneDrive\\Desktop\\GoogleWorkshop\\backend\\keyfile.json')
+storage_client = storage.Client.from_service_account_json('C:\\Users\\IMOE001\\Desktop\\farmers2u_back\\keyfile.json')
 bucket_name = 'images_farmers2u'
 bucket = storage_client.bucket(bucket_name)
  
@@ -61,9 +60,6 @@ app.register_blueprint(deletepost_blueprint)
 
 from posts.updatePost import updatePost_blueprint
 app.register_blueprint(updatePost_blueprint)
-
-from posts.getowner import getowner_blueprint
-app.register_blueprint(getowner_blueprint)
 
 from navbar_profile import getprofile_blueprint
 app.register_blueprint(getprofile_blueprint)

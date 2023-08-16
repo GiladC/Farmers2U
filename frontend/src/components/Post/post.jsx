@@ -208,7 +208,7 @@ export default function Post({ post, token, disabled }) {
           <div className='imgWrapper'>
             <img
               className='postImg'
-              src={`Board_images/${post?.photo}`}
+              src={post.photo}
               alt=''
             />
           </div>

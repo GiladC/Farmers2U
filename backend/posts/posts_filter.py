@@ -67,7 +67,7 @@ def filter_posts():
             'photo': post.photo,
             'desc': post.desc,
             'posted': post.posted,
-            'date': post.event_date.strftime('%m/%d/%Y') if post.event_date else None,
+            'date': post.event_date.strftime('%d/%m/%Y') if post.event_date else None,
             'location': post.location,
             'when_posted_date': post.date,
             'when_posted_time': post.time,

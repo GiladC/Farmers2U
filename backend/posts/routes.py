@@ -6,6 +6,8 @@ import pytz
 from werkzeug.utils import secure_filename
 from geopy.geocoders import Nominatim
 import urllib.parse
+from google.cloud import storage
+
 
 
 
@@ -32,6 +34,10 @@ def generate_unique_filename(filename):
 
 
 posts_blueprint = Blueprint('posts', __name__)
+
+storage_client = storage.Client.from_service_account_json('C:\\Users\\IMOE001\\Desktop\\farmers2u_back\\keyfile.json')
+bucket_name = 'images_farmers2u'
+bucket = storage_client.bucket(bucket_name)
 
 @posts_blueprint.route('/api/posts', methods=['POST'])
 def create_post():
@@ -88,9 +94,9 @@ def create_post():
             return jsonify({'error': 'מותר לצרף תמונות בפורמט PNG, JPEG או JPG בלבד.'}), 400
         
         post_image_filename = generate_unique_filename(secure_filename(post_image.filename))
-        #post_image_path = os.path.join('posts', 'post_images', post_image_filename)
-        post_image_path = os.path.join('..', 'farmers2u_proj', 'public', 'Board_images', post_image_filename)
-        post_image.save(post_image_path)
+        blob = bucket.blob(post_image_filename)
+        blob.upload_from_file(post_image)
+        image_url = f"https://storage.googleapis.com/{bucket_name}/{post_image_filename}"
 
 
 
@@ -109,7 +115,7 @@ def create_post():
     new_post = Post(
         farmName = user.farm_name,
         profilePicture = user.logo_picture, #profilePicture = user.profilePicture,
-        photo = post_image_filename,
+        photo = image_url,
         desc = urllib.parse.unquote(data.get('text')),
         date = current_time.date(),
         time = current_time.strftime('%H:%M:%S'),

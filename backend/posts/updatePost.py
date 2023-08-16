@@ -4,11 +4,16 @@ from models import Post, User, db
 import datetime
 import os
 from werkzeug.utils import secure_filename
+from google.cloud import storage
 
 
 
 
 updatePost_blueprint = Blueprint('update_post', __name__)
+
+storage_client = storage.Client.from_service_account_json('C:\\Users\\IMOE001\\Desktop\\farmers2u_back\\keyfile.json')
+bucket_name = 'images_farmers2u'
+bucket = storage_client.bucket(bucket_name)
 
 def generate_unique_filename(filename):
     from uuid import uuid4
@@ -70,9 +75,9 @@ def update_post():
             return jsonify({'error': 'מותר לצרף תמונות בפורמט PNG, JPEG או JPG בלבד.'}), 400
         
         post_image_filename = generate_unique_filename(secure_filename(post_image.filename))
-        #post_image_path = os.path.join('posts', 'post_images', post_image_filename)
-        post_image_path = os.path.join('..', 'farmers2u_proj', 'public', 'Board_images', post_image_filename)
-        post_image.save(post_image_path)
+        blob = bucket.blob(post_image_filename)
+        blob.upload_from_file(post_image)
+        image_url = f"https://storage.googleapis.com/{bucket_name}/{post_image_filename}"
 
 
     time_range = f"{data['endTime']}-{data['startTime']}"
@@ -83,7 +88,7 @@ def update_post():
 
     post = Post.query.get(data['post_id'])
     if post_image:
-        post.photo = post_image_filename
+        post.photo = image_url
 
     post.desc = data.get('text')
     post.location = data.get('location')

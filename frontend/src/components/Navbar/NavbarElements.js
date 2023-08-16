@@ -59,7 +59,8 @@ const themeForButton = createTheme({
       .then((response) => {
         removeToken();
         localStorage.removeItem('email');
-        navigate("/");
+        navigate("/home");
+        window.location.reload()
       })
       .catch((error) => {
         if (error.response) {
@@ -113,7 +114,7 @@ const themeForButton = createTheme({
                     sx={{width: '30px', height:'40px', fontSize: 'large', cursor: 'pointer'}}/>
                     <Button onClick={handleSettingsClick}
                     sx={{ marginRight: 'auto', marginLeft: '1.8rem',}}>
-                      <img className = 'Img' src = {'/Form_images/Logo_image/'.concat(profile.logo)} alt=""
+                      <img className = 'Img' src = {profile.logo} alt=""
                       style={{ width: '60px', height: '60px', borderRadius: '50%', 
                       objectFit: 'cover', cursor: 'pointer' }} />
                     </Button>
