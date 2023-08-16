@@ -52,6 +52,7 @@ const FormLogin = (props) => {
         localStorage.setItem('email', userObject.email);
         console.log(response.data);
         navigate('/bullboard');
+        window.location.reload();
       })
       .catch(function (error) {
         console.log(error.response);
