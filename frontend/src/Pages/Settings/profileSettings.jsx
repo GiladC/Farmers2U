@@ -164,6 +164,14 @@ function CheckboxMenu(props) {
   }
 
 const ProfileSettings = (props) => {
+    const [responseMsg, setResponseMsg] = useState({
+      status: "",
+      message: "",
+      error: "",
+    });
+    const [newLogo, setNewlogo] = useState("");
+    const [newProductsImages, setNewProductsImages] = useState("");
+    const [newFarmImages, setNewFarmImages] = useState("");
     const [farmName, setFarmName] = useState("");
     const [email, setEmail] = useState("");
     const [about, setAbout] = useState("");
@@ -415,51 +423,129 @@ const ProfileSettings = (props) => {
 
       const handleSave = (data) => {
         data.preventDefault();
+        const data_update = new FormData(); 
     
-        axios({
-            method: "PUT",
-            url: `http://127.0.0.1:5000/settings/${profileEmail}`,
+        data_update.append("jsonData", JSON.stringify({
+          //email: "golan@gmail.com",
+          email: email,
+          //google_name: values.google_name,
+          //google_family_name: values.google_family_name,
+          //google_profile_picture: values.google_profile_picture,
+          shipping_distance: shipping_distance,
+          is_shipping: isShipping,
+          opening_hours: put_hours(true),
+          closing_hours: put_hours(false),
+          farm_name: farmName,
+          about: about,
+          phone_number_official: phone,
+          phone_number_whatsapp: whatsApp,
+          phone_number_telegram: "0",
+          address: address,
+          types_of_products: selectedItems.join(),
+          farmer_name: farmer,
+          delivery_details: delivery,
+          products: menu,
+          farm_site: website,
+          facebook: facebook,
+          instagram: instagram
+
+        }))
+        if (newLogo){
+          //alert(newLogo)
+          for (let i = 0; i < newLogo.length; i++) {
+            //alert(logo[i])
+            console.log(newLogo)
+            data_update.append("files[]", newLogo[i]);
+            data_update.append("labels[]", "1");
+          }
+        }
+        if (newProductsImages){
+          for (let i = 0; i < newProductsImages.length; i++) {
+            console.log(newProductsImages)
+            data_update.append("files[]", newProductsImages[i]);
+            data_update.append("labels[]", "2");
+          }
+        }
+        if (newFarmImages){
+          for (let i = 0; i < newFarmImages.length; i++) {
+            console.log(newFarmImages)
+            data_update.append("files[]", newFarmImages[i]);
+            data_update.append("labels[]", "3");
+          }
+        }
+          
+          axios.put(`http://127.0.0.1:5000/settings/${profileEmail}`, data_update, {
             headers: {
-                Authorization: 'Bearer ' + props.token,
-              },
-            data:{
-            farm_name: farmName,
-            email: email,
-            about: about,
-            phone_number_official: phone,
-            phone_number_whatsapp: whatsApp,
-            address: address,
-            facebook: facebook,
-            instagram: instagram,
-            farm_site: website,
-            products: menu,
-            is_shipping: isShipping,
-            shipping_distance: shipping_distance,
-            delivery_information: delivery,
-            farmer_name: farmer,
-            opening_hours: put_hours(true),
-            closing_hours: put_hours(false),
-            types_of_products: selectedItems.join()
+              Authorization: 'Bearer ' + props.token,
             }
-        })
-        .then(function (response) {
+          })
+          .then(function (response) {
             //handle success
             console.log(response)
-
             alert('המשתמש עודכן בהצלחה.'); 
             window.location.href = '/settings'
-        })
-        .catch(function (response) {
-            //handle error
-            console.log(response)
-            if (response.status === 400) {
-                alert("שגיאה");
-            }
-        });
-    }
-
+      })
+      .catch(function (response) {
+        //handle error
+        console.log(response)
+        if (response.status === 400) {
+            alert("שגיאה");
+        }
+    });
     
+    const handleChangePhotoLogo = (e) => {
+      if (e.target.files.length > 0) {
+        const selectedPhoto = e.target.files;
+        alert(selectedPhoto)
+        //alert(selectedPhoto[0])
+        const labelLogo = "1"
+        fileValidate(selectedPhoto);
+        setNewlogo(selectedPhoto)
+        console.log(selectedPhoto)
+      }
+    };
+    const handleChangeProductsImages = (e) => {
+      if (e.target.files.length > 0) {
+        const selectedPhoto = e.target.files;
+        alert(selectedPhoto)
+        //alert(selectedPhoto[0])
+        const labelLogo = "2"
+        fileValidate(selectedPhoto);
+        setNewProductsImages(selectedPhoto)
+        console.log(selectedPhoto)
+      }
+    };
+    const handleChangeFarmImages = (e) => {
+      if (e.target.files.length > 0) {
+        const selectedPhoto = e.target.files;
+        alert(selectedPhoto)
+        //alert(selectedPhoto[0])
+        const labelLogo = "3"
+        fileValidate(selectedPhoto);
+        setNewFarmImages(selectedPhoto)
+        console.log(selectedPhoto)
+      }
+    };
 
+    const fileValidate = (file) => {
+      if (
+        file.type === "image/png" ||
+        file.type === "image/jpg" ||
+        file.type === "image/jpeg"
+      ) {
+        setResponseMsg({
+          ...responseMsg,
+          error: "",
+        });
+        return true;
+      } else {
+        setResponseMsg({
+          ...responseMsg,
+          error: "File type allowed only jpg, png, jpeg",
+        });
+        return false;
+      }
+    };
   return (
     // <ThemeProvider theme={themeForButton}>
     <Box sx={{
@@ -846,7 +932,7 @@ const ProfileSettings = (props) => {
                         textAlign: 'center'
                     }}>
                         <img 
-                        src = {'/Form_images/Logo_image/'.concat(logo)}
+                        src = {logo}
                         width= {150}
                         height= {150}
                         className= 'profileImg'
@@ -860,6 +946,25 @@ const ProfileSettings = (props) => {
                         justifyItems: 'center',
                         alignContent: 'center'
                         }}>החלפת תמונה</Typography>
+                                      <Button
+                    /*margin={10}*/
+                    disableRipple
+                    variant="contained"
+                    component="label"
+                    //color="addPicture"
+                    sx={{   display: 'flex',
+                    justifyContent: 'space-between',width:"450px",fontFamily: "aleph", boxShadow: 'none !important', '&:hover , &:active, &:focus':{color: 'initial',
+                    backgroundColor: 'initial', 
+                    boxShadow: 'none !important', opacity: 1,}}}
+                  >
+                  הוספת לוגו
+                    <input
+                      type="file"
+                      label =""
+                      name="logo_picture"
+                      onChange={handleChangePhotoLogo}
+                    />
+              </Button>
                     </Box>
                     <Box sx={{
                             width: '580px',
@@ -871,7 +976,26 @@ const ProfileSettings = (props) => {
                     </Box>
                     
                     <Slider slides={farmImages} farm={true} />
-                    <Button size="large">עריכה</Button>
+                                        <Button
+                    /*margin={10}*/
+                    disableRipple
+                    variant="contained"
+                    component="label"
+                    //color="addPicture"
+                    sx={{   display: 'flex',
+                    justifyContent: 'space-between',width:"450px",fontFamily: "aleph", boxShadow: 'none !important', '&:hover , &:active, &:focus':{color: 'initial',
+                    backgroundColor: 'initial', 
+                    boxShadow: 'none !important', opacity: 1,}}}
+                  >
+                  עריכה
+                    <input
+                      type="file"
+                      label =""
+                      name="farm_images"
+                      multiple
+                      onChange={handleChangeFarmImages}
+                    />
+              </Button>
                     </Box>
                     <Box sx={{
                                 width: '580px',
@@ -882,7 +1006,37 @@ const ProfileSettings = (props) => {
                         <Typography sx={{fontWeight: '600', fontSize: '30px',justifySelf: 'center', color: '#1d3c45'}}>תמונות מוצרי העסק</Typography>
                         </Box>
                         <Slider slides={productsImages} farm={false} />
-                        <Button size="large">עריכה</Button>
+                                      </Button>
+                    </Box>
+                    <Box sx={{
+                                width: '580px',
+                                height: '300px',
+                                marginBottom: '80px'
+                            }}>
+                        <Box display= 'flex' justifyContent='center'>
+                        <Typography sx={{fontWeight: '600', fontSize: '30px',justifySelf: 'center', color: '#1d3c45'}}>תמונות מוצרי העסק</Typography>
+                        </Box>
+                        <Slider slides={productsImages} farm={false} />
+                        <Button
+                    /*margin={10}*/
+                    disableRipple
+                    variant="contained"
+                    component="label"
+                    //color="addPicture"
+                    sx={{   display: 'flex',
+                    justifyContent: 'space-between',width:"450px",fontFamily: "aleph", boxShadow: 'none !important', '&:hover , &:active, &:focus':{color: 'initial',
+                    backgroundColor: 'initial', 
+                    boxShadow: 'none !important', opacity: 1,}}}
+                  >
+                  עריכה
+                    <input
+                      type="file"
+                      label =""
+                      name="product_images"
+                      multiple
+                      onChange={handleChangeProductsImages}
+                    />
+              </Button>
                     </Box>
                     <Box sx={{
                                 width: '580px',
