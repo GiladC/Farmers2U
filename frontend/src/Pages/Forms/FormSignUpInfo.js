@@ -89,7 +89,7 @@ const FormSignUpInfo = ({values, handleChange, setFormValue}) => {
               </Box>
             <Grid container style={{paddingRight: '30px', paddingLeft: '10px'}}>
             <form>
-                <Box sx={{marginLeft:"75%"}}>
+                <Box sx={{marginLeft:"85%"}}>
                   <div
                     id="signUpDiv"
                     style={{ marginRight: '27%', paddingTop: '25px' }}
