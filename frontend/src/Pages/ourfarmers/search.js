@@ -22,10 +22,9 @@ const Searchbar = ({ onSearch, searchTerm, setSearchTerm }) => {
 
   return (
     <div className="searchbar_wrap">
-      <Box flex={1.5}  justifyContent='ceter'>
-        <Typography variant='h4' sx={{alignSelf: 'center', paddingRight: '30px', paddingBottom: '5px', color: '#030443'}}>סינון מתקדם</Typography>
-        <Typography width='300spx' sx={{paddingRight:'25px',color: 'rgb(141, 141, 138)'}}>לחצו על כפתור 'הפעלת סינון'.</Typography>
-      </Box>
+      <div style={{flex: '2'}}>
+
+      </div>
       <div
         className={`searchbar_input_wrapper ${
           isFocused ? 'glow' : 'permanent'

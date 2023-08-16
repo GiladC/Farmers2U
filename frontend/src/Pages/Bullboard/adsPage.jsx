@@ -48,7 +48,13 @@ import Typography from '@mui/material/Typography';
               </div>
           </div>
           <div className="rightbar">
-            <AdsFilter filteredPosts={filteredPosts} setFilteredPosts={setFilteredPosts}/>
+          <div className='header' style={{padding: '1rem 0rem'}}>
+            <Typography variant='h4' sx={{textAlign: 'center', paddingBottom: '5px', color: '#030443'}}>סינון מתקדם</Typography>
+            <Typography width='300spx' sx={{textAlign: 'center', color: 'rgb(141, 141, 138)', direction: 'rtl'}}>לחצו על כפתור 'הפעלת סינון'.</Typography>
+          </div>
+            <div className='adsFilter' style={{borderLeft: 'solid 0.5px #1d3c45'}}>
+              <AdsFilter filteredPosts={filteredPosts} setFilteredPosts={setFilteredPosts}/>  
+            </div>
           </div>
       <div className="addPostWrapper" dir='rtl'>
       {token && (

@@ -4,7 +4,7 @@
 .adsLayer{
     display: flex;
     width: 100%;
-    height: 100vh;
+    height: 90vh;
     /* background-color: rgba(0, 0, 0, 0.4); */
 }
 .leftBar{
@@ -35,7 +35,10 @@
 
 .rightbar{
     flex: 2.5;
-    height: 100vh;
+}
+
+.adsFilter {
+    height: 70vh;
     overflow-y: auto;
 }
 
@@ -64,6 +67,9 @@
     display: none;
 }
 
+.adsFilter::-webkit-scrollbar {
+    display: none;
+}
 .board::-webkit-scrollbar {
     display: none;
 }

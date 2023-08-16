@@ -3,7 +3,7 @@ import Searchbar from './search';
 import Catalogue from './Catalogue';
 import List from '../../DummyData/CardList';
 import './styles.css';
-import { Box, Container } from '@mui/material';
+import { Box, Container, Typography } from '@mui/material';
 import FarmerFilter from '../../components/newFilterPanel/farmerFilter';
 import Filter from '../../components/newFilterPanel/filter'
 import axios from 'axios';
@@ -45,18 +45,26 @@ function OurFarmers() {
   }, [filteredCards])
 
   return (
-    <Box display='flex' flexDirection='column' overglowX= 'none'>
-      <Container>
-        <Searchbar onSearch={handleSearch} searchTerm={searchTerm} setSearchTerm={setSearchTerm} /> {/* Pass the handleSearch function as prop */}
-      </Container>
-      <Box display='flex' width='100%' justifyItems='flex-start' sx={{direction: 'ltr'}}>
-        <Box flex='2.5' marginLeft='none' sx={{'&::-webkit-scrollbar': { display: 'none' }, direction: 'rtl', overflowY:'scroll', height:'70vh', scrollBehavior:'smooth'}}>
-          <Catalogue List={currentCards} /> {/*Pass the filtered cards to the Catalogue component */}
-        </Box> 
+    <Box display='flex' flexDirection='column' overflowX= 'none'>
+      <div className='wrapper' style={{direction: 'ltr'}}>
+        <div className='left' style={{direction: 'rtl', flex: "4", justifyContent: 'flex-start'}}>
+          <Box>
+            <Searchbar onSearch={handleSearch} searchTerm={searchTerm} setSearchTerm={setSearchTerm} /> {/* Pass the handleSearch function as prop */}
+          </Box>
+          <Box flex='2.5' marginLeft='none' sx={{'&::-webkit-scrollbar': { display: 'none' }, direction: 'rtl', overflowY:'scroll', height:'70vh', scrollBehavior:'smooth'}}>
+            <Catalogue List={currentCards} /> {/*Pass the filtered cards to the Catalogue component */}
+          </Box>
+        </div>
+        <div className='right' dir='rtl' style={{flex: '1.5'}}>
+        <div className='filterHeader' style={{padding: '1rem 0rem'}}>
+          <Typography variant='h4' sx={{textAlign: 'center', paddingBottom: '5px', color: '#030443'}}>סינון מתקדם</Typography>
+          <Typography width='300spx' sx={{textAlign: 'center', color: 'rgb(141, 141, 138)', direction: 'rtl'}}>לחצו על כפתור 'הפעלת סינון'.</Typography>
+        </div>
         <Box className='filter' flex='1' sx={{'&::-webkit-scrollbar': { display: 'none' }, direction: 'rtl',borderLeft: 'solid 0.5px #1d3c45',overflowY:'scroll', height: '70vh'}}>
-          <FarmerFilter setFilteredCards={setFilteredCards} cards={cards} setCurrentCards={setCurrentCards} setSearchTerm={setSearchTerm}/>
+            <FarmerFilter setFilteredCards={setFilteredCards} cards={cards} setCurrentCards={setCurrentCards} setSearchTerm={setSearchTerm}/>
         </Box>
-      </Box>
+        </div>
+      </div>
     </Box>
   );
 }

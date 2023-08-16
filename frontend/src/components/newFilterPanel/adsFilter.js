@@ -25,24 +25,32 @@ import products from "../../assets/lists"
 
 
 
-  const marks = [
-    {
-      value: 0,
-      label: '0',
-    },
-    {
-      value: 50,
-      label: '50',
-    },
-    {
-      value: 100,
-      label: '100',
-    },
-    {
-      value: 150,
-      label: '150',
-    },
-  ];
+const marks = [
+  {
+    value: 0,
+    label: '0',
+  },
+  {
+    value: 25,
+    label: '25',
+  },
+  {
+    value: 50,
+    label: '50',
+  },
+  {
+    value: 75,
+    label: '75',
+  },
+  {
+    value: 100,
+    label: '100',
+  },
+  {
+    value: 150,
+    label: '150',
+  },
+];
 
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
@@ -232,7 +240,7 @@ const PrettoSlider = styled(Slider)({
         }
       };
 
-    const [distance, setDistance] = useState(5);
+    const [distance, setDistance] = useState(0);
     const handleDistanceChange = (event, newValue) => {
         setDistance(newValue);
       };
@@ -301,12 +309,12 @@ const PrettoSlider = styled(Slider)({
     }
     
     return (
-      <div style={{marginRight:"5%", borderLeft: 'solid 0.5px #1d3c45', paddingLeft:'8px', paddingTop: '40px'}}>
+      <div style={{marginRight:"5%", paddingLeft:'8px'}}>
         <FormGroup display='flex' justifyContent='center' sx={{display: 'flex', flexDirection:'column', justifyContent:'center'}}>
-            <Typography sx={{marginTop:"-8%", fontFamily:'aleph', fontSize: '36px', color: '#1d3c45', display: 'flex', justifyContent: 'center'}}>סינון מתקדם</Typography>
+            {/* <Typography sx={{marginTop:"-8%", fontFamily:'aleph', fontSize: '36px', color: '#1d3c45', display: 'flex', justifyContent: 'center'}}>סינון מתקדם</Typography> */}
         
        {/* טווח תאריכים */}
-        <Typography sx={{fontFamily:'aleph',paddingTop: '5%', fontSize: '20px', color: '#1d3c45', display: 'flex', justifyContent: 'center'}}>
+        <Typography sx={{fontFamily:'aleph', fontSize: '20px', color: '#1d3c45', display: 'flex', justifyContent: 'center'}}>
             {'טווח תאריכים'}
         </Typography>
         <Typography sx={{fontFamily:'aleph',fontSize: '13px', color: 'rgb(141, 141, 138)',display: 'flex', justifyContent: 'center'}}>
@@ -388,7 +396,7 @@ const PrettoSlider = styled(Slider)({
              <Typography sx={{fontFamily:'aleph', fontSize: '20px', color: '#1d3c45', display: 'flex', justifyContent: 'center', paddingTop: '5%'}}>מרחק ממיקום המודעה (בק"מ)</Typography>
              <PrettoSlider
         aria-label="distance"
-        defaultValue={5}
+        defaultValue={0}
         value = {distance}
         onChange={handleDistanceChange}
         // getAriaValueText={valuetext}
@@ -396,7 +404,7 @@ const PrettoSlider = styled(Slider)({
         step={1}
         marks = {marks}
         min={0}
-        max={150}
+        max={100}
       />
         </Stack>
         {/* מוצרים */}

@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import FarmCard from './profilecard';
 import './styles.css';
 import Filter from '../../components/newFilterPanel/filter'
-import { Container } from '@mui/material';
+import { Box, Container, TextField, Typography } from '@mui/material';
 import axios from 'axios';
+import noResults from '../../assets/noResults.png'
 
 const Catalogue = ({ List }) => {
   // const [businesses, setBusinesses] = useState(List)
@@ -43,7 +44,19 @@ const Catalogue = ({ List }) => {
   return (
     <div className="catalogue-container" dir='rtl'>
       <Container display= 'flex'>
-        {/* <Filter /> */}
+        {List.length === 0 ?
+        <>
+        <Box sx={{display: 'flex', justifyContent: 'center'}}>
+          <img className='noResultsImage' src={noResults} alt='no results' /> 
+        </Box>
+        <Typography sx={{ 
+                      fontSize: '30px', color: '#1d3c45', display: 'flex', 
+                      justifyContent: 'center', textAlign:'center', justifySelf:'center'}}>לא נמצאו חקלאים מתאימים</Typography>
+        <Typography sx={{ 
+                      fontSize: '20px', color: '#1d3c45', display: 'flex', 
+                      justifyContent: 'center', textAlign:'center', justifySelf:'center'}}>כדאי לנסות להסיר מסנני חיפוש</Typography>
+        </>
+        : 
         <div className="card-grid">
           {currentCards.map((business, index) => (
             <FarmCard key={index} Image={business.logo_picture} business={business} />
@@ -51,8 +64,8 @@ const Catalogue = ({ List }) => {
           <Container sx={{flex: '5'}}>
           </Container>
         </div>
+        }
       </Container>
-      {/* <Filter /> */}
       <div className="pagination">
         {Array.from({ length: totalPages }, (_, index) => (
           <button
