@@ -8,7 +8,6 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 
-import PublishSharpIcon from '@mui/icons-material/PublishSharp';
 
 function FormOtherInfo({values, handleChange, setFormValue, props}) {
   console.log(values, handleChange);
@@ -33,6 +32,8 @@ function FormOtherInfo({values, handleChange, setFormValue, props}) {
       });
       openingHours = opening_hours.join(",");
   }
+  
+    
 
     if (values.closing_hours != ""){
     const closing_hours = values.closing_hours.map(p => {
@@ -89,7 +90,6 @@ function FormOtherInfo({values, handleChange, setFormValue, props}) {
     //console.log(productsImages)
     //console.log(farmImages)
     
-    
     axios.post("http://127.0.0.1:5000/signup", data)
     .then(function (response) {
       //handle success
@@ -98,7 +98,6 @@ function FormOtherInfo({values, handleChange, setFormValue, props}) {
         method: 'POST',
         url: 'http://127.0.0.1:5000/logintoken',
         data: {
-          //email: "golan@gmail.com" // Include the email in the POST request
           email: values.email // Include the email in the POST request
         }
       })
@@ -112,8 +111,8 @@ function FormOtherInfo({values, handleChange, setFormValue, props}) {
           navigate('/bullboard');
         })
         .catch(function (error) {
-          if (error.response && error.response.status === 401) {
-            //setErrorMessage('הפרטים שהוזנו שגויים');
+          if (error.response && error.response.status === 409) {
+            alert('הפרטים שהוזנו שגויים');
           }
         });
 
@@ -121,8 +120,9 @@ function FormOtherInfo({values, handleChange, setFormValue, props}) {
       //window.location.href = '/';
       
   })
-  .catch(function (response) {
+  .catch(function (error) {
       //handle error
+      //console.log(response)
       if (error.response && error.response.status === 409) {
         alert("המייל שאיתו ביקשתם להירשם כבר רשום במערכת.");
       }
@@ -150,43 +150,7 @@ function FormOtherInfo({values, handleChange, setFormValue, props}) {
       return false;
     }
   };
-  const handleSubmit = (data) => {
-    data.preventDefault();
 
-    axios({
-        method: "POST",
-        url: "http://127.0.0.1:5000/signup",
-        data:{
-        farmName: values.farmName,
-        email: values.email,
-        password: values.password,
-        about: values.about,
-        phoneNumber1: values.phoneNumber1,
-        phoneNumber2: values.phoneNumber2,
-        city: values.city,
-        address: values.address,
-        farmerName: "",
-        prices: values.prices,
-        products: values.products,
-        facebook: values.facebook,
-        instagram: "",
-        }
-    })
-    .then(function (response) {
-        //handle success
-        console.log(response)
-
-        alert('המשתמש נוסף בהצלחה.');  
-        window.location.href = '/';
-    })
-    .catch(function (response) {
-        //handle error
-        console.log(response)
-        if (response.status === 400) {
-            alert("שגיאה");
-        }
-    });
-}
   return (
     <div  >  
     <form mr={3}autoComplete="off" dir="rtl" /*className={classes.root}*/>  
