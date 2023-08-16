@@ -90,10 +90,14 @@ def update_post():
     if post_image:
         post.photo = image_url
 
+    
+
     post.desc = data.get('text')
     post.location = data.get('location')
-    post.latitude = data['latitude']
-    post.longitude = data['longitude']
+    if data['latitude'] != "null":
+        post.latitude = data['latitude']
+    if data['longitude'] != "null":
+        post.longitude = data['longitude']
     post.event_date = datetime.datetime.strptime(data["date"], "%Y-%m-%d").date()
     post.time_range = time_range
     post.products = product_types

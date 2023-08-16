@@ -46,7 +46,7 @@ const Catalogue = ({ List }) => {
         {/* <Filter /> */}
         <div className="card-grid">
           {currentCards.map((business, index) => (
-            <FarmCard key={index} Image={'/Form_images/Logo_image/'.concat(business.logo_picture)} business={business} />
+            <FarmCard key={index} Image={business.logo_picture} business={business} />
           ))}
           <Container sx={{flex: '5'}}>
           </Container>

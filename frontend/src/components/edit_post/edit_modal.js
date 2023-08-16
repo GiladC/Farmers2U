@@ -72,7 +72,7 @@ const EditPost = ({ post, open, onClose }) => {
   const [image, setImage] = useState(null);
   const inputRef = useRef(null);
   const storedEmail = localStorage.getItem('email');
-  const [isRealAddress, setIsRealAddress] = useState(false);
+  const [isRealAddress, setIsRealAddress] = useState(true);
   const [coordinates,setCoordinates] = useState({
     lat: null,
     lng: null

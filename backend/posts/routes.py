@@ -84,7 +84,8 @@ def create_post():
         return jsonify({'error': 'חלה תקלה, נא להתחבר מחדש למערכת.'}), 400
     
 
-    post_image_filename = None
+    image_url = None
+
 
     post_image = request.files.get('image')
     if post_image:
