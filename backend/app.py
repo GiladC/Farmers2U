@@ -418,6 +418,7 @@ def update_my_settings(getemail):
     user = User.query.filter_by(email=getemail).first()
     json_data = request.form.get('jsonData')
     data = json.loads(json_data)
+    print(data)
     
     # user.logo_picture = request.json['logo_picture']
     user.farm_name = data.get("farm_name")
@@ -497,7 +498,7 @@ def update_my_settings(getemail):
         if farm_images:
             user.farm_pictures = ','.join(farm_images)
 
-        db.session.commit()
+    db.session.commit()
 
     return jsonify({
         "id": user.id,
