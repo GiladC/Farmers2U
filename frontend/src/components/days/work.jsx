@@ -10,9 +10,7 @@ export default function Work({days}) {
     <div>
       <Accordion sx={{
         position: 'relative',
-        top: 20,
-        width: '50%',
-        mb: '5'
+        width: '100%',
       }}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
