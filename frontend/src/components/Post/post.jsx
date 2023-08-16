@@ -98,7 +98,7 @@ export default function Post({ post, token, disabled }) {
             >
               <img
                 className='Img'
-                src={'/Form_images/Logo_image/'.concat(logo)}
+                src={logo}
                 alt=''
               />
             </Button>
@@ -115,7 +115,7 @@ export default function Post({ post, token, disabled }) {
               </Typography>
             </Button>
             <NewBusinessCard
-              image={'/Form_images/Logo_image/'.concat(logo)}
+              image={logo}
               business={business}
               open={open}
               close={() => setOpen(false)}
