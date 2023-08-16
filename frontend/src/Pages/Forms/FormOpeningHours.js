@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { TextField, Box, Typography, Grid, Paper } from '@mui/material';
+import { Stack, Box, Typography, Grid, Paper } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { TimeField } from '@mui/x-date-pickers/TimeField';
 import dayjs from 'dayjs';
+import {ValidateWorkingHours} from '../../components/validations'
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -15,16 +16,21 @@ const Item = styled(Paper)(({ theme }) => ({
   margin: theme.spacing(1),
 }));
 
-function FormOpeningHours({values, setFormValue}) {
+function FormOpeningHours({values, setFormValue, setIsFormOpeningHoursValid}) {
   const {farm_name, email, google_profile_picture, google_name, google_family_name, 
   shipping_distance, is_shipping, opening_hours, closing_hours, logo_picture, products_pictures, types_of_products, 
   farm_pictures, phone_number_official, phone_number_whatsapp, phone_number_telegram, about, address,
   farmer_name, delivery_details, products, farm_site, facebook, instagram
   } = values
-  const [openingTimesNew, setOpeningTimesNew] = useState(Array(7).fill(null));
-  const [closingTimesNew, setClosingTimesNew] = useState(Array(7).fill(null));
+  const [openingTimesNew, setOpeningTimesNew] = useState(values.opening_hours || Array(7).fill(null));
+  const [closingTimesNew, setClosingTimesNew] = useState(values.closing_hours || Array(7).fill(null));
+  const [validDayHours, setValidDayHours] = useState(Array(7).fill(true));
   const [openingTimes, setOpeningTimes] = useState(Array(7).fill(null));
   const [closingTimes, setClosingTimes] = useState(Array(7).fill(null));
+  const formValid = validDayHours;
+    useEffect(() => {
+      setIsFormOpeningHoursValid(formValid);
+  }, [formValid]);
 
   const days = ['ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי', 'שבת'];
 
@@ -73,8 +79,15 @@ function FormOpeningHours({values, setFormValue}) {
     setFormValue("closing_hours",newClosingTime)
   }
 
+  const validDayFlag = (index) => (flag) => {
+    const flags = [...validDayHours];
+    flags[index] = flag;
+    setValidDayHours(flags);
+  };
+
   return (
     <form autoComplete="off" dir="rtl">
+    <LocalizationProvider dateAdapter={AdapterDayjs} >
       <Box style={{ marginBottom: '20px'}} marginTop={5}  bgcolor="#f7f1e5" boxShadow={0} borderRadius={2} border={2} display="flex" flexDirection="column" height={140} width={1300} alignItems="center" justifyContent="center" mt={3.8} mr={2.3} padding={20} sx={{ border: '1.5px solid #f7f1e5' }}>
         <Box style={{ marginBottom: '19px'}}>
         <Typography color="#37474f" fontFamily="aleph" fontWeight="bold" fontSize={50} marginTop="-9rem" variant="h3" textAlign="center">הרשמת חקלאי</Typography>
@@ -122,6 +135,7 @@ function FormOpeningHours({values, setFormValue}) {
                       width: '150px',
                     }}
                   />
+                  <ValidateWorkingHours open={openingTimesNew[index]} close={closingTimesNew[index]} setValidFlag={validDayFlag(index)}/>
                 </Paper>
                 </Box>
               </LocalizationProvider>
@@ -129,6 +143,7 @@ function FormOpeningHours({values, setFormValue}) {
         ))}
         </Grid>
       </Box>
+      </LocalizationProvider>
     </form>
   );
 }

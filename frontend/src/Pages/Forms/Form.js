@@ -72,7 +72,8 @@ const steps = [
         }));
       };
     const [isFormPersonalInfoValid, setIsFormPersonalInfoValid] = useState(true);
-    const [isFormOtherInfoValid, setIsFormOtherInfoValid] = useState(true);
+    const [isFormOpeningHoursValid, setIsFormOpeningHoursValid] = useState(true);
+    const isFormValid = isFormPersonalInfoValid && isFormOpeningHoursValid;
 
     const[page, setPage] = useState(0);
     /* const FormTitles = ["Sign Up", "Personal Info", "Other", "FormProducts","FormShippingDetails"]; */
@@ -93,10 +94,11 @@ const steps = [
             return <FormProductsUpload values={multiFormValues} handleChange={handleChange} setFormValue={setFormValue}/>
         }
         else if (page == 4){
-            return <FormOpeningHours values={multiFormValues} handleChange={handleChange} setFormValue={setFormValue}/>
+            return <FormOpeningHours setIsFormOpeningHoursValid={setIsFormOpeningHoursValid}
+             values={multiFormValues} handleChange={handleChange} setFormValue={setFormValue}/>
         }
         else if (page === 5){
-            return <FormOtherInfo  setIsFormPersonalInfoValid={setIsFormPersonalInfoValid} setIsFormOtherInfoValid={setIsFormOtherInfoValid} values={multiFormValues} handleChange={handleChange} setFormValue={setFormValue} props={props}/>
+            return <FormOtherInfo isFormValid={isFormValid} values={multiFormValues} handleChange={handleChange} setFormValue={setFormValue} props={props}/>
         }
         else if (page == 6){
             return <FormSubmitted />

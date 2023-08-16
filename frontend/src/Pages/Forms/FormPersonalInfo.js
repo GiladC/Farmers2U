@@ -45,7 +45,7 @@ function ValidateFarmName({farmName, setValidFlag}) {
 );
 }
 
-function ValidateAddress({ address, setAddress, setValidFlag }) {
+function ValidateAddress({ address, setValidFlag }) {
   const [valid, setValid] = useState(true);
 
   useEffect(() => {
