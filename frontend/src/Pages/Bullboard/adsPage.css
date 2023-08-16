@@ -12,16 +12,24 @@
 }
 
 @media screen and (max-width: 600px) {
-    .adsLayer {
-      flex-direction: column; /* Change flex direction for narrow screens */
-    }
   
     .leftBar {
-      flex: 0; /* Set width to 0 for narrow screens */
+      flex: 0; /* Disable left bar */
     }
   
     .rightbar {
       flex: 1; /* Take full width for narrow screens */
+    }
+  }
+
+  @media screen and (max-width: 400px) {
+  
+
+  
+    .rightbar {
+      flex: 0; /* disable right bar */
+      height: 0vh;
+      display: none;
     }
   }
 
