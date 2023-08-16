@@ -100,7 +100,7 @@ const ImageSlider = ({ slides, farm }) => {
   };
   const slideStylesWidthBackground = {
     ...slideStyles,
-    backgroundImage: `url(${farm?'/Form_images/Farm_images/'.concat(slides[currentIndex]) : '/Form_images/Products_images/'.concat(slides[currentIndex])})`,
+    backgroundImage: `url(${slides[currentIndex]})`,
   };
 
   return (
