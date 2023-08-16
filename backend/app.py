@@ -8,12 +8,14 @@ from models import db, User
 from werkzeug.utils import secure_filename #pip install Werkzeug
 import json
 from google.cloud import storage
+
 # from flask_migrate import Migrate
 
-storage_client = storage.Client.from_service_account_json('C:\\Users\\IMOE001\\Desktop\\farmers2u_back\\keyfile.json')
+storage_client = storage.Client.from_service_account_json('C:\\Users\\tamir\\OneDrive\\Desktop\\GoogleWorkshop\\backend\\keyfile.json')
 bucket_name = 'images_farmers2u'
 bucket = storage_client.bucket(bucket_name)
- 
+
+
 app = Flask(__name__)
 
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
@@ -55,16 +57,7 @@ app.register_blueprint(business_blueprint)
 from farmFilt import farmfilter_blueprint
 app.register_blueprint(farmfilter_blueprint)
 
-from posts.delete_post import deletepost_blueprint
-app.register_blueprint(deletepost_blueprint)
-
-from posts.updatePost import updatePost_blueprint
-app.register_blueprint(updatePost_blueprint)
-
-from navbar_profile import getprofile_blueprint
-app.register_blueprint(getprofile_blueprint)
-
-UPLOAD_FOLDER = os.path.join('..', 'farmers_private', 'public', 'Form_images','Logo_image')
+UPLOAD_FOLDER = os.path.join('..', 'frontend', 'public', 'Form_images','Logo_image')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
@@ -73,11 +66,48 @@ ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+def check_object_exists(bucket_name, object_name):
+    # Create a client instance with credentials
+    client = storage.Client.from_service_account_json('C:\\Users\\tamir\\OneDrive\\Desktop\\GoogleWorkshop\\backend\\keyfile.json')
+    
+    bucket = client.bucket(bucket_name)
+    blob = bucket.blob(object_name)
+    
+    return blob.exists()
+
+def delete_object_by_url(url):
+    # Parse the URL to extract the object name
+    object_name = url.split('/')[-1]
+
+    # Initialize Google Cloud Storage client
+    client = storage.Client.from_service_account_json('C:\\Users\\tamir\\OneDrive\\Desktop\\GoogleWorkshop\\backend\\keyfile.json')
+
+    # Specify the bucket name
+    bucket_name = 'images_farmers2u'
+    # Get the bucket
+    bucket = client.bucket(bucket_name)
+
+    # Delete the object (blob) with the extracted object name
+    blob = bucket.blob(object_name)
+    blob.delete()   
+
 def generate_unique_filename(filename):
     from uuid import uuid4
     # Generate a unique filename by combining a random UUID and the original filename
     unique_filename = str(uuid4()) + '_' + filename
     return unique_filename
+
+def check_file_exists(bucket_name, filename):
+    client = storage.Client()
+    bucket = client.bucket(bucket_name)
+    blob = bucket.blob(filename)
+    return blob.exists()
+
+def extract_filename_from_url(image_url):
+    print("image_url", image_url)
+    parts = image_url.split("/")
+    filename = parts[-1]
+    return filename
 
 @app.route("/")
 def hello_world():
@@ -169,7 +199,7 @@ def signup():
         return jsonify({"error": "Email already exists or None"}), 409
     if is_shipping is None:
         return jsonify({"success": "Valid email"})
-    
+
     if 'files[]' not in request.files:
         logo_image_string = ""
         products_images_string = ""
@@ -378,30 +408,94 @@ def my_settings(getemail):
 @app.route('/settings/<getemail>', methods=["PUT"])
 @jwt_required() 
 def update_my_settings(getemail):
+    print("HELLO")
     print(getemail)
     if not getemail:
         return jsonify({"error": "Unauthorized Access"}), 401
-    user = User.query.filter_by(email=getemail).first()
-    # user.logo_picture = request.json['logo_picture']
-    user.farm_name = request.json['farm_name']
-    user.facebook = request.json['facebook']
-    user.instagram = request.json["instagram"]
-    user.farm_site = request.json["farm_site"]
-    user.about = request.json['about']
-    user.phone_number_official = request.json['phone_number_official']
-    user.phone_number_whatsapp = request.json['phone_number_whatsapp']
-    # user.phone_number_telegram = request.json['phone_number_telegram']
-    user.address = request.json['address']
-    user.farmer_name = request.json['farmer_name']
-    user.delivery_details = request.json['delivery_information']
-    user.products = request.json['products']
-    user.is_shipping = request.json['is_shipping']
-    user.shipping_distance = request.json['shipping_distance']
-    user.opening_hours = request.json["opening_hours"]
-    user.closing_hours = request.json["closing_hours"]
-    user.types_of_products = request.json['types_of_products']
     
-    db.session.commit()
+    user = User.query.filter_by(email=getemail).first()
+    json_data = request.form.get('jsonData')
+    data = json.loads(json_data)
+    
+    # user.logo_picture = request.json['logo_picture']
+    user.farm_name = data.get("farm_name")
+    user.facebook = data.get('facebook')
+    user.instagram = data.get('instagram')
+    user.farm_site = data.get('farm_site')
+    user.about = data.get('about')
+    user.phone_number_official = data.get('phone_number_official')
+    user.phone_number_whatsapp = data.get('phone_number_whatsapp')
+    # user.phone_number_telegram = request.json['phone_number_telegram']
+    user.address = data.get('address')
+    user.farmer_name = data.get('farmer_name')
+    user.delivery_details = data.get('delivery_details')
+    user.products = data.get('products')
+    user.is_shipping = data.get('is_shipping')
+    user.shipping_distance = data.get('shipping_distance')
+    user.opening_hours = data.get('opening_hours')
+    user.closing_hours = data.get('closing_hours')
+    user.types_of_products = data.get('types_of_products')
+    if 'files[]' not in request.files:
+        None # do nothing
+        print("here idiot")
+    else:
+        logo_image = []
+        products_images = []
+        farm_images = []
+        files = request.files.getlist('files[]')
+        print("files", files)
+        labels = request.form.getlist('labels[]')
+        print("labels", labels)
+        
+        # Delete existing images from the cloud based on labels
+        for label in labels:
+            if label == '1':
+                if user.logo_picture:
+                    print("user.logo_picture", user.logo_picture)
+                    # Delete logo image from the cloud
+                    delete_object_by_url(user.logo_picture)
+                    user.logo_picture = ""
+            elif label == '2':
+                if user.products_pictures:
+                    # Delete product images from the cloud
+                    urls = user.products_pictures.split(",")
+                    print("urls", urls)
+                    for product_image_url in urls:
+                        delete_object_by_url(product_image_url)
+                    user.products_pictures = []  # Clear the list of URLs after deletion
+
+            elif label == '3':
+                if user.farm_pictures:
+                    print("IMHEHEHEHEEHEHEHEHEHEHEH")
+                    # Delete farm images from the cloud
+                    urls = user.farm_pictures.split(",")
+                    for farm_image_url in urls:
+                        delete_object_by_url(farm_image_url)
+                    user.farm_pictures = []  # Clear the list of URLs after deletion
+            
+        for i in range(len(files)):
+            print("files:", files[i])
+            image_filename = generate_unique_filename(files[i].filename)
+            blob = bucket.blob(image_filename)
+            blob.upload_from_file(files[i])
+
+            # Generate public URL for the uploaded image
+            image_url = f"https://storage.googleapis.com/{bucket_name}/{image_filename}"
+
+            if labels[i] == "1":
+                user.logo_picture = image_url
+            elif labels[i] == "2":
+                products_images.append(image_url)
+            elif labels[i] == "3":
+                farm_images.append(image_url)
+        
+        # Update products and farm images lists in the database
+        if products_images:
+            user.products_pictures = ','.join(products_images)
+        if farm_images:
+            user.farm_pictures = ','.join(farm_images)
+
+        db.session.commit()
 
     return jsonify({
         "id": user.id,
