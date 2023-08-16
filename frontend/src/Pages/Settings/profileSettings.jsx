@@ -556,7 +556,7 @@ const ProfileSettings = (props) => {
         for (let i = 0; i < selectedPhotos.length; i++) {
           if (!fileValidate(selectedPhotos[i])) {
             e.target.value = null; // Clear the input field
-            alert("אנא בחר תמונה מסוג jpg/png/jpeg.");
+            alert("מותר לצרף תמונות בפורמט PNG, JPEG או JPG בלבד.");
             return;
           }
         }
@@ -570,7 +570,7 @@ const ProfileSettings = (props) => {
     
         for (let i = 0; i < selectedPhotos.length; i++) {
           if (!fileValidate(selectedPhotos[i])) {
-            alert("אנא בחר תמונה מסוג jpg/png/jpeg.");
+            alert("מותר לצרף תמונות בפורמט PNG, JPEG או JPG בלבד.");
             e.target.value = null; // Clear the input field
             return;
           }
@@ -587,7 +587,7 @@ const ProfileSettings = (props) => {
     
         for (let i = 0; i < selectedPhotos.length; i++) {
           if (!fileValidate(selectedPhotos[i])) {
-            alert("אנא בחר תמונה מסוג jpg/png/jpeg.");
+            alert("מותר לצרף תמונות בפורמט PNG, JPEG או JPG בלבד.");
             e.target.value = null; // Clear the input field
             return;
           }
