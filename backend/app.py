@@ -11,7 +11,7 @@ from google.cloud import storage
 
 # from flask_migrate import Migrate
 
-storage_client = storage.Client.from_service_account_json('C:\\Users\\tamir\\OneDrive\\Desktop\\GoogleWorkshop\\backend\\keyfile.json')
+storage_client = storage.Client.from_service_account_json('C:\\Users\\Nicole\\OneDrive\\Documents\\VSCode\\farmers_backend\\keyfile.json')
 bucket_name = 'images_farmers2u'
 bucket = storage_client.bucket(bucket_name)
 
@@ -35,6 +35,8 @@ with app.app_context():
    db.create_all()
 
 # migrate = Migrate(app, db)
+from navbar_profile import getprofile_blueprint
+app.register_blueprint(getprofile_blueprint)
 
 from posts.routes import posts_blueprint
 app.register_blueprint(posts_blueprint)
@@ -68,7 +70,7 @@ def allowed_file(filename):
 
 def check_object_exists(bucket_name, object_name):
     # Create a client instance with credentials
-    client = storage.Client.from_service_account_json('C:\\Users\\tamir\\OneDrive\\Desktop\\GoogleWorkshop\\backend\\keyfile.json')
+    client = storage.Client.from_service_account_json('C:\\Users\\Nicole\\OneDrive\\Documents\\VSCode\\farmers_backend\\keyfile.json')
     
     bucket = client.bucket(bucket_name)
     blob = bucket.blob(object_name)
@@ -80,7 +82,7 @@ def delete_object_by_url(url):
     object_name = url.split('/')[-1]
 
     # Initialize Google Cloud Storage client
-    client = storage.Client.from_service_account_json('C:\\Users\\tamir\\OneDrive\\Desktop\\GoogleWorkshop\\backend\\keyfile.json')
+    client = storage.Client.from_service_account_json('C:\\Users\\Nicole\\OneDrive\\Documents\\VSCode\\farmers_backend\\keyfile.json')
 
     # Specify the bucket name
     bucket_name = 'images_farmers2u'
