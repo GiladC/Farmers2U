@@ -9,6 +9,9 @@ from werkzeug.utils import secure_filename #pip install Werkzeug
 import json
 # from flask_migrate import Migrate
 
+storage_client = storage.Client.from_service_account_json('C:\\Users\\tamir\\OneDrive\\Desktop\\GoogleWorkshop\\backend\\keyfile.json')
+bucket_name = 'images_farmers2u'
+bucket = storage_client.bucket(bucket_name)
  
 app = Flask(__name__)
 
@@ -179,33 +182,28 @@ def signup():
         farm_images = []
         files = request.files.getlist('files[]')
         labels = request.form.getlist('labels[]')
-        print("files are: ")
-        #print(files)
+
         for i in range(len(files)):
-            print(labels[i])
-            print(files[i])
-            print(files[i].filename)
             image_filename = generate_unique_filename(files[i].filename)
-            if labels[i] == "1":           
-                files[i].save(os.path.join('..','farmers_private', 'public', 'Form_images', 'Logo_image', image_filename))
-                logo_image.append(image_filename)
-            if labels[i] == "2":  
-                files[i].save(os.path.join('..','farmers_private', 'public', 'Form_images', 'Products_images', image_filename))
-                products_images.append(image_filename)
+            blob = bucket.blob(image_filename)
+            blob.upload_from_file(files[i])
+
+            # Generate public URL for the uploaded image
+            image_url = f"https://storage.googleapis.com/{bucket_name}/{image_filename}"
+
+            if labels[i] == "1":
+                logo_image.append(image_url)
+            if labels[i] == "2":
+                products_images.append(image_url)
             if labels[i] == "3":
-                files[i].save(os.path.join('..','farmers_private', 'public', 'Form_images', 'Farm_images', image_filename))
-                farm_images.append(image_filename)
+                farm_images.append(image_url)
 
-            logo_image_string = ','.join(logo_image)
-            products_images_string = ','.join(products_images)
-            farm_images_string = ','.join(farm_images)
-
-            if(logo_image_string == ""):
-                logo_image_string = "farmers2u_logo.png"
-
-            print(logo_image_string)
-            print(products_images_string)
-            print(farm_images_string)
+        logo_image_string = ','.join(logo_image)
+        products_images_string = ','.join(products_images)
+        farm_images_string = ','.join(farm_images)
+        print(logo_image_string)
+        print(products_images_string)
+        print(farm_images_string)
 
 
 
