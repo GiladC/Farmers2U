@@ -7,6 +7,8 @@ from flask_jwt_extended import create_access_token, get_jwt, get_jwt_identity, u
 from models import db, User
 from werkzeug.utils import secure_filename #pip install Werkzeug
 import json
+from google.cloud import storage
+
 # from flask_migrate import Migrate
 
 storage_client = storage.Client.from_service_account_json('C:\\Users\\tamir\\OneDrive\\Desktop\\GoogleWorkshop\\backend\\keyfile.json')
