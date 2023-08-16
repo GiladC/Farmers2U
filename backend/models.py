@@ -87,4 +87,4 @@ class Post(db.Model):
         elif time_difference_seconds < 604800:
             return f"{time_difference_seconds // 86400} ימים"
         else:
-            return posted_datetime.strftime('%m/%d/%Y')
+            return posted_datetime.strftime('%d/%m/%Y')
