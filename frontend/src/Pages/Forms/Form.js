@@ -8,6 +8,8 @@ import FormLogin from './FormLogin';
 import FormOpeningHours from './FormOpeningHours'
 import FormSubmitted from './FormSubmitted'
 import { Button,Stepper,Step,StepLabel,Typography } from '@mui/material';
+import {ValidateFacebook, ValidateInstagram, ValidatePhone, ValidateWebsite, ValidateWhatsapp} from '../../components/validations'
+
 
 const steps = [
     'פרטים אישיים',
@@ -69,6 +71,9 @@ const steps = [
           [input]: value,
         }));
       };
+    const [isFormPersonalInfoValid, setIsFormPersonalInfoValid] = useState(true);
+    const [isFormOtherInfoValid, setIsFormOtherInfoValid] = useState(true);
+
     const[page, setPage] = useState(0);
     /* const FormTitles = ["Sign Up", "Personal Info", "Other", "FormProducts","FormShippingDetails"]; */
     const FormTitles = ["Farmers2U", "Farmers2U", "Farmers2U", "Farmers2U","Farmers2U","Farmers2U", "Farmers2U"]; 
@@ -78,7 +83,8 @@ const steps = [
             return <FormSignUpInfo values={multiFormValues} handleChange={handleChange} setFormValue={setFormValue}/>
         }
         else if (page === 1) {
-            return <FormPersonalInfo values={multiFormValues} handleChange={handleChange} setFormValue={setFormValue}/>
+            return <FormPersonalInfo setIsFormPersonalInfoValid={setIsFormPersonalInfoValid} 
+             values={multiFormValues} handleChange={handleChange} setFormValue={setFormValue}/>
         }
         else if (page === 2){
             return <FormShippingOptions values={multiFormValues} handleChange={handleChange} setFormValue={setFormValue}/>
@@ -90,7 +96,7 @@ const steps = [
             return <FormOpeningHours values={multiFormValues} handleChange={handleChange} setFormValue={setFormValue}/>
         }
         else if (page === 5){
-            return <FormOtherInfo values={multiFormValues} handleChange={handleChange} setFormValue={setFormValue} props={props}/>
+            return <FormOtherInfo  setIsFormPersonalInfoValid={setIsFormPersonalInfoValid} setIsFormOtherInfoValid={setIsFormOtherInfoValid} values={multiFormValues} handleChange={handleChange} setFormValue={setFormValue} props={props}/>
         }
         else if (page == 6){
             return <FormSubmitted />
@@ -122,8 +128,13 @@ const steps = [
                 {PageDisplay()}   
             </div>
             <div className='footer' style={{ display: "flex", justifyContent: "center" }}> {/* added */}
-                <Button style= {{minWidth:"80px", backgroundColor: "#ffb74d", 
-                marginRight: "20px",fontFamily:"aleph", fontSize: 16, display: page == FormTitles.length - 1 || page == 6 ? 'none' : 'block', color: "#212121"}} disabled={page == 6 || page == 5} variant="outlined" sx={{borderColor: 'black'}}
+                <Button style= {{
+                 maxHeight: page == 0 || page == 1 ||page == 2 ||page == 3 ||page == 4 ? "100px":'0px',
+                  minWidth:"80px", backgroundColor:  page == 0 || page == 1 ||page == 2 ||page == 3 ||page == 4 ? '#ffb74d' : "#f7f1e5" , 
+                marginRight: "20px",fontFamily:"aleph", fontSize: 16, display: page == FormTitles.length - 1 ? 'none' : 'block',
+                 color:  page == 0 || page == 1 ||page == 2 ||page == 3 ||page == 4 ? '#212121' : "#f7f1e5" }}
+                disabled={ page == 6 || page == 5} variant="outlined"
+                 sx={{borderColor:page == 0 || page == 1 ||page == 2 ||page == 3 ||page == 4 ? 'black': '"#f7f1e5"'}}
                 onClick={() => { 
                     if (page == FormTitles.length) 
                     {alert("הטופס נשלח")} 
