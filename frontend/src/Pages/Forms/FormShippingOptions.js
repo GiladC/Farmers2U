@@ -184,7 +184,7 @@ function FormShippingOptions({values, handleChange, setFormValue}) {
   farm_pictures, phone_number_official, phone_number_whatsapp, phone_number_telegram, about, address,
   farmer_name, delivery_details, products, farm_site, facebook, instagram
   } = values
-  const [isShipping, setIsShipping] = useState(false)
+  const [isShipping, setIsShipping] = useState(values.is_shipping || false)
   const [shippingRange, setShippingRange] = useState('');
   const handleSwitch = (event) => {
     setIsShipping(event.target.checked);
@@ -225,9 +225,10 @@ function FormShippingOptions({values, handleChange, setFormValue}) {
       {isShipping && <Typography fontFamily="aleph" marginBottom={-10} marginTop={2} marginLeft={6.8} fontSize= '18px' color= 'rgb(23, 23, 91)'>טווח המשלוח (בק"מ):</Typography>}
       {isShipping && 
         <TextField 
-          value={distance} 
+          //value={distance} 
           onChange={handleDistanceChange} 
-          disabled={!isShipping} 
+          disabled={!isShipping}
+          value={shipping_distance} 
           type="text"
           placeholder='0' 
           inputProps={{ maxLength: 3 }} 
