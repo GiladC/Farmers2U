@@ -35,6 +35,7 @@ import Typography from '@mui/material/Typography';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import Button from '@mui/material/Button';
 import BusinessCard from '../../components/Post/businessCard';
+import NewBusinessCard from '../../components/Post/newBusinessCard';
 
 
 const dummyBusiness = { 
@@ -133,7 +134,7 @@ const FarmCard = ({Image, business, style }) => {
           >
             לפרטים נוספים
           </Button>
-        <BusinessCard
+        <NewBusinessCard
           business={business}
           image={Image}
           open={isBusinessCardOpen}

@@ -10,9 +10,7 @@ export default function Shipping({policy}) {
     <div>
       <Accordion sx={{
         position: 'relative',
-        top: 20,
-        width: '50%',
-        mb: '5'
+        width: '100%',
       }}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
@@ -20,7 +18,7 @@ export default function Shipping({policy}) {
           id="panel1a-header"
           dir='rtl'
         >
-          <Typography>מדיניות משלוחים:</Typography>
+          <Typography>מדיניות משלוחים</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography sx={{whiteSpace: 'pre-line'}}>{policy}</Typography>

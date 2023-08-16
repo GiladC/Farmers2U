@@ -17,7 +17,7 @@ import {
   DialogContent,
   DialogActions,
 } from '@mui/material';
-import BusinessCard from './businessCard';
+import NewBusinessCard from './newBusinessCard';
 import axios from 'axios';
 import EditPostWrapper from '../edit_post/wrapper';
 
@@ -114,7 +114,7 @@ export default function Post({ post, token, disabled }) {
                 {post.farmName}
               </Typography>
             </Button>
-            <BusinessCard
+            <NewBusinessCard
               image={'/Form_images/Logo_image/'.concat(logo)}
               business={business}
               open={open}

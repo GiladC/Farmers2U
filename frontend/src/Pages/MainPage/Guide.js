@@ -1,9 +1,11 @@
-import { Box, Button, IconButton, styled, Typography } from "@mui/material";
+import { Box, Button, Container, IconButton, styled, Typography } from "@mui/material";
 import React from "react";
 
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import { Link } from "react-scroll";
 import { ArrowDropDown, ExpandMore } from "@mui/icons-material";
+
+import farmer2u_logo from '../../assets/farmers2u_logo.png'
 
 const Guide = () => {
   const CustomBox = styled(Box)(({ theme }) => ({
@@ -48,6 +50,41 @@ const Guide = () => {
         mt: '15vh'
       }}
     >
+      <Container sx={{display: 'flex', justifyContent: 'space-between'}}>
+        <Box>
+          <Box sx={{ flex: "1", paddingBottom: '3em'}}>
+              <Typography variant="h4"   sx={{ fontSize: "35px", fontWeight: "bold", color: "#000339"}}>
+                מהי מודעה?
+              </Typography>
+              <Typography variant="body2"
+              sx={{
+              fontSize: "20px",
+              fontWeight: "500",
+              color: "#5A6473",
+              // textAlign: "center",
+            }}>
+                במודעה, בעל העסק מפרסם על מכירה המתקיימת בתאריך מסוים וקורא לקהל הרחב להגיע. 
+              </Typography>
+              <Typography variant="body2"
+              sx={{
+              fontSize: "20px",
+              fontWeight: "500",
+              color: "#5A6473",
+              // textAlign: "center",
+            }}>
+             המודעה מכילה פרטים על מיקום המכירה ושעות המכירה .
+            </Typography>
+          </Box>
+        </Box>
+        <img
+            src={farmer2u_logo}
+              alt="farmers2u"
+              height={100}
+              marginTop={0}
+              marginRight={100}
+              style={{ maxWidth: "100%"}}
+            />
+      </Container>
 
       <div
         style={{
@@ -180,7 +217,7 @@ const Guide = () => {
         >
           5. מעוניינים לעדכן את הפרטים המופיעים בדף העסק? עשו זאת דרך האזור האישי.
         </Typography>
-        <Box display= 'flex' justifyContent='center' sx={{mt: '18px'}}>
+        <Box display= 'flex' justifyContent='center' sx={{mt: '1px'}}>
           <Link to='bottom' smooth={true}>
             <IconButton disableRipple sx={{fontSize: '40px', color: 'black', display: 'flex', justifyContent: 'center', justifyItems: 'center', zIndex:'3'}}>
               <ArrowDropDown sx={{width: '100%', fontSize: '70px', alignItems: 'center', alignSelf: 'center'}}/>
@@ -268,7 +305,7 @@ const Guide = () => {
           >
             רוצים לדעת עוד? 
           </Typography>
-          <a href="about">
+          <a href="faq">
           <Box
             sx={{
               cursor: "pointer",
@@ -282,7 +319,7 @@ const Guide = () => {
               variant="body2"
               sx={{ fontWeight: "bold", fontSize: "14px", color: "#0689FF" }}
             >
-              על האתר
+              שאלות נפוצות
             </Typography>
             <KeyboardBackspaceIcon style={{ color: "#0689FF" }} />
           </Box> </a>
