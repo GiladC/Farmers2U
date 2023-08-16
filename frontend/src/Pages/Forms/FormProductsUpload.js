@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { TextField, Button, Box, Typography, Grid, Paper, ThemeProvider, Menu, MenuItem, FormControlLabel, Checkbox, createTheme, FormControl, FormLabel} from '@mui/material'
 import RemoveIcon from '@mui/icons-material/Remove';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -6,6 +6,7 @@ import AddIcon from '@mui/icons-material/Add';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 // import ProductList from './ProductList';
 import axios from "axios";
+import { unstable_batchedUpdates } from 'react-dom';
 
 
 
@@ -95,29 +96,42 @@ function CheckboxMenu(props) {
       {props.selectedItems.join(', ')}
     </div>
       </Menu>
-      {/*<div style={{ display: 'flex', flexWrap: 'wrap' }}>
-        <strong></strong>
-        {selectedItems.map((item, index) => (
-          <div key={index} style={{ backgroundColor: '#f5f5f5', margin: '5px', padding: '5px' }}>
-            {item }
-            <span style={{ cursor: 'pointer', marginRight: '10px' }} onClick={() => handleRemove(item)}>
-              x
-            </span>
-          </div>
-        ))}
-        </div>*/}
     </div>
 
   );
 }
 
 function FormProductsUpload({values, handleChange, setFormValue}) {
+  const {farm_name, email, google_profile_picture, google_name, google_family_name, 
+    shipping_distance, is_shipping, opening_hours, closing_hours, logo_picture, products_pictures, types_of_products, 
+    farm_pictures, phone_number_official, phone_number_whatsapp, phone_number_telegram, about, address,
+    farmer_name, delivery_details, products, farm_site, facebook, instagram
+    } = values
   const labels = ["ירקות", "פירות", "גבינות ומוצרי חלב", "ביצים", "דבש", "צמחים", "יינות ושמן זית", "תבלינים", "דגנים"];
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [checked, setChecked] = React.useState(
     Array(9).fill(false) // Initial state for 9 checkboxes
   );
   const [selectedItems, setSelectedItems] = React.useState([]);
+  // Helper function to check if two arrays are different
+  const arraysDiffer = (a, b) => {
+    return !(JSON.stringify(a) === JSON.stringify(b));
+  }
+
+  useEffect(() => {
+    // Splitting the types_of_products into an array
+    const currentTypes = types_of_products ? types_of_products.split(",") : [];
+
+    if (arraysDiffer(currentTypes, selectedItems)) {
+        // Updating the checked array based on the current types
+        const currentChecked = labels.map(label => currentTypes.includes(label));
+        setChecked(currentChecked);
+
+        // Updating the selectedItems state with the current types
+        setSelectedItems(currentTypes);
+    }
+  }, [types_of_products, labels, selectedItems]);
+
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -282,11 +296,6 @@ function FormProductsUpload({values, handleChange, setFormValue}) {
       setImage(selectedPhoto)
       console.log(selectedPhoto)
       setFormValue("logo_picture", selectedPhoto)
-      //alert(image)
-      // Log the contents of the images object
-      //for (const [key, value] of images.entries()) {
-      //  console.log(`${key}: ${value}`);
-      //}
     }
   };
   const handleChangePhotoFarm = (e) => {
@@ -311,18 +320,8 @@ function FormProductsUpload({values, handleChange, setFormValue}) {
       setFormValue("products_pictures", selectedPhoto)
     }
   };
+  
 
-  // const [products, setProducts] = useState([]);
-  // const [newProduct, setNewProduct] = useState(null);
-  // const initialState = {};  // Add your initial state here
-  // const [boxHeight, setBoxHeight] = useState(142.5);  // initialize with the initial height
-
-  // in the add product handler
-  // const handleAddProduct = () => {
-  //   setProducts([...products, newProduct]);
-  //   setNewProduct(initialState);
-  //   setBoxHeight(boxHeight + 20);  // increment the height by 20 each time
-  // };
   
   return (
     <ThemeProvider theme={themeForButton}>
@@ -336,7 +335,7 @@ function FormProductsUpload({values, handleChange, setFormValue}) {
   <Box marginBottom={2} marginTop={8} style={{ marginBottom:"-1rem"}}>
   <Box mb={2} dir="rtl">
     <CheckboxMenu
-     anchorEl={anchorEl}
+    anchorEl={anchorEl}
     selectedItems={selectedItems}
     setSelectedItems={setSelectedItems}
     handleToggle={handleToggle}
@@ -382,52 +381,7 @@ function FormProductsUpload({values, handleChange, setFormValue}) {
   {/* <ProductList /> */}
   <Typography color="#757575"fontFamily="aleph" marginTop={3} marginBottom={-5}> הוספת תמונות: </Typography>
 
-  </Grid>
-
-  {/* <Grid item xs={12} style={{ marginBottom: "-1rem" }}>
-  <Box display="flex" justifyContent="space-between">
-    <Box margin={2} border="none" minWidth={150}>
-      <Button
-        variant="contained"
-        component="label"
-        color="button"
-        sx={{width:"155px", fontFamily: "aleph", '&:hover': { color: 'white' } }}
-      >
-        מוצרי המשק
-        <AddPhotoAlternateIcon sx={{ marginRight: '5px' }}/>
-        <input type="file" label="" hidden />
-      </Button>
-    </Box>
-
-    <Box margin={2} border="none" minWidth={150}>
-      <Button
-        variant="contained"
-        component="label"
-        color="button"
-        sx={{ width:"155px",fontFamily: "aleph", '&:hover': { color: 'white' } }}
-      >
-        תמונות המשק
-        <AddPhotoAlternateIcon sx={{ marginRight: '5px' }}/>
-        <input type="file" label="" hidden />
-      </Button>
-    </Box>
-
-    <Box margin={2} border="none" minWidth={150}>
-      <Button
-        variant="contained"
-        component="label"
-        color="button"
-        sx={{width:"155px", fontFamily: "aleph", '&:hover': { color: 'white' } }}
-      >
-        הוסף לוגו
-        <AddPhotoAlternateIcon sx={{ marginRight: '5px' }}/>
-        <input type="file" label="" hidden />
-      </Button>
-    </Box>
-  </Box>
-</Grid> */}
-
-        
+  </Grid> 
 
 <form onSubmit={submitHandler} autoComplete="off" dir="rtl" /*className={classes.root}*/ encType="multipart/form-data">
              <Box style={{marginRight: "10%"}}>              
