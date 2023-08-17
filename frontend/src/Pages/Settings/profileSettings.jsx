@@ -494,10 +494,19 @@ const ProfileSettings = (props) => {
         const selectedPhotos = e.target.files;
 
         for (let i = 0; i < selectedPhotos.length; i++) {
-          if (!fileValidate(selectedPhotos[i])) {
+          if (!fileMaxSize(selectedPhotos[i])){
+            alert("גודל מקסימלי עבור קובץ הוא 5MB.");
+            return;
+          }
+          if (!fileTypeValidation(selectedPhotos[i])) {
             e.target.value = null; // Clear the input field
             alert("מותר לצרף תמונות בפורמט PNG, JPEG או JPG בלבד.");
             return;
+          }
+          if (!fileSpecialChars(selectedPhotos[i])) {
+            alert("שם הקובץ מכיל תווים לא חוקיים.");
+            e.target.value = null; 
+            return
           }
         }
         setNewlogo(selectedPhotos);
@@ -507,12 +516,26 @@ const ProfileSettings = (props) => {
     const handleChangeProductsImages = (e) => {
       if (e.target.files.length > 0) {
         const selectedPhotos = e.target.files;
+        if (!filesNumberValidation(selectedPhotos.length)){
+          alert("מותר להעלות עד 5 קבצים.");
+          e.target.value = null; 
+          return
+        }
     
         for (let i = 0; i < selectedPhotos.length; i++) {
-          if (!fileValidate(selectedPhotos[i])) {
-            alert("מותר לצרף תמונות בפורמט PNG, JPEG או JPG בלבד.");
-            e.target.value = null; // Clear the input field
+          if (!fileMaxSize(selectedPhotos[i])){
+            alert("גודל מקסימלי עבור קובץ הוא 5MB.");
             return;
+          }
+          if (!fileTypeValidation(selectedPhotos[i])) {
+            alert("מותר לצרף תמונות בפורמט PNG, JPEG או JPG בלבד.");
+            e.target.value = null; 
+            return;
+          }
+          if (!fileSpecialChars(selectedPhotos[i])) {
+            alert("שם הקובץ מכיל תווים לא חוקיים.");
+            e.target.value = null; 
+            return
           }
         }
     
@@ -524,12 +547,27 @@ const ProfileSettings = (props) => {
     const handleChangeFarmImages = (e) => {
       if (e.target.files.length > 0) {
         const selectedPhotos = e.target.files;
+      if (!filesNumberValidation(selectedPhotos.length)){
+        alert("מותר להעלות עד 5 קבצים.");
+        e.target.value = null; // Clear the input field
+        return
+      }
+      
     
         for (let i = 0; i < selectedPhotos.length; i++) {
-          if (!fileValidate(selectedPhotos[i])) {
-            alert("מותר לצרף תמונות בפורמט PNG, JPEG או JPG בלבד.");
-            e.target.value = null; // Clear the input field
+          if (!fileMaxSize(selectedPhotos[i])){
+            alert("גודל מקסימלי עבור קובץ הוא 5MB.");
             return;
+          }
+          if (!fileTypeValidation(selectedPhotos[i])) {
+            alert("מותר לצרף תמונות בפורמט PNG, JPEG או JPG בלבד.");
+            e.target.value = null; 
+            return;
+          }
+          if (!fileSpecialChars(selectedPhotos[i])) {
+            alert("שם הקובץ מכיל תווים לא חוקיים.");
+            e.target.value = null; 
+            return
           }
         }
     
@@ -539,7 +577,7 @@ const ProfileSettings = (props) => {
       }
     };
 
-    const fileValidate = (file) => {
+    const fileTypeValidation = (file) => {
       if (
         file.type !== "image/png" &&
         file.type !== "image/jpg" &&
@@ -549,6 +587,29 @@ const ProfileSettings = (props) => {
       }
       return true;
     };
+    const filesNumberValidation = (numberOfImagesToUpload) => {
+      const MAX_FILES = 5;
+      if (numberOfImagesToUpload > MAX_FILES) {
+        return false
+      }
+      return true
+    }
+    const fileMaxSize = (file) => {
+    const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
+    if (file.size > MAX_FILE_SIZE) {
+      return false
+    }
+    return true
+}
+    
+    const fileSpecialChars = (file) => {
+      const fileName = file.name;
+      if (/[^A-Za-z0-9_.-]/.test(fileName)) {
+        return false
+      }
+      return true;
+}
+
 
     
 
