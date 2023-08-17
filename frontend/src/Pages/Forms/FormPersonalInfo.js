@@ -332,7 +332,7 @@ function FormPersonalInfo({values, handleChange, setFormValue, setIsFormPersonal
         name ="name"
         /*value={values.firstName}*/
         variant='outlined'
-        marginTop={6}
+        //marginTop={6}
         type="text"
         placeholder='שם איש קשר'
         defaultValue={values.farmer_name}
@@ -394,13 +394,13 @@ function FormPersonalInfo({values, handleChange, setFormValue, setIsFormPersonal
       <ValidateFarmName farmName={values.farm_name} setFarmName={setFarmName} setValidFlag={setIsValidFarmName}/>
   </Grid>
   <Grid container item xs={5}>
-  <div style={{ height: '10px' }}>  
+  <div style={{ width: '100%', height: '10px' }}>  
       <TextField fullWidth multiline dir="rtl"
         /*label="שם פרטי"*/
         name ="name"
         /*value={values.firstName}*/
         variant='outlined'
-        marginTop={6}
+        //marginTop={6}
         type="text"
         placeholder='מספר וואטסאפ'
         //defaultValue={whatsApp}
@@ -440,7 +440,7 @@ function FormPersonalInfo({values, handleChange, setFormValue, setIsFormPersonal
           </div>
   </Grid>
   <Grid container item xs={5}>
-  <div style={{ height: '10px' }}>  
+  <div style={{width: '100%', height: '10px' }}>  
       <TextField fullWidth multiline dir="rtl"
         /*label="שם פרטי"*/
         name ="name"
