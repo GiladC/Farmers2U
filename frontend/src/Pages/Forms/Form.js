@@ -131,12 +131,18 @@ const steps = [
             </div>
             <div className='footer' style={{ display: "flex", justifyContent: "center" }}> {/* added */}
                 <Button style= {{
-                 maxHeight: page == 0 || page == 1 ||page == 2 ||page == 3 ||page == 4 ? "100px":'0px',
-                  minWidth:"80px", backgroundColor:  page == 0 || page == 1 ||page == 2 ||page == 3 ||page == 4 ? '#ffb74d' : "#f7f1e5" , 
-                marginRight: "20px",fontFamily:"aleph", fontSize: 16, display: page == FormTitles.length - 1 ? 'none' : 'block',
-                 color:  page == 0 || page == 1 ||page == 2 ||page == 3 ||page == 4 ? '#212121' : "#f7f1e5" }}
+                maxHeight: page == 0 || page == 1 ||page == 2 ||page == 3 ||page == 4 ? "100px":'0px',
+                minWidth:"80px",
+                backgroundColor:  page == 0 || page == 1 ||page == 2 ||page == 3 ||page == 4 ? '#ffb74d' : "#f7f1e5" , 
+                marginRight: "20px",
+                fontFamily:"aleph",
+                fontSize: 16,
+                display: page == FormTitles.length - 1 ? 'none' : 'block',
+                color:  page == 0 || page == 1 ||page == 2 ||page == 3 ||page == 4 ? '#212121' : "#f7f1e5" }}
                 disabled={ page == 6 || page == 5} variant="outlined"
-                 sx={{borderColor:page == 0 || page == 1 ||page == 2 ||page == 3 ||page == 4 ? 'black': '"#f7f1e5"'}}
+                 sx={{borderColor:page == 0 || page == 1 ||page == 2 ||page == 3 ||page == 4 ? 'black': '"#f7f1e5"', '&.Mui-disabled': {
+                    borderColor: 'transparent'
+                }}}
                 onClick={() => { 
                     if (page == FormTitles.length) 
                     {alert("הטופס נשלח")} 

@@ -391,7 +391,7 @@ function FormOtherInfo({values, handleChange, props, isFormValid}) {
 </Grid>
 <Box display="flex"   alignItems="center" 
   justifyContent="center" mr={13} style={{
-    marginTop: "28.55%",
+    marginTop: "28.48%",
     zIndex: 1,
     
   }}>
