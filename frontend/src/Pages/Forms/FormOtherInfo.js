@@ -113,6 +113,9 @@ function FormOtherInfo({values, handleChange, props, isFormValid}) {
     closingHours = closing_hours.join(",");
   }
     const data = new FormData(); 
+    if (values.is_shipping == false){
+      values.shipping_distance = 0
+    }
     
     data.append("jsonData", JSON.stringify({
       //email: "golan@gmail.com",
