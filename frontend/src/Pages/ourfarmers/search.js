@@ -33,7 +33,7 @@ const Searchbar = ({ onSearch, searchTerm, setSearchTerm }) => {
         <SearchIcon className="searchbar_icon" />
         <input
           type="text"
-          placeholder="!חפשו משק ספציפי"
+          placeholder="חפשו משק ספציפי!"
           value={searchTerm}
           onChange={handleSearch}
           onFocus={handleFocus}
