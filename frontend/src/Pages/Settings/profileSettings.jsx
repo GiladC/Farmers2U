@@ -943,27 +943,29 @@ const ProfileSettings = (props) => {
                         height= {150}
                         className= 'profileImg'
                         />
-                        <Typography className='account_box_img_para' sx={{
+                        <Typography  sx={{
                         fontWeight: '700',
                         fontSize: '1.2rem',
                         lineHeight: '0',
                         mt: '10px',
                         justifyContent: 'center',
                         justifyItems: 'center',
-                        alignContent: 'center'
+                        marginBottom: '10px',
+                        alignContent: 'center',
+                        color: '#1d3c45',
                         }}>החלפת תמונה</Typography>
                         <Button
                         /*margin={10}*/
                         disableRipple
                         variant="contained"
                         component="label"
+                        style={{color: '#1d3c45', backgroundColor: 'transparent'}}
                         //color="addPicture"
-                        sx={{   display: 'flex',
-                        justifyContent: 'space-between',width:"450px",fontFamily: "aleph", boxShadow: 'none !important', '&:hover , &:active, &:focus':{color: 'initial',
+                        sx={{   display: 'flex', marginRight: '150px', 
+                        justifyContent: 'center',width:"450px",fontFamily: "aleph", boxShadow: 'none !important', '&:hover , &:active, &:focus':{color: 'initial',
                         backgroundColor: 'initial', 
                         boxShadow: 'none !important', opacity: 1,}}}
                       >
-                      הוספת לוגו
                         <input
                           type="file"
                           label =""
@@ -987,13 +989,13 @@ const ProfileSettings = (props) => {
                     disableRipple
                     variant="contained"
                     component="label"
+                    style={{color: '#1d3c45', backgroundColor: 'transparent'}}
                     //color="addPicture"
-                    sx={{   display: 'flex',
+                    sx={{   display: 'flex', marginRight: '190px', paddingTop: '40px',
                     justifyContent: 'space-between',width:"450px",fontFamily: "aleph", boxShadow: 'none !important', '&:hover , &:active, &:focus':{color: 'initial',
                     backgroundColor: 'initial', 
                     boxShadow: 'none !important', opacity: 1,}}}
                   >
-                  עריכה
                     <input
                       type="file"
                       label =""
@@ -1017,13 +1019,13 @@ const ProfileSettings = (props) => {
                     disableRipple
                     variant="contained"
                     component="label"
+                    style={{color: '#1d3c45', backgroundColor: 'transparent'}}
                     //color="addPicture"
-                    sx={{   display: 'flex',
+                    sx={{   display: 'flex', marginRight: '190px', paddingTop: '40px',
                     justifyContent: 'space-between',width:"450px",fontFamily: "aleph", boxShadow: 'none !important', '&:hover , &:active, &:focus':{color: 'initial',
                     backgroundColor: 'initial', 
                     boxShadow: 'none !important', opacity: 1,}}}
                   >
-                  עריכה
                     <input
                       type="file"
                       label =""
