@@ -166,24 +166,22 @@ function FormShippingOptions({values, handleChange, setFormValue}) {
         {/*!isShipping */}
 
   <Box margin={2} >
-      <TextField fullWidth multiline dir="rtl"
-        /*label="שם פרטי"*/
-        name ="name"
-        /*value={values.firstName}*/
-        variant='outlined'
-        type="text"
-        placeholder=" מדיניות הזמנות ומשלוחים:
-        ציינו את כל הפרטים הרלוונטיים כמו: מינימום הזמנה, מחיר משלוח משתנה,
-        בהתאם למיקום / סכום הזמנה וכו' ..."
-        required="required"
-        defaultValue={values.delivery_details}
-        onChange={handleChange('delivery_details')}
-        rows={3}
-        rowsMax={5}
-        sx={{marginTop:10, backgroundColor:"#ffffff"
-      }}
-        /*helperText="*קישור לרשתות החברתיות (אופציונלי)"*/
-        /* onChange = {handleInputChange} */
+        <TextField
+          fullWidth
+          multiline
+          dir="rtl"
+          name="name"
+          variant="outlined"
+          type="text"
+          placeholder={`מדיניות הזמנות ומשלוחים:
+ציינו את כל הפרטים הרלוונטיים כמו: מינימום הזמנה, מחיר משלוח משתנה
+בהתאם למיקום / סכום הזמנה וכו'.`}
+          required="required"
+          defaultValue={values.delivery_details}
+          onChange={handleChange('delivery_details')}
+          rows={3}
+          rowsMax={5}
+          sx={{ marginTop: 10, backgroundColor: "#ffffff" }}
       />
   </Box>
   </Grid>
