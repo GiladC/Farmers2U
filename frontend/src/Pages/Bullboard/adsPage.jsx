@@ -5,6 +5,8 @@ import AddPost from '../../components/Post/AddPost'
 import axios from 'axios'
 import AdsFilter from '../../components/newFilterPanel/adsFilter'
 import Typography from '@mui/material/Typography';
+import noResults from '../../assets/noResults.png';
+import { Box } from '@mui/material'
 
 
 
@@ -26,16 +28,18 @@ import Typography from '@mui/material/Typography';
     
   return (
       <div className='adsLayer'>
-          <div className='leftBar'></div>
+          {/* <div className='leftBar'></div> */}
           <div className="board">
               <div className="boardWrapper">
                 {filteredPosts.length == 0 ? (
                   <>
-                    <img src="/other_images/results_no_found.png" style={{ width: '100%'}}/>
+                    <Box sx={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
+                      <img className='noResultsImage' src={noResults} style={{ width: '100%'}}/>
+                    </Box>
                     <Typography sx={{ 
-                      marginRight: '95px', fontSize: '36px', color: '#1d3c45', display: 'flex', 
+                      textAlign: 'center', fontSize: '36px', color: '#1d3c45', display: 'flex', 
                       justifyContent: 'center'}}>...לא נמצאו תוצאות</Typography>
-                    <Typography sx={{ marginRight: '95px', fontSize: '15px', 
+                    <Typography sx={{textAlign: 'center', fontSize: '15px', 
                     color: 'rgb(141, 141, 138)',display: 'flex', justifyContent: 'center'}}>
                       {'כדאי לנסות להסיר מסנני חיפוש'}
                     </Typography>

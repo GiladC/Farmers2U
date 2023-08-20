@@ -14,7 +14,7 @@ import Slider from '../../Pages/ShowFarmerProfile/ImageSlider'
 import dayjs from 'dayjs'
 import UserPosts from './userPosts'
 import './userPosts.css'
-import {ValidateAddress, ValidateFacebook, ValidateInstagram, ValidatePhone, ValidateWebsite, ValidateWhatsapp} from '../../components/validations'
+import {ValidateAddress, ValidateFacebook, ValidateFarmerName, ValidateInstagram, ValidatePhone, ValidateWebsite, ValidateWhatsapp} from '../../components/validations'
 
 const IOSSwitch = styled((props) => (
     <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
@@ -222,6 +222,7 @@ const ProfileSettings = (props) => {
     const [validFacebook, setValidFacebook] = useState(true);
     const [validInstagram, setValidInstagram] = useState(true);
     const [validAddress, setValidAddress] = useState(true);
+    const [ValidFarmer, setValidFarmer] = useState(true);
     const [isInitialized, setIsInitialized] = useState(false);
 
     const [validSunday, setValidSunday] = useState(true);
@@ -233,7 +234,7 @@ const ProfileSettings = (props) => {
     const [validSaturday, setValidSaturday] = useState(true);
 
     const validDays = validSunday && validMonday && validTuesday && validWednesday && validThursday && validFriday && validSaturday;
-    const validForm = validPhone && validWhatsapp && validWebsite && validFacebook && validInstagram && validDays && validAddress;
+    const validForm = validPhone && validWhatsapp && validWebsite && validFacebook && validInstagram && validDays && validAddress && ValidFarmer;
   
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
@@ -656,31 +657,6 @@ const ProfileSettings = (props) => {
                         </Box>
                     </Box>
                     <Box gap= {1}  sx={{
-                        mt: '2rem', flex: 3
-                    }}>
-                        <label className='inputLabel'>שם איש קשר:</label>
-                        <Box width= '100%' border='2px solid #1d3c45' borderRadius='1rem'
-                        alignItems='center' display= 'flex' gap='1rem' overflow='hidden'>
-                            <Box fontSize='2rem' bgcolor= '#1d3c45' padding= '0.5rem 1rem'
-                            color='white' display= 'grid' cursor='pointer'>
-                                <AssignmentInd />
-                            </Box>
-                            <TextField
-                            InputProps={{ disableUnderline: true }}
-                            variant='standard'
-                            width= '100%'
-                            type='text'
-                            value={farmer}
-                            onChange={(event) => {
-                                setFarmer(event.target.value);
-                            }}
-                            className='Form_box_input'
-                            />
-                        </Box>
-                    </Box>
-                    </Box>
-                    <Box gap={3} sx={{display: 'flex'}}>
-                    <Box gap= {1}  sx={{
                         mt: '2rem', flex: 2.5
                     }}>
                         <label className='inputLabel'>טלפון:</label>
@@ -705,6 +681,9 @@ const ProfileSettings = (props) => {
                         </Box>
                         <ValidatePhone phone={phone} setValidFlag={setValidPhone}/>
                     </Box>
+                    </Box>
+                    <Box gap={3} sx={{display: 'flex'}}>
+                    
                     <Box gap= {1}  sx={{
                             mt: '2rem', flex: 2.5
                         }}>
@@ -728,6 +707,29 @@ const ProfileSettings = (props) => {
                                 />
                             </Box>
                             <ValidateWhatsapp whatsapp={whatsApp} setValidFlag={setValidWhatsapp}/>
+                    </Box>
+                    <Box gap= {1}  sx={{
+                        mt: '2rem', flex: 4
+                    }}>
+                        <label className='inputLabel'>שם איש קשר:</label>
+                        <Box width= '100%' border='2px solid #1d3c45' borderRadius='1rem'
+                        alignItems='center' display= 'flex' gap='1rem' overflow='hidden'>
+                            <Box fontSize='2rem' bgcolor= '#1d3c45' padding= '0.5rem 1rem'
+                            color='white' display= 'grid' cursor='pointer'>
+                                <AssignmentInd />
+                            </Box>
+                            <TextField
+                            InputProps={{ disableUnderline: true }}
+                            variant='standard'
+                            width= '100%'
+                            type='text'
+                            value={farmer}
+                            onChange={(event) => {
+                                setFarmer(event.target.value);
+                            }}
+                            className='Form_box_input'
+                            />
+                        </Box>
                     </Box>
                     </Box>
                     <PlacesAutocomplete
@@ -994,7 +996,6 @@ const ProfileSettings = (props) => {
                 <Box gap={10} sx={{display: 'grid',gridTemplate: '1fr', justifyContent: 'center'}}>
                     <Box className='account_box_img' sx={{
                         mt: '2rem',
-                        cursor: 'pointer',
                         position: 'relative',
                         textAlign: 'center'
                     }}>

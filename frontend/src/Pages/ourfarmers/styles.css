@@ -40,8 +40,7 @@
 
 .noResultsImage{
   position: center;
-  width: 400px;
-  height: 280px;
+  width: 50%
 }
 
 .wrapper {
@@ -58,5 +57,10 @@
     align-items: center;
     justify-content:center;
     /* color: #fff; */
+  }
+
+  .noResultsImage{
+    position: center;
+    width: 100%
   }
 }

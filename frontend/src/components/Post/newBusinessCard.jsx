@@ -95,7 +95,26 @@ export default function NewBusinessCard({ image, business, open, close }) {
                                     <Email />
                                     <Typography variants='body1'>{business.mail}</Typography>
                                 </Stack>
-                                <Typography sx={{justifySelf: 'center', border: '1px black', paddingTop: 2, whiteSpace: 'pre-line'}}>{business.about}</Typography>
+                                {business.whatsapp?
+                                    <>
+                                    <Stack
+                                        paddingTop={2}
+                                        direction='row'
+                                        alignItems='center'
+                                        gap={0.1}>
+                                        <Typography>לפניות ב-Whatsapp:</Typography>
+                                        <IconButton onClick={() => window.open("https://wa.me/972" + business.whatsapp , "_blank")}>
+                                            <WhatsApp />
+                                        </IconButton>
+                                        {/* <Typography variants='body1' sx={{ direction: 'ltr' }}>{business.whatsapp}</Typography> */}
+                                        {business.farmer_name?<Typography variants='body1'>{business.farmer_name}</Typography> 
+                                        : null}
+                                    </Stack>
+                                    </>
+                                : null
+                                }
+                                {business.about? <Typography sx={{justifySelf: 'center', border: '1px black', paddingTop: 2, whiteSpace: 'pre-line'}}>{business.about}</Typography>
+                                : null}
                             </div>
                         </div>
                         <img className='profileImage' src={image} alt="" />
@@ -126,7 +145,7 @@ export default function NewBusinessCard({ image, business, open, close }) {
                                 <UserPosts email={business.mail} width="100%" height={450}/>
                         </div>
                         <div className="social">
-                        {!business.whatsapp ? null :
+                        {/* {!business.whatsapp ? null :
                             <Stack
                             direction= 'row'
                             alignItems= 'center'
@@ -135,7 +154,7 @@ export default function NewBusinessCard({ image, business, open, close }) {
                                     <WhatsApp />
                                  </IconButton>
                             </Stack>
-                        }
+                        } */}
                         {
                             !business.instagram ? null :
                             <Stack

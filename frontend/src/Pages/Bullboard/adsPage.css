@@ -52,9 +52,10 @@
 .board{
     flex: 5;
     overflow-y: scroll;
+    padding-left: 20%;
 }
 .adPageWrapper{
-    padding: 20px;
+    /* padding: 20px; */
 }
 
 .boardWrapper {
@@ -76,3 +77,8 @@
 .board::-webkit-scrollbar {
     display: none;
 }
+
+.noResultsImage{
+    position: center;
+    width: 100%;
+  }

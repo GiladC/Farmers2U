@@ -215,7 +215,7 @@ const AddPost = () => {
             ערכו מודעה
           </Typography>
           <UserBox>
-            <Avatar src = {'/Form_images/Logo_image/'.concat(pfpAndName.profilePicture)} sx={{ width: 30, height: 30 }} />
+            <Avatar src = {pfpAndName.profilePicture} sx={{ width: 30, height: 30 }} />
             <Typography fontWeight={500} variant="span">
               {pfpAndName.profileName}
             </Typography>

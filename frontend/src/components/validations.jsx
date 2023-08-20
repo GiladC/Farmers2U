@@ -220,6 +220,27 @@ export function ValidateWorkingHours({open, close, setValidFlag}) {
     );
 };
 
+export function ValidateFarmerName({name, setValidFlag}){
+  const [valid ,setValid] = useState(true);
+
+  useEffect(() => {
+       setValid(isValidName());
+  }, [name, setValidFlag]);
+
+  function isValidName(){
+    const regexp = new RegExp(/[0-9]/);
+    const res =  !regexp.test(name);
+    setValidFlag(res);
+    return res;
+  }
+
+  return (
+    <div style={{ height: "0px" }}>
+    {!valid && <Typography variant="body2" color="error">השם בפורמט לא תקין</Typography>}
+  </div>
+);
+}
+
 export function ValidateAddress({address, setValidFlag, isInitialized}){
     const [valid ,setValid] = useState(true);
 

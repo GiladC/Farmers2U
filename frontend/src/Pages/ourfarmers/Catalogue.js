@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import FarmCard from './profilecard';
 import './styles.css';
-import Filter from '../../components/newFilterPanel/filter'
-import { Box, Container, TextField, Typography } from '@mui/material';
-import axios from 'axios';
+import { Box, Container, Typography } from '@mui/material';
 import noResults from '../../assets/noResults.png'
 
 const Catalogue = ({ List }) => {

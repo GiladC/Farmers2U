@@ -45,7 +45,7 @@ const themeForButton = createTheme({
           console.log("Error: ", error);
         }); 
     }
-  }, []);
+  }, [token]);
 
   const theme = useTheme();
   const isMatch = useMediaQuery(theme.breakpoints.down('lg'));
@@ -131,7 +131,7 @@ const themeForButton = createTheme({
                             },
                           }}
                         >
-                          {profile.farmName}
+                          אזור אישי
                         </Typography>
                     </Button>
                     {/* <Button color= "button" type="submit" onClick={handleSettingsClick} 
