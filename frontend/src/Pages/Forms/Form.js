@@ -28,7 +28,7 @@ const steps = [
         google_name: "",
         google_family_name: "",
         shipping_distance: "",
-        is_shipping: "",
+        is_shipping: false,
         opening_hours: "",
         closing_hours: "",
         logo_picture: "",
