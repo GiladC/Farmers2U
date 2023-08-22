@@ -734,6 +734,7 @@ const ProfileSettings = (props) => {
                             className='Form_box_input'
                             />
                         </Box>
+                        <ValidateFarmerName name={farmer} setValidFlag={setValidFarmer} />
                     </Box>
                     </Box>
                     <PlacesAutocomplete
