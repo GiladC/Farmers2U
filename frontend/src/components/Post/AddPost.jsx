@@ -195,10 +195,10 @@ const AddPost = () => {
 
 
   return (
-    <div>
+    <div className='addPost-wrapper' style={{display: 'flex', flexDirection: 'column'}}>
       <ThemeProvider theme={themeForButton}>
       <Tooltip onClick={() => setOpen(true)} title="פרסום מודעה" 
-      sx={{ position: 'fixed', bottom: 20, left: 40 }}>
+      sx={{ position: 'fixed', top: '20%', left: 40 }}>
         <Fab color="button" aria-label="add">
           <Add />
         </Fab>
@@ -209,7 +209,7 @@ const AddPost = () => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box width={400} height={530} bgcolor="white" p={3} borderRadius={1} 
+        <Box width={400} height={'80%'} bgcolor="white" p={3} borderRadius={1} 
         sx={{ direction: 'ltr', overflowY: 'scroll' }}>
           <Typography variant="h6" color="gray" textAlign="center">
             ערכו מודעה
@@ -243,7 +243,7 @@ const AddPost = () => {
       >
         {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
           <div>
-            <Typography sx={{fontSize: '15px', color: 'rgb(141, 141, 138)',display: 'flex', justifyContent: 'center'}}>
+            <Typography sx={{paddingTop: 3, fontSize: '15px', color: 'rgb(141, 141, 138)',display: 'flex', justifyContent: 'center'}}>
                {'זוהי הכתובת ממנה המרחק מחושב'}
                 </Typography>
             <TextField
@@ -344,46 +344,49 @@ const AddPost = () => {
               )}
               />
           </Box>
-          <Box display="flex" sx={{ direction: 'rtl', justifyContent: 'center', right: '500px' }}>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={postData.isVegan}
-                  onChange={handleChange}
-                  name="isVegan"
-                  sx={{ transform: 'scale(1.3)' }}
-                />
-              }
-              label={<Typography sx={{ fontSize: '1.1rem' }}>טבעוני?</Typography>}
-              sx={{ marginLeft: '1.4rem' }}
-            />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={postData.isOrganic}
-                  onChange={handleChange}
-                  name="isOrganic"
-                  sx={{ transform: 'scale(1.3)' }}
-                />
-              }
-              label={<Typography sx={{ fontSize: '1.1rem' }}>אורגני?</Typography>}
-              sx={{ marginRight: '1.4rem' }}
-            />
-          </Box>
-          <Box display="flex" paddingTop={2} gap={15} sx={{ direction: 'rtl' }}>
+            <div  style={{display: 'flex', direction: 'rtl', justifyContent: 'center'}}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={postData.isVegan}
+                    onChange={handleChange}
+                    name="isVegan"
+                    sx={{ transform: 'scale(1.3)' }}
+                  />
+                }
+                label={<Typography sx={{ fontSize: '1.1rem' }}>טבעוני?</Typography>}
+                sx={{ marginLeft: '1.4rem' }}
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={postData.isOrganic}
+                    onChange={handleChange}
+                    name="isOrganic"
+                    sx={{ transform: 'scale(1.3)' }}
+                  />
+                }
+                label={<Typography sx={{ fontSize: '1.1rem' }}>אורגני?</Typography>}
+                sx={{ marginRight: '1.4rem' }}
+              />
+          </div>
+          <div style={{display:"flex", justifyContent: 'center', paddingTop: '2', direction: 'rtl' }}>
             <input type="file" 
             onChange={handleImageChange}
             style={{display: 'none'}}
             ref={inputRef} />
             <IconButton aria-label="העלה תמונה" color="primary"
-            onClick={() => inputRef.current.click()}>
+            onClick={() => inputRef.current.click()} sx={{flex: '1'}}>
               <AddPhotoAlternate />
             </IconButton>
-            <Button variant="contained" 
-            sx={{ direction: 'rtl' }} onClick={handlePost}>
-              פרסום
-            </Button>
-          </Box>
+            <div style={{ flex: '3',display: 'flex', justifyContent: 'center'}}>
+              <Button variant="contained" 
+              sx={{direction: 'rtl'}} onClick={handlePost}>
+                פרסום
+              </Button>
+            </div>
+            <div style={{flex: 1}}></div>
+          </div>
         </Box>
       </StyledModal>
       </ThemeProvider>

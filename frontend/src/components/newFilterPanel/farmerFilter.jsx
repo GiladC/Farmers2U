@@ -436,6 +436,7 @@ const products = [
                   maxHeight: '100px',
                   border: '1px solid #E8AA42'
               }
+
             }
           }
           getOptionLabel={(option) => option.label}

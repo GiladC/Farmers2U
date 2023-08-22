@@ -16,6 +16,7 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  IconButton,
 } from '@mui/material';
 import NewBusinessCard from './newBusinessCard';
 import axios from 'axios';
@@ -24,7 +25,7 @@ import EditPostWrapper from '../edit_post/wrapper';
 export default function Post({ post, token, disabled }) {
   const storedEmail = localStorage.getItem('email');
   const profileEmail = token?.profile_email || storedEmail || '';
-  const showMenu = profileEmail === post.email;
+  const showMenu = profileEmail === post.email && token;
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [ShowDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
@@ -47,6 +48,7 @@ export default function Post({ post, token, disabled }) {
     farm_site: post.farm_site,
     opening_hours: post.opening_hours,
     closing_hours: post.closing_hours,
+    farmer_name: post.farmer_name
   };
 
   const handleMoreClick = (event) => {
@@ -92,28 +94,34 @@ export default function Post({ post, token, disabled }) {
       <div className='postWrapper'>
         <div className='postTop'>
           <div className='postTopLeft'>
-            <Button
+            <IconButton
               disabled={disabled ? true : false}
               onClick={(e) => setOpen(true)}
+              disableRipple = {true}
+              sx={{cursor: 'pointer'}}
             >
               <img
                 className='Img'
                 src={logo}
                 alt=''
               />
-            </Button>
-            <Button
+            </IconButton>
+            <IconButton
               disabled={disabled ? true : false}
               onClick={(e) => setOpen(true)}
+              disableRipple = {true}
+              sx={{cursor: 'pointer'}}
             >
               <Typography
                 className='farmName'
                 variant='h5'
                 color={'black'}
               >
+                <a style={{fontFamily: 'unset'}}>
                 {post.farmName}
+                </a>
               </Typography>
-            </Button>
+            </IconButton>
             <NewBusinessCard
               image={logo}
               business={business}
@@ -123,7 +131,7 @@ export default function Post({ post, token, disabled }) {
             <span className='postDate'>{post.posted}</span>
           </div>
           <div className='postTopRight'>
-            {showMenu && (
+            {showMenu ?
               <div className='menuContainer'>
                 <MoreVert
                   onClick={handleMoreClick}
@@ -165,7 +173,7 @@ export default function Post({ post, token, disabled }) {
                   </MenuItem>
                 </Menu>
               </div>
-            )}
+            : null}
           </div>
         </div>
         <div className='postCenter'>

@@ -89,7 +89,7 @@ const createColor = (mainColor) => augmentColor({ color: { main: mainColor } });
 function CheckboxMenu(props) {
     return (
       <div>
-        <Button disableRipple variant="outlined" onClick={props.handleClick}
+        <Button variant="outlined" onClick={props.handleClick}
          style={{
           width: "580px",
           height: "50px",
@@ -103,15 +103,15 @@ function CheckboxMenu(props) {
          '&:hover': {
           color: 'initial',
           backgroundColor: 'initial !important'
-         }, 
+         },
          }}>
   
         {Boolean(props.anchorEl) ? <Remove /> : <Add />}
         <Typography style={{ color: '#37474f', fontSize: '15px', fontFamily: 'aleph'}}>
         {props.selectedItems.length > 0 ? 
-            <div style={{ display: 'flex', flexWrap: 'nowrap' }}>
+            <div style={{ display: 'flex', overflowX: 'scroll'}}>
               {props.selectedItems.map((item, index) => (
-                <div key={index} style={{ backgroundColor: '#f5f5f5', margin: '5px', padding: '5px' }}>
+                <div key={index} style={{backgroundColor: '#f5f5f5', margin: '5px', padding: '5px'}}>
                   {item }
                   <span style={{ cursor: 'pointer', marginRight: '10px' }} onClick={(event) => props.handleRemove(event,item)}>
                     x
@@ -144,9 +144,13 @@ function CheckboxMenu(props) {
         <Grid container rowSpacing={1} columnSpacing={-5}>
         {props.labels.map((label, i) => (
             <Grid item xs={4} key={i}>
-            <MenuItem  onClick={(event) => event.stopPropagation()}>
+            <MenuItem disableRipple onClick={(event) => event.stopPropagation()} sx={{'&:hover':{
+        backgroundColor:'white'}, '&:focus':{backgroundColor:'white'}
+          }}>
               <FormControlLabel
-                control={<Checkbox checked={props.checked[i]} onChange={() => props.handleToggle(i)} color={props.checked[i] ? 'default' : 'default'}/>}
+                control={<Checkbox checked={props.checked[i]} onChange={() => props.handleToggle(i)} color={props.checked[i] ? 'default' : 'default'} sx={{'&:hover':{
+                  backgroundColor:'white'}, '&:focus':{backgroundColor:'white'}
+                    }} />}
                 label={label}
   
               />
@@ -1106,10 +1110,10 @@ const ProfileSettings = (props) => {
                                 <Box display= 'flex' justifyContent='center'>
                                     <Typography  sx={{fontWeight: '600', fontSize: '30px',justifySelf: 'center', color: '#1d3c45'}}>מודעות שפורסמו</Typography>
                                 </Box>
-                                <Box sx={{border: '5px solid #1d3c45',
+                                <div className='userPosts' style={{border: '5px solid #1d3c45',
                                 direction: 'ltr'}}>
-                                    <UserPosts width={580} height={660} email={storedEmail}/>
-                                </Box>
+                                    <UserPosts width={'100%'} height={660} email={storedEmail}/>
+                                </div>
                             </Box>
                 </Box>
                 <Container sx={{paddingTop: '30px', display: 'flex', justsifyContent: 'center'}}>

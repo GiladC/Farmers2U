@@ -4,7 +4,7 @@
     border-radius: 10px;
     box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
     -webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
-    margin: 30px 0;
+    margin-bottom: 5%;
     direction: rtl;
     background-color: white;
 }
@@ -83,6 +83,7 @@ a:hover, a:active {
     word-wrap: break-word; /* Break long words */
     max-height: 50px; /* Set a maximum height for the box */
     position: relative;
+    direction: ltr;
 }
 
 /* Add an after pseudo-element to create a background for the scrollbar */
@@ -137,15 +138,31 @@ a:hover, a:active {
     gap: 10px;
   }
 
-  @media screen and (max-width: 750px) {
-    .postTopLeft .postDate {
-      display: none;
+  @media screen and (max-width: 990px) {
+
+    .postTopLeft {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+        justify-items: center;
+    }
+    .Img {
+        justify-content: center;
+    }
+    .postTop {
+        justify-content: center;
     }
   }
 
   @media screen and (max-width: 330px) {
     .postTopLeft .farmName {
       display: none;
+    }
+
+    .postWrapper {
+        width: 100%;
     }
   }
 

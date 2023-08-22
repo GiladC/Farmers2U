@@ -62,7 +62,7 @@ def filter_posts():
                 continue
 
         post_dict = {
-            'farmName': post.farmName,
+            'farmName': user.farm_name,
             'profilePicture': post.profilePicture,
             'photo': post.photo,
             'desc': post.desc,

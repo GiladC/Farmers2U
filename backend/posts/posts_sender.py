@@ -16,7 +16,7 @@ def get_posts():
             post.products = []
         prods = '#'.join(post.products)
         post_dict = {
-            'farmName': post.farmName,
+            'farmName': user.farm_name,
             'profilePicture': post.profilePicture,
             'photo': post.photo,
             'desc': post.desc,
@@ -46,6 +46,7 @@ def get_posts():
             'farm_site': user.farm_site,
             'opening_hours': opening_hours,
             'closing_hours': closing_hours,
+            'farmer_name': user.farmer_name
         }
         post_list.append(post_dict)
   

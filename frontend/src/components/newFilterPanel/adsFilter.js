@@ -321,14 +321,16 @@ const PrettoSlider = styled(Slider)({
                {'יוצגו רק המודעות שנמצאות בטווח התאריכים הזה (כולל)'}
         </Typography>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <Box display="flex" paddingTop={2} justifyContent="center">
-              <Box style={{width: '50%', marginRight: '19px'}}>
+            <div style={{display: 'flex', flexDirection: 'column', gap: 2, paddingTop: 2, justifyContent: 'center'}}>
+              <div style={{paddingBottom:' 5%', paddingTop:' 5%'}}>
+               <DatePicker label={'תאריך התחלה'} views={['day']} 
+              value={startDate} onChange={(newValue) => setStartDate(newValue)} format='DD/MM/YYYY'/>
+               </div>
+              <div>
               <DatePicker label={'תאריך סיום'} views={['day']} defaultValue={endDate.toDate()}
-              value={endDate} onChange={(newValue) => setEndDate(dayjs(newValue))} format='DD/MM/YYYY'/> </Box>
-              <Box style={{width: '50%'}}>
-              <DatePicker label={'תאריך התחלה'} views={['day']} 
-              value={startDate} onChange={(newValue) => setStartDate(newValue)} format='DD/MM/YYYY'/> </Box>
-            </Box>
+              value={endDate} onChange={(newValue) => setEndDate(dayjs(newValue))} format='DD/MM/YYYY'/>
+              </div>
+            </div>
             
           </LocalizationProvider>
 
@@ -422,6 +424,7 @@ const PrettoSlider = styled(Slider)({
       direction= 'rtl'
       disableCloseOnSelect
       getOptionLabel={(option) => option.label}
+      noOptionsText = 'אין תוצאות'
       renderOption={(props, option, { selected }) => (
         <ListItem {...props} sx={{direction: 'rtl', fontSize: '18px',
         '&:hover': {backgroundColor: '#E8AA42!important'}, '&&.Mui-selected':{color: '#E8AA42!important'}}}>
@@ -453,7 +456,7 @@ const PrettoSlider = styled(Slider)({
                     width:'100%',
                     display: 'flex',
                     alignItems: 'center',
-                    marginLeft:5,
+                    
                     direction: 'rtl'
                 }} />
                 <FormControlLabel control={<Checkbox checked={vegan} onChange={handleVegan} sx={{fontFamily:'aleph','&.Mui-checked':{color: "#E8AA42"}}} />} label={<Typography 
@@ -462,12 +465,18 @@ const PrettoSlider = styled(Slider)({
                     width:'100%',
                     display: 'flex',
                     alignItems: 'center',
-                    marginRight:8,
+                    
                     direction: 'rtl'
                 }} />
         </Container>
         </FormGroup>
         <Box display= 'flex' justifyContent='center' paddingBottom= '5px' paddingTop= '5%' gap= {3}>
+            <Button sx={{fontFamily:'aleph',backgroundColor: '#E8AA42', color: 'black',
+            ":hover": {
+            bgcolor: "#E8AA42",
+            color: "white"
+            }, display: 'flex', alignSelf: 'center'
+            }} onClick={handleFilter}>הפעלת סינון</Button>
             <Button onClick={handleClear} sx={{fontFamily:'aleph',backgroundColor: '#1d3c45', color: 'white',
                 ":hover": {
                 bgcolor: "#1d3c45",
@@ -476,12 +485,6 @@ const PrettoSlider = styled(Slider)({
                 display: 'flex', alignSelf: 'center'
                 }}>ניקוי
             </Button>
-            <Button sx={{fontFamily:'aleph',backgroundColor: '#E8AA42', color: 'black',
-            ":hover": {
-            bgcolor: "#E8AA42",
-            color: "white"
-            }, display: 'flex', alignSelf: 'center'
-            }} onClick={handleFilter}>הפעלת סינון</Button>
         </Box>
         
       </div>

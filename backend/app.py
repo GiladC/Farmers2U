@@ -52,6 +52,9 @@ app.register_blueprint(smalldata_blueprint)
 
 from posts.user_posts import userposts_blueprint
 app.register_blueprint(userposts_blueprint)
+ 
+from posts.updatePost import updatePost_blueprint
+app.register_blueprint(updatePost_blueprint)
 
 from busCard import business_blueprint
 app.register_blueprint(business_blueprint)

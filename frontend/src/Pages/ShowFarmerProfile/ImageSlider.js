@@ -37,12 +37,15 @@ Secondly, you need to define a const of images:
 
 import { useState } from "react";
 
+
 const slideStyles = {
   width: "100%",
   height: "100%",
+  objectit: 'cover',
   borderRadius: "10px",
   backgroundSize: "cover",
   backgroundPosition: "center",
+  
 };
 
 const rightArrowStyles = {
@@ -50,10 +53,12 @@ const rightArrowStyles = {
   top: "50%",
   transform: "translate(0, -50%)",
   right: "32px",
-  fontSize: "45px",
+  fontSize: "4rem",
+  fontWeight: 600,
   color: "#fff",
   zIndex: 1,
   cursor: "pointer",
+  WebkitTextStroke: '0.2rem #000',
 };
 
 const leftArrowStyles = {
@@ -61,10 +66,12 @@ const leftArrowStyles = {
   top: "50%",
   transform: "translate(0, -50%)",
   left: "32px",
-  fontSize: "45px",
+  fontSize: "4rem",
+  fontWeight: 600,
   color: "#fff",
   zIndex: 1,
   cursor: "pointer",
+  WebkitTextStroke: '0.2rem #000',
 };
 
 const sliderStyles = {
@@ -105,14 +112,16 @@ const ImageSlider = ({ slides, farm }) => {
 
   return (
     <div style={sliderStyles}>
+      {slides.length >> 1 ? 
       <div>
-        <div onClick={goToPrevious} style={rightArrowStyles}>
+        <div className="rightArrow" onClick={goToPrevious} style={rightArrowStyles}>
           ❰
         </div>
         <div onClick={goToNext} style={leftArrowStyles}>
           ❱
         </div>
       </div>
+      : null}
       <div style={slideStylesWidthBackground}></div>
       <div style={dotsContainerStyles}>
         {slides.map((slide, slideIndex) => (

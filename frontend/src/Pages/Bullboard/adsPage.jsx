@@ -33,7 +33,7 @@ import { Box } from '@mui/material'
               <div className="boardWrapper">
                 {filteredPosts.length == 0 ? (
                   <>
-                    <Box sx={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
+                    <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                       <img className='noResultsImage' src={noResults} style={{ width: '100%'}}/>
                     </Box>
                     <Typography sx={{ 
@@ -56,9 +56,9 @@ import { Box } from '@mui/material'
             <Typography variant='h4' sx={{textAlign: 'center', paddingBottom: '5px', color: '#030443'}}>סינון מתקדם</Typography>
             <Typography width='300spx' sx={{textAlign: 'center', color: 'rgb(141, 141, 138)', direction: 'rtl'}}>לחצו על כפתור 'הפעלת סינון'.</Typography>
           </div>
-            <div className='adsFilter' style={{borderLeft: 'solid 0.5px #1d3c45'}}>
+          <Box className='adsFilter' flex='1' sx={{'&::-webkit-scrollbar': { display: 'none' }, direction: 'rtl',borderLeft: 'solid 0.5px #1d3c45',overflowY:'scroll', height: '70vh'}}>
               <AdsFilter filteredPosts={filteredPosts} setFilteredPosts={setFilteredPosts}/>  
-            </div>
+            </Box>
           </div>
       <div className="addPostWrapper" dir='rtl'>
       {token && (

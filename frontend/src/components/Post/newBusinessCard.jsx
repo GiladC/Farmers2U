@@ -57,7 +57,7 @@ export default function NewBusinessCard({ image, business, open, close }) {
         saturday: saturday
     }
     return (
-        <div>
+        <div className='main'>
             <StyledModal
                 open={open}
                 onClose={close}
@@ -107,7 +107,7 @@ export default function NewBusinessCard({ image, business, open, close }) {
                                             <WhatsApp />
                                         </IconButton>
                                         {/* <Typography variants='body1' sx={{ direction: 'ltr' }}>{business.whatsapp}</Typography> */}
-                                        {business.farmer_name?<Typography variants='body1'>{business.farmer_name}</Typography> 
+                                        {business.farmer_name ? <Typography variants='body1'>{business.farmer_name}</Typography> 
                                         : null}
                                     </Stack>
                                     </>

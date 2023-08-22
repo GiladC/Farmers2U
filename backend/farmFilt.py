@@ -22,12 +22,14 @@ def filterTheFarmers():
     # categoriesToFilter = request.args.get('categories')
     categoriesToFilter = request.json['categories']
     products_list = ['ירקות', 'פירות','גבינות ומוצרי חלב', 'ביצים', 'דבש', 'צמחים', 'יינוץ ושמן זית', 'תבלינים', 'דגנים']
-    isRealAddress = request.json['isRealAddress']
+    isRealAddress = request.json['isRealAddress'] and address != ""
     print("isRealaddress: " + str(isRealAddress))
-    print("address: " + address)
+    print("address == '': " + str(address == ""))
+    print("shipping: " + str(shipping))
+    print("dist: " + str(dist))
     if (isRealAddress == False):
         print(dist)
-        if (address == "" and shipping == True and int(dist) != 0):
+        if (address == "" and shipping == False and int(dist) != 0):
             return jsonify({'error': 
                             'נא למלא את שדה הכתובת עם כתובת תקינה על מנת לסנן לפי מרחק'
                             }), 400
