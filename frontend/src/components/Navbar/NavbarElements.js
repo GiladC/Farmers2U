@@ -118,16 +118,24 @@ const themeForButton = createTheme({
                       style={{ width: '60px', height: '60px', borderRadius: '50%', 
                       objectFit: 'cover', cursor: 'pointer' }} />
                     </Button>
-                    <Button onClick={handleSettingsClick}>
+                    <Button onClick={handleSettingsClick}
+                        sx={{marginLeft: "1%",
+                          '&:hover': {
+                              backgroundColor: 'transparent',  
+                              boxShadow: 'none' 
+                          }
+                      }}
+                      >
                         <Typography
                           variant='h5'
                           sx={{
                             color: farmNameActive ? '#ffffff' : '#a5b1b5',
                             fontWeight: 'bold',
                             fontFamily: 'aleph',
+                            fontSize: "18.5px",
                             '&:hover': {
                               color: '#ffffff',
-                              transition: 'color 0.3s', 
+                              transition: 'color 0.3s',
                             },
                           }}
                         >
