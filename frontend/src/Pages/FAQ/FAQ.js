@@ -65,15 +65,21 @@ function FAQ () {
 
     return (
         <div dir="rtl" className={styles.faqs}>
-            {/* <h1 className={styles.pageTitle}>שאלות נפוצות</h1> */}
+            <Typography mt={1} fontFamily="Secular One" fontWeight="bold" variant='h2' sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            color: "#aee5b6",
+            WebkitTextStroke: "0.1px #1d3c45"
+            }}>שאלות נפוצות
+            </Typography>
             <section>
-                <h2 style={{WebkitTextStroke: '0.8px #1d3c45'}} className={styles.sectionTitle}>הרשמה לאתר</h2>
+                <h2 style={{WebkitTextStroke: '1px #1d3c45'}} className={styles.sectionTitle}>הרשמה לאתר</h2>
                 {faqs1.map((faq, i) => (
                     <FAQItem faq={faq} index={i} toggleFAQ={() => toggleFAQ(faqs1, setFaqs1, i)} key={i} />
                 ))}
             </section>
             <section>
-                <h2 style={{WebkitTextStroke: '0.8px #1d3c45'}} className={styles.sectionTitle}>
+                <h2 style={{WebkitTextStroke: '1px #1d3c45'}} className={styles.sectionTitle}>
                 לוח מודעות
                 <span style={{WebkitTextStroke: '0.1px #1d3c45'}}>, </span>
                 אירועים ופרסומים
@@ -83,7 +89,7 @@ function FAQ () {
                 ))}
             </section>
             <section>
-                <h2 style={{WebkitTextStroke: '0.8px #1d3c45'}} className={styles.sectionTitle}>רכישת מוצרים ומדיניות משלוחים</h2>
+                <h2 style={{WebkitTextStroke: '1px #1d3c45'}} className={styles.sectionTitle}>רכישת מוצרים ומדיניות משלוחים</h2>
                 {faqs3.map((faq, i) => (
                     <FAQItem faq={faq} index={i} toggleFAQ={() => toggleFAQ(faqs3, setFaqs3, i)} key={i} />
                 ))}
@@ -107,7 +113,7 @@ function FAQ () {
           >
             <Typography
               variant="body2"
-              sx={{fontFamily:"aleph", fontWeight: "bold", fontSize: "1.7rem", color: "#aee5b6", WebkitTextStroke: "0.3px black" }}
+              sx={{fontFamily:"aleph", fontWeight: "bold", fontSize: "1.7rem", color: "#aee5b6", WebkitTextStroke: "0.8px black" }}
             >
               חזרה לדף הבית
             </Typography>
