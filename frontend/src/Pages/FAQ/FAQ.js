@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+import { Box, Button, Container, IconButton, styled, Typography } from "@mui/material";
 import styles from './FAQ.module.css'; // Import the CSS module
+import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 
 
 function FAQ () {
@@ -65,23 +67,60 @@ function FAQ () {
         <div dir="rtl" className={styles.faqs}>
             {/* <h1 className={styles.pageTitle}>שאלות נפוצות</h1> */}
             <section>
-                <h2 className={styles.sectionTitle}>הרשמה לאתר</h2>
+                <h2 style={{WebkitTextStroke: '0.8px #1d3c45'}} className={styles.sectionTitle}>הרשמה לאתר</h2>
                 {faqs1.map((faq, i) => (
                     <FAQItem faq={faq} index={i} toggleFAQ={() => toggleFAQ(faqs1, setFaqs1, i)} key={i} />
                 ))}
             </section>
             <section>
-                <h2 className={styles.sectionTitle}>לוח מודעות, אירועים ופרסומים</h2>
+                <h2 style={{WebkitTextStroke: '0.8px #1d3c45'}} className={styles.sectionTitle}>
+                לוח מודעות
+                <span style={{WebkitTextStroke: '0.1px #1d3c45'}}>, </span>
+                אירועים ופרסומים
+                </h2>
                 {faqs2.map((faq, i) => (
                     <FAQItem faq={faq} index={i} toggleFAQ={() => toggleFAQ(faqs2, setFaqs2, i)} key={i} />
                 ))}
             </section>
             <section>
-                <h2 className={styles.sectionTitle}>רכישת מוצרים ומדיניות משלוחים</h2>
+                <h2 style={{WebkitTextStroke: '0.8px #1d3c45'}} className={styles.sectionTitle}>רכישת מוצרים ומדיניות משלוחים</h2>
                 {faqs3.map((faq, i) => (
                     <FAQItem faq={faq} index={i} toggleFAQ={() => toggleFAQ(faqs3, setFaqs3, i)} key={i} />
                 ))}
             </section>
+        <Box
+            sx={{
+              marginTop: "5%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            >
+          <a href="home" style={{ textDecoration: 'none', display: 'inline-block' }}>
+          <Box
+            sx={{
+              cursor: "pointer",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Typography
+              variant="body2"
+              sx={{fontFamily:"aleph", fontWeight: "bold", fontSize: "1.7rem", color: "#aee5b6", WebkitTextStroke: "0.3px black" }}
+            >
+              חזרה לדף הבית
+            </Typography>
+            <KeyboardBackspaceIcon style={{ 
+                color: "#aee5b6",
+                filter: `
+                drop-shadow( 0.3px 0px 0 black )
+                drop-shadow( 0px 0.5px 0 black )
+                drop-shadow( -0.1px 0px 0 black )
+                drop-shadow( 0px -0.1px 0 black )
+            ` }} />
+          </Box> </a>
+        </Box>
         </div>
     );
 }
