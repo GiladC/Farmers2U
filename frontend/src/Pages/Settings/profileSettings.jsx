@@ -173,6 +173,7 @@ const ProfileSettings = (props) => {
     const [newProductsImages, setNewProductsImages] = useState("");
     const [newFarmImages, setNewFarmImages] = useState("");
     const [farmName, setFarmName] = useState("");
+    const [displayedFarmName, setDisplayedFarmName] = useState(farmName);
     const [email, setEmail] = useState("");
     const [about, setAbout] = useState("");
     const [whatsApp, setWhatsapp] = useState("");
@@ -348,6 +349,7 @@ const ProfileSettings = (props) => {
             const res = response.data;
             res.access_token && props.setToken(res.access_token);
             setFarmName(res.farm_name);
+            setDisplayedFarmName(res.farm_name);
             setEmail(profileEmail);
             setAbout(res.about);
             setWhatsapp(res.phone_number_whatsapp);
@@ -492,6 +494,7 @@ const ProfileSettings = (props) => {
             alert("שגיאה");
         }
     });
+        setDisplayedFarmName(farmName);
     }
 
     const handleChangePhotoLogo = (e) => {
@@ -623,10 +626,13 @@ const ProfileSettings = (props) => {
     <Box sx={{
         direction: 'rtl'
     }}>
-        <Typography mt={4} fontFamily="aleph" fontWeight="bold" variant='h2' sx={{
+        <Typography mt={4} fontFamily="Secular One" fontWeight="bold" variant='h2' sx={{
         display: 'flex',
         justifyContent: 'center',
-        }}>אזור אישי</Typography>
+        color: "#aee5b6",
+        WebkitTextStroke: "0.1px #1d3c45"
+        }}> {`אזור אישי - ${displayedFarmName}`}
+        </Typography>
         <Box sx={{
             display: 'grid',
             gridTemplateColumns: '3fr 4fr'
