@@ -13,7 +13,9 @@ const footerTextStyle = {
 };
 
 const color = {
-  color: 'white'
+  color: 'white',
+  backgroundColor: 'transparent',  
+  boxShadow: 'none',
 };
 
 const columnStyle = {
