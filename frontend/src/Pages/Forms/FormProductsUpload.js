@@ -294,7 +294,6 @@ function FormProductsUpload({values, handleChange, setFormValue}) {
       const labelLogo = "1"
       fileValidate(selectedPhoto);
       setImage(selectedPhoto)
-      console.log(selectedPhoto)
       setFormValue("logo_picture", selectedPhoto)
     }
   };
@@ -304,10 +303,7 @@ function FormProductsUpload({values, handleChange, setFormValue}) {
       const labelLogo = "2"
       fileValidate(selectedPhoto);
       setFarmImages(selectedPhoto)
-      console.log(selectedPhoto)
       setFormValue("farm_pictures", selectedPhoto)
-      console.log(values)
-
     }
   };
   const handleChangePhotoProducts = (e) => {
@@ -316,10 +312,41 @@ function FormProductsUpload({values, handleChange, setFormValue}) {
       const labelLogo = "3"
       fileValidate(selectedPhoto);
       setProductsImages(selectedPhoto)
-      console.log(selectedPhoto)
       setFormValue("products_pictures", selectedPhoto)
     }
   };
+  const fileTypeValidation = (file) => {
+    if (
+      file.type !== "image/png" &&
+      file.type !== "image/jpg" &&
+      file.type !== "image/jpeg"
+    ) {
+      return false;
+    }
+    return true;
+  };
+  const filesNumberValidation = (numberOfImagesToUpload) => {
+    const MAX_FILES = 5;
+    if (numberOfImagesToUpload > MAX_FILES) {
+      return false
+    }
+    return true
+  }
+  const fileMaxSize = (file) => {
+  const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
+  if (file.size > MAX_FILE_SIZE) {
+    return false
+  }
+  return true
+}
+  
+  const fileSpecialChars = (file) => {
+    const fileName = file.name;
+    if (/[^A-Za-z0-9_.-]/.test(fileName)) {
+      return false
+    }
+    return true;
+}
   
 
   
@@ -371,7 +398,7 @@ function FormProductsUpload({values, handleChange, setFormValue}) {
         type="text"
         defaultValue={values.products} 
         onChange={handleChange('products')}
-        placeholder='דוגמה: עגבניות - 8 ש"ח לק"ג, ענבים - 25 ש"ח למארז'
+        placeholder='דוגמה: עגבניות - 8 ש"ח לק"ג, ענבים - 25 ש"ח למארז.'
         required="required"
         rows={2}
         rowsMax={5}       

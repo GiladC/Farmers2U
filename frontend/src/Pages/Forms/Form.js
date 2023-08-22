@@ -6,6 +6,7 @@ import FormShippingOptions from './FormShippingOptions';
 import FormProductsUpload from './FormProductsUpload';
 import FormLogin from './FormLogin';
 import FormOpeningHours from './FormOpeningHours'
+import FormSummary from './FormSummary'
 import FormSubmitted from './FormSubmitted'
 import { Button,Stepper,Step,StepLabel,Typography } from '@mui/material';
 import {ValidateFacebook, ValidateInstagram, ValidatePhone, ValidateWebsite, ValidateWhatsapp} from '../../components/validations'
@@ -28,7 +29,7 @@ const steps = [
         google_name: "",
         google_family_name: "",
         shipping_distance: "",
-        is_shipping: "false",
+        is_shipping: false,
         opening_hours: "",
         closing_hours: "",
         logo_picture: "",
@@ -101,6 +102,10 @@ const steps = [
             return <FormOtherInfo isFormValid={isFormValid} values={multiFormValues} handleChange={handleChange} setFormValue={setFormValue} props={props}/>
         }
         else if (page == 6){
+            return <FormSummary isFormValid={isFormValid} values={multiFormValues} props={props}/>
+        
+        }
+        else if (page == 7){
             return <FormSubmitted />
         }
     }
@@ -122,25 +127,23 @@ const steps = [
       </div>
         <div className='form-container'>
             <div className='header' style={{ textAlign: 'center' }}> 
-{/*                 <h1>
-                    {FormTitles[page]}
-                </h1> */}
             </div>
             <div className='body' style={{ display: "flex", justifyContent: "center" }}> 
                 {PageDisplay()}   
             </div>
-            <div className='footer' style={{ display: "flex", justifyContent: "center" }}> {/* added */}
+            <div className='footer' style={{ display: "flex", justifyContent: "center" }}> 
                 <Button style= {{
-                maxHeight: page == 0 || page == 1 ||page == 2 ||page == 3 ||page == 4 ? "100px":'0px',
+                maxHeight: page == 0 || page == 1 ||page == 2 ||page == 3 ||page == 4 || page == 5 ? "100px":'0px',
                 minWidth:"80px",
-                backgroundColor:  page == 0 || page == 1 ||page == 2 ||page == 3 ||page == 4 ? '#ffb74d' : "#f7f1e5" , 
-                marginRight: page == 0 ? "0px" : "20px",
+                backgroundColor:  page == 0 || page == 1 ||page == 2 ||page == 3 ||page == 4 || page == 5 ? '#ffb74d' : "#f7f1e5" , 
+                marginRight: "20px",
+                marginTop: page === 6 ? '100px' : '20px',
                 fontFamily:"aleph",
                 fontSize: 16,
-                display: page == FormTitles.length - 1 ? 'none' : 'block',
-                color:  page == 0 || page == 1 ||page == 2 ||page == 3 ||page == 4 ? '#212121' : "#f7f1e5" }}
-                disabled={ page == 6 || page == 5} variant="outlined"
-                 sx={{borderColor:page == 0 || page == 1 ||page == 2 ||page == 3 ||page == 4 ? 'black': '"#f7f1e5"', '&.Mui-disabled': {
+                display: page == 6 ? 'none' : 'block',
+                color:  page == 0 || page == 1 ||page == 2 ||page == 3 ||page == 4 || page == 5 ? '#212121' : "#f7f1e5" }}
+                variant="outlined"
+                 sx={{borderColor:page == 0 || page == 1 ||page == 2 ||page == 3 ||page == 4 || page == 5 ? 'black': '"#f7f1e5"', '&.Mui-disabled': {
                     borderColor: 'transparent'
                 }}}
                 onClick={() => { 
@@ -149,13 +152,13 @@ const steps = [
                     else {
                         setPage((currPage) => currPage + 1);}
                     }
-                        } > {
-                        page == FormTitles.length - 2 ? "שלח": "הבא"} 
+                        }> הבא
                 </Button> 
                 <Button style= {{borderWidth:'1px', minWidth:"30px", backgroundColor: "#ffb74d", 
-                marginLeft: "20px", fontFamily:"aleph", fontSize: 16, display: page === 0 || page == FormTitles.length - 1 ? 'none' : 'block',
+                marginTop: page === 6 ? '600px' : '20px',
+                marginLeft: "20px", fontFamily:"aleph", fontSize: 16, display: page === 0 ? 'none' : 'block',
                 color: "#212121"}} variant="outlined" sx={{borderColor: 'black'}} 
-                disabled={page == 0 || page == 6} onClick={
+                disabled={page == 0} onClick={
                     () => {setPage((currPage) => currPage - 1);
                     }}> הקודם </Button>
             </div>

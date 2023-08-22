@@ -240,50 +240,13 @@ function FormOtherInfo({values, handleChange, props, isFormValid}) {
       return false;
     }
   };
-  const handleSubmit = (data) => {
-    data.preventDefault();
-
-    axios({
-        method: "POST",
-        url: "http://127.0.0.1:5000/signup",
-        data:{
-        farmName: values.farmName,
-        email: values.email,
-        password: values.password,
-        about: values.about,
-        phoneNumber1: values.phoneNumber1,
-        phoneNumber2: values.phoneNumber2,
-        city: values.city,
-        address: values.address,
-        farmerName: "",
-        prices: values.prices,
-        products: values.products,
-        facebook: values.facebook,
-        instagram: "",
-        }
-    })
-    .then(function (response) {
-        //handle success
-        console.log(response)
-
-        alert('המשתמש נוסף בהצלחה.');  
-        window.location.href = '/';
-    })
-    .catch(function (response) {
-        //handle error
-        console.log(response)
-        if (response.status === 400) {
-            alert("שגיאה");
-        }
-    });
-}
   return (
     <div  >  
     <form mr={3}autoComplete="off" dir="rtl" /*className={classes.root}*/>  
     <Box marginTop={5} bgcolor="#f7f1e5" boxShadow={0} borderRadius={2} border={2} display="flex" flexDirection={"column"} width={580} height={160.2} alignItems={"center"} justifyContent={"center"} mt={3.8} mr={2.3} padding={20} sx={{border: '1.5px solid #f7f1e5'}}  >
     <Box style={{marginTop:"29.6%"}}>
     <Typography color="#37474f" fontFamily="aleph" fontWeight={'bold'} fontSize={50} marginTop="-9.2rem" variant='h3' textAlign={"center"}> הרשמת חקלאי </Typography>
-    <Typography color="#37474f" fontFamily="aleph" minHeight={45} fontWeight={'bold'} fontSize={22}  mr={-1} marginBottom={12} marginTop={3} variant='h2'  textAlign={"center"}> שלב 6 - פרטים נוספים</Typography>
+    <Typography color="#37474f" fontFamily="aleph" minHeight={45} fontWeight={'bold'} fontSize={22}  mr={2} marginBottom={12} marginTop={3} variant='h2'  textAlign={"center"}> שלב 6 - פרטים נוספים</Typography>
     </Box>
 <Grid marginTop={-12} marginBottom={-10} container rowSpacing={3} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
   <Grid item xs={6}>
@@ -350,7 +313,7 @@ function FormOtherInfo({values, handleChange, props, isFormValid}) {
         /*value={values.firstName}*/
         variant='outlined'
         type="text"
-        placeholder='כתובת אתר בית העסק'
+        placeholder='כתובת אתר העסק'
         rows={1}
         onChange={handleChangeWebsite}
         defaultValue={values.farm_site}
@@ -395,11 +358,11 @@ function FormOtherInfo({values, handleChange, props, isFormValid}) {
     zIndex: 1,
     
   }}>
-<Button style= {{borderWidth:'1px', minWidth:"50px", width:"5.1rem", backgroundColor: "#ffb74d", 
+{/*<Button style= {{borderWidth:'1px', minWidth:"50px", width:"5.1rem", backgroundColor: "#ffb74d", 
                 fontFamily:"aleph", fontSize: 16,
                 color: "#212121"}} disabled={!formValid } variant="outlined" sx={{borderColor: 'black'}} 
   type="submit" onClick={submitHandler}>
-  שלח</Button>
+שלח</Button>*/}
   </Box>
 
   </Box>
