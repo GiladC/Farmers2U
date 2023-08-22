@@ -116,6 +116,7 @@ export default function Post({ post, token, disabled }) {
                 className='farmName'
                 variant='h5'
                 color={'black'}
+                sx={{overflow: 'hidden'}}
               >
                 <a style={{fontFamily: 'unset'}}>
                 {post.farmName}
@@ -136,6 +137,7 @@ export default function Post({ post, token, disabled }) {
                 <MoreVert
                   onClick={handleMoreClick}
                   className='moreVertButton'
+                  sx={{cursor: 'pointer'}}
                 />
                 <Menu
                   anchorEl={anchorEl}
