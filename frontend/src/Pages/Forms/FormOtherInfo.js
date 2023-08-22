@@ -350,7 +350,7 @@ function FormOtherInfo({values, handleChange, props, isFormValid}) {
         /*value={values.firstName}*/
         variant='outlined'
         type="text"
-        placeholder='כתובת אתר (אם קיים)'
+        placeholder='כתובת אתר בית העסק'
         rows={1}
         onChange={handleChangeWebsite}
         defaultValue={values.farm_site}
