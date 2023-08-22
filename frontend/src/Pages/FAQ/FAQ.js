@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Button, Container, IconButton, styled, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import styles from './FAQ.module.css'; // Import the CSS module
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 
