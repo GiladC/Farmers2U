@@ -23,18 +23,21 @@ const FormLogin = (props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [buttonText, setButtonText] = useState('התחבר עם Google');
 
   const navigate = useNavigate();
 
   const handleCallbackResponse = (response) => {
-    console.log("Encoded JWT ID token: " + response.credential);
-    var userObject = jwt_decode(response.credential);
+    const userObject = jwt_decode(response.credential);
     setUser(userObject);
 
     // Check the structure of the response object to access the email
     var idToken = response.credential.id_token;
     //var decodedToken = jwt_decode(idToken);
     //var email = decodedToken.email;
+
+    setButtonText(`התחבר עם Google (${userObject.given_name} ${userObject.name})`);
+
 
     console.log(userObject.email);
     setEmail(userObject.email); // Store the email in the component's state
@@ -86,9 +89,7 @@ const FormLogin = (props) => {
   
   useEffect(() => {
     initializeGoogleSignIn();
-  }, []);
-  // If we have no user: sign in button
-  //If we have a user: show the logout button
+  }, [buttonText]); // Watch buttonText changes
 
   return (
     <ThemeProvider theme={themeForButton}>
