@@ -296,6 +296,10 @@ function FormProductsUpload({values, handleChange, setFormValue}) {
       setImage(selectedPhoto)
       setFormValue("logo_picture", selectedPhoto)
     }
+    else {
+      setImage("");
+      setFormValue("logo_picture", "");
+    }
   };
   const handleChangePhotoFarm = (e) => {
     if (e.target.files.length > 0) {
@@ -305,6 +309,10 @@ function FormProductsUpload({values, handleChange, setFormValue}) {
       setFarmImages(selectedPhoto)
       setFormValue("farm_pictures", selectedPhoto)
     }
+    else {
+      setFarmImages("");
+      setFormValue("farm_pictures", "");
+    }
   };
   const handleChangePhotoProducts = (e) => {
     if (e.target.files.length > 0) {
@@ -313,6 +321,10 @@ function FormProductsUpload({values, handleChange, setFormValue}) {
       fileValidate(selectedPhoto);
       setProductsImages(selectedPhoto)
       setFormValue("products_pictures", selectedPhoto)
+    }
+    else {
+      setProductsImages("");
+      setFormValue("products_pictures", "");
     }
   };
   const fileTypeValidation = (file) => {
