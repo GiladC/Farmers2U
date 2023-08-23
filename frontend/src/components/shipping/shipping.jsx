@@ -18,10 +18,10 @@ export default function Shipping({policy}) {
           id="panel1a-header"
           dir='rtl'
         >
-          <Typography>מדיניות משלוחים</Typography>
+          <Typography>מדיניות משלוחים והזמנות</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography sx={{whiteSpace: 'pre-line'}}>{policy}</Typography>
+          <Typography variant='body2' sx={{whiteSpace: 'pre-line'}}>{policy? policy : "טרם פורסמה מדיניות משלוחים והזמנות"}</Typography>
         </AccordionDetails>
       </Accordion>
     </div>

@@ -20,27 +20,34 @@ export default function Work({days}) {
         >
           <Typography>ימי ושעות עבודה</Typography>
         </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
+          {days.sunday === 'סגור' && days.monday === 'סגור' && days.tuesday === 'סגור' && days.wednesday === 'סגור'
+          && days.thursday == 'סגור' && days.friday === 'סגור' && days.saturday === 'סגור'
+          ? <AccordionDetails><Typography variant='body2'>טרם עודכנו שעות העבודה</Typography></AccordionDetails>
+          :
+          <AccordionDetails>
+          <Typography variant='body2'>
             ראשון: {days.sunday}
           </Typography>
-          <Typography>
+          <Typography variant='body2'>
           שני: {days.monday}
           </Typography>
-          <Typography>
+          <Typography variant='body2'>
           שלישי: {days.tuesday}
           </Typography>
-          <Typography>
+          <Typography variant='body2'>
           רביעי: {days.wednesday}
           </Typography>
-          <Typography>
+          <Typography variant='body2'>
           חמישי: {days.thursday}
           </Typography>
-          <Typography>שישי: {days.friday}</Typography>
-          <Typography>
+          <Typography variant='body2'>
+          שישי: {days.friday}
+          </Typography>
+          <Typography variant='body2'>
           שבת: {days.saturday}
           </Typography>
-        </AccordionDetails>
+          </AccordionDetails>
+          }
       </Accordion>
     </div>
   );

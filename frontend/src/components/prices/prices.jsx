@@ -21,7 +21,7 @@ export default function Price({prices}) {
           <Typography>מחירון</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography sx={{whiteSpace: 'pre-line'}}>{prices}</Typography>
+          <Typography variant='body2' sx={{whiteSpace: 'pre-line'}}>{prices? prices : 'טרם פורסם המחירון'}</Typography>
         </AccordionDetails>
       </Accordion>
     </div>
