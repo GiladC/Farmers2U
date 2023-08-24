@@ -108,12 +108,12 @@ const FarmCard = ({Image, business, style }) => {
         </div>
         <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <Typography gutterBottom variant="h5" component="div" sx={{fontFamily: "aleph", fontSize: '1.35rem' }} style={{ marginTop: '-30px' }}>
-            {business.farm_name}
+            {business.farm_name.length > 20 ? business.farm_name.slice(0,21) + "..." : business.farm_name}
           </Typography>
           <div style={{ display: 'flex', alignItems: 'center', marginTop: '-14px' }}>
             <Typography variant="body2" color="text.secondary" sx={{fontFamily: "aleph", fontSize: '1rem' }} style={{ marginTop: '10px' }}>
               <LocationOnIcon sx={{ fontSize: 18, marginLeft: '8px' }} />
-              {business.location}
+              {business.location.length > 25 ? business.location.slice(0,26) + "..." : business.location}
             </Typography>
           </div>
           <Button

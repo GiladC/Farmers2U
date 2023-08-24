@@ -119,7 +119,7 @@ export default function Post({ post, token, disabled }) {
                 sx={{overflow: 'hidden'}}
               >
                 <a style={{fontFamily: 'unset'}}>
-                {post.farmName}
+                {post.farmName.length > 20 ? post.farmName.slice(0,21) + "..." : post.farmName}
                 </a>
               </Typography>
             </IconButton>

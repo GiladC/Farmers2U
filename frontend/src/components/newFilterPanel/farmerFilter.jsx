@@ -243,30 +243,15 @@ const products = [
         setCoordinates(latLng);
       };
 
-      const handleChangeAddress = async value => {
+      const handleChangeAddress = value => {
         setAddress(value);
-        console.log(value);
-        try {
-          const results = await geocodeByAddress(value);
-      
-          if (results.length === 0) {
-            setIsRealAddress(false);
-            return;
-          }
-      
-          const latLng = await getLatLng(results[0]);
-      
-          if (latLng && latLng.lat && latLng.lng) {
-            setIsRealAddress(true);
-            setCoordinates(latLng);
-          } else {
-            setIsRealAddress(false);
-          }
-          console.log("Latitude and Longitude: ", latLng)
-        } catch (error) {
-          setIsRealAddress(false);
-          console.log(value);
+        if (value === "") {
+          setIsRealAddress(true);
         }
+        else{
+          setIsRealAddress(false);
+        }
+        console.log(value);
       };
 
     const [isShipping, setIsShipping] = useState(true)
@@ -283,6 +268,8 @@ const products = [
     const [categories, setCategories] = useState([])
 
     const [isRealAddress, setIsRealAddress] = useState(true);
+    const distanceWithoutAddress = !isShipping && address === "" && distance != 0;
+    const notValidRequest = distanceWithoutAddress || !isRealAddress
 
     const handleFilter = (data) => {
       console.log("start of filter handler");
@@ -305,12 +292,7 @@ const products = [
           // props.setCurrentCards(response.data);
       })
       .catch((error) => {
-        if (error.response && error.response.data && error.response.data.error) {
-          const errorMessage = error.response.data.error;
-          window.alert(errorMessage);
-        } else {
-          console.error(error);
-        }
+        console.error(error);
       })
   }
 
@@ -369,6 +351,11 @@ const products = [
                     paddingTop: '5px',
                     fontSize: '16px',}}
                 />
+                {isRealAddress? null
+                : 
+                <div>
+                  <Typography variant='body2' color='error' sx={{textAlign: 'center'}}>נא לבחור כתובת מבין האופציות המוצעות</Typography>
+                </div>}
                 <div className="autocomplete-dropdown-container">
                   {loading && <div>טוען...</div>}
                   {suggestions.map((suggestion, index) => {
@@ -410,6 +397,12 @@ const products = [
             min={0}
             max={100}
           />
+          {distanceWithoutAddress ?
+          <div style={{height: 0}}>
+          <Typography variant='body2' color= 'error'sx={{textAlign: 'center'}}>יש להזין כתובת כדי לסנן לפי מרחק</Typography>
+          </div>
+          : null
+          }
                 </Stack>}
             {/* מוצרים */}
             <Typography sx={{ fontSize: '20px', color: '#1d3c45', display: 'flex', justifyContent: 'center', paddingTop: '5%'}}>סינון לפי מוצרי העסק</Typography>
@@ -434,9 +427,8 @@ const products = [
             {
               style:{
                   maxHeight: '100px',
-                  border: '1px solid #E8AA42'
+                  border: '1px solid #E8AA42',
               }
-
             }
           }
           getOptionLabel={(option) => option.label}
@@ -463,29 +455,8 @@ const products = [
             <TextField {...params} placeholder="סוגי מוצרים"  direction= 'rtl' />
           )}
         />
-            {/* אורגני,טבעוני */}
-            {/* <Container sx={{display:'flex', mt:'0px', justifyContent:'center'}}>
-                    <FormControlLabel control={<Checkbox checked={organic} onChange={handleOrganic} sx={{'&.Mui-checked':{color: "#E8AA42"}}} />} label={<Typography 
-                      sx={{fontSize: '1rem'}}>אורגני</Typography>}
-                      sx={{
-                        width:'100%',
-                        display: 'flex',
-                        alignItems: 'center',
-                        marginLeft:0,
-                        direction: 'rtl'
-                    }} />
-                    <FormControlLabel control={<Checkbox checked={vegan} onChange={handleVegan} sx={{'&.Mui-checked':{color: "#E8AA42"}}} />} label={<Typography 
-                      sx={{fontSize: '1rem'}}>טבעוני</Typography>}
-                      sx={{
-                        width:'100%',
-                        display: 'flex',
-                        alignItems: 'center',
-                        marginLeft:0,
-                        direction: 'rtl'
-                    }} />
-            </Container> */}
             <Box display= 'flex' justifyContent='center' gap= {3} paddingBottom= '10px' paddingTop= '5%'>
-                <Button onClick={handleFilter} sx={{backgroundColor: '#E8AA42', color: 'black',
+                <Button disabled = {notValidRequest} onClick={handleFilter} sx={{backgroundColor: '#E8AA42', color: 'black',
                 ":hover": {
                 bgcolor: "#E8AA42",
                 color: "white"
@@ -500,20 +471,8 @@ const products = [
                 display: 'flex', alignSelf: 'center'
                 }}>ניקוי</Button>
             </Box>
-            {/* <Box display= 'flex' justifyContent='center' paddingBottom= '10px' paddingTop= '5%'>
-                <Button onClick={handleClear} sx={{backgroundColor: '#1d3c45', color: 'white',
-                ":hover": {
-                bgcolor: "#1d3c45",
-                color: "#E8AA42"
-                }, 
-                display: 'flex', alignSelf: 'center'
-                }}>איפוס סינון</Button>
-            </Box> */}
           </FormGroup>
         </Box>
-        {/* <Box flex='2.5' marginLeft='none' sx={{'&::-webkit-scrollbar': { display: 'none' }, direction: 'rtl', overflowY:'scroll', height:'70vh', scrollBehavior:'smooth'}}>
-          <Catalogue List={filteredCards} /> Pass the filtered cards to the Catalogue component */}
-        {/* </Box> */}
       </div>
     )
   }
