@@ -641,8 +641,8 @@ const ProfileSettings = (props) => {
         <Typography mt={4} fontFamily="Secular One" fontWeight="bold" variant='h2' sx={{
         display: 'flex',
         justifyContent: 'center',
-        color: "#aee5b6",
-        WebkitTextStroke: "0.1px #1d3c45"
+        color: "#ffb74d",
+        WebkitTextStroke: "0.1px #757575"
         }}> {`אזור אישי`}
         </Typography>
         <Box sx={{
