@@ -45,6 +45,26 @@ function ValidateFarmName({farmName, setValidFlag}) {
 );
 }
 
+function ValidateFarmerName({farmerName, setValidFlag}) {
+  const [valid ,setValid] = useState(true);
+  
+  useEffect(() => {
+      setValid(isValidFarmerName());
+  }, [farmerName, setValidFlag]);
+
+  function isValidFarmerName() {
+      const res =  farmerName !== "";
+      setValidFlag(res);
+      return res;
+    }
+
+  return (
+    <div style={{ height: "0px" }}>
+    {!valid && <Typography dir="rtl" style={{marginRight:"-261%"}} variant="body2" color="error">שדה חובה</Typography>}
+  </div>
+);
+}
+
 function ValidateAddress({ address, setValidFlag }) {
   const [valid, setValid] = useState(true);
 
@@ -80,9 +100,9 @@ function FormPersonalInfo({values, handleChange, setFormValue, setIsFormPersonal
   const [farmName, setFarmName] = useState('');
   const [isValidFarmName, setIsValidFarmName] = useState(true);
   const [isValidAddress, setIsValidAddress] = useState(false);
+  const [isValidFarmerName, setIsValidFarmerName] = useState(true);
   const [farmerName, setFarmerName] = useState('');
-  //const [isValidFarmerName, setIsValidFarmerName] = useState(true);
-  const formValid = isValidPhone && isValidWhatsApp && isValidFarmName && isValidAddress;
+  const formValid = isValidPhone && isValidWhatsApp && isValidFarmName && isValidAddress && isValidFarmerName;
   // const validateForm = () => {
   //     const phoneIsValid = !phoneError;
   //     const whatsappIsValid = !whatsAppError;
@@ -127,7 +147,7 @@ function FormPersonalInfo({values, handleChange, setFormValue, setIsFormPersonal
         phoneNumber2: whatsApp,
         city: values.city,
         address: values.address,
-        farmerName: "",
+        farmerName: values.farmName,
         prices: "",
         products: "",
         facebook: "",
@@ -327,6 +347,11 @@ function FormPersonalInfo({values, handleChange, setFormValue, setIsFormPersonal
 />
   </Grid>
   <Grid container item xs={5}>
+  <Tooltip 
+        title={<span style={{ fontSize: '12px' }}>יש להזין שם פרטי בלבד</span>}  
+        open={!!farmerName} 
+        placement="left"
+    >
       <TextField fullWidth multiline dir="rtl"
         /*label="שם פרטי"*/
         name ="name"
@@ -340,6 +365,7 @@ function FormPersonalInfo({values, handleChange, setFormValue, setIsFormPersonal
         required="required"
         rows={1}
         rowsMax={5}
+        inputProps={{ maxLength: 15 }}
         InputProps={{
           endAdornment: (
             <InputAdornment position={'end'}>
@@ -358,7 +384,8 @@ function FormPersonalInfo({values, handleChange, setFormValue, setIsFormPersonal
         }} 
         /* onChange = {handleInputChange} */
       />
-      {/* <ValidateFarmerName farmerName={farmerName} setValidFlag={setIsValidFarmerName}/> */}
+          </Tooltip>
+      <ValidateFarmerName farmerName={farmerName} setValidFlag={setIsValidFarmerName}/>
   </Grid>
   <Grid container item xs={5}>
       <TextField fullWidth multiline dir="rtl"
