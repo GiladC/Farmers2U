@@ -1,6 +1,6 @@
 import { Box, Button, Container, IconButton, styled, Typography } from "@mui/material";
 import React from "react";
-
+import './Main.css';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import { Link } from "react-scroll";
 import { ArrowDropDown, ExpandMore } from "@mui/icons-material";
@@ -50,10 +50,10 @@ const Guide = () => {
         mt: '15vh'
       }}
     >
-      <Container sx={{display: 'flex', justifyContent: 'space-between'}}>
+      <Container sx={{ display: 'flex', justifyContent: 'space-between'}}>
         <Box>
           <Box sx={{ flex: "1", paddingBottom: '3em'}}>
-              <Typography variant="h4"   sx={{ fontSize: "35px", fontWeight: "bold", color: "#000339"}}>
+              <Typography variant="h4"   sx={{fontFamily:"aleph", fontSize: "35px", fontWeight: "bold", color: "#000339"}}>
                 מהי מודעה?
               </Typography>
               <Typography variant="body2"
@@ -62,6 +62,7 @@ const Guide = () => {
               fontWeight: "500",
               color: "#5A6473",
               // textAlign: "center",
+              fontFamily:"aleph",
             }}>
                 במודעה, בעל העסק מפרסם על מכירה המתקיימת בתאריך מסוים וקורא לקהל הרחב להגיע. 
               </Typography>
@@ -71,6 +72,7 @@ const Guide = () => {
               fontWeight: "500",
               color: "#5A6473",
               // textAlign: "center",
+              fontFamily:"aleph",
             }}>
              המודעה מכילה פרטים על מיקום המכירה ושעות המכירה .
             </Typography>
@@ -96,7 +98,7 @@ const Guide = () => {
       ></div>
       <Typography
         variant="h3"
-        sx={{ fontSize: "35px", fontWeight: "bold", color: "#000339", mb: 1, mt: 1, mr: 2 }}
+        sx={{fontFamily:"aleph", fontSize: "35px", fontWeight: "bold", color: "#000339", mb: 1, mt: 1, mr: 2 }}
       >
         צרכנים?
       </Typography>
@@ -109,6 +111,7 @@ const Guide = () => {
             fontWeight: "500",
             color: "#5A6473",
             // textAlign: "center",
+            fontFamily:"aleph",
           }}
         >
           1. היכנסו ללוח המודעות וחפשו מודעות רלוונטיות באמצעות סרגל הסינון.
@@ -120,6 +123,7 @@ const Guide = () => {
             fontWeight: "500",
             color: "#5A6473",
             // textAlign: "center",
+            fontFamily:"aleph",
           }}
         >
           2. מצאתם עסק שאהבתם? כנסו לדף העסק ע"י לחיצה על תמונת הפרופיל או על שם העסק.
@@ -130,8 +134,9 @@ const Guide = () => {
             fontSize: "24px",
             fontWeight: "500",
             color: "#5A6473",
-            mb: '0px'
+            mb: '0px',
             // textAlign: "center",
+            fontFamily:"aleph",
           }}
         >
           3. מעוניינים לקרוא על עוד עסקים המשתמשים באתר? היכנסו לעמוד 'החקלאים שלנו'.
@@ -156,7 +161,7 @@ const Guide = () => {
       ></div>
       <Typography
         variant="h3"
-        sx={{ fontSize: "35px", fontWeight: "bold", color: "#000339", mb: 3 ,mt: 1,mr: 2 }}
+        sx={{fontFamily:"aleph", fontSize: "35px", fontWeight: "bold", color: "#000339", mb: 3 ,mt: 1,mr: 2 }}
       >
         חקלאים?
       </Typography>
@@ -169,6 +174,7 @@ const Guide = () => {
             fontWeight: "500",
             color: "#5A6473",
             // textAlign: "center",
+            fontFamily:"aleph",
           }}
         >
           1. הירשמו לאתר ע"י מילוי פרטים בנוגע לעסק בטופס ההרשמה או התחברו במידה והמשתמש כבר קיים.
@@ -180,6 +186,7 @@ const Guide = () => {
             fontWeight: "500",
             color: "#5A6473",
             // textAlign: "center",
+            fontFamily:"aleph",
           }}
         >
           2. היכנסו לאזור האישי או ללוח המודעות ולחצו על האייקון '+'.
@@ -190,7 +197,8 @@ const Guide = () => {
             fontSize: "24px",
             fontWeight: "500",
             color: "#5A6473",
-            // textAlign: "center",
+            // textAlign: "center"
+            fontFamily:"aleph",
           }}
         >
           3. הוסיפו מלל חופשי בנוגע למודעה אותה תרצו לפרסם.
@@ -202,6 +210,7 @@ const Guide = () => {
             fontWeight: "500",
             color: "#5A6473",
             // textAlign: "center",
+            fontFamily:"aleph",
           }}
         >
           4. מלאו את הפרטים: מיקום, תאריך, טווח שעות, והוסיפו תמונות במידת הצורך, ולבסוף לחצו על 'פרסום מודעה'.
@@ -213,6 +222,7 @@ const Guide = () => {
             fontWeight: "500",
             color: "#5A6473",
             // textAlign: "center",
+            fontFamily:"aleph",
           }}
         >
           5. מעוניינים לעדכן את הפרטים המופיעים בדף העסק? עשו זאת דרך האזור האישי.
@@ -238,6 +248,7 @@ const Guide = () => {
               fontSize: "20px",
               color: "#3B3c45",
               my: 1,
+              fontFamily:"aleph",
             }}
           >
             החקלאים שלנו
@@ -254,7 +265,7 @@ const Guide = () => {
           >
             <Typography
               variant="body2"
-              sx={{ fontWeight: "bold", fontSize: "14px", color: "#0689FF" }}
+              sx={{fontFamily:"aleph", fontWeight: "bold", fontSize: "14px", color: "#0689FF" }}
             >
               לקטלוג
             </Typography>
@@ -270,6 +281,7 @@ const Guide = () => {
               fontSize: "20px",
               color: "#3B3c45",
               my: 1,
+              fontFamily:"aleph",
             }}
           >
             חקלאים? 
@@ -285,7 +297,7 @@ const Guide = () => {
           >
             <Typography
               variant="body2"
-              sx={{ fontWeight: "bold", fontSize: "14px", color: "#0689FF" }}
+              sx={{fontFamily:"aleph", fontWeight: "bold", fontSize: "14px", color: "#0689FF" }}
             >
               הירשמו עוד היום
             </Typography>
@@ -301,6 +313,7 @@ const Guide = () => {
               fontSize: "20px",
               color: "#3B3c45",
               my: 1,
+              fontFamily:"aleph",
             }}
           >
             רוצים לדעת עוד? 
@@ -317,7 +330,7 @@ const Guide = () => {
             
             <Typography
               variant="body2"
-              sx={{ fontWeight: "bold", fontSize: "14px", color: "#0689FF" }}
+              sx={{fontFamily:"aleph", fontWeight: "bold", fontSize: "14px", color: "#0689FF" }}
             >
               שאלות נפוצות
             </Typography>
