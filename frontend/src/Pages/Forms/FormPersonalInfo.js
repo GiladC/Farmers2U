@@ -40,7 +40,7 @@ function ValidateFarmName({farmName, setValidFlag}) {
 
   return (
     <div style={{ height: "0px" }}>
-    {!valid && <Typography variant="body2" color="error">שדה חובה</Typography>}
+    {!valid && <Typography dir="rtl" style={{marginRight:"-261%"}} variant="body2" color="error">שדה חובה</Typography>}
   </div>
 );
 }
@@ -59,8 +59,8 @@ function ValidateAddress({ address, setValidFlag }) {
   }
 
   return (
-    <div dir='ltr' style={{  height: "0px" }}>
-      {!valid && <Typography variant="body2" color="error" >שדה חובה</Typography>}
+    <div dir='rtl' style={{ height: "0px" }}>
+      {!valid && <Typography style={{marginRight:"5%"}} variant="body2" color="error" >שדה חובה</Typography>}
     </div>
   );
 }
