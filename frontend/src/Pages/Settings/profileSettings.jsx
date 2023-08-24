@@ -188,7 +188,8 @@ const ProfileSettings = (props) => {
     const handleSelect = async value => {
         const results = await geocodeByAddress(value);
         const latLng = await getLatLng(results[0]);
-        setAddress(value)
+        setAddress(value);
+        setValidAddress(true);
         setCoordinates(latLng);
       };
     const [farmer, setFarmer] = useState("");
@@ -290,6 +291,17 @@ const ProfileSettings = (props) => {
             setShippingDist("");
         }
         
+      };
+    
+      const handleChangeAddress = value => {
+        setAddress(value);
+        if (value === "") {
+          setValidAddress(true);
+        }
+        else{
+          setValidAddress(false);
+        }
+        console.log(value);
       };
     
     function checkNull(val , alternative, format) {
@@ -631,7 +643,7 @@ const ProfileSettings = (props) => {
         justifyContent: 'center',
         color: "#aee5b6",
         WebkitTextStroke: "0.1px #1d3c45"
-        }}> {`אזור אישי - ${displayedFarmName}`}
+        }}> {`אזור אישי`}
         </Typography>
         <Box sx={{
             display: 'grid',
@@ -745,7 +757,7 @@ const ProfileSettings = (props) => {
                     </Box>
                     <PlacesAutocomplete
             value={address}
-            onChange={setAddress}
+            onChange={handleChangeAddress}
             onSelect={handleSelect}
             searchOptions={{
                 types: ['address'],
@@ -759,7 +771,10 @@ const ProfileSettings = (props) => {
                         mt: '2rem',
                     }}>
                         <label className='inputLabel'>כתובת/מיקום:</label>
-                        <ValidateAddress address={address} setValidFlag={setValidAddress} isInitialized={isInitialized}/>
+                        {validAddress ? null : 
+                        <div>
+                          <Typography variant='body2' color="error">יש ללחוץ על כתובת מבין האופציות המוצעות</Typography>
+                        </div>}
                         <Box width= '100%' border='2px solid #1d3c45' borderRadius='1rem'
                         alignItems='center' display= 'flex' gap='1rem' overflow='hidden'>
                             <Box fontSize='2rem' bgcolor= '#1d3c45' padding= '0.5rem 1rem'

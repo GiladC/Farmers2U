@@ -354,7 +354,7 @@ const products = [
                 {isRealAddress? null
                 : 
                 <div>
-                  <Typography variant='body2' color='error' sx={{textAlign: 'center'}}>נא לבחור כתובת מבין האופציות המוצעות</Typography>
+                  <Typography variant='body2' color='error' sx={{textAlign: 'center'}}>יש ללחוץ על כתובת מבין האופציות המוצעות</Typography>
                 </div>}
                 <div className="autocomplete-dropdown-container">
                   {loading && <div>טוען...</div>}
