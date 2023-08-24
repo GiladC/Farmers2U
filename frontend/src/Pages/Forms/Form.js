@@ -13,7 +13,7 @@ import {ValidateFacebook, ValidateInstagram, ValidatePhone, ValidateWebsite, Val
 
 
 const steps = [
-    'פרטים אישיים',
+    'חשבון גוגל',
     'פרטי המשק',
     'משלוחים והזמנות',
     'מוצרי המשק',
