@@ -25,12 +25,13 @@ const columnStyle = {
 
 const buttonSX = {
   ...footerTextStyle,
-  fontFamily: 'Alef',
+  fontFamily: 'Aleph',
   fontSize: 18,
   transition: 'background-color 0.4s',
   '&:hover': {
     backgroundColor: '#2d5f67',
-    borderRadius: '20px'
+    borderRadius: '20px',
+    
   }
 };
 
@@ -88,7 +89,7 @@ const Footer = ({ token }) => {
         </div>
         <div
           style={{
-            fontFamily: 'Alef', variant: 'body2', marginBottom: '15px',
+            fontFamily: 'Aleph', variant: 'body2', marginBottom: '15px',
             fontSize: 18, color: "white", textAlign: "center"
           }}>
           © כל הזכויות שמורות
