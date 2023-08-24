@@ -62,7 +62,7 @@ const FormLogin = (props) => {
         console.log(error.response.status);
         console.log(error.response.headers);
         if (error.response && error.response.status === 401) {
-          setErrorMessage('הפרטים שהוזנו שגויים');
+          setErrorMessage('משתמש לא רשום');
         }
       });
 
@@ -146,7 +146,7 @@ const FormLogin = (props) => {
               textAlign="center"
               sx={{
                 fontFamily: 'aleph',
-                marginRight: '-4rem' // Add a right margin to move the error message to the right
+                marginRight: '-0.1rem' // Add a right margin to move the error message to the right
               }}
             >
               {errorMessage}
