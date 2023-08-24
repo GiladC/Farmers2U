@@ -289,12 +289,26 @@ function FormProductsUpload({values, handleChange, setFormValue}) {
 
   const handleChangePhotoLogo = (e) => {
     if (e.target.files.length > 0) {
-      const selectedPhoto = e.target.files;
-      //alert(selectedPhoto[0])
+      const selectedPhotos = e.target.files;
       const labelLogo = "1"
-      fileValidate(selectedPhoto);
-      setImage(selectedPhoto)
-      setFormValue("logo_picture", selectedPhoto)
+      for (let i = 0; i < selectedPhotos.length; i++) {
+        if (!fileMaxSize(selectedPhotos[i])){
+          alert("גודל מקסימלי עבור קובץ הוא 5MB.");
+          return;
+        }
+        if (!fileTypeValidation(selectedPhotos[i])) {
+          e.target.value = null; // Clear the input field
+          alert("מותר לצרף תמונות בפורמט PNG, JPEG או JPG בלבד.");
+          return;
+        }
+        if (!fileSpecialChars(selectedPhotos[i])) {
+          alert("שם הקובץ מכיל תווים לא חוקיים.");
+          e.target.value = null; 
+          return
+        }
+      }
+      setImage(selectedPhotos)
+      setFormValue("logo_picture", selectedPhotos)
     }
     else {
       setImage("");
@@ -303,11 +317,32 @@ function FormProductsUpload({values, handleChange, setFormValue}) {
   };
   const handleChangePhotoFarm = (e) => {
     if (e.target.files.length > 0) {
-      const selectedPhoto = e.target.files;
+      const selectedPhotos = e.target.files;
       const labelLogo = "2"
-      fileValidate(selectedPhoto);
-      setFarmImages(selectedPhoto)
-      setFormValue("farm_pictures", selectedPhoto)
+      if (!filesNumberValidation(selectedPhotos.length)){
+        alert("מותר להעלות עד 5 קבצים.");
+        e.target.value = null; 
+        return
+      }
+  
+      for (let i = 0; i < selectedPhotos.length; i++) {
+        if (!fileMaxSize(selectedPhotos[i])){
+          alert("גודל מקסימלי עבור קובץ הוא 5MB.");
+          return;
+        }
+        if (!fileTypeValidation(selectedPhotos[i])) {
+          alert("מותר לצרף תמונות בפורמט PNG, JPEG או JPG בלבד.");
+          e.target.value = null; 
+          return;
+        }
+        if (!fileSpecialChars(selectedPhotos[i])) {
+          alert("שם הקובץ מכיל תווים לא חוקיים.");
+          e.target.value = null; 
+          return
+        }
+      }
+      setFarmImages(selectedPhotos)
+      setFormValue("farm_pictures", selectedPhotos)
     }
     else {
       setFarmImages("");
@@ -316,11 +351,32 @@ function FormProductsUpload({values, handleChange, setFormValue}) {
   };
   const handleChangePhotoProducts = (e) => {
     if (e.target.files.length > 0) {
-      const selectedPhoto = e.target.files;
+      const selectedPhotos = e.target.files;
       const labelLogo = "3"
-      fileValidate(selectedPhoto);
-      setProductsImages(selectedPhoto)
-      setFormValue("products_pictures", selectedPhoto)
+              if (!filesNumberValidation(selectedPhotos.length)){
+          alert("מותר להעלות עד 5 קבצים.");
+          e.target.value = null; 
+          return
+        }
+    
+        for (let i = 0; i < selectedPhotos.length; i++) {
+          if (!fileMaxSize(selectedPhotos[i])){
+            alert("גודל מקסימלי עבור קובץ הוא 5MB.");
+            return;
+          }
+          if (!fileTypeValidation(selectedPhotos[i])) {
+            alert("מותר לצרף תמונות בפורמט PNG, JPEG או JPG בלבד.");
+            e.target.value = null; 
+            return;
+          }
+          if (!fileSpecialChars(selectedPhotos[i])) {
+            alert("שם הקובץ מכיל תווים לא חוקיים.");
+            e.target.value = null; 
+            return
+          }
+        }
+      setProductsImages(selectedPhotos)
+      setFormValue("products_pictures", selectedPhotos)
     }
     else {
       setProductsImages("");
