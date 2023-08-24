@@ -9,7 +9,6 @@ import {
     Typography
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import jwt_decode from 'jwt-decode';
 import axios from 'axios';
 import Work from '../../components/days/work.jsx';
 import dayjs from 'dayjs'
@@ -29,19 +28,29 @@ const themeForButton = createTheme({
 const FormSummary = ({ values , props, isFormValid }) => {
 
     const navigate = useNavigate();
+    let shipping
+    let km
     let concatenatedNamesProducts = "" 
     let concatenatedNamesFarm = ""
     let logoName = "" 
+    if (values.is_shipping){
+        shipping = "כן"
+        km = values.shipping_distance
+    }
+    else{
+        shipping = "לא"
+        km = ""
+    }
     if (values.logo_picture){
         logoName = values.logo_picture[0].name
     }
     if (values.products_pictures){
         let fileNamesProducts = Array.from(values.products_pictures).map(file => file.name);
-        let concatenatedNamesProducts = fileNamesProducts.join(', ');
+        concatenatedNamesProducts = fileNamesProducts.join(', ');
     }
     if (values.farm_pictures){
-        const fileNamesFarm = Array.from(values.farm_pictures).map(file => file.name);
-        const concatenatedNamesFarm = fileNamesFarm.join(', ');
+        let fileNamesFarm = Array.from(values.farm_pictures).map(file => file.name);
+        concatenatedNamesFarm = fileNamesFarm.join(', ');
     }
     function addZero(val) {
         const ret = val < 10 ? "0" + val : val;
@@ -283,10 +292,20 @@ const FormSummary = ({ values , props, isFormValid }) => {
                         <Grid item>
                             <Box>
                                 <Typography variant="body1" color="textPrimary">
-                                    משלוחים?: {values.is_shipping || "לא הוגדר"}
+                                    משלוחים? {shipping}
                                 </Typography>
                             </Box>
                         </Grid>
+                        {shipping == "כן" && (
+                        <Grid item>
+                            <Box>
+                                <Typography variant="body1" color="textPrimary">
+                                    טווח המשלוח: {km}
+                                </Typography>
+                            </Box>
+                        </Grid>
+                        )}
+
                         <Grid item>
                             <Box>
                                 <Typography variant="body1" color="textPrimary">
@@ -294,16 +313,13 @@ const FormSummary = ({ values , props, isFormValid }) => {
                                 </Typography>
                             </Box>
                         </Grid>
+
                         <Grid item>
                             <Typography variant="body1" color="textPrimary">
                                 סוגי מוצרים: {values.types_of_products || "לא הוגדר"}
                             </Typography>
                         </Grid>
-                        <Grid item>
-                            <Typography variant="body1" color="textPrimary">
-                                סוגי מוצרים: {values.types_of_products || "לא הוגדר"}
-                            </Typography>
-                        </Grid>
+
                         <Grid item>
                             <Typography variant="body1" color="textPrimary">
                                 מחירון: {values.products || "לא הוגדר"}
