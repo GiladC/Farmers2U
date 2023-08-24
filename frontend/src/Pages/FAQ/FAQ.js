@@ -102,7 +102,7 @@ function FAQ () {
               alignItems: "center",
             }}
             >
-          <a href="home" style={{ textDecoration: 'none', display: 'inline-block' }}>
+          <a href="bullboard" style={{ textDecoration: 'none', display: 'inline-block' }}>
           <Box
             sx={{
               cursor: "pointer",
@@ -115,7 +115,7 @@ function FAQ () {
               variant="body2"
               sx={{fontFamily:"aleph", fontWeight: "bold", fontSize: "1.7rem", color: "#ffb74d", WebkitTextStroke: "0.1px black" }}
             >
-              חזרה לדף הבית
+              המשך ללוח המודעות
             </Typography>
             <KeyboardBackspaceIcon style={{ 
                 color: "#ffb74d",
