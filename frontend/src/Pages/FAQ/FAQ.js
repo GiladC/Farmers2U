@@ -65,21 +65,21 @@ function FAQ () {
 
     return (
         <div dir="rtl" className={styles.faqs}>
-            <Typography mt={1} fontFamily="Secular One" fontWeight="bold" variant='h2' sx={{
+            <Typography mt={1} fontFamily="secular one" fontWeight="bold" variant='h2' sx={{
             display: 'flex',
             justifyContent: 'center',
-            color: "#aee5b6",
-            WebkitTextStroke: "0.1px #1d3c45"
+            color: "#ffb74d",
+            WebkitTextStroke: "0.1px #757575"
             }}>שאלות נפוצות
             </Typography>
             <section>
-                <h2 style={{WebkitTextStroke: '1px #1d3c45'}} className={styles.sectionTitle}>הרשמה לאתר</h2>
+                <h2 style={{WebkitTextStroke: '0.1px #1d3c45'}} className={styles.sectionTitle}>הרשמה לאתר</h2>
                 {faqs1.map((faq, i) => (
                     <FAQItem faq={faq} index={i} toggleFAQ={() => toggleFAQ(faqs1, setFaqs1, i)} key={i} />
                 ))}
             </section>
             <section>
-                <h2 style={{WebkitTextStroke: '1px #1d3c45'}} className={styles.sectionTitle}>
+                <h2 style={{WebkitTextStroke: '0.1px #1d3c45'}} className={styles.sectionTitle}>
                 לוח מודעות
                 <span style={{WebkitTextStroke: '0.1px #1d3c45'}}>, </span>
                 אירועים ופרסומים
@@ -89,7 +89,7 @@ function FAQ () {
                 ))}
             </section>
             <section>
-                <h2 style={{WebkitTextStroke: '1px #1d3c45'}} className={styles.sectionTitle}>רכישת מוצרים ומדיניות משלוחים</h2>
+                <h2 style={{WebkitTextStroke: '0.1px #1d3c45'}} className={styles.sectionTitle}>רכישת מוצרים ומדיניות משלוחים</h2>
                 {faqs3.map((faq, i) => (
                     <FAQItem faq={faq} index={i} toggleFAQ={() => toggleFAQ(faqs3, setFaqs3, i)} key={i} />
                 ))}
@@ -113,12 +113,12 @@ function FAQ () {
           >
             <Typography
               variant="body2"
-              sx={{fontFamily:"aleph", fontWeight: "bold", fontSize: "1.7rem", color: "#aee5b6", WebkitTextStroke: "0.8px black" }}
+              sx={{fontFamily:"aleph", fontWeight: "bold", fontSize: "1.7rem", color: "#ffb74d", WebkitTextStroke: "0.1px black" }}
             >
               חזרה לדף הבית
             </Typography>
             <KeyboardBackspaceIcon style={{ 
-                color: "#aee5b6",
+                color: "#ffb74d",
                 filter: `
                 drop-shadow( 0.3px 0px 0 black )
                 drop-shadow( 0px 0.5px 0 black )
