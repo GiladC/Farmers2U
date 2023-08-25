@@ -32,6 +32,8 @@ export default function NewBusinessCard({ image, business, open, close }) {
     }
 
     function hoursFormat(start, end) {
+        console.log(business.farm_images_list.length);
+        console.log(business.farm_images_list);
         if (start === "none" || end === "none ") {
             return "סגור";
         }
@@ -123,19 +125,19 @@ export default function NewBusinessCard({ image, business, open, close }) {
                                     <Price prices={business.products}/>
                                     <Shipping policy={business.delivery_details} />
                         </div>
-                        {business.farm_images_list 
-                        ? <div className='placeImages'>
+                        {business.farm_images_list && business.farm_images_list.filter(image => image !== '').length > 0 &&
+                        <div className='placeImages'>
                             <Typography variant='h6'>תמונות של המקום:</Typography>
                             <Slider slides={business.farm_images_list} farm={true}/>
                         </div>
-                        : null}
+                        }
                         
-                        {business.products_images_list
-                        ? <div className='productsImages'>
+                        {business.products_images_list && business.products_images_list.filter(image => image !== '').length > 0 &&
+                        <div className='productsImages'>
                             <Typography variant= 'h6'>תמונות של המוצרים:</Typography>
                             <Slider slides={business.products_images_list} farm={false} />
                         </div>
-                        : null}
+                        }
                         
                         <Typography  className='userPostsTypography' 
                         sx={{fontWeight: '600', fontSize: '30px',textAlign: 'center', color: '#1d3c45'}}>מודעות שפורסמו</Typography>
