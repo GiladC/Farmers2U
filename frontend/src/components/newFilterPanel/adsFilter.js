@@ -268,6 +268,14 @@ const PrettoSlider = styled(Slider)({
       });
       setEndDate(defaultEndDate);
       setStartDate(dayjs().startOf('day'));
+      axios
+      .get('http://127.0.0.1:5000/api/getposts')
+      .then((response) => {
+        setFilteredPosts(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
     }
 
 
