@@ -16,6 +16,8 @@ const DrawerComp = ({ token, removeToken }) => {
         .then((response) => {
             removeToken();
             localStorage.removeItem('email');
+            localStorage.removeItem('profilePicture');
+            localStorage.removeItem('farmName');
             navigate("/");
         })
         .catch((error) => {
