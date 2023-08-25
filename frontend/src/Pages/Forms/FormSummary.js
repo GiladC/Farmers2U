@@ -292,7 +292,7 @@ const FormSummary = ({ values , props, isFormValid }) => {
                         <Grid item>
                             <Box>
                                 <Typography variant="body1" color="textPrimary">
-                                    משלוחים? {shipping}
+                                    העסק עושה משלוחים? {shipping}
                                 </Typography>
                             </Box>
                         </Grid>
