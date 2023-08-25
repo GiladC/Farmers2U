@@ -169,6 +169,9 @@ function CheckboxMenu(props) {
 
 const ProfileSettings = (props) => {
 
+    const [logoFlag, setLogoFlag] = useState(false);
+    const [productsFlag, setProductsFlag] = useState(false);
+    const [farmFlag, setFarmFlag] = useState(false);
     const [newLogo, setNewlogo] = useState("");
     const [newProductsImages, setNewProductsImages] = useState("");
     const [newFarmImages, setNewFarmImages] = useState("");
@@ -473,6 +476,10 @@ const ProfileSettings = (props) => {
             data_update.append("labels[]", "1");
           }
         }
+        if (logoFlag){
+          setLogoFlag(false)
+          data_update.append("labels[]", "4");
+        }
         if (newProductsImages){
           for (let i = 0; i < newProductsImages.length; i++) {
             console.log(newProductsImages)
@@ -480,12 +487,20 @@ const ProfileSettings = (props) => {
             data_update.append("labels[]", "2");
           }
         }
+        if (productsFlag){
+          setProductsFlag(false)
+          data_update.append("labels[]", "5");
+        }
         if (newFarmImages){
           for (let i = 0; i < newFarmImages.length; i++) {
             console.log(newFarmImages)
             data_update.append("files[]", newFarmImages[i]);
             data_update.append("labels[]", "3");
           }
+        }
+        if (farmFlag){
+          setFarmFlag(false)
+          data_update.append("labels[]", "6");
         }
           
           axios.put(`http://127.0.0.1:5000/settings/${profileEmail}`, data_update, {
@@ -509,6 +524,11 @@ const ProfileSettings = (props) => {
         setDisplayedFarmName(farmName);
     }
 
+    const handleDeletePhotoLogo = (e) => {
+        setLogoFlag(true)
+        setLogo([])
+        setNewlogo("")
+    }
     const handleChangePhotoLogo = (e) => {
       if (e.target.files.length > 0) {
         const selectedPhotos = e.target.files;
@@ -530,71 +550,87 @@ const ProfileSettings = (props) => {
           }
         }
         setNewlogo(selectedPhotos);
+        setLogoFlag(false);
         console.log(selectedPhotos);
       }
     };
+  const hadnleDeleteProductsPhotos = (e) => {
+      console.log("prodcuts flag" ,productsFlag)
+      setProductsFlag(true)
+      setProductsImages([])
+      setNewProductsImages([])
+  }
     const handleChangeProductsImages = (e) => {
-      if (e.target.files.length > 0) {
-        const selectedPhotos = e.target.files;
+      console.log("e",e)
+        if (e.target.files.length > 0) {
+          const selectedPhotos = e.target.files;
+          if (!filesNumberValidation(selectedPhotos.length)){
+            alert("מותר להעלות עד 5 קבצים.");
+            e.target.value = null; 
+            return;
+          }
+      
+          for (let i = 0; i < selectedPhotos.length; i++) {
+            if (!fileMaxSize(selectedPhotos[i])){
+              alert("גודל מקסימלי עבור קובץ הוא 5MB.");
+              return;
+            }
+            if (!fileTypeValidation(selectedPhotos[i])) {
+              alert("מותר לצרף תמונות בפורמט PNG, JPEG או JPG בלבד.");
+              e.target.value = null; 
+              return;
+            }
+            if (!fileSpecialChars(selectedPhotos[i])) {
+              alert("שם הקובץ מכיל תווים לא חוקיים.");
+              e.target.value = null; 
+              return
+            }
+          }
+      
+          // All selected photos are in the correct format, proceed with setting state
+          setNewProductsImages(selectedPhotos);
+          setProductsFlag(false);
+          console.log(selectedPhotos);
+        }
+    };
+    const handleDeleteFarmPhotos = (e) => {
+      console.log("farmIMages");
+      setFarmFlag(true)
+      setFarmImages([])
+      setNewFarmImages([])
+  }
+    const handleChangeFarmImages = (e) => {
+        if (e.target.files.length > 0) {
+          const selectedPhotos = e.target.files;
         if (!filesNumberValidation(selectedPhotos.length)){
           alert("מותר להעלות עד 5 קבצים.");
-          e.target.value = null; 
+          e.target.value = null; // Clear the input field
           return
         }
-    
-        for (let i = 0; i < selectedPhotos.length; i++) {
-          if (!fileMaxSize(selectedPhotos[i])){
-            alert("גודל מקסימלי עבור קובץ הוא 5MB.");
-            return;
-          }
-          if (!fileTypeValidation(selectedPhotos[i])) {
-            alert("מותר לצרף תמונות בפורמט PNG, JPEG או JPG בלבד.");
-            e.target.value = null; 
-            return;
-          }
-          if (!fileSpecialChars(selectedPhotos[i])) {
-            alert("שם הקובץ מכיל תווים לא חוקיים.");
-            e.target.value = null; 
-            return
-          }
-        }
-    
-        // All selected photos are in the correct format, proceed with setting state
-        setNewProductsImages(selectedPhotos);
-        console.log(selectedPhotos);
-      }
-    };
-    const handleChangeFarmImages = (e) => {
-      if (e.target.files.length > 0) {
-        const selectedPhotos = e.target.files;
-      if (!filesNumberValidation(selectedPhotos.length)){
-        alert("מותר להעלות עד 5 קבצים.");
-        e.target.value = null; // Clear the input field
-        return
-      }
+        
       
-    
-        for (let i = 0; i < selectedPhotos.length; i++) {
-          if (!fileMaxSize(selectedPhotos[i])){
-            alert("גודל מקסימלי עבור קובץ הוא 5MB.");
-            return;
+          for (let i = 0; i < selectedPhotos.length; i++) {
+            if (!fileMaxSize(selectedPhotos[i])){
+              alert("גודל מקסימלי עבור קובץ הוא 5MB.");
+              return;
+            }
+            if (!fileTypeValidation(selectedPhotos[i])) {
+              alert("מותר לצרף תמונות בפורמט PNG, JPEG או JPG בלבד.");
+              e.target.value = null; 
+              return;
+            }
+            if (!fileSpecialChars(selectedPhotos[i])) {
+              alert("שם הקובץ מכיל תווים לא חוקיים.");
+              e.target.value = null; 
+              return
+            }
           }
-          if (!fileTypeValidation(selectedPhotos[i])) {
-            alert("מותר לצרף תמונות בפורמט PNG, JPEG או JPG בלבד.");
-            e.target.value = null; 
-            return;
-          }
-          if (!fileSpecialChars(selectedPhotos[i])) {
-            alert("שם הקובץ מכיל תווים לא חוקיים.");
-            e.target.value = null; 
-            return
-          }
+      
+          // All selected photos are in the correct format, proceed with setting state
+          setNewFarmImages(selectedPhotos);
+          setFarmFlag(false);
+          console.log(selectedPhotos);
         }
-    
-        // All selected photos are in the correct format, proceed with setting state
-        setNewFarmImages(selectedPhotos);
-        console.log(selectedPhotos);
-      }
     };
 
     const fileTypeValidation = (file) => {
@@ -1061,6 +1097,7 @@ const ProfileSettings = (props) => {
                           onChange={handleChangePhotoLogo}
                         />
               </Button>
+              <Button onClick={handleDeletePhotoLogo}>מחיקה</Button>
                     </Box>
                     <Box sx={{
                             width: '580px',
@@ -1092,6 +1129,7 @@ const ProfileSettings = (props) => {
                       onChange={handleChangeFarmImages}
                     />
                     </Button>
+                    <Button onClick={handleDeleteFarmPhotos}>מחיקה</Button>
                     </Box>
                     <Box sx={{
                                 width: '580px',
@@ -1122,6 +1160,7 @@ const ProfileSettings = (props) => {
                       onChange={handleChangeProductsImages}
                     />
                     </Button>
+                    <Button onClick={hadnleDeleteProductsPhotos}>מחיקה</Button>
                     </Box>
                     <Box sx={{
                                 width: '580px',
