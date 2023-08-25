@@ -110,7 +110,7 @@ const themeForButton = createTheme({
 });
 
 
-const AddPost = () => {
+const AddPost = ( { vert }) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [value2, setValue2] = useState(null);
@@ -434,7 +434,7 @@ return (
   <div className='addPost-wrapper' style={{ display: 'flex', flexDirection: 'column' }}>
     <ThemeProvider theme={themeForButton}>
       <Tooltip onClick={() => setOpen(true)} title="פרסום מודעה"
-        sx={{ position: 'fixed', top: '20%', left: 40 }}>
+        sx={{ position: 'fixed', ...vert, left: 40 }}>
         <Fab color="button" aria-label="add">
           <Add />
         </Fab>

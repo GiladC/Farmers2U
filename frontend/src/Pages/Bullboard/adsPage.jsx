@@ -65,7 +65,7 @@ import { Box } from '@mui/material'
       <div className="addPostWrapper" dir='rtl'>
       {token && (
                   <>
-        <AddPost />
+        <AddPost vert={{ bottom: 30 }}/>
         </>
       )}
       </div>

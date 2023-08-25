@@ -1183,7 +1183,7 @@ const ProfileSettings = (props) => {
                            {/* <Typography>מקום לתמונות</Typography>*/}
                 </Container>
             </Container>
-            <AddPost />
+            <AddPost vert={{ top: '20%'}}/>
         </Box>
     </Box>
     // </ThemeProvider>
