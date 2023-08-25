@@ -455,6 +455,8 @@ def update_my_settings(getemail):
                 if user.logo_picture:
                     delete_object_by_url(user.logo_picture)
                     user.logo_picture = ""  # Clear the list of URLs after deletion
+                    for post in user_posts:
+                        post.profilePicture = ""
             elif label == '5':
                 if user.products_pictures:
                     # Delete product images from the cloud
@@ -488,6 +490,8 @@ def update_my_settings(getemail):
                     # Delete logo image from the cloud
                     delete_object_by_url(user.logo_picture)
                     user.logo_picture = ""
+                    for post in user_posts:
+                        post.profilePicture = ""
             elif label == '2':
                 if user.products_pictures:
                     # Delete product images from the cloud
@@ -533,6 +537,7 @@ def update_my_settings(getemail):
 
     return jsonify({
         "id": user.id,
+        "profilePicture": user.logo_picture,
         "email": user.email
     })
 
