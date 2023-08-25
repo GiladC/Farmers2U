@@ -4,7 +4,7 @@ from flask_bcrypt import Bcrypt #pip install Flask-Bcrypt = https://pypi.org/pro
 from datetime import datetime, timedelta, timezone
 from flask_cors import CORS, cross_origin #ModuleNotFoundError: No module named 'flask_cors' = pip install Flask-Cors
 from flask_jwt_extended import create_access_token, get_jwt, get_jwt_identity, unset_jwt_cookies, jwt_required, JWTManager #pip install Flask-JWT-Extended
-from models import db, User
+from models import db, User, Post
 from werkzeug.utils import secure_filename #pip install Werkzeug
 import json
 from google.cloud import storage
@@ -425,7 +425,9 @@ def update_my_settings(getemail):
     json_data = request.form.get('jsonData')
     data = json.loads(json_data)
     print(data)
-    
+    user_posts = Post.query.filter_by(email=user.email).all()
+    for post in user_posts:
+        post.farmName = data.get("farm_name")
     # user.logo_picture = request.json['logo_picture']
     user.farm_name = data.get("farm_name")
     user.facebook = data.get('facebook')
@@ -513,6 +515,8 @@ def update_my_settings(getemail):
             image_url = f"https://storage.googleapis.com/{bucket_name}/{image_filename}"
             if labels[i] == "1":
                 user.logo_picture = image_url
+                for post in user_posts:
+                    post.profilePicture = image_url
             elif labels[i] == "2":
                 products_images.append(image_url)
             elif labels[i] == "3":
