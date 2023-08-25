@@ -1,5 +1,5 @@
-import { Email, Facebook, FormatQuote, Home, Instagram, Language, Phone, WhatsApp } from '@mui/icons-material'
-import { Box, Container, IconButton, Modal, Stack, styled, Typography } from '@mui/material'
+import { Email, Facebook, Home, Instagram, Language, Phone, WhatsApp } from '@mui/icons-material'
+import { IconButton, Modal, Stack, styled, Typography } from '@mui/material'
 import React from 'react'
 
 import Price from '../../components/prices/prices'
@@ -67,7 +67,6 @@ export default function NewBusinessCard({ image, business, open, close }) {
             >
                 <div className='modalWrapper'>
                     <div className='top'>
-                        {/* <div></div> */}
                         <div className='nameAndContact'>
                             <h1 style={{fontFamily: 'secular one'}}>{business.farm_name}</h1>
                             <div>
@@ -106,7 +105,6 @@ export default function NewBusinessCard({ image, business, open, close }) {
                                         <IconButton onClick={() => window.open("https://wa.me/972" + business.whatsapp , "_blank")}>
                                             <WhatsApp />
                                         </IconButton>
-                                        {/* <Typography variants='body1' sx={{ direction: 'ltr' }}>{business.whatsapp}</Typography> */}
                                         {business.farmer_name ? <Typography variants='body1'>{business.farmer_name}</Typography> 
                                         : null}
                                     </Stack>
@@ -139,22 +137,13 @@ export default function NewBusinessCard({ image, business, open, close }) {
                         </div>
                         : null}
                         
-                        <Typography  sx={{fontWeight: '600', fontSize: '30px',textAlign: 'center', color: '#1d3c45'}}>מודעות שפורסמו</Typography>
+                        <Typography  className='userPostsTypography' 
+                        sx={{fontWeight: '600', fontSize: '30px',textAlign: 'center', color: '#1d3c45'}}>מודעות שפורסמו</Typography>
                         <div className='userPosts' style={{border: '5px solid #1d3c45',
                                 direction: 'ltr'}}>
                                 <UserPosts email={business.mail} width="100%" height={450}/>
                         </div>
                         <div className="social">
-                        {/* {!business.whatsapp ? null :
-                            <Stack
-                            direction= 'row'
-                            alignItems= 'center'
-                            gap= {1}>
-                                 <IconButton onClick={() => window.open("https://wa.me/972" + business.whatsapp , "_blank")}>
-                                    <WhatsApp />
-                                 </IconButton>
-                            </Stack>
-                        } */}
                         {
                             !business.instagram ? null :
                             <Stack
@@ -164,7 +153,6 @@ export default function NewBusinessCard({ image, business, open, close }) {
                                 <IconButton onClick={() => window.open(business.instagram, "_blank")}>
                                     <Instagram />
                                 </IconButton>
-                                {/* <Typography variants= 'body1'>{business.instagram}</Typography> */}
                             </Stack>
                         }
                         {!business.facebook ? null :
@@ -175,7 +163,6 @@ export default function NewBusinessCard({ image, business, open, close }) {
                                 <IconButton onClick={() => window.open(business.facebook,"_blank")}>
                                     <Facebook />
                                 </IconButton>
-                                {/* <Typography variants= 'body1'>{business.facebook}</Typography> */}
                             </Stack>
                         }
                         {!business.farm_site ? null : 
@@ -186,7 +173,6 @@ export default function NewBusinessCard({ image, business, open, close }) {
                                 <IconButton onClick={() => window.open(business.farm_site,"_blank")}>
                                     <Language />
                                 </IconButton>
-                                {/* <Typography variants= 'body1'>{business.facebook}</Typography> */}
                         </Stack>
                         }
                     </div>

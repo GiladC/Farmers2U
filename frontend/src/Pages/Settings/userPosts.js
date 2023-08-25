@@ -48,18 +48,34 @@ const UserPosts = ({ width, height, position, email }) => {
     zIndex: 1, // Ensures the component stays above other content
   };
 
+  const contentContainerStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '100%',
+    padding: '10px', // Adjust the padding value as needed
+    boxSizing: 'border-box',
+  };
+
   return (
     <Box sx={containerStyle}>
       {posts.length === 0 ? (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', position: 'relative' }}>
-          <img src={noResults} alt="No Results" style={{ width: '100%', position: 'absolute', top: '0' }} />
-          <Typography sx={{ fontSize: '36px', color: '#1d3c45', textAlign: 'center', marginTop: '50px' }}>...לא נמצאו תוצאות</Typography>
-          <Typography sx={{ fontSize: '15px', color: 'rgb(141, 141, 138)', textAlign: 'center', marginTop: '5px' }}>
-            {'משתמש זה עדיין לא פרסם מודעות'}
-          </Typography>
+        <div style={contentContainerStyle}>
+          <img src={noResults} alt="No Results" style={{ width: '100%' }} />
+          <div style={{ marginTop: '10px', textAlign: 'center' }}>
+            <Typography sx={{ fontSize: '36px', color: '#1d3c45' }}>...לא נמצאו תוצאות</Typography>
+            <Typography sx={{ fontSize: '15px', color: 'rgb(141, 141, 138)' }}>
+              {'משתמש זה עדיין לא פרסם מודעות'}
+            </Typography>
+          </div>
         </div>
       ) : (
-        posts.map((p) => <Post key={p.id} post={p} disabled={true} />)
+        <div className="posts">
+          {posts.map((p) => (
+            <Post key={p.id} post={p} disabled={true} />
+          ))}
+        </div>
       )}
     </Box>
   );

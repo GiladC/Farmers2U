@@ -23,7 +23,8 @@ const themeForButton = createTheme({
   const [farmNameActive, setFarmNameActive] = useState(false);
   const [profile, setProfile] = useState({
     logo: "", farmName: "",
-  })
+  });
+
   const handleSettingsClick = () => {
     navigate('/settings');
     setValue(-1);
@@ -93,7 +94,9 @@ const themeForButton = createTheme({
           <Toolbar sx={{ display: 'flex', justifyContent: 'flex-end' }}>
             {isMatch ? (
               <>
+                <Button href='home'>
                 <img src={Farmers2ULogo} alt="Farmers2ULogo" style={{ width: '65px', height: '65px' }} />
+                </Button>
                 <DrawerComp token={token} removeToken={removeToken} />
               </>
             ) : (
@@ -180,11 +183,13 @@ const themeForButton = createTheme({
                   </Tabs>
                 </Box>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <Button href='home'>
                   <img
                     src={Farmers2ULogo}
                     alt="Farmers2ULogo"
                     style={{ width: '60px', height: '60px', marginRight: 'auto' }}
                   />
+                  </Button>
                 </Box>
               </>
             )}
