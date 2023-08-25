@@ -53,6 +53,8 @@ const FormLogin = (props) => {
         props.setToken(response.data.access_token);
         alert('התחברת בהצלחה');
         localStorage.setItem('email', userObject.email);
+        localStorage.setItem('farmName', response.data.userName);
+        localStorage.setItem('profilePicture', response.data.profilePicture)
         console.log(response.data);
         navigate('/bullboard');
         window.location.reload();

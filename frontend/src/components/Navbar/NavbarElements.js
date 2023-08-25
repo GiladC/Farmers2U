@@ -21,9 +21,8 @@ const themeForButton = createTheme({
 
   const navigate = useNavigate();
   const [farmNameActive, setFarmNameActive] = useState(false);
-  const [profile, setProfile] = useState({
-    logo: "", farmName: "",
-  });
+  const logo = localStorage.getItem('profilePicture');
+
 
   const handleSettingsClick = () => {
     navigate('/settings');
@@ -31,22 +30,6 @@ const themeForButton = createTheme({
     setFarmNameActive(true);
   };
 
-
-  useEffect(() => {
-    if (token){
-      const storedEmail = localStorage.getItem('email');
-      const mail = new FormData();
-      mail.append('email', storedEmail)
-      axios
-        .post('http://127.0.0.1:5000/api/get_profile', mail)
-        .then((response) => {
-          setProfile(response.data)
-        })
-        .catch((error) => {
-          console.log("Error: ", error);
-        }); 
-    }
-  }, [token]);
 
   const theme = useTheme();
   const isMatch = useMediaQuery(theme.breakpoints.down('lg'));
@@ -60,6 +43,8 @@ const themeForButton = createTheme({
       .then((response) => {
         removeToken();
         localStorage.removeItem('email');
+        localStorage.removeItem('profilePicture');
+        localStorage.removeItem('farmName');
         navigate("/home");
         window.location.reload()
       })
@@ -72,7 +57,6 @@ const themeForButton = createTheme({
       });
   };
 
-  const logged = localStorage.getItem('email');
 
   const pages = [
     { label: 'שאלות נפוצות', href: 'faq' },
@@ -117,7 +101,7 @@ const themeForButton = createTheme({
                     sx={{width: '30px', height:'40px', fontSize: 'large', cursor: 'pointer'}}/>
                     <Button onClick={handleSettingsClick}
                     sx={{ marginRight: 'auto', marginLeft: '1.8rem',}}>
-                      <img className = 'Img' src = {profile.logo} alt=""
+                      <img className = 'Img' src = {logo} alt=""
                       style={{ width: '60px', height: '60px', borderRadius: '50%', 
                       objectFit: 'cover', cursor: 'pointer' }} />
                     </Button>

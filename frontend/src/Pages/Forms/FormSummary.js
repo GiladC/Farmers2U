@@ -214,6 +214,8 @@ const FormSummary = ({ values , props, isFormValid }) => {
                     .then(function (response) {
                         props.setToken(response.data.access_token);
                         localStorage.setItem('email', values.email);
+                        localStorage.setItem('farmName', values.farm_name)
+                        localStorage.setItem('profilePicture', values.logo_picture)
                         setShowSuccessMessage(true);
 
                         //alert('נרשמת בהצלחה. מיד תועבר לאתר.');
