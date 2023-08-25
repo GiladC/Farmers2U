@@ -511,6 +511,8 @@ const ProfileSettings = (props) => {
           .then(function (response) {
             //handle success
             console.log(response)
+            localStorage.setItem('farmName', farmName)
+            localStorage.setItem('profilePicture', response.data.profilePicture)
             alert('המשתמש עודכן בהצלחה.'); 
             window.location.href = '/settings'
       })
