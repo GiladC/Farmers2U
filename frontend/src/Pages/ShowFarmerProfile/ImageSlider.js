@@ -91,14 +91,15 @@ const dotStyle = {
 };
 
 const ImageSlider = ({ slides, farm }) => {
+  const filteredSlides = slides.filter(slide => slide !== '');
   const [currentIndex, setCurrentIndex] = useState(0);
   const goToPrevious = () => {
     const isFirstSlide = currentIndex === 0;
-    const newIndex = isFirstSlide ? slides.length - 1 : currentIndex - 1;
+    const newIndex = isFirstSlide ? filteredSlides.length - 1 : currentIndex - 1;
     setCurrentIndex(newIndex);
   };
   const goToNext = () => {
-    const isLastSlide = currentIndex === slides.length - 1;
+    const isLastSlide = currentIndex === filteredSlides.length - 1;
     const newIndex = isLastSlide ? 0 : currentIndex + 1;
     setCurrentIndex(newIndex);
   };
@@ -107,12 +108,12 @@ const ImageSlider = ({ slides, farm }) => {
   };
   const slideStylesWidthBackground = {
     ...slideStyles,
-    backgroundImage: `url(${slides[currentIndex]})`,
+    backgroundImage: `url(${filteredSlides[currentIndex]})`,
   };
 
   return (
     <div style={sliderStyles}>
-      {slides.length >> 1 ? 
+      {filteredSlides.length >> 1 ? 
       <div>
         <div className="rightArrow" onClick={goToPrevious} style={rightArrowStyles}>
           ❰
@@ -124,7 +125,7 @@ const ImageSlider = ({ slides, farm }) => {
       : null}
       <div style={slideStylesWidthBackground}></div>
       <div style={dotsContainerStyles}>
-        {slides.map((slide, slideIndex) => (
+        {filteredSlides.map((slide, slideIndex) => (
           <div
             style={dotStyle}
             key={slideIndex}

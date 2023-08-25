@@ -1,11 +1,8 @@
-/* .adsPageContainer {
-     background-image: url(../../assets/woodenBackground.jpg);   
-} */
+
 .adsLayer{
     display: flex;
     width: 100%;
     height: 90vh;
-    /* background-color: rgba(0, 0, 0, 0.4); */
 }
 .leftBar{
     flex: 2.5;
@@ -14,11 +11,24 @@
 
 @media screen and (max-width: 700px) {
     .rightbar {
-      max-width: 33.33%;  /* Limit the maximum width to 1/3 */
+      max-width: 33.33%;  
+    }
+    .noResults {
+        padding-top: 20% !important;
     }
 }
 
+@media screen and (max-width: 480px) {
+    .noResults {
+        padding-top: 35% !important;
+    }
+}
 
+@media screen and (max-width: 400px) {
+    .noResults {
+        padding-top: 75% !important;
+    }
+}
 
 .rightbar{
     flex: 1.5;
@@ -38,6 +48,13 @@
     overflow-y: scroll;
     padding-left: 20%;
 }
+
+.board.flex-center {
+    display: flex;
+    flex: 4;
+    overflow-y: scroll;
+    padding-left: 20%;
+  }
 
 
 .boardWrapper {
@@ -60,7 +77,17 @@
     display: none;
 }
 
-.noResultsImage{
-    position: center;
-    width: 100%;
+  .noResults {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
   }
+  
+  .noResultsImage {
+    width: 100%;
+    max-width: 700px; 
+    margin-bottom: 1rem;
+    position: center;
+  }
+  

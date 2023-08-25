@@ -25,14 +25,15 @@ import { Box } from '@mui/material'
         });
     }, []);
 
-    
+  const boardClassName = filteredPosts.length === 0 ? 'board flex-center' : 'board';
+
   return (
       <div className='adsLayer'>
-          {/* <div className='leftBar'></div> */}
-          <div className="board">
+          <div className={boardClassName}>
               <div className="boardWrapper">
                 {filteredPosts.length == 0 ? (
                   <>
+                  <div className='noResults'>
                     <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                       <img className='noResultsImage' src={noResults} style={{ width: '100%'}}/>
                     </Box>
@@ -43,6 +44,7 @@ import { Box } from '@mui/material'
                     color: 'rgb(141, 141, 138)',display: 'flex', justifyContent: 'center'}}>
                       {'כדאי לנסות להסיר מסנני חיפוש'}
                     </Typography>
+                  </div>
                   </>  
                 ) : (
                   filteredPosts.map(p=> (
