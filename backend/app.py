@@ -415,7 +415,6 @@ def my_settings(getemail):
 @app.route('/settings/<getemail>', methods=["PUT"])
 @jwt_required() 
 def update_my_settings(getemail):
-    print("HELLO")
     print(getemail)
     if not getemail:
         return jsonify({"error": "Unauthorized Access"}), 401
@@ -443,23 +442,45 @@ def update_my_settings(getemail):
     user.opening_hours = data.get('opening_hours')
     user.closing_hours = data.get('closing_hours')
     user.types_of_products = data.get('types_of_products')
+    labels = request.form.getlist('labels[]')
+    print("labels",labels)
+    if labels:
+        for label in labels:
+            if label == '4':
+                # Delete logo images from the cloud
+                if user.logo_picture:
+                    delete_object_by_url(user.logo_picture)
+                    user.logo_picture = ""  # Clear the list of URLs after deletion
+            elif label == '5':
+                if user.products_pictures:
+                    # Delete product images from the cloud
+                    urls = user.products_pictures.split(",")
+                    for product_image_url in urls:
+                        delete_object_by_url(product_image_url)
+                    user.products_pictures = ""  # Clear the list of URLs after deletion
+            elif label == '6':
+                if user.farm_pictures:
+                    # Delete farm images from the cloud
+                    urls = user.farm_pictures.split(",")
+                    for farm_image_url in urls:
+                        delete_object_by_url(farm_image_url)
+                    user.farm_pictures = ""  # Clear the list of URLs after deletion
+    elements_to_remove = ['4','5','6']
+    labels = [item for item in labels if item not in elements_to_remove]
+    print("labelssss",labels)
     if 'files[]' not in request.files:
         None # do nothing
-        print("here idiot")
     else:
         logo_image = []
         products_images = []
         farm_images = []
         files = request.files.getlist('files[]')
         print("files", files)
-        labels = request.form.getlist('labels[]')
-        print("labels", labels)
         
         # Delete existing images from the cloud based on labels
         for label in labels:
             if label == '1':
                 if user.logo_picture:
-                    print("user.logo_picture", user.logo_picture)
                     # Delete logo image from the cloud
                     delete_object_by_url(user.logo_picture)
                     user.logo_picture = ""
@@ -474,7 +495,6 @@ def update_my_settings(getemail):
 
             elif label == '3':
                 if user.farm_pictures:
-                    print("IMHEHEHEHEEHEHEHEHEHEHEH")
                     # Delete farm images from the cloud
                     urls = user.farm_pictures.split(",")
                     for farm_image_url in urls:
@@ -489,12 +509,12 @@ def update_my_settings(getemail):
 
             # Generate public URL for the uploaded image
             image_url = f"https://storage.googleapis.com/{bucket_name}/{image_filename}"
-
             if labels[i] == "1":
                 user.logo_picture = image_url
             elif labels[i] == "2":
                 products_images.append(image_url)
             elif labels[i] == "3":
+                print("farm_images", farm_images)
                 farm_images.append(image_url)
         
         # Update products and farm images lists in the database
