@@ -7,6 +7,8 @@ import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
 import axios from 'axios';
 import { Email } from '@mui/icons-material';
 import jwt_decode from "jwt-decode"
+import './Forms.css';
+
 
 const {palette} = createTheme();
 const { augmentColor } = palette;
@@ -24,6 +26,17 @@ const FormLogin = (props) => {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [buttonText, setButtonText] = useState('התחבר עם Google');
+  const [showPopup, setShowPopup] = useState(false);
+  const modalTextStyle = {
+    fontSize: 'larger', 
+    textAlign: 'center',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: "5%",
+  };
+  
 
   const navigate = useNavigate();
 
@@ -51,13 +64,16 @@ const FormLogin = (props) => {
       .then(function (response) {
         console.log(response);
         props.setToken(response.data.access_token);
-        alert('התחברת בהצלחה');
+        //alert('התחברת בהצלחה');
         localStorage.setItem('email', userObject.email);
         localStorage.setItem('farmName', response.data.userName);
         localStorage.setItem('profilePicture', response.data.profilePicture)
         console.log(response.data);
+        setShowPopup(true); 
+        setTimeout(() => {
         navigate('/bullboard');
         window.location.reload();
+        }, 3000); 
       })
       .catch(function (error) {
         console.log(error.response);
@@ -92,6 +108,7 @@ const FormLogin = (props) => {
   useEffect(() => {
     initializeGoogleSignIn();
   }, [buttonText]); // Watch buttonText changes
+  
 
   return (
     <ThemeProvider theme={themeForButton}>
@@ -174,6 +191,42 @@ const FormLogin = (props) => {
         </Box>
       </Box>
     </Box>
+        {showPopup && (
+      <div style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 1000 // to ensure the modal is on top
+      }}>
+        <div style={{
+          backgroundColor: 'white',
+          padding: '40px',       // Increased padding for larger appearance
+          borderRadius: '10px',
+          fontSize: '40px',      // Increased font size
+          width: '400px',
+          height: "100px",        // Set a width
+          textAlign: 'center',
+          boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+          border: '3px solid #ffb74d'   // Added a subtle shadow for depth
+        }}>
+          <div style={modalTextStyle}>
+            {'ברוך שובך!'.replace(' ', '\u00A0').split('').map((char, index) => (
+              <span key={index} style={{animationDelay: `${index * 0.1}s` }} className={char === ' ' ? '' : "fade-in"}>
+              {char}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    )}
+
         </form>
     </div>
     </ThemeProvider>

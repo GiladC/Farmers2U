@@ -53,3 +53,33 @@
   button i{
     margin-right: 10px;
   }
+
+  /* hebrew */
+@font-face {
+	font-family: 'aleph';
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+	src: url(https://fonts.gstatic.com/s/varelaround/v20/w8gdH283Tvk__Lua32TysjIfpcuPLdshZhVB.woff2) format('woff2');
+	unicode-range: U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F;
+  }
+
+  .fade-in {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(1em);
+    animation: fadeIn ease-out 0.5s forwards;
+
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(1em);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
