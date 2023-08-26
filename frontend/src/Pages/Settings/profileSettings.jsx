@@ -1137,7 +1137,7 @@ const ProfileSettings = (props) => {
                     component="label"
                     style={{color: '#1d3c45', backgroundColor: 'transparent'}}
                     //color="addPicture"
-                    sx={{   display: 'flex', marginRight: '190px', paddingTop: '40px',
+                    sx={{   display: 'flex', marginRight: '230px', paddingTop: '40px',
                     justifyContent: 'space-between',width:"450px",fontFamily: "aleph", boxShadow: 'none !important', '&:hover , &:active, &:focus':{color: 'initial',
                     backgroundColor: 'initial', 
                     boxShadow: 'none !important', opacity: 1,}}}
@@ -1188,7 +1188,7 @@ const ProfileSettings = (props) => {
                     component="label"
                     style={{color: '#1d3c45', backgroundColor: 'transparent'}}
                     //color="addPicture"
-                    sx={{   display: 'flex', marginRight: '190px', paddingTop: '40px',
+                    sx={{   display: 'flex', marginRight: '230px', paddingTop: '40px',
                     justifyContent: 'space-between',width:"450px",fontFamily: "aleph", boxShadow: 'none !important', '&:hover , &:active, &:focus':{color: 'initial',
                     backgroundColor: 'initial', 
                     boxShadow: 'none !important', opacity: 1,}}}
