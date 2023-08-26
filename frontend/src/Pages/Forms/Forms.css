@@ -46,9 +46,9 @@
     margin-bottom: 50px;
   }
   
-  button:hover{
+  /* button:hover{
     border:2px solid white;
-  }
+  } */
   
   button i{
     margin-right: 10px;
