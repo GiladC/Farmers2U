@@ -202,6 +202,7 @@ const FormSummary = ({ values , props, isFormValid }) => {
 
         axios.post("http://127.0.0.1:5000/signup", data)
             .then(function (response) {
+                localStorage.setItem('profilePicture', response.data.logo_picture);
                 //handle success
                 //setShowSuccessMessage(true);
                 axios({
@@ -215,7 +216,6 @@ const FormSummary = ({ values , props, isFormValid }) => {
                         props.setToken(response.data.access_token);
                         localStorage.setItem('email', values.email);
                         localStorage.setItem('farmName', values.farm_name)
-                        localStorage.setItem('profilePicture', values.logo_picture)
                         setShowSuccessMessage(true);
 
                         //alert('נרשמת בהצלחה. מיד תועבר לאתר.');

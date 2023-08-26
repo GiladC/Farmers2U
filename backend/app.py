@@ -11,8 +11,8 @@ from google.cloud import storage
 
 # from flask_migrate import Migrate
 
-storage_client = storage.Client.from_service_account_json('c:\\Users\\IMOE001\\Desktop\\farmers2u_back\\keyfile.json')
-bucket_name = 'images_farmers2u'
+storage_client = storage.Client.from_service_account_json('C:\\Users\\Nicole\\OneDrive\\Documents\\VSCode\\farmers_backend\\keyfile.json')
+bucket_name = 'image_storage_farmers2u'
 bucket = storage_client.bucket(bucket_name)
 
 
@@ -73,7 +73,7 @@ def allowed_file(filename):
 
 def check_object_exists(bucket_name, object_name):
     # Create a client instance with credentials
-    client = storage.Client.from_service_account_json('c:\\Users\\IMOE001\\Desktop\\farmers2u_back\\keyfile.json')
+    client = storage.Client.from_service_account_json('C:\\Users\\Nicole\\OneDrive\\Documents\\VSCode\\farmers_backend\\keyfile.json')
     
     bucket = client.bucket(bucket_name)
     blob = bucket.blob(object_name)
@@ -85,10 +85,10 @@ def delete_object_by_url(url):
     object_name = url.split('/')[-1]
 
     # Initialize Google Cloud Storage client
-    client = storage.Client.from_service_account_json('c:\\Users\\IMOE001\\Desktop\\farmers2u_back\\keyfile.json')
+    client = storage.Client.from_service_account_json('C:\\Users\\Nicole\\OneDrive\\Documents\\VSCode\\farmers_backend\\keyfile.json')
 
     # Specify the bucket name
-    bucket_name = 'images_farmers2u'
+    bucket_name = 'image_storage_farmers2u'
     # Get the bucket
     bucket = client.bucket(bucket_name)
 
@@ -300,7 +300,8 @@ def signup():
  
     return jsonify({
         "id": new_user.id,
-        "email": new_user.email
+        "email": new_user.email,
+        "logo_picture": new_user.logo_picture
     })
 
 @app.after_request

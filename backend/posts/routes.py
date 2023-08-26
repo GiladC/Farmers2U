@@ -35,8 +35,8 @@ def generate_unique_filename(filename):
 
 posts_blueprint = Blueprint('posts', __name__)
 
-storage_client = storage.Client.from_service_account_json('C:\\Users\\IMOE001\\Desktop\\farmers2u_back\\keyfile.json')
-bucket_name = 'images_farmers2u'
+storage_client = storage.Client.from_service_account_json('C:\\Users\\Nicole\\OneDrive\\Documents\\VSCode\\farmers_backend\\keyfile.json')
+bucket_name = 'image_storage_farmers2u'
 bucket = storage_client.bucket(bucket_name)
 
 @posts_blueprint.route('/api/posts', methods=['POST'])
