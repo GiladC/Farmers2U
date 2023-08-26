@@ -86,7 +86,8 @@ function ValidateAddress({ address, setValidFlag }) {
 }
 
 function FormPersonalInfo({values, handleChange, setFormValue, setIsFormPersonalInfoValid }) {
-  const [addressN, setAddress] = useState(values.address)
+  const [addressN, setAddress] = useState(values.address);
+  console.log(addressN);
   const [coordintes,setCoordinates] = useState({
     lat: null,
     lng: null
@@ -260,7 +261,10 @@ function FormPersonalInfo({values, handleChange, setFormValue, setIsFormPersonal
   <Grid marginLeft={4} dir='rtl' item xs={9.57}>
   <PlacesAutocomplete
             value={addressN}
-            onChange={setAddress}
+            onChange={(newValue) => {
+              setAddress(newValue);
+              console.log(newValue);
+            }}
             onSelect={handleSelect}
 
             searchOptions={{
@@ -280,7 +284,13 @@ function FormPersonalInfo({values, handleChange, setFormValue, setIsFormPersonal
                     className: 'location-search-input',
                     
                     onBlur: () => {
-                      if (!address) setAddress('');
+                      console.log(addressN);
+                      console.log(address);
+
+                      if (!addressN || addressN == ""){
+                        setAddress('');
+                        values.address="";
+                      } 
                   }
                   })}
                   style={{
@@ -512,7 +522,7 @@ function FormPersonalInfo({values, handleChange, setFormValue, setIsFormPersonal
 
   </Grid>
 </Grid>
-              <Button /*onClick={() => { <FormLogin></FormLogin> }}*/  variant='text' size='medium' color='nice' sx={{fontFamily:"aleph",  mt: 4, borderRadius: 4, fontSize: 16}} > .</Button>  
+              <Button disabled variant='text' size='medium' color='nice' sx={{fontFamily:"aleph",  mt: 4, borderRadius: 4, fontSize: 16}} > .</Button>  
               {/* <Button type="submit" onClick={handleSubmit}>  בדיקה</Button> */}
 
           </Box>    
