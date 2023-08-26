@@ -9,6 +9,7 @@ import axios from 'axios';
 
 const FormSignUpInfo = ({ setFormValue }) => {
   const [buttonText, setButtonText] = useState('הירשם עם Google');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const [userData, setUserData] = useState({
     farm_name: '',
@@ -48,7 +49,7 @@ const FormSignUpInfo = ({ setFormValue }) => {
       })
       .catch(function (error) {
         if (error.response && error.response.status === 409) {
-          alert("משתמש זה כבר רשום. ניתן להתחבר לאתר או להירשם עם משתמש אחר");
+          setErrorMessage("משתמש זה כבר רשום במערכת");
         }
       });
   };
@@ -91,6 +92,20 @@ const FormSignUpInfo = ({ setFormValue }) => {
                     id="signUpDiv"
                     style={{ marginRight: '27%', paddingTop: '25px' }}
                   ></div>
+                  {errorMessage && (
+                  <Typography
+                    mb={-2.4}
+                    fontSize={13}
+                    color="red"
+                    textAlign="center"
+                    sx={{
+                      fontFamily: 'aleph',
+                      marginRight: '-1.2rem' // Add a right margin to move the error message to the right
+                    }}
+                  >
+                    {errorMessage || "\u00A0"}
+                  </Typography>
+                )}
                 </Box>
               </form>
             </Box>

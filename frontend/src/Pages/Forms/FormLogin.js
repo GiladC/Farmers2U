@@ -142,7 +142,7 @@ const FormLogin = (props) => {
           </form>
           {errorMessage && (
             <Box
-              mt={1}
+              mb={-2}
               fontSize={13}
               color="red"
               textAlign="center"
@@ -151,7 +151,7 @@ const FormLogin = (props) => {
                 marginRight: '-0.1rem' // Add a right margin to move the error message to the right
               }}
             >
-              {errorMessage}
+              {errorMessage || "\u00A0"}
             </Box>
           )}
           <Box mt={1} marginRight={3}>
