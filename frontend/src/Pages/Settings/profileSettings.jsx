@@ -1068,6 +1068,7 @@ const ProfileSettings = (props) => {
                         width= {150}
                         height= {150}
                         className= 'profileImg'
+                        sx={{marginBottom: '10px'}}
                         />
                         <Typography  sx={{
                         fontWeight: '700',
@@ -1076,7 +1077,7 @@ const ProfileSettings = (props) => {
                         mt: '10px',
                         justifyContent: 'center',
                         justifyItems: 'center',
-                        marginBottom: '10px',
+                        marginBottom: '18px',
                         alignContent: 'center',
                         color: '#1d3c45',
                         }}>החלפת תמונה</Typography>
@@ -1087,7 +1088,7 @@ const ProfileSettings = (props) => {
                         component="label"
                         style={{color: '#1d3c45', backgroundColor: 'transparent'}}
                         //color="addPicture"
-                        sx={{   display: 'flex', marginRight: '150px', 
+                        sx={{   display: 'flex', marginRight: '120px', 
                         justifyContent: 'center',width:"450px",fontFamily: "aleph", boxShadow: 'none !important', '&:hover , &:active, &:focus':{color: 'initial',
                         backgroundColor: 'initial', 
                         boxShadow: 'none !important', opacity: 1,}}}
@@ -1098,19 +1099,37 @@ const ProfileSettings = (props) => {
                           name="logo_picture"
                           onChange={handleChangePhotoLogo}
                         />
-              </Button>
-              <Button onClick={handleDeletePhotoLogo}>מחיקה</Button>
+                        </Button>
+                        <Button
+                          sx={{
+                            fontFamily: 'aleph',
+                            backgroundColor: '#E8AA42',
+                            color: 'black',
+                            marginTop: '5px',
+                            ':hover': {
+                              bgcolor: '#E8AA42',
+                              color: 'white',
+                            },
+                          }}
+                          onClick={handleDeletePhotoLogo}
+                        >
+                          מחיקת הלוגו הנוכחי
+                        </Button>
                     </Box>
                     <Box sx={{
                             width: '580px',
                             height: '300px',
-                            marginBottom: '80px'
+                            marginBottom: '80px',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
                         }}>
                     <Box display= 'flex' justifyContent='center'>
                     <Typography  sx={{fontWeight: '600', fontSize: '30px',justifySelf: 'center', color: '#1d3c45'}}>תמונות המקום</Typography>
                     </Box>
-                    
-                    <Slider slides={farmImages} farm={true} />
+                    <Box sx={{ minWidth: '580px', minHeight: '300px'}}>
+                      <Slider slides={farmImages} farm={true} />
+                    </Box>
                     <Button
                     /*margin={10}*/
                     disableRipple
@@ -1131,17 +1150,37 @@ const ProfileSettings = (props) => {
                       onChange={handleChangeFarmImages}
                     />
                     </Button>
-                    <Button onClick={handleDeleteFarmPhotos}>מחיקה</Button>
+                    <Button
+                      sx={{
+                        fontFamily: 'aleph',
+                        backgroundColor: '#E8AA42',
+                        color: 'black',
+                        marginTop: '5px',
+                        ':hover': {
+                          bgcolor: '#E8AA42',
+                          color: 'white',
+                        },
+                      }}
+                      onClick={handleDeleteFarmPhotos}
+                    >
+                      מחיקת תמונות המקום 
+                    </Button>
                     </Box>
                     <Box sx={{
                                 width: '580px',
                                 height: '300px',
-                                marginBottom: '80px'
+                                marginTop: '40px',
+                                marginBottom: '120px',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
                             }}>
                         <Box display= 'flex' justifyContent='center'>
                         <Typography sx={{fontWeight: '600', fontSize: '30px',justifySelf: 'center', color: '#1d3c45'}}>תמונות מוצרי העסק</Typography>
                         </Box>
-                        <Slider slides={productsImages} farm={false} />
+                        <Box sx={{ minWidth: '580px', minHeight: '300px'}}>
+                          <Slider slides={productsImages} farm={false} />
+                        </Box>
                         <Button
                     /*margin={10}*/
                     disableRipple
@@ -1162,7 +1201,21 @@ const ProfileSettings = (props) => {
                       onChange={handleChangeProductsImages}
                     />
                     </Button>
-                    <Button onClick={hadnleDeleteProductsPhotos}>מחיקה</Button>
+                    <Button
+                      sx={{
+                        fontFamily: 'aleph',
+                        backgroundColor: '#E8AA42',
+                        color: 'black',
+                        marginTop: '5px',
+                        ':hover': {
+                          bgcolor: '#E8AA42',
+                          color: 'white',
+                        },
+                      }}
+                      onClick={hadnleDeleteProductsPhotos}
+                    >
+                      מחיקת תמונות המוצרים 
+                    </Button>
                     </Box>
                     <Box sx={{
                                 width: '580px',
