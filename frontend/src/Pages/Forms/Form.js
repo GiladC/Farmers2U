@@ -75,7 +75,8 @@ const steps = [
       };
     const [isFormPersonalInfoValid, setIsFormPersonalInfoValid] = useState(true);
     const [isFormOpeningHoursValid, setIsFormOpeningHoursValid] = useState(true);
-    const isFormValid = isFormPersonalInfoValid && isFormOpeningHoursValid;
+    const [isFormOtherInfoValid, setIsFormOtherInfoValid] = useState(true);
+    const isFormValid = isFormPersonalInfoValid && isFormOpeningHoursValid && isFormOtherInfoValid;
 
     const[page, setPage] = useState(0);
     /* const FormTitles = ["Sign Up", "Personal Info", "Other", "FormProducts","FormShippingDetails"]; */
@@ -100,7 +101,8 @@ const steps = [
              values={multiFormValues} handleChange={handleChange} setFormValue={setFormValue}/>
         }
         else if (page === 5){
-            return <FormOtherInfo isFormValid={isFormValid} values={multiFormValues} handleChange={handleChange} setFormValue={setFormValue} props={props}/>
+            return <FormOtherInfo setIsFormOtherInfoValid={setIsFormOtherInfoValid}
+             values={multiFormValues} handleChange={handleChange} setFormValue={setFormValue} props={props}/>
         }
         else if (page == 6){
             return <FormSummary isFormValid={isFormValid} values={multiFormValues} props={props}/>       

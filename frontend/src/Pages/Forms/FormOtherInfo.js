@@ -74,7 +74,7 @@ function ValidateWebsite({url, setValidFlag}) {
 );
 }
 
-function FormOtherInfo({values, handleChange, props, isFormValid}) {
+function FormOtherInfo({values, handleChange, props, setIsFormOtherInfoValid}) {
   console.log(values, handleChange);
   //const [facebookLink, setFacebookLink] = useState('');
   const [isValidFacebook, setIsValidFacebook] = useState(true);
@@ -82,8 +82,11 @@ function FormOtherInfo({values, handleChange, props, isFormValid}) {
   const [isValidInstagram, setIsValidInstagram] = useState(true);
   //const [websiteLink, setWebsiteLink] = useState('');
   const [isValidWebsite, setIsValidWebsite] = useState(true);
-  const formValid = isValidFacebook && isValidInstagram && isValidWebsite && isFormValid;
+  const formValid = isValidFacebook && isValidInstagram && isValidWebsite;
 
+  useEffect(() => {
+    setIsFormOtherInfoValid(formValid);
+}, [formValid]);
 
   const navigate = useNavigate();
   const {farm_name, /*email,*/ google_profile_picture, google_name, google_family_name, 
