@@ -11,9 +11,11 @@ from google.cloud import storage
 
 # from flask_migrate import Migrate
 
-storage_client = storage.Client.from_service_account_json('C:\\Users\\Nicole\\OneDrive\\Documents\\VSCode\\farmers_backend\\keyfile.json')
+storage_client = storage.Client.from_service_account_json('c:\\Users\\IMOE001\\Desktop\\farmers2u_back\\keyfile.json')
 bucket_name = 'image_storage_farmers2u'
 bucket = storage_client.bucket(bucket_name)
+default_logo_name = "farmers2u_logo.png"
+default_logo = f"https://storage.googleapis.com/{bucket_name}/{default_logo_name}"
 
 
 app = Flask(__name__)
@@ -73,7 +75,7 @@ def allowed_file(filename):
 
 def check_object_exists(bucket_name, object_name):
     # Create a client instance with credentials
-    client = storage.Client.from_service_account_json('C:\\Users\\Nicole\\OneDrive\\Documents\\VSCode\\farmers_backend\\keyfile.json')
+    client = storage.Client.from_service_account_json('c:\\Users\\IMOE001\\Desktop\\farmers2u_back\\keyfile.json')
     
     bucket = client.bucket(bucket_name)
     blob = bucket.blob(object_name)
@@ -81,11 +83,13 @@ def check_object_exists(bucket_name, object_name):
     return blob.exists()
 
 def delete_object_by_url(url):
+    if default_logo in url:
+        return
     # Parse the URL to extract the object name
     object_name = url.split('/')[-1]
 
     # Initialize Google Cloud Storage client
-    client = storage.Client.from_service_account_json('C:\\Users\\Nicole\\OneDrive\\Documents\\VSCode\\farmers_backend\\keyfile.json')
+    client = storage.Client.from_service_account_json('c:\\Users\\IMOE001\\Desktop\\farmers2u_back\\keyfile.json')
 
     # Specify the bucket name
     bucket_name = 'image_storage_farmers2u'
@@ -238,6 +242,8 @@ def signup():
         logo_image_string = ','.join(logo_image)
         products_images_string = ','.join(products_images)
         farm_images_string = ','.join(farm_images)
+        
+
         print(logo_image_string)
         print(products_images_string)
         print(farm_images_string)
@@ -280,7 +286,11 @@ def signup():
     user_exists = User.query.filter_by(email=email).first() is not None
  
     if user_exists:
-        return jsonify({"error": "Email already exists"}), 409
+        return jsonify({"error": "Email already exists"}), 
+
+    if logo_image_string == "":
+        logo_image_string = default_logo
+    
     #hashed_password = bcrypt.generate_password_hash(password)
     #new_user = User(name="tamir20",email=email, password=hashed_password, about="sample check")
     #new_user = User(name= "gilad", email=email, password=hashed_password, about="I am Gilad, a farmer.")
@@ -455,9 +465,9 @@ def update_my_settings(getemail):
                 # Delete logo images from the cloud
                 if user.logo_picture:
                     delete_object_by_url(user.logo_picture)
-                    user.logo_picture = ""  # Clear the list of URLs after deletion
+                    user.logo_picture = default_logo  # Clear the list of URLs after deletion
                     for post in user_posts:
-                        post.profilePicture = ""
+                        post.profilePicture = default_logo
             elif label == '5':
                 if user.products_pictures:
                     # Delete product images from the cloud
@@ -478,7 +488,6 @@ def update_my_settings(getemail):
     if 'files[]' not in request.files:
         None # do nothing
     else:
-        logo_image = []
         products_images = []
         farm_images = []
         files = request.files.getlist('files[]')
@@ -490,9 +499,9 @@ def update_my_settings(getemail):
                 if user.logo_picture:
                     # Delete logo image from the cloud
                     delete_object_by_url(user.logo_picture)
-                    user.logo_picture = ""
+                    user.logo_picture = default_logo
                     for post in user_posts:
-                        post.profilePicture = ""
+                        post.profilePicture = default_logo
             elif label == '2':
                 if user.products_pictures:
                     # Delete product images from the cloud
