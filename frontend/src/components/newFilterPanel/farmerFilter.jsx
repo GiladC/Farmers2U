@@ -269,7 +269,8 @@ const products = [
 
     const [isRealAddress, setIsRealAddress] = useState(true);
     const distanceWithoutAddress = !isShipping && address === "" && distance != 0;
-    const notValidRequest = distanceWithoutAddress || !isRealAddress
+    const addressWithoutDistance = !isShipping && isRealAddress && address != "" && distance === 0;
+    const notValidRequest = distanceWithoutAddress || !isRealAddress || addressWithoutDistance
 
     const handleFilter = (data) => {
       console.log("start of filter handler");
@@ -303,6 +304,7 @@ const products = [
     setCategories([]);
     setDistance(0);
     setAddress('');
+    setIsRealAddress(true);
     props.setSearchTerm('');
   }
     
@@ -351,11 +353,6 @@ const products = [
                     paddingTop: '5px',
                     fontSize: '16px',}}
                 />
-                {isRealAddress? null
-                : 
-                <div>
-                  <Typography variant='body2' color='error' sx={{textAlign: 'center'}}>יש ללחוץ על כתובת מבין האופציות המוצעות</Typography>
-                </div>}
                 <div className="autocomplete-dropdown-container">
                   {loading && <div>טוען...</div>}
                   {suggestions.map((suggestion, index) => {
@@ -378,6 +375,17 @@ const products = [
                     );
                   })}
                 </div>
+                {isRealAddress? null
+                : 
+                <div>
+                  <Typography variant='body2' color='error' sx={{textAlign: 'center'}}>יש ללחוץ על כתובת מבין האופציות המוצעות</Typography>
+                </div>}
+                {addressWithoutDistance ?
+                <div style={{height:0}}>
+                  <Typography variant='body2' color='error' sx={{textAlign: 'center'}}>על מנת לסנן לפי כתובת יש לבחור מרחק</Typography>
+                </div>
+                : null
+                }
               </div>
             )}
           </PlacesAutocomplete>
@@ -427,7 +435,8 @@ const products = [
             {
               style:{
                   maxHeight: '100px',
-                  border: '1px solid #E8AA42',
+                  border: '2px solid #E8AA42',
+                  direction: 'ltr'
               }
             }
           }
@@ -456,14 +465,14 @@ const products = [
           )}
         />
             <Box display= 'flex' justifyContent='center' gap= {3} paddingBottom= '10px' paddingTop= '5%'>
-                <Button disabled = {notValidRequest} onClick={handleFilter} sx={{backgroundColor: '#E8AA42', color: 'black',
+                <Button disabled = {notValidRequest} onClick={handleFilter} sx={{fontFamily:'aleph', backgroundColor: '#E8AA42', color: 'black',
                 ":hover": {
                 bgcolor: "#E8AA42",
                 color: "white"
                 }, 
                 display: 'flex', alignSelf: 'center'
                 }}>הפעלת סינון</Button>
-                <Button onClick={handleClear} sx={{backgroundColor: '#1d3c45', color: 'white',
+                <Button onClick={handleClear} sx={{fontFamily:'aleph',backgroundColor: '#1d3c45', color: 'white',
                 ":hover": {
                 bgcolor: "#1d3c45",
                 color: "#E8AA42"

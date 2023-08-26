@@ -569,6 +569,7 @@ return (
             <Box display="flex" paddingTop={2} justifyContent="center" >
               <DatePicker label={'תאריך '} views={['day']} format='DD/MM/YYYY'
                 value={value} onChange={handleChangeDate} sx={{
+                  direction: 'rtl',
                   "& label": {
                     left: "unset",
                     right: "8rem",
