@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import FarmCard from './profilecard';
 import './styles.css';
 import { Box, Container, Typography } from '@mui/material';
-import noResults from '../../assets/noResults.png'
 
 const Catalogue = ({ List, token }) => {
   // const [businesses, setBusinesses] = useState(List)
@@ -45,7 +44,7 @@ const Catalogue = ({ List, token }) => {
         {List.length === 0 ?
         <>
         <Box sx={{display: 'flex', justifyContent: 'center'}}>
-          <img className='noResultsImage' src={noResults} alt='no results' /> 
+          <img className='noResultsImage' src={"https://storage.googleapis.com/image_storage_farmers2u/noResults.png"} alt='no results' /> 
         </Box>
         <Typography sx={{ 
                       fontSize: '30px', color: '#1d3c45', display: 'flex', 
@@ -56,7 +55,7 @@ const Catalogue = ({ List, token }) => {
         </>
         : 
         <div className="card-grid">
-          {currentCards.map((business, index) => (
+          {currentCards.map((business, index) => 
             <FarmCard key={index} Image={business.logo_picture} business={business} token={token}/>
           ))}
           <Container sx={{flex: '5'}}>
