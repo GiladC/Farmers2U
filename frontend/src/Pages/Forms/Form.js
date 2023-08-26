@@ -19,6 +19,7 @@ const steps = [
     'מוצרי המשק',
     'שעות פתיחה וימי פעילות',
     'פרטים נוספים',
+    'אישור והרשמה',
   ];
 
   const Form = (props) => {
@@ -53,8 +54,8 @@ const steps = [
 
       function Lines() {
         return (
-            <div style={{ position: 'relative', top: '13px', marginRight: '10%', display: 'flex', justifyContent: 'space-between', width: '80%' }}>
-                {Array(5).fill().map((_, index) => (
+            <div style={{ position: 'relative', top: '13px', marginRight: '9%', display: 'flex', justifyContent: 'space-between', width: '82%' }}>
+                {Array(6).fill().map((_, index) => (
                     <div key={index} style={{flexGrow: 1, height: '1px', backgroundColor: 'lightgray',marginLeft: '0.5%', marginRight: index!==0 ? '5.2%':'0.5%'}} />
                 ))}
             </div>
@@ -102,8 +103,7 @@ const steps = [
             return <FormOtherInfo isFormValid={isFormValid} values={multiFormValues} handleChange={handleChange} setFormValue={setFormValue} props={props}/>
         }
         else if (page == 6){
-            return <FormSummary isFormValid={isFormValid} values={multiFormValues} props={props}/>
-        
+            return <FormSummary isFormValid={isFormValid} values={multiFormValues} props={props}/>       
         }
         else if (page == 7){
             return <FormSubmitted />
