@@ -61,8 +61,8 @@ const EditPost = ({ post, open, onClose }) => {
   )
   const [selectedProducts, setSelectedProducts] = useState(matchingProducts);
   const [pfpAndName, setPfpAndName] = useState({
-    profilePicture: null,
-    profileName: null,
+    profilePicture: localStorage.getItem('profilePicture'),
+    profileName: localStorage.getItem('farmName'),
   })
   const [postData, setPostData] = useState({
     isOrganic: post.initial_organic || false,
@@ -96,7 +96,49 @@ const handleSelect = async value => {
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
+    if (!fileSpecialChars(file)) {
+      alert("שם הקובץ מכיל תווים לא חוקיים.");
+      event.target.value = null;
+      return;
+    }
+    if (!fileMaxSize(file)) {
+      alert("גודל מקסימלי עבור קובץ הוא 5MB.");
+      event.target.value = null;
+      return;
+    }
+    if (!fileTypeValidation(file)) {
+      alert("מותר לצרף תמונות בפורמט PNG, JPEG או JPG בלבד.");
+      event.target.value = null;
+      return;
+    }
     setImage(file);
+  };
+  
+  const fileMaxSize = (file) => {
+    const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
+    if (file.size > MAX_FILE_SIZE) {
+      return false
+    }
+    return true
+  }
+    
+  const fileSpecialChars = (file) => {
+    const fileName = file.name;
+    if (/[^A-Za-z0-9_.-]/.test(fileName)) {
+      return false
+    }
+    return true;
+  }
+  
+  const fileTypeValidation = (file) => {
+    if (
+      file.type !== "image/png" &&
+      file.type !== "image/jpg" &&
+      file.type !== "image/jpeg"
+    ) {
+      return false;
+    }
+    return true;
   };
 
 
@@ -143,18 +185,6 @@ const handleSelect = async value => {
   };
 
 
-  useEffect(() => {
-    const mail = new FormData();
-    mail.append('email', storedEmail)
-    axios
-      .post('http://127.0.0.1:5000/api/small_data', mail)
-      .then((response) => {
-        setPfpAndName(response.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
 
 
   const handleEdit = () => { /* The actual object to extract to the backend */
@@ -213,7 +243,7 @@ const handleSelect = async value => {
             ערכו מודעה
           </Typography>
           <UserBox>
-            <Avatar src = {'/Form_images/Logo_image/'.concat(pfpAndName.profilePicture)} sx={{ width: 30, height: 30 }} />
+            <Avatar src = {pfpAndName.profilePicture} sx={{ width: 30, height: 30 }} />
             <Typography fontWeight={500} variant="span">
               {pfpAndName.profileName}
             </Typography>
