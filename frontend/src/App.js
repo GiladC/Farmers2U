@@ -4,7 +4,7 @@ import Footer from './components/Footer/Footer';
 import React from 'react';
 import LandPage from './Pages/MainPage/LandPage';
 import FormLogin from './Pages/Forms/FormLogin';
-import Faq from './Pages/FAQ';
+import FAQ from './Pages/FAQ/FAQ'
 import AdsPage from './Pages/Bullboard/adsPage';
 import Form from './Pages/Forms/Form';
 import About from './Pages/About';
@@ -47,12 +47,12 @@ function App() {
             } />
             <Route path='/ourfarmers' element={
               <>
-                <OurFarmers/>
+                <OurFarmers token={token}/>
               </>
             } />
             <Route path='/faq' element={
               <>
-                <Faq/>
+                <FAQ />
                 <Footer token={token}/>
               </>
             } />

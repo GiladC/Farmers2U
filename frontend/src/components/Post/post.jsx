@@ -26,6 +26,8 @@ export default function Post({ post, token, disabled }) {
   const storedEmail = localStorage.getItem('email');
   const profileEmail = token?.profile_email || storedEmail || '';
   const showMenu = profileEmail === post.email && token;
+  console.log("hey")
+  console.log(token)
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [ShowDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
@@ -127,6 +129,7 @@ export default function Post({ post, token, disabled }) {
               image={logo}
               business={business}
               open={open}
+              token={token}
               close={() => setOpen(false)}
             />
             <span className='postDate'>{post.posted}</span>
@@ -209,7 +212,7 @@ export default function Post({ post, token, disabled }) {
             <Typography
               sx={{
                 align: 'right',
-                whiteSpace: 'pre-line',
+                whiteSpace: 'pre-wrap', wordBreak: 'break-word', 
               }}
             >
               {post.desc}
@@ -228,18 +231,52 @@ export default function Post({ post, token, disabled }) {
         </div>
       </div>
       <Dialog open={ShowDeleteConfirmation} onClose={handleDeleteCancel}>
-        <DialogTitle> האם אתה בטוח? </DialogTitle>
-        <DialogContent>
-          <Typography>
-            {' '}
-            בעת לחיצה על "כן" המודעה תימחק לצמיתות
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleDeleteCancel}> לא </Button>
-          <Button onClick={handleDeleteConfirm}> כן </Button>
-        </DialogActions>
-      </Dialog>
+  <DialogTitle sx={{ textAlign: 'center' }} dir="rtl">
+    האם אתה בטוח?
+  </DialogTitle>
+  <DialogContent>
+    <Typography>
+      {' '}
+      בעת לחיצה על "כן" המודעה תימחק לצמיתות
+    </Typography>
+  </DialogContent>
+  <DialogActions
+    sx={{
+      display: 'flex',
+      justifyContent: 'center',
+      marginBottom: '1rem', // Add margin at the bottom
+    }}
+  >
+    <Button
+      sx={{
+        fontFamily: 'aleph',
+        backgroundColor: '#E8AA42',
+        color: 'black',
+        ':hover': {
+          bgcolor: '#E8AA42',
+          color: 'white',
+        },
+      }}
+      onClick={handleDeleteCancel}
+    >
+      לא
+    </Button>
+    <Button
+      sx={{
+        fontFamily: 'aleph',
+        backgroundColor: '#E8AA42',
+        color: 'black',
+        ':hover': {
+          bgcolor: '#E8AA42',
+          color: 'white',
+        },
+      }}
+      onClick={handleDeleteConfirm}
+    >
+      כן
+    </Button>
+  </DialogActions>
+</Dialog>
       <EditPostWrapper
         open={openEditPost}
         onClose={() => setOpenEditPost(false)}

@@ -1175,7 +1175,7 @@ const ProfileSettings = (props) => {
                                 </Box>
                                 <div className='userPosts' style={{border: '5px solid #1d3c45',
                                 direction: 'ltr'}}>
-                                    <UserPosts width={'100%'} height={660} email={storedEmail}/>
+                                    <UserPosts width={'100%'} height={660} email={storedEmail} token={props.token}/>
                                 </div>
                             </Box>
                 </Box>

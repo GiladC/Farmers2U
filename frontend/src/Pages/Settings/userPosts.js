@@ -4,7 +4,7 @@ import Post from '../../components/Post/post';
 import { Box, Typography } from '@mui/material';
 import noResults from '../../assets/noResults.png';
 
-const UserPosts = ({ width, height, position, email }) => {
+const UserPosts = ({ width, height, position, email, token }) => {
   const [posts, setPosts] = useState([]);
   const storedEmail = localStorage.getItem('email');
 
@@ -73,7 +73,7 @@ const UserPosts = ({ width, height, position, email }) => {
       ) : (
         <div className="posts">
           {posts.map((p) => (
-            <Post key={p.id} post={p} disabled={true} />
+            <Post key={p.id} post={p} disabled={true} token={token}/>
           ))}
         </div>
       )}

@@ -25,15 +25,13 @@ const StyledModal = styled(Modal)({
 })
 
 
-export default function NewBusinessCard({ image, business, open, close }) {
+export default function NewBusinessCard({ image, business, open, close, token }) {
     function addZero(val) {
         const ret = val < 10 ? "0" + val : val;
         return ret;
     }
 
     function hoursFormat(start, end) {
-        console.log(business.farm_images_list.length);
-        console.log(business.farm_images_list);
         if (start === "none" || end === "none ") {
             return "סגור";
         }
@@ -143,7 +141,7 @@ export default function NewBusinessCard({ image, business, open, close }) {
                         sx={{fontWeight: '600', fontSize: '30px',textAlign: 'center', color: '#1d3c45'}}>מודעות שפורסמו</Typography>
                         <div className='userPosts' style={{border: '5px solid #1d3c45',
                                 direction: 'ltr'}}>
-                                <UserPosts email={business.mail} width="100%" height={450}/>
+                                <UserPosts email={business.mail} width="100%" height={450} token={token}/>
                         </div>
                         <div className="social">
                         {

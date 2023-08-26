@@ -4,7 +4,7 @@ import './styles.css';
 import { Box, Container, Typography } from '@mui/material';
 import noResults from '../../assets/noResults.png'
 
-const Catalogue = ({ List }) => {
+const Catalogue = ({ List, token }) => {
   // const [businesses, setBusinesses] = useState(List)
 
     // useEffect(() => {
@@ -57,7 +57,7 @@ const Catalogue = ({ List }) => {
         : 
         <div className="card-grid">
           {currentCards.map((business, index) => (
-            <FarmCard key={index} Image={business.logo_picture} business={business} />
+            <FarmCard key={index} Image={business.logo_picture} business={business} token={token}/>
           ))}
           <Container sx={{flex: '5'}}>
           </Container>

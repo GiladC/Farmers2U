@@ -52,7 +52,7 @@ const dummyBusiness = {
 };
 
 
-const FarmCard = ({Image, business, style }) => {
+const FarmCard = ({Image, business, style, token }) => {
   const [isHovered, setIsHovered] = React.useState(false);
 
   const handleMouseEnter = () => {
@@ -138,6 +138,7 @@ const FarmCard = ({Image, business, style }) => {
           business={business}
           image={Image}
           open={isBusinessCardOpen}
+          token={token}
           close={()=>setBusinessCardOpen(false)} />
 
         </CardContent>

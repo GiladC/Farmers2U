@@ -8,7 +8,7 @@ import FarmerFilter from '../../components/newFilterPanel/farmerFilter';
 import Filter from '../../components/newFilterPanel/filter'
 import axios from 'axios';
 
-function OurFarmers() {
+function OurFarmers( { token }) {
   const [cards, setCards] = useState([]);
   const [filteredCards, setFilteredCards] = useState([]); // State to hold the filtered cards
   const [searchTerm, setSearchTerm] = useState('');
@@ -52,7 +52,7 @@ function OurFarmers() {
             <Searchbar onSearch={handleSearch} searchTerm={searchTerm} setSearchTerm={setSearchTerm} /> {/* Pass the handleSearch function as prop */}
           </Box>
           <Box flex='2.5' marginLeft='none' sx={{'&::-webkit-scrollbar': { display: 'none' }, direction: 'rtl', overflowY:'scroll', height:'70vh', scrollBehavior:'smooth'}}>
-            <Catalogue List={currentCards} /> {/*Pass the filtered cards to the Catalogue component */}
+            <Catalogue List={currentCards} token={token}/> {/*Pass the filtered cards to the Catalogue component */}
           </Box>
         </div>
         <div className='right' dir='rtl' style={{flex: '1.5'}}>
