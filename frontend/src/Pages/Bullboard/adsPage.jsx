@@ -5,7 +5,6 @@ import AddPost from '../../components/Post/AddPost'
 import axios from 'axios'
 import AdsFilter from '../../components/newFilterPanel/adsFilter'
 import Typography from '@mui/material/Typography';
-import noResults from '../../assets/noResults.png';
 import { Box } from '@mui/material'
 
 
@@ -35,7 +34,7 @@ import { Box } from '@mui/material'
                   <>
                   <div className='noResults'>
                     <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                      <img className='noResultsImage' src={noResults} style={{ width: '100%'}}/>
+                      <img className='noResultsImage' src={"https://storage.googleapis.com/image_storage_farmers2u/noResults.png"} style={{ width: '100%'}}/>
                     </Box>
                     <Typography sx={{ 
                       textAlign: 'center', fontSize: '36px', color: '#1d3c45', display: 'flex', 
