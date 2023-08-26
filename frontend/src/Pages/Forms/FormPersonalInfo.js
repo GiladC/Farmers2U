@@ -323,7 +323,7 @@ function FormPersonalInfo({values, handleChange, setFormValue, setIsFormPersonal
                     const style = {
                       //position: 'absolute',
                       //zIndex: '1000',
-                      backgroundColor: suggestion.active ? "#41b6e6" : "#fff",
+                      backgroundColor: suggestion.active ? "#ffb74d" : "#fff",
                       cursor: 'pointer',
                       padding: '10px',                      
                     };
