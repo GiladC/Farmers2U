@@ -30,10 +30,6 @@ Farmers can provide their contact details and business information. Consumers ca
 
 Farmers can advertise special events, workshops, and promotions through the platform. Consumers can stay informed about upcoming activities and engage with the agricultural community.
 
-### Community Engagement
-
-The platform fosters a sense of community by enabling consumers to leave reviews and ratings for farmers. This feature encourages transparency, trust, and accountability.
-
 ## Getting Started
 
 1. **Sign Up**: Farmers can sign up for an account on the platform.
