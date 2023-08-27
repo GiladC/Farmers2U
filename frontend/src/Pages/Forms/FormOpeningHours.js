@@ -25,10 +25,19 @@ function FormOpeningHours({values, setFormValue, setIsFormOpeningHoursValid}) {
   const [openingTimesNew, setOpeningTimesNew] = useState(values.opening_hours || Array(7).fill(null));
   const [closingTimesNew, setClosingTimesNew] = useState(values.closing_hours || Array(7).fill(null));
   const [validDayHours, setValidDayHours] = useState(Array(7).fill(true));
+  const [validSundayHours, setValidSundayHours] = useState(true);
+  const [validMondayHours, setValidMondayHours] = useState(true);
+  const [validTuedayHours, setValidTuedayHours] = useState(true);
+  const [validWednesdayHours, setValidWednesdayHours] = useState(true);
+  const [validThursdayHours, setValidThursdayHours] = useState(true);
+  const [validFridayHours, setValidFridayHours] = useState(true);
+  const [validSaturdayHours, setValidSaturdayHours] = useState(true);
   const [openingTimes, setOpeningTimes] = useState(Array(7).fill(null));
   const [closingTimes, setClosingTimes] = useState(Array(7).fill(null));
-  const formValid = validDayHours;
+  
+  const formValid = validSundayHours && validMondayHours && validTuedayHours && validWednesdayHours && validThursdayHours && validFridayHours && validSaturdayHours;
     useEffect(() => {
+      console.log(formValid);
       setIsFormOpeningHoursValid(formValid);
   }, [formValid]);
 
@@ -79,11 +88,38 @@ function FormOpeningHours({values, setFormValue, setIsFormOpeningHoursValid}) {
     setFormValue("closing_hours",newClosingTime)
   }
 
+  // const validDayFlag = (index) => (flag) => {
+  //   const flags = [...validDayHours];
+  //   console.log("index: " + index );
+  //   console.log(flag);
+  //   flags[index] = flag;
+  //   console.log(flags);
+  //   setValidDayHours(flags);
+  // };
+
   const validDayFlag = (index) => (flag) => {
-    const flags = [...validDayHours];
-    flags[index] = flag;
-    setValidDayHours(flags);
-  };
+    if (index === 0){
+      setValidSundayHours(flag);
+    }
+    else if (index === 1) {
+      setValidMondayHours(flag);
+    }
+    else if (index === 2) {
+      setValidTuedayHours(flag);
+    }
+    else if (index === 3) {
+      setValidWednesdayHours(flag);
+    }
+    else if (index === 4) {
+      setValidThursdayHours(flag);
+    }
+    else if (index === 5) {
+      setValidFridayHours(flag);
+    }
+    else {
+      setValidSaturdayHours(flag);
+    }
+  }
 
   return (
     <form autoComplete="off" dir="rtl">
