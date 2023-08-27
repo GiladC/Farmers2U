@@ -823,7 +823,7 @@ const ProfileSettings = (props) => {
       </div>
         <Box sx={{
             display: 'grid',
-            gridTemplateColumns: '3fr 4fr'
+            gridTemplateColumns: '4fr 4fr'
         }}>
             <Container sx={{
                 flex: 5,
