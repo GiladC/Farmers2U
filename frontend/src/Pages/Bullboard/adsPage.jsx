@@ -6,11 +6,14 @@ import axios from 'axios'
 import AdsFilter from '../../components/newFilterPanel/adsFilter'
 import Typography from '@mui/material/Typography';
 import { Box } from '@mui/material'
+import CircularProgress from '@mui/material/CircularProgress';
+
 
 
 
   function AdsPage({ token }) {
     const [filteredPosts, setFilteredPosts] = useState([]);
+    const [loading, setLoading] = useState(true);
 
 
     useEffect(() => {
@@ -18,6 +21,7 @@ import { Box } from '@mui/material'
         .get('http://127.0.0.1:5000/api/getposts')
         .then((response) => {
           setFilteredPosts(response.data);
+          setLoading(false);
         })
         .catch((error) => {
           console.error(error);
@@ -30,7 +34,17 @@ import { Box } from '@mui/material'
       <div className='adsLayer'>
           <div className={boardClassName}>
               <div className="boardWrapper">
-                {filteredPosts.length == 0 ? (
+                { loading ? (
+                  <div className='loadingSpinner'>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                      <CircularProgress style={{ color: '#E8AA42', width: '70px', height: '70px' }} />
+                      <span className="loadingText" style={{ color: '#1d3c45', fontSize: '18px', marginTop: '1rem' }}>
+                        ...טוען מודעות
+                      </span>
+                    </Box>
+                  </div>
+                ) : 
+                filteredPosts.length == 0 ? (
                   <>
                   <div className='noResults'>
                     <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
@@ -43,13 +57,15 @@ import { Box } from '@mui/material'
                     color: 'rgb(141, 141, 138)',display: 'flex', justifyContent: 'center'}}>
                       {'כדאי לנסות להסיר מסנני חיפוש'}
                     </Typography>
+                    
                   </div>
                   </>  
                 ) : (
                   filteredPosts.map(p=> (
                     <Post key={p.id} post={p} token={token}/>
                   ))
-                )} 
+                )
+                }
               </div>
           </div>
           <div className="rightbar">

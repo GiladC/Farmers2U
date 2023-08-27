@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import Searchbar from './search';
 import Catalogue from './Catalogue';
-import List from '../../DummyData/CardList';
 import './styles.css';
-import { Box, Container, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import FarmerFilter from '../../components/newFilterPanel/farmerFilter';
-import Filter from '../../components/newFilterPanel/filter'
 import axios from 'axios';
+import CircularProgress from '@mui/material/CircularProgress';
+
 
 function OurFarmers( { token }) {
   const [cards, setCards] = useState([]);
   const [filteredCards, setFilteredCards] = useState([]); // State to hold the filtered cards
   const [searchTerm, setSearchTerm] = useState('');
   const [currentCards, setCurrentCards] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const handleSearch = (searchTerm) => {
     const searched = filteredCards.filter((item) =>
@@ -34,6 +35,7 @@ function OurFarmers( { token }) {
         setCards(response.data);
         setCurrentCards(response.data);
         setFilteredCards(response.data);
+        setLoading(false);
       })
       .catch((error) => {
         console.error(error);
@@ -47,14 +49,25 @@ function OurFarmers( { token }) {
   return (
     <Box display='flex' flexDirection='column' overflowX= 'none'>
       <div className='wrapper' style={{direction: 'ltr'}}>
-        <div className='left' style={{direction: 'rtl', flex: "4", justifyContent: 'flex-start'}}>
-          <Box>
-            <Searchbar onSearch={handleSearch} searchTerm={searchTerm} setSearchTerm={setSearchTerm} /> {/* Pass the handleSearch function as prop */}
-          </Box>
-          <Box flex='2.5' marginLeft='none' sx={{'&::-webkit-scrollbar': { display: 'none' }, direction: 'rtl', overflowY:'scroll', height:'70vh', scrollBehavior:'smooth'}}>
-            <Catalogue List={currentCards} token={token}/> {/*Pass the filtered cards to the Catalogue component */}
-          </Box>
-        </div>
+      <div className='left' style={{ direction: 'rtl', flex: '4', justifyContent: 'flex-start' }}>
+        <Box>
+          <Searchbar onSearch={handleSearch} searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+        </Box>
+        <Box flex='2.5' marginLeft='none' sx={{ '&::-webkit-scrollbar': { display: 'none' }, direction: 'rtl', overflowY: 'scroll', height: '70vh', scrollBehavior: 'smooth' }}>
+          {loading ? (
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+              <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <CircularProgress style={{ color: '#E8AA42', width: '70px', height: '70px' }} />
+                <span className="loadingText" style={{ color: '#1d3c45', fontSize: '18px', marginTop: '1rem' }}>
+                  טוען מודעות...
+                </span>
+              </Box>
+            </div>
+          ) : (
+            <Catalogue List={currentCards} token={token} />
+          )}
+        </Box>
+      </div>
         <div className='right' dir='rtl' style={{flex: '1.5'}}>
         <div className='filterHeader' style={{padding: '1rem 0rem'}}>
           <Typography variant='h4' sx={{textAlign: 'center', paddingBottom: '5px', color: '#030443'}}>סינון מתקדם</Typography>
