@@ -73,10 +73,11 @@ const steps = [
           [input]: value,
         }));
       };
+    const [isFormSignUpInfoValid, setIsFormSignUpInfoValid] = useState(true);
     const [isFormPersonalInfoValid, setIsFormPersonalInfoValid] = useState(true);
     const [isFormOpeningHoursValid, setIsFormOpeningHoursValid] = useState(true);
     const [isFormOtherInfoValid, setIsFormOtherInfoValid] = useState(true);
-    const isFormValid = isFormPersonalInfoValid && isFormOpeningHoursValid && isFormOtherInfoValid;
+    const isFormValid = isFormSignUpInfoValid && isFormPersonalInfoValid && isFormOpeningHoursValid && isFormOtherInfoValid;
 
     const[page, setPage] = useState(0);
     /* const FormTitles = ["Sign Up", "Personal Info", "Other", "FormProducts","FormShippingDetails"]; */
@@ -84,7 +85,8 @@ const steps = [
 
     const PageDisplay = () => {
         if (page === 0) {
-            return <FormSignUpInfo values={multiFormValues} handleChange={handleChange} setFormValue={setFormValue}/>
+            return <FormSignUpInfo setIsFormSignUpInfoValid={setIsFormSignUpInfoValid} 
+             values={multiFormValues} handleChange={handleChange} setFormValue={setFormValue}/>
         }
         else if (page === 1) {
             return <FormPersonalInfo setIsFormPersonalInfoValid={setIsFormPersonalInfoValid} 
@@ -156,13 +158,14 @@ const steps = [
                     }
                         }> הבא
                 </Button> 
-                <Button style= {{borderWidth:'1px', minWidth:"30px", backgroundColor: "#ffb74d", 
-                marginTop: page === 6 ? '600px' : '20px',
-                marginLeft: "20px", fontFamily:"aleph", fontSize: 16, display: page === 0 ? 'none' : 'block',
+                <Button style= {{borderWidth:'1px', minWidth:page === 6 ? '132px' : "30px", backgroundColor: "#ffb74d", 
+                marginTop: page === 6 ? '-40px' : '20px',
+                marginLeft: page === 6 ? '160px' : "20px", fontFamily:"aleph", fontSize: 16, display: page === 0 ? 'none' : 'block',
                 color: "#212121"}} variant="outlined" sx={{borderColor: 'black'}} 
                 disabled={page == 0} onClick={
                     () => {setPage((currPage) => currPage - 1);
-                    }}> הקודם </Button>
+                    }}> {page === 6 ? 'שינוי פרטים' : 'הקודם'}
+                    </Button>
             </div>
         </div>        
     </div>

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import {
     TextField,
+    Card,
+    CardContent,
     Grid,
     Button,
     Box,
@@ -11,7 +13,15 @@ import {
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Work from '../../components/days/work.jsx';
-import dayjs from 'dayjs'
+import dayjs from 'dayjs';
+import './Forms.css';
+
+
+const theme = createTheme({
+  typography: {
+    fontFamily: 'aleph',
+  },
+});
 
 
 
@@ -26,7 +36,20 @@ const themeForButton = createTheme({
 });
 
 const FormSummary = ({ values , props, isFormValid }) => {
-
+    const modalTextStyle = {
+      fontSize: 'larger', 
+      textAlign: 'center',
+      display: 'flex',
+      flexDirection: 'row',
+      //flexWrap: 'wrap', 
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginTop: "5%",
+  };
+  const modalTextSmallStyle = {
+    ...modalTextStyle,
+    fontSize: 'smaller', 
+  };
     const navigate = useNavigate();
     let shipping
     let km
@@ -123,7 +146,7 @@ const FormSummary = ({ values , props, isFormValid }) => {
           const timer = setTimeout(() => {
             setShowSuccessMessage(false);
             navigate('/bullboard');
-          }, 5000);
+          }, 6500);
     
           return () => clearTimeout(timer);
         }
@@ -249,145 +272,237 @@ const FormSummary = ({ values , props, isFormValid }) => {
     return (
 
         <form autoComplete="off" >
+          <ThemeProvider theme={theme}>
             {!showSuccessMessage && (
-            <Box marginTop={5} bgcolor="#f7f1e5" boxShadow={0} borderRadius={2} border={2} display="flex" flexDirection={"column"} width={580} height={164.7} alignItems={"center"} justifyContent={"center"} mt={3.2} mr={2.3} padding={20} sx={{ border: '1.5px solid #f7f1e5' }}  >
-                <Typography marginTop= "550px" color="#37474f" fontFamily="aleph" fontWeight={'bold'} fontSize={50} marginBottom={"0px"} variant='h3' textAlign={"center"}> הרשמת חקלאי </Typography>
-                <Typography color="#37474f" fontFamily="aleph" minHeight={45} fontWeight={'bold'} fontSize={22} margin={5} variant='h2' textAlign={"center"}> סיכום הרשמה</Typography>
-
+                <Box bgcolor="#f7f1e5" boxShadow={0} borderRadius={2} mr={2.3} mt={0.1} border={2} display="flex" flexDirection={"column"} width={580} alignItems={"center"} justifyContent={"center"} paddingBottom={3} paddingX={5} paddingTop={20} sx={{ border: '1.5px solid #f7f1e5'}}  >
+                <Box>
+                <Typography color="#37474f" fontFamily="aleph" fontWeight={'bold'} fontSize={50} marginTop="-9.2rem" variant='h3' textAlign={"center"}> הרשמת חקלאי </Typography>
+                <Typography color="#37474f" fontFamily="aleph" minHeight={45} fontWeight={'bold'} fontSize={22}  mr={-1} marginTop={3} variant='h2'  textAlign={"center"}>שלב 7 - אישור והרשמה</Typography>
+                <Typography color="#37474f" fontFamily="aleph" minHeight={45} fontWeight={'bold'} fontSize={16}  mr={-1} variant='h2'  textAlign={"center"}>הפרטים ניתנים לשינוי גם לאחר סיום הליך ההרשמה</Typography>
+                </Box>
                 <>
-                    <Grid container direction="column" spacing={2} dir="rtl">
-                        <Grid item>
-                            <Box>
-                                <Typography variant="body1" color="textPrimary" fontSize={20}>
-                                    שם העסק: {values.farm_name || "לא הוגדר"}
-                                </Typography>
-                            </Box>
-                        </Grid>
-                        <Grid item>
-                            <Box>
-                                <Typography variant="body1" color="textPrimary">
-                                    שם איש הקשר: {values.farmer_name || "לא הוגדר"}
-                                </Typography>
-                            </Box>
-                        </Grid>
-                        <Grid item>
-                            <Box>
-                                <Typography variant="body1" color="textPrimary">
-                                    כתובת: {values.address || "לא הוגדר"}
-                                </Typography>
-                            </Box>
-                        </Grid>
-                        <Grid item>
-                            <Box>
-                                <Typography variant="body1" color="textPrimary">
-                                    מספר טלפון של העסק: {values.phone_number_official || "לא הוגדר"}
-                                </Typography>
-                            </Box>
-                        </Grid>
-                        <Grid item>
-                            <Box>
-                                <Typography variant="body1" color="textPrimary">
-                                    מספר וואטסאפ: {values.phone_number_whatsapp || "לא הוגדר"}
-                                </Typography>
-                            </Box>
-                        </Grid>
-                        <Grid item>
-                            <Box>
-                                <Typography variant="body1" color="textPrimary">
-                                    העסק עושה משלוחים? {shipping}
-                                </Typography>
-                            </Box>
-                        </Grid>
-                        {shipping == "כן" && (
-                        <Grid item>
-                            <Box>
-                                <Typography variant="body1" color="textPrimary">
-                                    טווח המשלוח: {km}
-                                </Typography>
-                            </Box>
-                        </Grid>
-                        )}
-
-                        <Grid item>
-                            <Box>
-                                <Typography variant="body1" color="textPrimary">
-                                    מדיניות הזמנות משלוחים: {values.delivery_details || "לא הוגדר"}
-                                </Typography>
-                            </Box>
-                        </Grid>
-
-                        <Grid item>
-                            <Typography variant="body1" color="textPrimary">
-                                סוגי מוצרים: {values.types_of_products || "לא הוגדר"}
-                            </Typography>
-                        </Grid>
-
-                        <Grid item>
-                            <Typography variant="body1" color="textPrimary">
-                                מחירון: {values.products || "לא הוגדר"}
-                            </Typography>
-                        </Grid>
-                        <Grid item>
-                            <Typography variant="body1" color="textPrimary">
-                                אתר העסק: {values.farm_site || "לא הוגדר"}
-                            </Typography>
-                        </Grid>
-                        <Grid item>
-                            <Typography variant="body1" color="textPrimary">
-                                פייסבוק: {values.facebook || "לא הוגדר"}
-                            </Typography>
-                        </Grid>
-                        <Grid item>
-                            <Typography variant="body1" color="textPrimary">
-                                אינסטגרם: {values.instagram || "לא הוגדר"}
-                            </Typography>
-                        </Grid>
-                        <Grid item>
-                            <Typography variant="body1" color="textPrimary">
-                                ספרו על עצמכם: {values.about || "לא הוגדר"}
-                            </Typography>
-                        </Grid>
-                        <Grid item>
-                            <Typography variant="body1" color="textPrimary">
-                                לוגו: {logoName || "לא נבחר"}
-                            </Typography>
-                        </Grid>
-                        <Grid item>
-                            <Typography variant="body1" color="textPrimary">
-                                תמונות המוצרים: {concatenatedNamesProducts || "לא נבחרו"}
-                            </Typography>
-                        </Grid>
-                        <Grid item>
-                            <Typography variant="body1" color="textPrimary">
-                                תמונות החווה: {concatenatedNamesFarm || "לא נבחרו"}
-                            </Typography>
-                        </Grid>
-                        <div >
-                            <Work days={days} />
-                        </div>
+                <Grid container direction="column" spacing={2} dir="rtl" style={{ fontFamily: "aleph" }}>
+                    <Grid item>
+                        <Typography variant="body1" color="textSecondary" textAlign={"center"} sx={{textDecoration: 'underline'}}>
+                            שם העסק:
+                        </Typography>
+                        <Typography maxWidth={580} variant="body2" color="textPrimary" textAlign={"center"}>
+                            {values.farm_name || "לא הוגדר"}
+                        </Typography>
                     </Grid>
 
-                    <Button style={{
-                        borderWidth: '1px', minWidth: "30px", backgroundColor: "#fff24d", position: "sticky",
-                        marginTop: '0px',
-                        marginRight: "400px", fontFamily: "aleph", fontSize: 16,
-                        color: "#212121"
-                    }} variant="outlined" sx={{ borderColor: 'black' }} onClick={submitHandler} > אישור ושליחה 
-                    </Button>
+                    <Grid item>
+                        <Typography variant="body1" color="textSecondary" textAlign={"center"} sx={{textDecoration: 'underline'}}>
+                            שם איש הקשר:
+                        </Typography>
+                        <Typography variant="body2" color="textPrimary" textAlign={"center"}>
+                            {values.farmer_name || "לא הוגדר"}
+                        </Typography>
+                    </Grid>
+
+                    <Grid item>
+                        <Typography variant="body1" color="textSecondary" textAlign={"center"} sx={{textDecoration: 'underline'}}>
+                            כתובת:
+                        </Typography>
+                        <Typography variant="body2" color="textPrimary" textAlign={"center"}>
+                            {values.address || "לא הוגדר"}
+                        </Typography>
+                    </Grid>
+
+                    <Grid item>
+                        <Typography variant="body1" color="textSecondary" textAlign={"center"} sx={{textDecoration: 'underline'}}>
+                            מספר טלפון של העסק:
+                        </Typography>
+                        <Typography variant="body2" color="textPrimary" textAlign={"center"}>
+                            {values.phone_number_official || "לא הוגדר"}
+                        </Typography>
+                    </Grid>
+
+                    <Grid item>
+                        <Typography variant="body1" color="textSecondary" textAlign={"center"} sx={{textDecoration: 'underline'}}>
+                            מספר וואטסאפ:
+                        </Typography>
+                        <Typography variant="body2" color="textPrimary" textAlign={"center"}>
+                            {values.phone_number_whatsapp || "לא הוגדר"}
+                        </Typography>
+                    </Grid>
+                    <Grid item>
+                        <Typography variant="body1" color="textSecondary" textAlign={"center"} sx={{textDecoration: 'underline'}}>
+                            שעות פתיחה:
+                        </Typography>
+                        <Typography variant="body2" color="textPrimary" textAlign={"center"}>
+                           ראשון - {days.sunday}
+                        </Typography>
+                        <Typography variant="body2" color="textPrimary" textAlign={"center"}>
+                           שני - {days.monday}
+                        </Typography>
+                        <Typography variant="body2" color="textPrimary" textAlign={"center"}>
+                           שלישי - {days.tuesday}
+                        </Typography>
+                        <Typography variant="body2" color="textPrimary" textAlign={"center"}>
+                           רביעי - {days.wednesday}
+                        </Typography>
+                        <Typography variant="body2" color="textPrimary" textAlign={"center"}>
+                           חמישי - {days.thursday}
+                        </Typography>
+                        <Typography variant="body2" color="textPrimary" textAlign={"center"}>
+                           שישי - {days.friday}
+                        </Typography>
+                        <Typography variant="body2" color="textPrimary" textAlign={"center"}>
+                           שבת - {days.saturday}
+                        </Typography>
+                    </Grid>
+                    <Grid item>
+                        <Typography variant="body1" color="textSecondary" textAlign={"center"} sx={{textDecoration: 'underline'}}>
+                            העסק עושה משלוחים?
+                        </Typography>
+                        <Typography variant="body2" color="textPrimary" textAlign={"center"}>
+                            {shipping}
+                        </Typography>
+                    </Grid>
+
+                    {shipping == "כן" && (
+                        <Grid item>
+                            <Typography variant="body1" color="textSecondary" textAlign={"center"} sx={{textDecoration: 'underline'}}>
+                                טווח המשלוח:
+                            </Typography>
+                            <Typography variant="body2" color="textPrimary" textAlign={"center"}>
+                                עד {km} ק"מ מ{values.address}
+                            </Typography>
+                        </Grid>
+                    )}
+                    <Grid item>
+                        <Typography variant="body1" color="textSecondary" textAlign={"center"} sx={{textDecoration: 'underline'}}>
+                            מדיניות הזמנות ומשלוחים:
+                        </Typography>
+                        <Typography style={{ maxWidth: '580px', wordWrap: 'break-word'}} variant="body2" color="textPrimary" textAlign={"center"}>
+                            {values.delivery_details || "לא הוגדר"}
+                        </Typography>
+                    </Grid>
+
+                    <Grid item>
+                        <Typography variant="body1" color="textSecondary" textAlign={"center"} sx={{textDecoration: 'underline'}}>
+                            סוגי מוצרים:
+                        </Typography>
+                        <Typography variant="body2" color="textPrimary" textAlign={"center"}>
+                            {values.types_of_products.replace(/,/g, ', ') || "לא הוגדר"}
+                        </Typography>
+                    </Grid>
+
+                    <Grid item>
+                        <Typography variant="body1" color="textSecondary" textAlign={"center"} sx={{textDecoration: 'underline'}}>
+                            מחירון:
+                        </Typography>
+                        <Typography style={{ maxWidth: '580px', wordWrap: 'break-word'}} variant="body2" color="textPrimary" textAlign={"center"}>
+                            {values.products || "לא הוגדר"}
+                        </Typography>
+                    </Grid>
+
+                    <Grid item>
+                        <Typography variant="body1" color="textSecondary" textAlign={"center"} sx={{textDecoration: 'underline'}}>
+                            אתר העסק:
+                        </Typography>
+                        <Typography maxWidth={580} variant="body2" color="textPrimary" textAlign={"center"}>
+                            {values.farm_site || "לא הוגדר"}
+                        </Typography>
+                    </Grid>
+
+                    <Grid item>
+                        <Typography variant="body1" color="textSecondary" textAlign={"center"} sx={{textDecoration: 'underline'}}>
+                            פייסבוק:
+                        </Typography>
+                        <Typography maxWidth={580} variant="body2" color="textPrimary" textAlign={"center"}>
+                            {values.facebook || "לא הוגדר"}
+                        </Typography>
+                    </Grid>
+
+                    <Grid item>
+                        <Typography variant="body1" color="textSecondary" textAlign={"center"} sx={{textDecoration: 'underline'}}>
+                            אינסטגרם:
+                        </Typography>
+                        <Typography maxWidth={580} variant="body2" color="textPrimary" textAlign={"center"}>
+                            {values.instagram || "לא הוגדר"}
+                        </Typography>
+                    </Grid>
+
+                    <Grid item>
+                        <Typography variant="body1" color="textSecondary" textAlign={"center"} sx={{textDecoration: 'underline'}}>
+                            ספרו על עצמכם:
+                        </Typography>
+                        <Typography style={{ 
+                                maxWidth: '580px', 
+                                wordWrap: 'break-word'
+                            }}  variant="body2" color="textPrimary" textAlign={"center"}>
+                            {values.about || "לא הוגדר"}
+                        </Typography>
+                    </Grid>
+
+                </Grid>
+
                 </>
 
             </Box>)}
 
 
             {showSuccessMessage && (
-                <div>
-                    <Box height="100vh" marginTop={5} bgcolor="#e1f5fe" boxShadow={2} borderRadius={2} border={2} display="flex" flexDirection={"column"} width={580} alignItems={"center"} justifyContent={"center"} margin={3} mt={4} padding={20} sx={{ border: '1.5px solid #bf360c' }}  >
-                        <Typography color="#37474f" fontFamily="aleph" fontWeight={'bold'} fontSize={50} marginBottom={"0px"} variant='h3' textAlign={"center"}> שלום {values.farmer_name} ! </Typography>
-                        <Typography color="#37474f" fontFamily="aleph" fontWeight={'bold'} fontSize={50} marginBottom={"0px"} variant='h3' textAlign={"center"}> אנחנו מודים לך על הרשמתך ל Farmers2U.</Typography>
-                        <Typography color="#37474f" fontFamily="aleph" minHeight={45} fontWeight={'bold'} fontSize={22} margin={5} variant='h2' textAlign={"center"}> מיד תועברו ללוח המודעות.</Typography>
-                    </Box>
-                </div>
-            )}
+          <div style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.6)',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000 // to ensure the modal is on top
+          }}>
+            <div style={{
+              backgroundColor: 'white',
+              padding: '40px',       // Increased padding for larger appearance
+              borderRadius: '10px',
+              fontSize: '40px',      // Increased font size
+              width: '800px',
+              height: "300px",        // Set a width
+              textAlign: 'center',
+              boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+              border: '3px solid #ffb74d'   // Added a subtle shadow for depth
+            }}>
+            {/* This is the animated welcome message */}
+            <div dir='rtl' style={modalTextStyle}>
+                {`שלום ${values.farm_name.length > 25 ? values.farm_name.slice(0,26) + "..." : values.farm_name}!`.replace(/\s/g, '\u00A0').split('').map((char, index) => (
+                    <span key={index} style={{animationDelay: `${index * 0.05}s` }} className={char === ' ' ? '' : "fade-in"}>
+                        {char}
+                    </span>
+                ))}
+            </div>
+            <div dir='rtl' style={modalTextStyle}>
+                {`כיף שהצטרפתם אלינו ל - U2sremraF!`.replace(/\s/g, '\u00A0').split('').map((char, index) => (
+                    <span key={index} style={{animationDelay: `${(index + `שלום ${values.farm_name.length > 25 ? values.farm_name.slice(0,26) + "..." : values.farm_name}!`.length) * 0.05}s` }} className={char === ' ' ? '' : "fade-in"}>
+                        {char}
+                    </span>
+                ))}
+            </div>
+            <div dir='rtl' style={modalTextSmallStyle}>
+                {`מיד תועברו ללוח המודעות`.replace(/\s/g, '\u00A0').split('').map((char, index) => (
+                    <span key={index} style={{animationDelay: `${(index + `שלום ${values.farm_name.length > 25 ? values.farm_name.slice(0,26) + "..." : values.farm_name}!`.length + `כיף שהצטרפתם אלינו ל - U2sremraF!`.length) * 0.05}s` }} className={char === ' ' ? '' : "fade-in"}>
+                        {char}
+                    </span>
+                ))}
+            </div>
+        </div>
+    </div>
+)}
+
+            </ThemeProvider>
+            <Button style={{
+                        borderWidth: '1px', minWidth: "30px", backgroundColor: "#ffb74d", 
+                        marginTop: '0px',
+                        marginLeft: "27%", fontFamily: "aleph", fontSize: 16,
+                        color: "#212121",
+                    }} disabled={!isFormValid} variant="outlined" sx={{ borderColor: 'black' }} onClick={submitHandler} > אישור ושליחה 
+                    </Button>
         </form>
     );
 };
