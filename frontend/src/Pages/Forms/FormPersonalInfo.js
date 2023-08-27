@@ -103,6 +103,7 @@ function FormPersonalInfo({values, handleChange, setFormValue, setIsFormPersonal
   const [isValidAddress, setIsValidAddress] = useState(false);
   const [isValidFarmerName, setIsValidFarmerName] = useState(true);
   const [farmerName, setFarmerName] = useState('');
+  const [showTooltip, setShowTooltip] = useState(false);
   const formValid = isValidPhone && isValidWhatsApp && isValidFarmName && isValidAddress && isValidFarmerName;
   // const validateForm = () => {
   //     const phoneIsValid = !phoneError;
@@ -359,7 +360,7 @@ function FormPersonalInfo({values, handleChange, setFormValue, setIsFormPersonal
   <Grid container item xs={5}>
   <Tooltip 
         title={<span style={{ fontSize: '12px' }}>יש להזין שם פרטי בלבד</span>}  
-        open={!!farmerName} 
+        open={!!farmerName && showTooltip} 
         placement="left"
     >
       <TextField fullWidth multiline dir="rtl"
@@ -372,6 +373,8 @@ function FormPersonalInfo({values, handleChange, setFormValue, setIsFormPersonal
         placeholder='שם איש קשר'
         defaultValue={values.farmer_name}
         onChange={handleChangeFarmerName}
+        onFocus={() => setShowTooltip(true)}
+        onBlur={() => setShowTooltip(false)}
         required="required"
         rows={1}
         rowsMax={5}
@@ -395,7 +398,7 @@ function FormPersonalInfo({values, handleChange, setFormValue, setIsFormPersonal
         /* onChange = {handleInputChange} */
       />
           </Tooltip>
-      <ValidateFarmerName farmerName={farmerName} setValidFlag={setIsValidFarmerName}/>
+      <ValidateFarmerName farmerName={values.farmer_name}  setFarmerName={setFarmerName} setValidFlag={setIsValidFarmerName}/>
   </Grid>
   <Grid container item xs={5}>
       <TextField fullWidth multiline dir="rtl"
