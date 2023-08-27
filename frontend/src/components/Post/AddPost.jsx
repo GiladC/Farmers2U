@@ -410,10 +410,8 @@ useEffect(() => {
 const handlePost = () => { /* The actual object to extract to the backend */
   if (!relevantDate()) {
     setIsRelevantDate(false);
-    setValidDate(false);
     setTimeout(function () {
       setIsRelevantDate(true);
-      setValidDate(true);
     }, 3000);
   }
   else {
@@ -481,6 +479,7 @@ return (
           <UserBox>
             <Avatar src={pfpAndName.profilePicture} sx={{ width: 30, height: 30 }} />
             <Typography fontWeight={500} variant="span">
+              {console.log(pfpAndName.profileName)}
               {pfpAndName.profileName.length > 20 ? pfpAndName.profileName.slice(0, 21) + "..." : pfpAndName.profileName}
             </Typography>
           </UserBox>
@@ -570,14 +569,12 @@ return (
               <DatePicker label={'תאריך '} views={['day']} format='DD/MM/YYYY'
                 value={value} onChange={handleChangeDate} sx={{
                   direction: 'rtl',
-                  "& label": {
-                    left: "unset",
-                    right: "8rem",
-                    transformOrigin: "center"
-                  },
-                  "& legend": {
-                    textAlign: "center",
-                  }
+                  "& label":{left: "unset",
+              right: "1.75rem",
+              transformOrigin: "right"},
+              "& legend": {
+                textAlign: "right",
+              },
                 }} />
             </Box>
             {!value && isDirty[2]  
