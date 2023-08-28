@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { TextField, Button, Box, Typography, Grid, Paper, ThemeProvider, Menu, MenuItem, FormControlLabel, Checkbox, createTheme, FormControl, FormLabel} from '@mui/material'
+import { TextField, Button, Box, Typography, Grid, Paper, ThemeProvider, Menu, MenuItem, FormControlLabel, Checkbox, createTheme, FormControl, FormLabel, Autocomplete, ListItem} from '@mui/material'
 import RemoveIcon from '@mui/icons-material/Remove';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
@@ -7,8 +7,106 @@ import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 // import ProductList from './ProductList';
 import axios from "axios";
 import { unstable_batchedUpdates } from 'react-dom';
+import { CheckBox, CheckBoxOutlineBlank, Close } from '@mui/icons-material';
+import PropTypes from 'prop-types';
+import {styled} from '@mui/material/styles'
+
+function Tag(props) {
+  const { label, onDelete, ...other } = props;
+  return (
+    <div {...other}>
+      <span>{label}</span>
+      <Close onClick={onDelete} />
+    </div>
+  );
+}
+
+Tag.propTypes = {
+  label: PropTypes.string.isRequired,
+  onDelete: PropTypes.func.isRequired,
+};
+
+const StyledTag = styled(Tag)(
+  ({ theme }) => `
+  display: flex;
+  color: ${'black'};
+  align-items: center;
+  height: 24px;
+  margin: 2px;
+  line-height: 22px;
+  background-color: ${
+    theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.08)' : '#E8AA42'
+  };
+  border: 1.5px solid ${theme.palette.mode === 'dark' ? '#1d3c45' : '#1d3c45'};
+  border-radius: 22px;
+  box-sizing: content-box;
+  padding: 0 4px 0 10px;
+  outline: 0;
+  overflow: hidden;
+
+  &:focus {
+    border-color: ${theme.palette.mode === 'dark' ? '#177ddc' : '#40a9ff'};
+    background-color: ${theme.palette.mode === 'dark' ? '#003b57' : '#e6f7ff'};
+  }
+
+  & span {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: '#E8AA42';
+  }
+
+  & svg {
+    font-size: 12px;
+    cursor: pointer;
+    padding: 4px;
+  }
+
+`,
+);
 
 
+const products_categories = [
+  {
+    id: 1,
+    label: 'ירקות'
+  },
+  {
+    id: 2,
+    label: 'פירות'
+  },
+  {
+    id: 3,
+    label: 'גבינות ומוצרי חלב'
+  },
+  {
+    id: 4,
+    label: 'ביצים'
+  },
+  {
+    id: 5,
+    label: 'דבש'
+  },
+  {
+    id: 6,
+    label: 'צמחים'
+  },
+  {
+    id: 7,
+    label: 'יינות ושמן זית'
+  },
+  {
+    id: 8,
+    label: 'תבלינים'
+  },
+  {
+    id: 9,
+    label: 'דגנים'
+  },
+]
+  
+const icon = <CheckBoxOutlineBlank fontSize="small" />;
+const checkedIcon = <CheckBox fontSize="small" />;
 
 const {palette} = createTheme();
 const { augmentColor } = palette;
@@ -112,25 +210,34 @@ function FormProductsUpload({values, handleChange, setFormValue}) {
   const [checked, setChecked] = React.useState(
     Array(9).fill(false) // Initial state for 9 checkboxes
   );
+  const [categories, setCategories] = useState([])
+  const matchingProducts = products_categories.filter((prod) => 
+                values.types_of_products.includes(prod.label));
+
+  const handleChangeCategories = (event, newValue) => {
+    const types = newValue.map(t => t.label).join();
+    setFormValue("types_of_products", types);
+  }
+
   const [selectedItems, setSelectedItems] = React.useState([]);
   // Helper function to check if two arrays are different
   const arraysDiffer = (a, b) => {
     return !(JSON.stringify(a) === JSON.stringify(b));
   }
 
-  useEffect(() => {
-    // Splitting the types_of_products into an array
-    const currentTypes = types_of_products ? types_of_products.split(",") : [];
+  // useEffect(() => {
+  //   // Splitting the types_of_products into an array
+  //   const currentTypes = types_of_products ? types_of_products.split(",") : [];
 
-    if (arraysDiffer(currentTypes, selectedItems)) {
-        // Updating the checked array based on the current types
-        const currentChecked = labels.map(label => currentTypes.includes(label));
-        setChecked(currentChecked);
+  //   if (arraysDiffer(currentTypes, selectedItems)) {
+  //       // Updating the checked array based on the current types
+  //       const currentChecked = labels.map(label => currentTypes.includes(label));
+  //       setChecked(currentChecked);
 
-        // Updating the selectedItems state with the current types
-        setSelectedItems(currentTypes);
-    }
-  }, [types_of_products, labels, selectedItems]);
+  //       // Updating the selectedItems state with the current types
+  //       setSelectedItems(currentTypes);
+  //   }
+  // }, [types_of_products, labels, selectedItems]);
 
 
   const handleClick = (event) => {
@@ -429,7 +536,7 @@ function FormProductsUpload({values, handleChange, setFormValue}) {
   <Grid item xs={12} style={{ marginBottom:"-1.2rem"}}>
   <Box marginBottom={2} marginTop={8} style={{ marginBottom:"-1rem"}}>
   <Box mb={2} dir="rtl">
-    <CheckboxMenu
+    {/* <CheckboxMenu
     anchorEl={anchorEl}
     selectedItems={selectedItems}
     setSelectedItems={setSelectedItems}
@@ -440,7 +547,7 @@ function FormProductsUpload({values, handleChange, setFormValue}) {
     setChecked={setChecked}
     checked={checked}
     labels={labels}
-     />
+     /> */}
   {/* <Typography color="#757575"fontFamily="aleph" marginTop={1} > מוכרים מוצרים מיוחדים? סמנו כאן! </Typography>
     <Box>
         <Grid container justifyContent="space-around">
@@ -457,6 +564,53 @@ function FormProductsUpload({values, handleChange, setFormValue}) {
             ))}
         </Grid>
     </Box>*/}
+    <Autocomplete
+    style={{backgroundColor:'white'}}
+          multiple
+          id="checkboxes-tags-demo"
+          // value={categories}
+          defaultValue = {matchingProducts}
+          onChange={handleChangeCategories}
+          options={products_categories}
+          direction= 'rtl'
+          disableCloseOnSelect
+          disablePortal
+          position='relative'
+          placement='top'
+          noOptionsText = 'אין תוצאות'
+          ListboxProps={
+            {
+              style:{
+                  maxHeight: '100px',
+                  border: '2px solid #E8AA42',
+                  direction: 'ltr'
+              }
+            }
+          }
+          getOptionLabel={(option) => option.label}
+          renderOption={(props, option, { selected }) => (
+            <ListItem {...props} sx={{direction: 'rtl', fontSize: '18px', position: 'relative', overflowY: 'scroll',
+            '&:hover': {backgroundColor: '#E8AA42!important'}, '&&.Mui-selected':{color: '#E8AA42!important'}}}>
+              <Checkbox
+                icon={icon}
+                checkedIcon={checkedIcon}
+                style={{ marginRight: 8 }}
+                checked={selected}
+                sx={{direction: 'rtl', '&.Mui-checked':{color: "black"} }}
+              />
+              {option.label}
+            </ListItem>
+          )}
+          renderTags={(value, getTagProps) =>
+            value.map((option, index) => (
+              <StyledTag label={option.label} {...getTagProps({ index })} />
+          ))}
+          sx={{ width: '100%'
+         }}
+          renderInput={(params) => (
+            <TextField {...params} placeholder="סוגי מוצרים"  direction= 'rtl' />
+          )}
+        />
   </Box> 
   <Typography color="#757575"fontFamily="aleph" marginTop={-2} > פירוט מבחר המוצרים ומחיריהם: </Typography>
     <Paper>
