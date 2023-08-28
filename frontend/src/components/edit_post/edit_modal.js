@@ -405,7 +405,7 @@ useEffect(() => {
           <UserBox>
             <Avatar src = {pfpAndName.profilePicture} sx={{ width: 30, height: 30 }} />
             <Typography fontWeight={500} variant="span">
-            {pfpAndName.profileName.length > 20 ? pfpAndName.profileName.slice(0, 21) + "..." : pfpAndName.profileName}
+            {pfpAndName.profileName && pfpAndName.profileName.length > 20 ? pfpAndName.profileName.slice(0, 21) + "..." : pfpAndName.profileName}
             </Typography>
           </UserBox>
           <TextField
