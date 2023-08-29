@@ -10,8 +10,6 @@ import PlacesAutocomplete from 'react-places-autocomplete';
 import {ValidatePhone, ValidateWhatsapp} from '../../components/validations'
 
 
-
-
 const {palette} = createTheme();
 const { augmentColor } = palette;
 const createColor = (mainColor) => augmentColor({ color: { main: mainColor } });
@@ -363,7 +361,9 @@ function FormPersonalInfo({values, handleChange, setFormValue, setIsFormPersonal
 
         }} 
       />
+        <div style={{marginLeft: "60%"}} >
       <ValidateWhatsapp whatsapp={values.phone_number_whatsapp} setValidFlag={setIsValidWhatsApp}/>
+          </div>
           </div>
   </Grid>
   <Grid container item xs={5}>
@@ -397,7 +397,9 @@ function FormPersonalInfo({values, handleChange, setFormValue, setIsFormPersonal
 
         }} 
       />
+        <div style={{marginLeft: "60%"}} >
         <ValidatePhone phone={values.phone_number_official} setValidFlag={setIsValidPhone}/>
+        </div>
         <ValidatePhoneNotEmpty phoneNumber={values.phone_number_official} setValidFlag={setIsValidPhoneNotEmpty} /> 
         </div>
 
