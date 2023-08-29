@@ -16,6 +16,7 @@ import axios from 'axios';
 import { Close } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 
+import products from '../../assets/lists';
 
   const marks = [
     {
@@ -185,44 +186,6 @@ const PrettoSlider = styled(Slider)({
   );
 
   
-const products = [
-    {
-      id: 1,
-      label: 'ירקות'
-    },
-    {
-      id: 2,
-      label: 'פירות'
-    },
-    {
-      id: 3,
-      label: 'גבינות ומוצרי חלב'
-    },
-    {
-      id: 4,
-      label: 'ביצים'
-    },
-    {
-      id: 5,
-      label: 'דבש'
-    },
-    {
-      id: 6,
-      label: 'צמחים'
-    },
-    {
-      id: 7,
-      label: 'יינות ושמן זית'
-    },
-    {
-      id: 8,
-      label: 'תבלינים'
-    },
-    {
-      id: 9,
-      label: 'דגנים'
-    },
-  ]
     
   const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
   const checkedIcon = <CheckBoxIcon fontSize="small" />;
