@@ -11,7 +11,13 @@ function FormSignUpInfo({values, setFormValue, setIsFormSignUpInfoValid }) {
   const [buttonText, setButtonText] = useState('הירשם עם Google');
   const [errorMessage, setErrorMessage] = useState('');
 
-
+  useEffect(() => {
+    if (values.is_valid_email) {
+      setErrorMessage("");
+    } else {
+      setErrorMessage("משתמש זה כבר רשום במערכת");
+    }
+  }, [values.is_valid_email]);
 
   useEffect(() => {
     setIsFormSignUpInfoValid(values.is_valid_email);
