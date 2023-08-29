@@ -114,7 +114,7 @@ const EditPost = ({ post, open, onClose }) => {
     post.initial_products.includes(prod.label)
   )
   const [selectedProducts, setSelectedProducts] = useState(matchingProducts);
-  const [pfpAndName, setPfpAndName] = useState({
+  const [pfpAndName] = useState({
     profilePicture: localStorage.getItem('profilePicture'),
     profileName: localStorage.getItem('farmName'),
   })
@@ -231,7 +231,7 @@ const handleSelect = async value => {
       })
     }
     else {
-      if (value == "") {	
+      if (value === "") {	
         setValidDescription(false);	
       } else {	
         setValidDescription(true);	
@@ -294,7 +294,9 @@ useEffect(() => { // every time the modal is opened or closed, remove the valida
     isVegan: post.initial_vegan || false,
     text: post.initial_text,
   });	
-}, [open])
+}, [open, post.initial_address, post.initial_organic, 
+  post.initial_text, post.initial_value, post.initial_value2,
+   post.initial_value3, post.initial_vegan, matchingProducts])
 
 useEffect(() => {	
   if (!(value2) || !(value3)) {	
@@ -335,7 +337,7 @@ useEffect(() => {
       setValidHours(true);	
     }	
   }	
-}, [value2, value3]);
+}, [value2, value3, matchingProducts, post]);
 
 
 
