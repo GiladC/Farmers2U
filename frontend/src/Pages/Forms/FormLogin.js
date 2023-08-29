@@ -127,8 +127,9 @@ const FormLogin = (props) => {
           התחברות חקלאי
         </Typography>
         <Box marginTop={5}>
+        <div>
           <form> 
-            <Box>
+            <Box height={80}>
             <div id="signInDiv" style={{marginRight:'0%', paddingTop: '25px'}}></div>
             </Box>
           </form>
@@ -146,13 +147,15 @@ const FormLogin = (props) => {
               {errorMessage || "\u00A0"}
             </Box>
           )}
-          <Box mt={1} marginRight={3}>
+          </div>
+
+        </Box>
+        <Box mt={1} ml={1}>
           <a href="/signup">
             <Button
               variant="text"
-              size="medium"
+              size="large"
               sx={{
-                marginRight: '2rem',
                 fontFamily: 'aleph',
                 mt: 4,
                 borderRadius: 4,
@@ -163,7 +166,6 @@ const FormLogin = (props) => {
             </Button>
           </a>
           </Box>
-        </Box>
       </Box>
     </Box>
         {showPopup && (
