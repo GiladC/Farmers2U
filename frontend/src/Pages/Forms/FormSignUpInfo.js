@@ -12,7 +12,7 @@ function FormSignUpInfo({values, setFormValue, setIsFormSignUpInfoValid }) {
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
-    if (values.is_valid_email) {
+    if (values.is_valid_email  || values.email === "") {
       setErrorMessage("");
     } else {
       setErrorMessage("משתמש זה כבר רשום במערכת");
