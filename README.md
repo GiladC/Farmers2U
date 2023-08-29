@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Welcome to the **Farmers2U** ,a platform for Farmers and Consumers project at Tel Aviv University. This platform serves as a bridge between local farmers and consumers, allowing farmers to showcase their goods and consumers to discover and connect with them.
+Welcome to the **Farmers2U** ,a platform for farmers and consumers created by a group of CS students at Tel Aviv University. This platform serves as a bridge between local farmers and consumers, allowing farmers to showcase their goods and consumers to discover and connect with them. This website benefits all - it allowes the farmer to publish his buisness and his marketing events as well as sell his goods without having to split shares with importers and marketers, and on the other hand, allowes the consumer to purchase the best products straight from the farmer and support local israeli agriculture.
 
 ## Project Overview
 
