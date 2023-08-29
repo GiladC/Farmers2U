@@ -34,22 +34,9 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import Button from '@mui/material/Button';
-import BusinessCard from '../../components/Post/businessCard';
 import NewBusinessCard from '../../components/Post/newBusinessCard';
 
 
-const dummyBusiness = { 
-  name: 'משק הגולן',
-  location: 'רמת הגולן' ,
-  phone: '0725437433',
-  mail: 'golanFarm@gmail.com',
-  about: 'המשק קיים מזה 20 שנה והוא משק משפחתי שעובר מדור לדור. המטרה שלנו היא להביא את הירקות האיכותיים ביותר, במחירים הגונים. \
-  אנו מגדלים את הירקות שלנו בתנאים הטובים ביותר, על מנת להבטיח לכם את הטוב ביותר. \
-  הירקות שלנו גדלים תחת אוויר הרי גולן הפסטורליים, וצוות החקלאים שלנו משתמש בטכנולוגיה החדשנית ביותר בתחום.',
-  whatsApp: '0547984551',
-  instagram: 'golan_farm20',
-  facebook: 'משק הגולן'
-};
 
 
 const FarmCard = ({Image, business, style, token }) => {
