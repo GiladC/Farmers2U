@@ -1,12 +1,7 @@
-import React, { useState, useEffect } from 'react'
-import { TextField, Button, Box, Typography, Grid, Paper, ThemeProvider, Menu, MenuItem, FormControlLabel, Checkbox, createTheme, FormControl, FormLabel, Autocomplete, ListItem} from '@mui/material'
+
+import { TextField, Button, Box, Typography, Grid, Paper, ThemeProvider, Menu, MenuItem, FormControlLabel, Checkbox, createTheme, Autocomplete, ListItem} from '@mui/material'
 import RemoveIcon from '@mui/icons-material/Remove';
-import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
-import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
-// import ProductList from './ProductList';
-import axios from "axios";
-import { unstable_batchedUpdates } from 'react-dom';
 import { CheckBox, CheckBoxOutlineBlank, Close } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import {styled} from '@mui/material/styles'
@@ -200,29 +195,12 @@ function CheckboxMenu(props) {
 }
 
 function FormProductsUpload({values, handleChange, setFormValue}) {
-  const {farm_name, email, google_profile_picture, google_name, google_family_name, 
-    shipping_distance, is_shipping, opening_hours, closing_hours, logo_picture, products_pictures, types_of_products, 
-    farm_pictures, phone_number_official, phone_number_whatsapp, phone_number_telegram, about, address,
-    farmer_name, delivery_details, products, farm_site, facebook, instagram
-    } = values
-  const labels = ["ירקות", "פירות", "גבינות ומוצרי חלב", "ביצים", "דבש", "צמחים", "יינות ושמן זית", "תבלינים", "דגנים"];
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [checked, setChecked] = React.useState(
-    Array(9).fill(false) // Initial state for 9 checkboxes
-  );
-  const [categories, setCategories] = useState([])
   const matchingProducts = products_categories.filter((prod) => 
                 values.types_of_products.includes(prod.label));
 
-  const handleChangeCategories = (event, newValue) => {
+  const handleChangeCategories = (newValue) => {
     const types = newValue.map(t => t.label).join();
     setFormValue("types_of_products", types);
-  }
-
-  const [selectedItems, setSelectedItems] = React.useState([]);
-  // Helper function to check if two arrays are different
-  const arraysDiffer = (a, b) => {
-    return !(JSON.stringify(a) === JSON.stringify(b));
   }
 
   // useEffect(() => {
@@ -240,164 +218,9 @@ function FormProductsUpload({values, handleChange, setFormValue}) {
   // }, [types_of_products, labels, selectedItems]);
 
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleToggle = (index) => {
-    setChecked((prevChecked) => {
-      const newChecked = [...prevChecked];
-      newChecked[index] = !newChecked[index];
-      console.log(newChecked)
-      return newChecked;
-    });
-    setSelectedItems((prevSelectedItems) => {
-      const newSelectedItems = [...prevSelectedItems];
-      if (newSelectedItems.includes(labels[index])) {
-        const itemIndex = newSelectedItems.indexOf(labels[index]);
-        newSelectedItems.splice(itemIndex, 1);
-      } else {
-        newSelectedItems.push(labels[index]);
-      }
-      setFormValue("types_of_products", newSelectedItems.join())
-      return newSelectedItems;
-    });
-  };
-  const handleRemove = (event,label) => {
-    event.stopPropagation();
-    const index = labels.indexOf(label);
-    setChecked((prevChecked) => {
-      const newChecked = [...prevChecked];
-      newChecked[index] = false;
-      return newChecked;
-    });
-
-    setSelectedItems((prevSelectedItems) => {
-      const newSelectedItems = [...prevSelectedItems];
-      const itemIndex = newSelectedItems.indexOf(label);
-      newSelectedItems.splice(itemIndex, 1);
-      setFormValue("types_of_products", newSelectedItems.join())
-      return newSelectedItems;
-    });
-  };
-  console.log(values, handleChange);
-  const additionalItems = ['אורגני', 'טבעוני'];
-  const [image, setImage] = useState(null);
-  const [productsImages, setProductsImages] = useState(null);
-  const [farmImages, setFarmImages] = useState(null);
-  const [responseMsg, setResponseMsg] = useState({
-    status: "",
-    message: "",
-    error: "",
-  });
-  const submitHandler = (e) => {
-    e.preventDefault();
-    const data = new FormData(); 
-    data.append("jsonData", JSON.stringify({
-      email:"tamirsadovsky@gmail.com",
-      google_name: "picture",
-      google_profile_picture: "picture",
-      shipping_distance: "",
-      is_shipping:"",
-      opening_hours:"",
-      closing_hours:"",
-      google_name: "Golan",
-      google_family_name: "Farmson",
-      farm_name: "משק הגולן",
-      logo_picture: "",
-      farm_pictures: "",
-      products_pictures: "",
-      about: "המשק קיים מזה 20 שנה והוא משק משפחתי שעובר מדור לדור. המטרה שלנו היא להביא את הירקות האיכותיים ביותר, במחירים הגונים.",
-      phone_number_official: "0",
-      phone_number_whatsapp: "0",
-      phone_number_telegram: "0",
-      address: "בן דרור 17",
-      farmer_name: "Golan",
-      delivery_details: "משלוחים רק בצפון, החל ממחיר הזמנה של 120 ש\"ח.\n\nניתן לעשות הזמנות מראש ולקחת באיסוף עצמי.",
-      products: "מלפפון: 5.9 ש\"ח לק\"ג\n\nעגבניה: 5 ש\"ח לק\"ג\n\nבצל: 6.4 ש\"ח לק\"ג\n\nגזר: 6 ש\"ח לק\"ג\n\nחציל: 7 ש\"ח לק\"ג",
-      farm_site: "www.golanfarm.com",
-      facebook: "www.facebook/golanfarm.com",
-      instagram: "www.instagram/golanfarm.com"
-
-    }))
-    for (let i = 0; i < image.length; i++) {
-      data.append("files[]", image[i]);
-      data.append("labels[]", "1");
-    }
-    for (let i = 0; i < productsImages.length; i++) {
-      data.append("files[]", productsImages[i]);
-      data.append("labels[]", "2");
-    }
-    for (let i = 0; i < farmImages.length; i++) {
-      data.append("files[]", farmImages[i]);
-      data.append("labels[]", "3");
-    }
-    console.log(image)
-    console.log(productsImages)
-    console.log(farmImages)
-    
-    axios.post("http://127.0.0.1:5000/signup", data)
-    .then((response) => {
-            console.log(response)
-        if (response.status === 201) {
-          this.setState({
-            responseMsg: {
-              status: response.data.status,
-              message: response.data.message,
-            },
-          });
-          setTimeout(() => {
-            this.setState({
-              image: "",
-              responseMsg: "",
-            });
-          }, 100000);
-  
-          document.querySelector("#imageForm").reset();
-        }
-            alert("Successfully Uploaded");
-    })
-    .catch((error) => {
-        console.error(error); 
-        if (error.response) {
-            console.log(error.response)
-            if (error.response.status === 401) {
-                alert("Invalid credentials");
-            }
-        }
-    });
-     
-  };
-  
-
-  const fileValidate = (file) => {
-    if (
-      file.type === "image/png" ||
-      file.type === "image/jpg" ||
-      file.type === "image/jpeg"
-    ) {
-      setResponseMsg({
-        ...responseMsg,
-        error: "",
-      });
-      return true;
-    } else {
-      setResponseMsg({
-        ...responseMsg,
-        error: "File type allowed only jpg, png, jpeg",
-      });
-      return false;
-    }
-  };
-
   const handleChangePhotoLogo = (e) => {
     if (e.target.files.length > 0) {
       const selectedPhotos = e.target.files;
-      const labelLogo = "1"
       for (let i = 0; i < selectedPhotos.length; i++) {
         if (!fileMaxSize(selectedPhotos[i])){
           alert("גודל מקסימלי עבור קובץ הוא 5MB.");
@@ -414,18 +237,15 @@ function FormProductsUpload({values, handleChange, setFormValue}) {
           return
         }
       }
-      setImage(selectedPhotos)
       setFormValue("logo_picture", selectedPhotos)
     }
     else {
-      setImage("");
       setFormValue("logo_picture", "");
     }
   };
   const handleChangePhotoFarm = (e) => {
     if (e.target.files.length > 0) {
       const selectedPhotos = e.target.files;
-      const labelLogo = "2"
       if (!filesNumberValidation(selectedPhotos.length)){
         alert("מותר להעלות עד 5 קבצים.");
         e.target.value = null; 
@@ -448,18 +268,15 @@ function FormProductsUpload({values, handleChange, setFormValue}) {
           return
         }
       }
-      setFarmImages(selectedPhotos)
       setFormValue("farm_pictures", selectedPhotos)
     }
     else {
-      setFarmImages("");
       setFormValue("farm_pictures", "");
     }
   };
   const handleChangePhotoProducts = (e) => {
     if (e.target.files.length > 0) {
       const selectedPhotos = e.target.files;
-      const labelLogo = "3"
               if (!filesNumberValidation(selectedPhotos.length)){
           alert("מותר להעלות עד 5 קבצים.");
           e.target.value = null; 
@@ -482,11 +299,9 @@ function FormProductsUpload({values, handleChange, setFormValue}) {
             return
           }
         }
-      setProductsImages(selectedPhotos)
       setFormValue("products_pictures", selectedPhotos)
     }
     else {
-      setProductsImages("");
       setFormValue("products_pictures", "");
     }
   };
@@ -632,7 +447,7 @@ function FormProductsUpload({values, handleChange, setFormValue}) {
 
   </Grid> 
 
-<form onSubmit={submitHandler} autoComplete="off" dir="rtl" /*className={classes.root}*/ encType="multipart/form-data">
+<form autoComplete="off" dir="rtl" /*className={classes.root}*/ encType="multipart/form-data">
              <Box style={{marginRight: "10%"}}>              
           <Grid marginTop={8} item xs={6} style={{ marginBottom:"-1rem"}}>
               
