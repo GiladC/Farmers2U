@@ -1,7 +1,6 @@
 import datetime
 from flask import  Blueprint, request, jsonify
-from app import app
-from models import Post, User
+from app import app, Post, User
 from geopy.distance import geodesic
 
 

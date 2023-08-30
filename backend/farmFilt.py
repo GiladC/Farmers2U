@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from models import User, db
+from app import User, db
 # from geopy.geocoders import Nominatim
 # from geopy.distance import geodesic
 import googlemaps

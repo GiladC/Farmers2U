@@ -1,6 +1,6 @@
 from flask import jsonify, Blueprint
 
-from models import User
+from app import User
 business_blueprint = Blueprint('bussinesses', __name__)
 
 @business_blueprint.route('/businessCard')

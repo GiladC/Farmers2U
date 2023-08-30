@@ -1,6 +1,5 @@
 from flask import jsonify, Blueprint
-from app import app
-from models import Post , User
+from app import app, Post , User
 
 getposts_blueprint = Blueprint('getposts', __name__)
 

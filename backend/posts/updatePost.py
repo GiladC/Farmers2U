@@ -1,17 +1,29 @@
 from flask import jsonify, request, Blueprint
-from app import app
-from models import Post, User, db
+from app import app, Post, User, db
 import datetime
 import os
 from werkzeug.utils import secure_filename
 from google.cloud import storage
+from dotenv import load_dotenv, find_dotenv
+import base64
+import json
 
 
 
 
 updatePost_blueprint = Blueprint('update_post', __name__)
+# Load environment variables from .env
+load_dotenv()
 
-storage_client = storage.Client.from_service_account_json('C:\\Users\\Nicole\\OneDrive\\Documents\\VSCode\\farmers_backend\\keyfile.json')
+# Retrieve the JSON string from the environment variable
+google_credentials_json = os.getenv("GOOGLE_APPLICATION_CREDENTIALS_JSON")
+
+# Parse the JSON string into a dictionary
+google_credentials_dict = json.loads(google_credentials_json)
+
+# Create a storage client using the parsed service account info
+storage_client = storage.Client.from_service_account_info(google_credentials_dict)
+
 bucket_name = 'image_storage_farmers2u'
 bucket = storage_client.bucket(bucket_name)
 

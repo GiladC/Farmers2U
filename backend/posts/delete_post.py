@@ -1,6 +1,5 @@
 from flask import jsonify, request, Blueprint
-from app import app
-from models import Post, db
+from app import app, Post, db
 
 
 deletepost_blueprint = Blueprint('delete_post', __name__)

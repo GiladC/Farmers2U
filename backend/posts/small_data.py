@@ -1,7 +1,6 @@
 from flask import jsonify, request, Blueprint
-from app import app
-from models import Post  
-from models import User
+from app import app, Post, User
+
 
 smalldata_blueprint = Blueprint('small_data', __name__)
 
