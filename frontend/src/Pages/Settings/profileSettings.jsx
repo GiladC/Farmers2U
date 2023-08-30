@@ -273,8 +273,6 @@ const ProfileSettings = (props) => {
     const storedEmail = localStorage.getItem('email');
     const profileEmail = props.token?.profile_email || storedEmail || '';
     const token = useRef(props.token).current;
-    const setToken = useRef(props.setToken).current;
-
     const getUsers = useCallback(() => {
       axios({
         method: 'GET',
