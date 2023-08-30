@@ -11,17 +11,12 @@ function FormSignUpInfo({values, setFormValue, setIsFormSignUpInfoValid }) {
   const [buttonText, setButtonText] = useState('הירשם עם Google');
   const [errorMessage, setErrorMessage] = useState('');
 
-  useEffect(() => {
-    if (values.is_valid_email  || values.email === "") {
-      setErrorMessage("");
-    } else {
-      setErrorMessage("משתמש זה כבר רשום במערכת");
-    }
-  }, [values.is_valid_email]);
+
 
   useEffect(() => {
     setIsFormSignUpInfoValid(values.is_valid_email);
 }, [values.is_valid_email, setIsFormSignUpInfoValid]);
+
 
 
 
@@ -91,10 +86,10 @@ function FormSignUpInfo({values, setFormValue, setIsFormSignUpInfoValid }) {
               </Box>
             <Box container style={{paddingRight: '30px', paddingLeft: '10px'}}>
             <form>
-                <Box height={65} sx={{marginLeft:"5%"}}>
+                <Box sx={{marginLeft:"5%"}}>
                   <div
                     id="signUpDiv"
-                    style={{width: "230px", paddingTop: '25px'}}
+                    style={{ marginRight: '27%', paddingTop: '25px' }}
                   ></div>
                   {errorMessage && (
                   <Typography
