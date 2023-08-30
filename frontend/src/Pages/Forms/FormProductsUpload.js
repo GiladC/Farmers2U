@@ -238,7 +238,7 @@ function FormProductsUpload({values, handleChange, setFormValue}) {
           ListboxProps={
             {
               style:{
-                  maxHeight: '100px',
+                  maxHeight: '258px',
                   border: '2px solid #E8AA42',
                   direction: 'ltr'
               }
