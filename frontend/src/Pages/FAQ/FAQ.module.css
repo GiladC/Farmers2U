@@ -102,9 +102,9 @@ code {
 
   @media(max-width: 800px) {
 	.right{
-		display: none !important;
+		display: none;
 	}
 	.left{
-		display: none !important;
+		display: none;
 	}
   }
