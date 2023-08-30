@@ -146,13 +146,12 @@ const FormLogin = (props) => {
               {errorMessage || "\u00A0"}
             </Box>
           )}
-          <Box mt={1} marginRight={3}>
+          <Box mt={1} display= 'flex' justifyContent='center'>
           <a href="/signup">
             <Button
               variant="text"
               size="medium"
               sx={{
-                marginRight: '2rem',
                 fontFamily: 'aleph',
                 mt: 4,
                 borderRadius: 4,
