@@ -80,7 +80,7 @@ def update_post():
         image_url = f"https://storage.googleapis.com/{bucket_name}/{post_image_filename}"
 
 
-    time_range = f"{data['endTime']}-{data['startTime']}"
+    time_range = f"{data['startTime']}-{data['endTime']}"
 
     product_types = data.get('products')
     if product_types:
