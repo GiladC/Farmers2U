@@ -104,7 +104,7 @@ def create_post():
 
     israel_timezone = pytz.timezone('Asia/Jerusalem')  # Set the time zone to IST (Israel Standard Time)
     current_time = datetime.datetime.now(israel_timezone)
-    time_range = f"{data['endTime']}-{data['startTime']}"
+    time_range = f"{data['startTime']}-{data['endTime']}"
 
     product_types = data.get('products')
     if product_types:
