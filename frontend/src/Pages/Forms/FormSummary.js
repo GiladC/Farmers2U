@@ -43,10 +43,18 @@ const FormSummary = ({ values , props, isFormValid, isFormSignUpInfoValid, isFor
     if (values.is_shipping){
         shipping = "כן"
         km = values.shipping_distance
+        if (values.shipping_distance){
+
+        }
+        else{
+            values.shipping_distance = "0"
+        }
     }
     else{
         shipping = "לא"
         km = ""
+        values.shipping_distance = "0"
+        values.is_shipping = false
     }
     if (values.logo_picture){
         logoName = values.logo_picture[0].name
