@@ -20,7 +20,7 @@ const theme = createTheme({
 });
 
 
-const FormSummary = ({ values , props, isFormValid, isFormSignUpInfoValid, isFormOpeningHoursValid}) => {
+const FormSummary = ({ values , props, isFormValid, isFormSignUpInfoValid, isFormShippingOptionsValid, isFormOpeningHoursValid}) => {
     const modalTextStyle = {
       fontSize: 'larger', 
       textAlign: 'center',
@@ -374,11 +374,17 @@ const FormSummary = ({ values , props, isFormValid, isFormSignUpInfoValid, isFor
 
                     {shipping === "כן" && (
                         <Grid item>
+                            {isFormShippingOptionsValid ? 
                             <Typography variant="body1" color="textSecondary" textAlign={"center"} sx={{textDecoration: 'underline'}}>
                                 טווח המשלוח:
                             </Typography>
+                            :
+                            <Typography variant="body1" color="textSecondary" textAlign={"center"} sx={{textDecoration: 'underline'}}>
+                                *טווח המשלוח:
+                           </Typography>
+                            }
                             <Typography variant="body2" color="textPrimary" textAlign={"center"}>
-                                עד {km} ק"מ מ{values.address || "-לא הוזנה כתובת"}
+                                עד {isFormShippingOptionsValid ? km : "__"} ק"מ מ{values.address || "-לא הוזנה כתובת"}
                             </Typography>
                         </Grid>
                     )}
