@@ -15,7 +15,6 @@ const themeForButton = createTheme({
 });
 
 const FormLogin = (props) => {
-  const [user, setUser] = useState({});
   const [errorMessage, setErrorMessage] = useState('');
   const [showPopup, setShowPopup] = useState(false);
   const modalTextStyle = {
@@ -32,7 +31,6 @@ const FormLogin = (props) => {
 
   const handleCallbackResponse = (response) => {
     const userObject = jwt_decode(response.credential);
-    setUser(userObject);
 
     axios({
       method: 'POST',
