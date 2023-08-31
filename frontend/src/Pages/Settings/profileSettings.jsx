@@ -219,7 +219,7 @@ const ProfileSettings = (props) => {
         const val = event.target.checked;
         setIsShipping(val);
         if(val === false){
-            setShippingDist("");
+            setShippingDist(0);
         }
         
       };
@@ -295,7 +295,7 @@ const ProfileSettings = (props) => {
           setInstagram(res.instagram);
           setWebsite(res.farm_site);
           setMenu(res.products);
-          setIsShipping(parseInt(res.is_shipping));
+          setIsShipping(JSON.parse(res.is_shipping));
           setShippingDist(res.shipping_distance);
           setDelivery(res.delivery_details);
           setFarmer(res.farmer_name);
@@ -385,7 +385,7 @@ const ProfileSettings = (props) => {
           instagram: instagram
 
         }))
-        if (newLogo){
+        if (newLogo && newLogo !== "https://storage.googleapis.com/image_storage_farmers2u/empty_image.png"){
           //alert(newLogo)
           for (let i = 0; i < newLogo.length; i++) {
             //alert(logo[i])
@@ -445,7 +445,7 @@ const ProfileSettings = (props) => {
 
     const handleDeletePhotoLogo = () => {
         setLogoFlag(true)
-        setLogo([])
+        setLogo("https://storage.googleapis.com/image_storage_farmers2u/empty_image.png")
         setNewlogo("")
         const disable = [...disabledLogo];
         disable[1] = true;
