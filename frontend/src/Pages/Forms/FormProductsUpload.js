@@ -365,7 +365,7 @@ function FormProductsUpload({values, handleChange, setFormValue}) {
                 /*margin={10}*/
                 color="addPicture"
                 sx={{    display: 'flex',
-                justifyContent: 'space-between', width:"450px"
+                justifyContent: 'space-between', width:"450px", mt: "24px"
 ,                fontFamily: "aleph", boxShadow: 'none !important', '&:hover':{color: 'initial',
                 backgroundColor: 'initial', 
                 boxShadow: 'none !important', }}}
