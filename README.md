@@ -4,31 +4,23 @@
 
 Welcome to the **Farmers2U** ,a platform for farmers and consumers created by a group of CS students at Tel Aviv University. This platform serves as a bridge between local farmers and consumers, allowing farmers to showcase their goods and consumers to discover and connect with them. This website benefits all - it allowes the farmer to publish his buisness and his marketing events as well as sell his goods without having to split shares with importers and marketers, and on the other hand, allowes the consumer to purchase the best products straight from the farmer and support local israeli agriculture.
 
-## Project Overview
-
-Our project focuses on creating an online platform that brings **farmers** and **consumers** together. The platform facilitates communication, interaction, and collaboration between these two vital stakeholders in the local agricultural ecosystem.
-
 ## Key Features
 
-### Farmers Business Cards
+## Bulletin Board
+Much like Facebook connects people globally, the Bulletin Board virtually brings farmers and consumers together. It's a space where farmers can share their stories, products, and experiences while consumers discover and support local agriculture.
 
-Farmers can create comprehensive profiles to introduce themselves and their products to the consumers. This allows consumers to gain insights into the farmers' backgrounds, expertise, and offerings.
+## Bulletin Board Filter Panel
+Allow users to display relevant posts by filtering based on dates, proximity to their location, and product categories.
 
-### Product Listings
+## Our Farmers Filter Panel
+Lets users find suitable farmers by applying filters such as shipping availability, shipping policies, and product types.
 
-Farmers can list their products on the platform, complete with high-quality images, detailed descriptions, and pricing information. This enables consumers to explore the variety of products available.
+## Add Post
+Farmers can add posts and advertise selling events. Posts can then be easily edited or deleted.
 
-### Geolocation Filters
+## Business Cards
+Farmers create their own business cards easily during the signup process. The business card, including all information, posts, and pictures, can then be easily edited through the Personal Settings page. Consumers, on the other hand, can explore a variety of business cards, extract any information necessary, scroll through farmers' previous posts, and contact the farmer for further inquiries.
 
-Consumers can use geolocation filters to discover farmers and their products in their specific regions. This feature enhances the local aspect of the platform and promotes community engagement.
-
-### Business Cards and Contact
-
-Farmers can provide their contact details and business information. Consumers can access this information to connect with farmers for inquiries, orders, and collaborations.
-
-### Events and Promotions
-
-Farmers can advertise special events, workshops, and promotions through the platform. Consumers can stay informed about upcoming activities and engage with the agricultural community.
 
 ## Getting Started
 
