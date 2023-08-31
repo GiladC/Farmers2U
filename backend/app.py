@@ -27,7 +27,7 @@ default_logo = f"https://storage.googleapis.com/{bucket_name}/{default_logo_name
 
 app = Flask(__name__)
 
-# app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=87600)
 jwt = JWTManager(app)
 
 app.config['SECRET_KEY'] = 'farmers2u'
@@ -349,25 +349,6 @@ def signup():
         "email": new_user.email,
         "logo_picture": new_user.logo_picture
     })
-
-@app.after_request
-def refresh_expiring_jwts(response):
-    try:
-        exp_timestamp = get_jwt()["exp"]
-        now = datetime.now(timezone.utc)
-        target_timestamp = datetime.timestamp(now + timedelta(minutes = 30))
-        if target_timestamp > exp_timestamp:
-            access_token = create_access_token(identity=get_jwt_identity())
-            data = response.get_json()
-            if type(data) is dict:
-                data["access_token"] = access_token
-                response.data = json.dumps(data)
-        
-        return response
-
-    except (RuntimeError, KeyError):
-        # no valid JWT
-        return response
  
 @app.route("/login", methods=["POST"])
 def login_user():

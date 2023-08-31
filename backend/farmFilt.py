@@ -41,7 +41,7 @@ def filterTheFarmers():
 
     users_query = User.query
     if shipping:
-        farmers = users_query.filter_by(is_shipping = True)
+        farmers = users_query.filter_by(is_shipping = "true")
     else:
         farmers = users_query.all()   
     
