@@ -24,12 +24,20 @@ Farmers create their own business cards easily during the signup process. The bu
 
 ## Getting Started
 
-1. **Sign Up**: Farmers can sign up for an account on the platform.
-2. **Create Profile**: Farmers need to create their profiles, showcasing their background and products.
-3. **List Products**: Farmers can add their products to the platform, providing all necessary details.
-4. **Discover and Connect**: Consumers can explore farmer profiles, products, and events. They can initiate contact with farmers as needed.
+## Consumers:
+1.	Bulletin Board - Head to the 'Bulletin Board' section and search for relevant advertisements using the filter bar.
+2.	Discover a Business - Visit the 'Our Farmers' page. Use the filter panel to find relevant farmers.
+If you come across a business that looks interesting, click on its page for more details and contact information.
+
+## Farmers:
+1.	Sign Up - Register on our site by filling out business-related details on the registration form.
+2.	Create an Advertisement - Login and navigate to the 'Bulletin Board' or 'Personal Settings'. Click on the '+' icon to create a new advertisement. You can edit your advertisement at any time.
+3.	Update Business Details - In the 'Personal Settings', you can regularly update your business details to keep them current and accurate.
+Additional Sections:
+For more insights and details, visit our 'Frequently Asked Questions' section.
+
+![image](https://github.com/GiladC/Farmers2U/assets/96655166/fd95d223-2f73-4e40-b284-58f9ea71a77c)
 
 
 ## Contact Us
-
 For inquiries and support, feel free to reach out to our team at [farmers2uu@gmail.com](mailto:farmers2uu@gmail.com).
