@@ -62,26 +62,6 @@ function ValidatePhoneNotEmpty({ phoneNumber, setValidFlag }) {
   );
 }
 
-// function ValidateAddress({ address, setValidFlag }) {
-//   const [valid, setValid] = useState(true);
-
-//   const isValidAddress = useCallback(() => {
-//     const res = address !== "";
-//     setValidFlag(res);
-//     return res;
-//   }, [address, setValidFlag]);
-
-//   useEffect(() => {
-//     setValid(isValidAddress());
-//   }, [address, setValidFlag, isValidAddress]);
-
-//   return (
-//     <div dir='rtl' style={{ height: "0px" }}>
-//       {!valid && <Typography style={{marginRight:"5%"}} variant="body2" color="error" >שדה חובה</Typography>}
-//     </div>
-//   );
-// }
-
 
 function FormPersonalInfo({values, handleChange, setFormValue, setIsFormPersonalInfoValid }) {
   const [addressN, setAddress] = useState(values.address);
@@ -120,6 +100,13 @@ function FormPersonalInfo({values, handleChange, setFormValue, setIsFormPersonal
         event.preventDefault();
     }
 };
+
+const handleKeyDownFarmer = (event) => {
+  if (/^[0-9!@#$%^&*()_+{}[\]:;<>,.?~\\/]$/.test(event.key)) {
+      event.preventDefault();
+  }
+};
+
   
   const handleChangePhone = (event) => {
     const phoneNumber = event.target.value;
@@ -243,11 +230,6 @@ function FormPersonalInfo({values, handleChange, setFormValue, setIsFormPersonal
               </div>
             )}
           </PlacesAutocomplete>
-          {/* <ValidateAddress
-  address={addressN}
-  setAddress={setAddress}
-  setValidFlag={setIsValidAddress} 
-/> */}
   </Grid>
   <Grid container item xs={5}>
   <Tooltip 
@@ -262,6 +244,7 @@ function FormPersonalInfo({values, handleChange, setFormValue, setIsFormPersonal
         placeholder='שם איש קשר'
         defaultValue={values.farmer_name}
         onChange={handleChangeFarmerName}
+        onKeyDown={handleKeyDownFarmer}
         onFocus={() => setShowTooltip(true)}
         onBlur={() => setShowTooltip(false)}
         required="required"
