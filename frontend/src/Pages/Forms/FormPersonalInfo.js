@@ -62,25 +62,25 @@ function ValidatePhoneNotEmpty({ phoneNumber, setValidFlag }) {
   );
 }
 
-function ValidateAddress({ address, setValidFlag }) {
-  const [valid, setValid] = useState(true);
+// function ValidateAddress({ address, setValidFlag }) {
+//   const [valid, setValid] = useState(true);
 
-  const isValidAddress = useCallback(() => {
-    const res = address !== "";
-    setValidFlag(res);
-    return res;
-  }, [address, setValidFlag]);
+//   const isValidAddress = useCallback(() => {
+//     const res = address !== "";
+//     setValidFlag(res);
+//     return res;
+//   }, [address, setValidFlag]);
 
-  useEffect(() => {
-    setValid(isValidAddress());
-  }, [address, setValidFlag, isValidAddress]);
+//   useEffect(() => {
+//     setValid(isValidAddress());
+//   }, [address, setValidFlag, isValidAddress]);
 
-  return (
-    <div dir='rtl' style={{ height: "0px" }}>
-      {!valid && <Typography style={{marginRight:"5%"}} variant="body2" color="error" >שדה חובה</Typography>}
-    </div>
-  );
-}
+//   return (
+//     <div dir='rtl' style={{ height: "0px" }}>
+//       {!valid && <Typography style={{marginRight:"5%"}} variant="body2" color="error" >שדה חובה</Typography>}
+//     </div>
+//   );
+// }
 
 
 function FormPersonalInfo({values, handleChange, setFormValue, setIsFormPersonalInfoValid }) {
@@ -102,10 +102,11 @@ function FormPersonalInfo({values, handleChange, setFormValue, setIsFormPersonal
     setIsFormPersonalInfoValid(formValid);
 }, [formValid, setIsFormPersonalInfoValid]);
 
-  const handleSelect = async value => {
+  const handleSelect = value => {
     //const results = await geocodeByAddress(value);
     //const latLng = await getLatLng(results[0]);
     setAddress(value)
+    setIsValidAddress(true);
     setFormValue("address",value)
     //setCoordinates(latLng);
   };
@@ -153,10 +154,11 @@ function FormPersonalInfo({values, handleChange, setFormValue, setIsFormPersonal
             value={addressN}
             onChange={(newValue) => {
               setAddress(newValue);
+              setIsValidAddress(false);
               console.log(newValue);
             }}
             onSelect={handleSelect}
-
+              
             searchOptions={{
               types: ['address'],
               region: 'il',
@@ -233,14 +235,19 @@ function FormPersonalInfo({values, handleChange, setFormValue, setIsFormPersonal
                     );
                   })}
                 </div>
+                {(!isValidAddress || address === "") &&
+                    <div dir='rtl' style={{ height: "0px" }}>
+                    <Typography style={{marginRight:"5%"}} variant="body2" color="error" >שדה חובה - יש לבחור מהרשימה</Typography>
+                  </div>
+                }
               </div>
             )}
           </PlacesAutocomplete>
-          <ValidateAddress
+          {/* <ValidateAddress
   address={addressN}
   setAddress={setAddress}
   setValidFlag={setIsValidAddress} 
-/>
+/> */}
   </Grid>
   <Grid container item xs={5}>
   <Tooltip 
