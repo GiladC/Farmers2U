@@ -36,8 +36,6 @@ If you come across a business that looks interesting, click on its page for more
 Additional Sections:
 For more insights and details, visit our 'Frequently Asked Questions' section.
 
-![image](https://github.com/GiladC/Farmers2U/assets/96655166/fd95d223-2f73-4e40-b284-58f9ea71a77c)
-
 
 ## Contact Us
 For inquiries and support, feel free to reach out to our team at [farmers2uu@gmail.com](mailto:farmers2uu@gmail.com).
